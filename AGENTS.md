@@ -117,3 +117,32 @@ Build command: TBD
 
 Core demo flow: TBD
 Architecture constraints: TBD
+
+
+## Git Workflow
+
+We use a lightweight feature-branch workflow.
+
+- Keep `main` stable and runnable.
+- Never implement features directly on `main`.
+- Create a separate branch for each feature or task.
+- Use descriptive branch names, e.g. `feat/dashboard`
+  or `fix/api-error`.
+- Before starting new work, branch from the latest `main`.
+- Commit small, logical changes with descriptive messages.
+- Check `git status` and review changes before committing.
+- Push feature branches and open pull requests when ready.
+- Never merge into `main` without human approval.
+- Never force-push or overwrite teammates' work.
+- Integrate completed features frequently to avoid
+  large merge conflicts.
+
+When a task is complete:
+1. Run relevant tests and checks.
+2. Review the changes.
+3. Commit the implementation.
+4. Push the feature branch.
+5. Open a pull request for review.
+
+If Git conflicts occur, explain the conflict and
+request guidance before making risky changes.
