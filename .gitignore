@@ -1,0 +1,44 @@
+
+# ==========================================
+# Junction 2026 — .gitignore
+# ==========================================
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editor-specific local settings
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# Private credentials
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+secrets.json
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.log
+
+# Local temporary directories
+tmp/
+temp/
+.cache/
+
+# Local agent settings
+.claude/settings.local.json
