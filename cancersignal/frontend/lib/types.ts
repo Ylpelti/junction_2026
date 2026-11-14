@@ -58,6 +58,9 @@ export type PatientRecord = {
 
 export type SourceRef = { id: string; label: string };
 
+/** Priority set by the backend rule. The UI never decides it. */
+export type FindingPriority = "urgent" | "review";
+
 export type Finding = {
   id: string;
   title: string;
@@ -65,6 +68,7 @@ export type Finding = {
   sources: SourceRef[];
   rule: string;
   ruleSrc: string;
+  priority: FindingPriority;
 };
 
 export type AnalysisStatus = "none" | "review" | "urgent" | "unavailable";
