@@ -1,0 +1,75 @@
+[
+  {
+    "case_id": "EVAL-003",
+    "split": "dev",
+    "patient": {
+      "id": "e886dd20-4560-50fb-86d0-00fddc0b8d04",
+      "synthetic_name": "SYNTHETIC EVAL-003",
+      "sex": "female",
+      "birth_date": "1958-06-02"
+    },
+    "arrival": 0,
+    "decisions": [
+      {
+        "decision_id": "initial",
+        "offset_days": 0,
+        "as_of": "2026-10-08T10:00:00Z",
+        "input_note_id": "b90e945c-46b0-57ab-9301-553ad774f500",
+        "observations": [
+          {
+            "id": "b90e945c-46b0-57ab-9301-553ad774f500",
+            "patient_id": "e886dd20-4560-50fb-86d0-00fddc0b8d04",
+            "observation_type": "clinical_note",
+            "code": null,
+            "text": "Seulontakirjeen mukainen ulosteen veritesti palautettu.",
+            "numeric_value": null,
+            "unit": null,
+            "status": null,
+            "observed_at": "2026-10-08T10:00:00Z",
+            "recorded_at": "2026-10-08T10:00:00Z"
+          }
+        ]
+      },
+      {
+        "decision_id": "followup",
+        "offset_days": 36.958333333333336,
+        "as_of": "2026-11-14T09:00:00Z",
+        "input_note_id": "9370a796-d71e-5735-bedb-4fa6e7235caf",
+        "observations": [
+          {
+            "id": "aca25b71-40ad-55ab-8a14-a0ee11a37640",
+            "patient_id": "e886dd20-4560-50fb-86d0-00fddc0b8d04",
+            "observation_type": "laboratory",
+            "code": "F-HB-FIT",
+            "text": null,
+            "numeric_value": 22,
+            "unit": "ug/g",
+            "status": "completed",
+            "observed_at": "2026-10-15T08:00:00Z",
+            "recorded_at": "2026-10-15T08:00:00Z"
+          },
+          {
+            "id": "b90e945c-46b0-57ab-9301-553ad774f500",
+            "patient_id": "e886dd20-4560-50fb-86d0-00fddc0b8d04",
+            "observation_type": "clinical_note",
+            "code": null,
+            "text": "Seulontakirjeen mukainen ulosteen veritesti palautettu.",
+            "numeric_value": null,
+            "unit": null,
+            "status": null,
+            "observed_at": "2026-10-08T10:00:00Z",
+            "recorded_at": "2026-10-08T10:00:00Z"
+          },
+          {
+            "id": "9370a796-d71e-5735-bedb-4fa6e7235caf",
+            "patient_id": "e886dd20-4560-50fb-86d0-00fddc0b8d04",
+            "observation_type": "clinical_note",
+            "text": "Tullut kontrolliin verenpaineen takia. Ei uusia oireita.",
+            "observed_at": "2026-11-14T09:00:00Z",
+            "recorded_at": "2026-11-14T09:00:00Z"
+          }
+        ]
+      }
+    ]
+  }
+]

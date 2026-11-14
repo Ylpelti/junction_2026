@@ -1,0 +1,24 @@
+{
+  "original_cohort_sha256": "3aa8dc2cba4b6279a8dada49688005e8a831dcffe9a1a342b3433d94b6770ef0",
+  "selected_cohort_sha256": "8d4abca66d6f6035ebd5f566c50bacceb7694f9b719331c1d08e1d2e6721c4af",
+  "planned_n": 36,
+  "validated_n": 33,
+  "excluded": [
+    {
+      "patient_id": "f2ef8909-189e-55dc-896f-95f2b8cf9cd8",
+      "case_id": "EVAL-014",
+      "reason": "Missing real prediction for f2ef8909-189e-55dc-896f-95f2b8cf9cd8:initial"
+    },
+    {
+      "patient_id": "91bb2604-fa8f-5d82-8cdf-d5258d66bae4",
+      "case_id": "EVAL-031",
+      "reason": "Missing real prediction for 91bb2604-fa8f-5d82-8cdf-d5258d66bae4:initial"
+    },
+    {
+      "patient_id": "fe024d77-577b-5865-b857-a7975243b160",
+      "case_id": "EVAL-035",
+      "reason": "Missing real prediction for fe024d77-577b-5865-b857-a7975243b160:initial"
+    }
+  ],
+  "warning": "Nonrandom inference failure may bias simulated outcomes. Failed cases are unavailable, never negative predictions. This is not a complete-cohort effectiveness estimate."
+}

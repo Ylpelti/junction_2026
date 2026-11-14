@@ -1,0 +1,63 @@
+{
+  "clinical_input": {
+    "patient": {
+      "id": "fe024d77-577b-5865-b857-a7975243b160",
+      "synthetic_name": "SYNTHETIC EVAL-035",
+      "sex": "female",
+      "birth_date": "1960-02-02"
+    },
+    "as_of": "2026-11-14T09:00:00Z",
+    "input_note_id": "e6bfbef5-7e7d-5132-a16e-a72b6265b0ee",
+    "observations": [
+      {
+        "id": "e6bfbef5-7e7d-5132-a16e-a72b6265b0ee",
+        "patient_id": "fe024d77-577b-5865-b857-a7975243b160",
+        "observation_type": "clinical_note",
+        "text": "Ei oireita, tullut kuulemaan tuloksia.",
+        "observed_at": "2026-11-14T09:00:00Z",
+        "recorded_at": "2026-11-14T09:00:00Z"
+      },
+      {
+        "id": "fe08e6e3-ec55-562a-86d7-5f9b4f9cceff",
+        "patient_id": "fe024d77-577b-5865-b857-a7975243b160",
+        "observation_type": "laboratory",
+        "code": "F-HB-FIT",
+        "text": null,
+        "numeric_value": 9.9,
+        "unit": "ug/g",
+        "status": "completed",
+        "observed_at": "2026-11-10T08:00:00Z",
+        "recorded_at": "2026-11-10T08:00:00Z"
+      }
+    ]
+  },
+  "response": {
+    "id": "ed02fe2b-778c-4fc8-9268-9cd2524bdf78",
+    "patient_id": "fe024d77-577b-5865-b857-a7975243b160",
+    "created_at": "2026-11-14T16:10:10.898988Z",
+    "status": "failed",
+    "findings": [],
+    "trigger_results": [],
+    "predictions": [],
+    "source_observations": [],
+    "explanation": "Analysis failed. No findings or trigger results were persisted.",
+    "provenance": {
+      "input_observation_id": "e6bfbef5-7e7d-5132-a16e-a72b6265b0ee",
+      "cutoff": "2026-11-14T09:00:00Z",
+      "context_observation_ids": [
+        "fe08e6e3-ec55-562a-86d7-5f9b4f9cceff"
+      ],
+      "retrieval_method": "patient-history-lexical-v1",
+      "extraction_method": "structured-source-demo-v1+clinical-extraction-2",
+      "rule_snapshots": {},
+      "missing_information": [
+        "Analysis did not complete; no clinical conclusion is available."
+      ],
+      "patient_facts": {
+        "age_years": 66
+      },
+      "predictions": [],
+      "error_code": "clinical_extraction_invalid_extraction_output"
+    }
+  }
+}

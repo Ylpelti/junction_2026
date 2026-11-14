@@ -1,0 +1,7 @@
+{
+  "seed": 101,
+  "event_hashes": {
+    "baseline": "314e44993b2bc33885c0cd8dc0f2785ff88909f3fde21ab407f8be8f0c4b28fd",
+    "assisted": "c1baa8f89ce05f89e97a12df6362a9790b64c30cf224b44a5cf9dc006b6c7aa7"
+  }
+}

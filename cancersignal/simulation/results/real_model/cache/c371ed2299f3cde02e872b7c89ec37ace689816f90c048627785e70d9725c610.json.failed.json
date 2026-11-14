@@ -1,0 +1,49 @@
+{
+  "clinical_input": {
+    "patient": {
+      "id": "f2ef8909-189e-55dc-896f-95f2b8cf9cd8",
+      "synthetic_name": "SYNTHETIC EVAL-014",
+      "sex": "female",
+      "birth_date": "1950-01-25"
+    },
+    "as_of": "2026-11-14T09:00:00Z",
+    "input_note_id": "88611d6f-92d9-5e01-b72d-c566232d3db8",
+    "observations": [
+      {
+        "id": "88611d6f-92d9-5e01-b72d-c566232d3db8",
+        "patient_id": "f2ef8909-189e-55dc-896f-95f2b8cf9cd8",
+        "observation_type": "clinical_note",
+        "text": "Vatsakipua alavatsalla kolme viikkoa.",
+        "observed_at": "2026-11-14T09:00:00Z",
+        "recorded_at": "2026-11-14T09:00:00Z"
+      }
+    ]
+  },
+  "response": {
+    "id": "8867ab3c-3263-4220-8f50-683c3ad1e7fd",
+    "patient_id": "f2ef8909-189e-55dc-896f-95f2b8cf9cd8",
+    "created_at": "2026-11-14T16:08:48.393145Z",
+    "status": "failed",
+    "findings": [],
+    "trigger_results": [],
+    "predictions": [],
+    "source_observations": [],
+    "explanation": "Analysis failed. No findings or trigger results were persisted.",
+    "provenance": {
+      "input_observation_id": "88611d6f-92d9-5e01-b72d-c566232d3db8",
+      "cutoff": "2026-11-14T09:00:00Z",
+      "context_observation_ids": [],
+      "retrieval_method": "patient-history-lexical-v1",
+      "extraction_method": "structured-source-demo-v1+clinical-extraction-2",
+      "rule_snapshots": {},
+      "missing_information": [
+        "Analysis did not complete; no clinical conclusion is available."
+      ],
+      "patient_facts": {
+        "age_years": 76
+      },
+      "predictions": [],
+      "error_code": "clinical_extraction_invalid_source_offsets"
+    }
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "schema_version": "real-model-cache-1",
+  "pipeline_sha256": "d93db13173a7c74323ceea84ac77fe891064232082cbb5e576404ae490bf6d0b",
+  "producer": {
+    "kind": "cancersignal.create_analysis",
+    "extraction": {
+      "name": "clinical-extraction",
+      "version": "1.0",
+      "method": "llm",
+      "provider": "verda",
+      "model": "kimi-k3-1-pro",
+      "prompt_version": "clinical-extraction-2",
+      "configuration_digest": "46997158cbbe17e2c10cce7535eb0be3c683affa8f929b53f8c46bbfaf6108d9"
+    },
+    "inference_settings": {
+      "provider": "verda",
+      "model": "kimi-k3-1-pro",
+      "base_url": null,
+      "response_format": "json_object",
+      "reasoning_effort": "low",
+      "max_output_tokens": 8192,
+      "context_window_tokens": null,
+      "max_input_bytes": 60000,
+      "timeout_seconds": 55.0,
+      "max_response_bytes": 1000000
+    },
+    "retrieval": "app.rag.retrieval.retrieve_context: complete eligible history with lexical ranking; not hybrid RAG",
+    "explanation": "existing deterministic ExplanationEngine (no separate explanation LLM call)",
+    "mapping": "triggered AND requires_clinician_review; QCancer does not control routing"
+  },
+  "entries": {
+    "8fc021f0-8d7c-59db-9f84-884454ca0f77:initial": "8d35f3e9c8f7d8f5fde6a357db7f07bd391e4a6c5c06a53d4d30dfe37adcf54c.json",
+    "2c18e705-3a9c-538f-814a-23728bccc0f9:initial": "90ea138c0a33cc7d1ed7aa446e70c613384610d2e4c852591be921dbc5e29bdc.json",
+    "e886dd20-4560-50fb-86d0-00fddc0b8d04:initial": "99413d598447b778bca2aabdef0946fa69e402bba158fb8075bbecb6287cd0b1.json",
+    "db41f561-4115-5032-a3f9-e0a82279b0db:initial": "0b4d0d9cec10feb75d3e52a7c8c35edd0d33c307cbb31ab2ee5ad997dc648636.json",
+    "30f792d4-162a-56bf-8a8b-833b4f1cea78:initial": "64733e1f24808b326ec1fb3d542692703efdfc4067955cddca706920ad27a3b7.json",
+    "e4a9be9c-b284-5401-ad25-077b4977b420:initial": "2abb20f4bd005d05f1de72813cc73da3afff225c0d7d0333403489203beea910.json",
+    "b366535c-0d36-50b4-a5a5-63fb940ef3c9:initial": "d613725811808892405293128f8204e240272f83ed62eb3e5a97ef30c5c1ef7c.json",
+    "79270856-c410-5f77-9940-36c98957252e:initial": "b5618dedc14d466e40cb99d559e69ab5ce742fe0641a3cad2c518f716f09918c.json",
+    "2190a55b-0379-50b4-b8e9-b1c5b0b83cbd:initial": "7c026fcb6dbaba3b515d07c07453c89e74c88c81006ff9c87e980566ef51e7cf.json",
+    "ea6665d3-7edc-5629-9e08-1c99b8552d12:initial": "dad92e6965ef51980b9f40920a0043a994d2c2fb2760a984ff16e55fb86dae3d.json",
+    "2d116684-b29f-5f68-8af6-51ead419ae7e:initial": "b64c2b6043bf4e38ab6e5e6c61ce4a12d8805aeab5159e9a24b1475893c7f1dc.json",
+    "5d3159a1-9555-510b-adb7-f9d2161ea6a9:initial": "3f5e11210b773efdf2bb673373fa6490a2911cd4a71eeb3e1394063a75a3c2e7.json",
+    "36fb0bf9-656e-5d05-91d9-6424630ffbea:initial": "0deadb342ff04e0fde68b0a350ba15d3e81af0c2973fd9a622f4dbf3e3264700.json",
+    "ceef762a-5715-5eb5-a135-14f10b781d52:initial": "aa203fec844f2f511d39c77adbe42e30cd3378d10552e87eea2ad262b6149e5f.json",
+    "e4853f75-df92-5424-b050-7330b7804eb4:initial": "b85ea972466e83f99c6ae1f05b97915864a1ebfcb17be397e8329a2970270941.json",
+    "02530e6b-5856-5737-8c0a-d2a881c51fc7:initial": "369c84020316b5c01bf6bb47067b0390d7e35072cdc1b4425bb3aa7cb740baf2.json",
+    "8e8e372f-de68-5f68-afe4-6f3073d9d234:initial": "02c8aea772e3a9cec158cde34fc641cdbef9b105f9c430d435d7d5a8c989909b.json",
+    "7745beca-a82e-557d-978b-2827bde88f6b:initial": "2596abf394e92af158fe43052def3aea3dd3c18d4ca79d76bba60d29c2fc496f.json",
+    "9a0130ab-757b-5ff6-9e71-0226cb9c29b6:initial": "d921a7f28af248863cc048a41db19040a444dff2fb8784b17ed62dcd67c3570b.json",
+    "c6a5602d-3d96-5118-b653-3b8125828ea4:initial": "21fee1a112c52f8d6e04ff57f2bdfa484c177376dd4d18f85e886effe66a101c.json",
+    "b194c212-83e9-5751-a60d-76bb7166d46e:initial": "525c144457a6fda1dfda5a1592ec354e4df78bec808934d835603eea69f65dca.json",
+    "07e5af50-65bf-5957-a93b-642aea94b24d:initial": "43520130270c24ccddc101b044defe73f7c2916d4dfe19b6e23aa67f0b2243e9.json",
+    "7f2bc1b4-d951-5090-b9e7-77c05c9b0051:initial": "43c112ca2b98f07ed0a195704c98df54dabcfd2449b4ffb8c75488670b9916f8.json",
+    "248b40d9-1e51-5c0b-ac12-5a29a2f2aa2e:initial": "c313cde1161f15802442a4bc8c902c0c95eb6633d5b5bce5208c57b6585d560f.json",
+    "dd26d162-a045-5819-92e9-92b0773ff641:initial": "f9a052be3d048576cad993ff3117a6e90dacf6a1065746605761d75d43a750de.json",
+    "29c348cb-a6eb-592e-9853-081c0f6ef7ff:initial": "d5c71459be13312118c79804c6414832cd6f48384f3c08a770c937312189195d.json",
+    "f260096a-08f4-5dce-88e3-ef03bac7d8ff:initial": "c528c44ccf73117de53da4339968c75a5140add3224201bbcd453cb2d1828d47.json",
+    "67aaa974-5a2c-5405-9e6c-ac2cf926b389:initial": "35c00ace789c03bc413176b2a169c2927e75cd42f2a3a1f81cd1244598e353d3.json",
+    "0f0a5929-9cd1-5b48-b586-9681d3b46098:initial": "51caa23d3306f6c17e318325539acfc8e7b73723f38eb83863a69ff36d66ceb5.json",
+    "8ce2d507-00ac-585d-8bb4-0139e5f95416:initial": "45d3c5578e6a66bedad77f6b277bcaa1b10b722e9402ce4c0bac67f6fb736b64.json",
+    "297afd32-5667-5b20-a6af-70f23a843d0e:initial": "0cd8933b984ffeab75785ed4093ba1dceb245d8d078f1a20dcb02da7a1ec7d0c.json",
+    "764ea990-465b-5fe1-9b86-e8334b249dd4:initial": "704f62bbb95226873b2814f909430834f69885bcdd7bd6c78e94c293edc294a6.json",
+    "a6c0f65e-7aaf-586f-95b4-fe5fb4918898:initial": "1c99b0170eb9154edb5d834e861e7fac5ab0334391a5a857a18cb6419ea6ab9c.json"
+  },
+  "failures": [
+    {
+      "patient_id": "f2ef8909-189e-55dc-896f-95f2b8cf9cd8",
+      "decision_id": "initial",
+      "error_code": "clinical_extraction_invalid_source_offsets"
+    },
+    {
+      "patient_id": "91bb2604-fa8f-5d82-8cdf-d5258d66bae4",
+      "decision_id": "initial",
+      "error_code": "clinical_extraction_invalid_source_offsets"
+    },
+    {
+      "patient_id": "fe024d77-577b-5865-b857-a7975243b160",
+      "decision_id": "initial",
+      "error_code": "clinical_extraction_invalid_extraction_output"
+    }
+  ]
+}
