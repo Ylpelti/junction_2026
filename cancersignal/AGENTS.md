@@ -1,212 +1,120 @@
-# Junction 2026 — Agent Instructions
+# CancerSignal — agent instructions
 
-## Project Context
+## Scope and current baseline
 
-We are a team of three building **CancerSignal**, a prototype during a 48-hour hackathon.
+CancerSignal is a Junction 2026 prototype for AstraZeneca's Equitable and Effective
+Cancer Care in Finland challenge. It helps nurses identify overlooked colorectal
+cancer signals in synthetic patient histories and submit findings for physician
+review. It does not diagnose cancer or autonomously refer patients.
 
-Our goal is to create a compelling, functional MVP that solves a real problem and can be demonstrated reliably to judges.
+This feature inventory was checked against `origin/main` at `3d44bbc` on
+2026-11-14. Recheck implementation when changing it: older README and TODO prose
+may lag merged code. Feature-branch and untracked work are not part of this baseline.
 
-**Challenge:** AstraZeneca — Equitable and Effective Cancer Care in Finland.
+## Implemented on main
 
-**Solution:** AI-assisted clinical decision support to reduce delays in primary healthcare. When a nurse enters a new note, the system retrieves the same patient's earlier notes and lab results, identifies potentially overlooked findings suggestive of colorectal cancer, and shows evidence with direct references to the source notes and labs. A physician reviews the finding and decides on further action. A simulation compares patient flow before and after.
+- Next.js/React/TypeScript/Tailwind nurse dashboard and physician queue, with
+  patient history, note saving, evidence cards, urgent/review alerts, alert reasons,
+  and explicitly labelled synthetic prototype data.
+- FastAPI `/api/v1` routes for patients, encounters, observations, timelines,
+  analyses and physician review requests; independent `/health` liveness endpoint.
+- PostgreSQL 16 + pgvector in Docker Compose, SQLAlchemy records, Alembic
+  migrations, reproducible synthetic patient seeds and enabled colorectal rules.
+- Persisted analysis findings, evidence references, rule snapshots, provenance,
+  missing information and separate model predictions. History is patient-scoped
+  and excludes records at or after the current note's cutoff on both time axes.
+- SUO-01 through SUO-10 deterministic colorectal rules, with Python-derived
+  anaemia, iron deficiency anaemia and FIT findings. SUO-08 and SUO-09 are urgent.
+- Optional Verda/OpenAI-compatible structured clinical extraction, schema and
+  evidence validation, and validated response caching. Extraction is off by
+  default; the structured-only demo extractor remains available.
+- Independent complete/lexical/dense/hybrid RAG engine with timeline expansion,
+  optional local embeddings, indexing, CLI and synthetic benchmark. The analysis
+  API still uses its baseline retriever; do not describe hybrid RAG as wired in.
+- QCancer-2013 numerical predictions connected to analysis responses and a
+  separate nurse-dashboard card. Unknown required inputs produce
+  `insufficient_data`; predictions never change rule-based review alerts.
+- Persisted physician-review submissions and pending queue, connected to the
+  frontend. Dismissals and physician decisions remain browser state; appointment
+  information and parts of the queue still use documented demo fallbacks.
 
-**Scope (MVP):** colorectal cancer only. Lung cancer only if time permits.
+Not implemented on this baseline: a dedicated LLM explanation/referral engine,
+pathway simulation (`simulation/` is a placeholder), authentication, EHR
+integration, or a Finnish-validated risk model. Do not describe planned evaluation
+or branch-only functionality as complete.
 
-**Tech stack:**
-- Frontend: Next.js, React, TypeScript, Tailwind CSS
-- Backend: Python, FastAPI, Pydantic
-- Database: PostgreSQL + pgvector, Docker Compose
-- AI: Verda/OpenAI-compatible LLM API with structured (JSON schema) output, hybrid RAG, embeddings
-- Retrieval: always filter by patient ID and date (before time t) before ranking
-- Optimization & simulation: OR-Tools, SimPy
-- Data: synthetic patient records only
+## Product invariants
 
-Out of scope for the MVP: own ML risk model, EHR integration, authentication.
+1. The LLM extracts source-backed facts; it never computes risk, urgency, lab
+   trends or dates. Python rules determine review alerts. QCancer is a separate
+   Python calculation with no routing threshold.
+2. Every rule retains its source and section (`lahde`, `lahde_kohta`). The current
+   rule definitions live in `backend/app/db/seed_rules.py`, not `rules.csv`.
+3. Findings and predictions must reference allowed source observations. Validate
+   patient identity, record IDs, verbatim quotes and offsets before persistence.
+   Never invent citations or silently accept invalid evidence.
+4. Historical `observed_at` and `recorded_at` must both be strictly before the
+   note's time t. The current note is explicit input, never retrieved history.
+5. Preserve negation, uncertainty, temporal state and unknown inputs. Missing
+   data is not evidence of absence and must not be converted to false.
+6. Say “no signals identified”, never “no cancer”. Failed/incomplete analysis
+   provides no clinical conclusion. Humans decide on investigations and referrals.
+7. Use synthetic patient data only. Keep prototype, fallback and unvalidated
+   outputs clearly labelled. QCancer uses a synthetic Townsend placeholder of 0
+   and is not calibrated for Finland; preserve its disclaimer and bundled license.
 
-Priorities:
-1. Demonstrate the core value proposition.
-2. Deliver a working end-to-end prototype.
-3. Maintain a clear and intuitive user experience.
-4. Keep the implementation simple and reliable.
-5. Add extra features only when time permits.
+## Architecture and contracts
 
-## Product Rules (non-negotiable)
+| Area | Implementation / guidance |
+| --- | --- |
+| Public API | `backend/app/api/`, `backend/app/schemas/`, `docs/contracts.md` |
+| Shared pipeline contracts | `backend/app/contracts/`, including its README and evidence validators |
+| Persistence | `backend/app/models/`, `backend/app/db/`, `backend/alembic/`, `docs/data-model.md` |
+| Analysis orchestration | `backend/app/services/analysis_service.py`, `backend/app/reasoning/interfaces.py` |
+| Extraction | `backend/app/extraction/`, `backend/app/services/llm_extraction.py` |
+| Retrieval | `backend/app/rag/`, including its README |
+| Rules and lab findings | `backend/app/reasoning/`, `backend/app/db/seed_rules.py`, `docs/rulebook-colorectal.md` |
+| Numerical predictions | `backend/app/risk_models/`; main also has `docs/risk-models.md` |
+| Physician handoff | `backend/app/services/review_service.py`, `docs/physician-review-api.md` |
+| UI and API mapping | `frontend/components/`, `frontend/lib/` |
 
-These rules define the product. Do not change them without team agreement.
+Read the relevant contracts before changing interfaces. Keep original observations
+separate from interpretations and coordinate shared schema changes. See
+`backend/AGENTS.md` and `frontend/AGENTS.md` for component-specific instructions.
 
-1. **The LLM never decides risk.** The LLM only (a) extracts facts from text into a fixed JSON schema and (b) writes the explanation and referral draft. Risk level comes only from deterministic Python rules in `rules.csv`.
-2. **Every rule has a source.** Each row in `rules.csv` has `lahde` and `lahde_kohta` (e.g. NICE NG12 / DG56 section). No rule without a source.
-3. **Every finding is traceable.** Each extracted symptom carries a verbatim quote and the source note ID; each lab-based finding carries the lab record ID. The explanation may only cite rule IDs and record IDs that exist in the pipeline output; the backend rejects any other reference.
-4. **No data after time t.** History retrieval only returns notes and labs dated before the note being analysed. Add a test for this.
-5. **Negations and uncertainty are explicit fields** ("ei verta ulosteessa" must not trigger a rule).
-6. **Never output "no cancer".** No match means "no signals identified".
-7. **Humans decide.** The system suggests a physician review; it never makes a diagnosis or sends a referral.
-8. **Numbers in Python, not in the LLM.** Lab values, trends and dates are computed in code.
+## Development workflow
 
-## Pipeline and Ownership
+- Inspect the current code and working-tree status first. Keep changes focused,
+  preserve teammates' uncommitted work, and avoid unrelated refactors.
+- Use feature branches or separate worktrees; keep main runnable. Do not push,
+  merge, rebase or force-push without authorization.
+- Prefer simple implementations and existing dependencies. Keep runtime
+  dependencies local to their component; there is no root build/task runner.
+- Run checks appropriate to the change, review the diff, and report what actually
+  ran, failures and remaining limitations. Never claim unexecuted tests passed.
+- Protect patient/time isolation, grounding, deterministic rules and the main
+  nurse-to-physician journey with focused tests.
+- Keep secrets in ignored environment files. Never commit credentials, expose
+  private records in logs, or delete persistent database volumes as routine setup.
+- Use cached synthetic extraction responses for offline demos. Live extraction
+  requires provider configuration and explicit live-call opt-in.
 
-| Step | File | Owner |
-| --- | --- | --- |
-| Symptom codes | `backend/app/symptoms.py` | Mathematician |
-| Rule table + engine | `backend/data/rules.csv`, `backend/app/rules.py` | Mathematician |
-| Synthetic patients + ground truth | `backend/data/patients/` | Niklas (with mathematician) |
-| 1. Extraction (LLM) | `backend/app/extract.py` | Coder |
-| 2. History retrieval | `backend/app/history.py` | Coder |
-| 3. Temporal reconciliation | `backend/app/reconcile.py` | Coder |
-| 4. Triggers | uses `rules.py` | Mathematician |
-| 5. Explanation + reference check (LLM) | `backend/app/explain.py` | Coder |
-| Nurse dashboard | `frontend/` | Coder |
-| Evaluation A/B/C | `backend/eval/evaluate.py` | Mathematician |
-| Simulation | `backend/sim/simulate.py` | Mathematician |
+## Local setup
 
-Data contracts (patient record, extraction JSON, rules.csv columns, API responses) are defined in `docs/contracts.md`. Read it before touching any interface. Change it only with team agreement.
+Requires Node.js 22+, Python 3.11+ and Docker Compose for PostgreSQL.
+From `cancersignal/`, copy `.env.example` to `.env` only if it does not already
+exist, configure the local database password, then run:
 
-## Evaluation
+```sh
+docker compose up -d --wait db
+```
 
-The key result is a comparison on synthetic held-out patients:
-- **A:** latest nurse note only
-- **B:** latest note + structured labs
-- **C:** CancerSignal (note + history retrieval + reconciliation + rules)
+Install, migrate and run the backend using `backend/AGENTS.md`; run the frontend
+in a separate terminal using `frontend/AGENTS.md`. Defaults are frontend
+`http://localhost:3000`, backend `http://localhost:8000`, and API docs `/docs`.
+`/health` checks liveness, not database readiness.
 
-Metrics: recall, precision, false alarms per 100 patients, grounding accuracy (does each finding point to the correct source record).
-
-Ground-truth labels are defined from the rule criteria by a human, not generated by the same code that produces the data. Do not tune rules on the held-out set. Report results as prototype test results, not clinical validation.
-
-## Development Principles
-
-- Prefer simple, working solutions over complex designs.
-- Prioritize speed without sacrificing correctness.
-- Follow existing project conventions.
-- Avoid unnecessary dependencies and abstractions.
-- Do not overengineer for production-scale requirements.
-- Reuse established libraries when appropriate.
-- Keep changes focused on the assigned task.
-- Avoid unrelated refactoring.
-
-## Agent Workflow
-
-Before implementing a substantial feature:
-1. Inspect the relevant project files.
-2. Understand existing architecture and interfaces.
-3. Briefly outline the implementation approach.
-4. Identify important assumptions or dependencies.
-
-During implementation:
-- Work autonomously within the assigned scope.
-- Make reasonable implementation decisions.
-- Keep changes incremental and focused.
-- Preserve existing functionality.
-- Follow agreed API contracts and data structures.
-- Ask for clarification only when a decision materially affects the product or other workstreams.
-
-After implementation:
-1. Run relevant tests and build checks.
-2. Fix errors introduced by the changes.
-3. Review the resulting Git diff.
-4. Summarize completed work and remaining issues.
-
-Never claim that code has been tested unless the relevant checks were actually executed.
-
-## Multi-Agent Collaboration
-
-Multiple developers may use Claude Code and Codex simultaneously.
-
-- Respect assigned tasks and file ownership (see Pipeline and Ownership).
-- Use separate branches or worktrees for parallel work.
-- Never overwrite another developer's changes.
-- Do not modify shared APIs or schemas without coordination.
-- Do not revert changes made by other developers.
-- Do not push, merge, rebase, or force-push without explicit authorization.
-- Keep changes easy to integrate.
-- Report dependencies or blockers early.
-
-## Testing and Reliability
-
-- Prioritize the critical end-to-end user journey.
-- Verify integrations between components.
-- Run relevant tests, type checks, and builds.
-- Add focused tests for important functionality, at minimum: rule engine, date cutoff, reference check.
-- Use browser-based verification when available.
-- Fix critical bugs before adding optional features.
-- Clearly report any unverified functionality.
-- Cache LLM responses for the demo patients so the demo works without network.
-
-## Security
-
-- Never commit secrets, API keys, or credentials.
-- Use environment variables for sensitive information.
-- Validate external inputs.
-- Ask before performing destructive operations.
-- Do not expose private data in logs or outputs.
-- Use synthetic patient data only.
-
-## Communication
-
-- Be concise and technically precise.
-- Focus on actionable results.
-- Clearly distinguish completed work from plans.
-- Explain significant architectural decisions.
-- Surface problems rather than hiding them.
-- Avoid unnecessary explanations of routine operations.
-
-## Project Configuration
-
-Frontend: Next.js + React + TypeScript
-
-Backend: FastAPI + Python
-
-Database: PostgreSQL + pgvector (Docker)
-
-External services: Verda LLM API, optional OpenAI API
-
-Deployment: TBD
-
-Run each command below from `cancersignal/` (the directory containing this file).
-Use separate terminals for the frontend and backend. Requires Node.js 22+ with npm
-and Python 3.11+ with `venv` and pip. Backend commands use the macOS/Linux virtual
-environment path; see `README.md` for Windows activation instructions.
-
-| Operation | Frontend | Backend |
-| --- | --- | --- |
-| Install | `cd frontend && npm ci` | `cd backend && python3 -m venv .venv && .venv/bin/python -m pip install -r requirements.txt` |
-| Development | `cd frontend && npm run dev` | `cd backend && .venv/bin/python -m uvicorn app.main:app --reload` |
-| Check | `cd frontend && npm run typecheck` | With the backend running: `curl --fail http://localhost:8000/health` (expects `{"status":"ok"}`) |
-| Build | `cd frontend && npm run build` | No build step; FastAPI runs directly from Python source. |
-| Run after build | `cd frontend && npm start` | `cd backend && .venv/bin/python -m uvicorn app.main:app` |
-
-Frontend: `http://localhost:3000`. Backend: `http://localhost:8000/health`;
-interactive API documentation: `http://localhost:8000/docs`.
-
-Automated tests are not configured yet. The commands above provide a frontend
-type check and a backend smoke check. There is no root build script or monorepo
-task runner. Database, Docker Compose, and external-service configurations are
-not implemented in the current scaffold.
-
-Core demo flow: Nurse enters clinical note → system retrieves the patient's earlier notes and labs (before time t) → rules identify signals → evidence-grounded findings with source references → physician review → optional before/after pathway simulation.
-
-Architecture constraints: FastAPI backend, modular components, synthetic patient data, traceable AI findings. No autonomous diagnosis or referral decisions.
-
-## Git Workflow
-
-We use a lightweight feature-branch workflow.
-
-- Keep `main` stable and runnable.
-- Never implement features directly on `main`.
-- Create a separate branch for each feature or task.
-- Use descriptive branch names, e.g. `feat/dashboard` or `fix/api-error`.
-- Before starting new work, branch from the latest `main`.
-- Commit small, logical changes with descriptive messages.
-- Check `git status` and review changes before committing.
-- Push feature branches and open pull requests when authorized.
-- Never merge into `main` without human approval.
-- Never force-push or overwrite teammates' work.
-- Integrate completed features frequently to avoid large merge conflicts.
-
-When a task is complete:
-1. Run relevant tests and checks.
-2. Review the changes.
-3. Commit the implementation.
-4. Push the feature branch when authorized.
-5. Open a pull request for review when authorized.
-
-If Git conflicts occur, explain the conflict and request guidance before making risky changes.
+Evaluation remains synthetic prototype evaluation, not clinical validation.
+For future latest-note / note-plus-labs / full-history comparisons, keep held-out
+labels independent of generation and report recall, precision, false alarms and
+grounding accuracy without tuning on the held-out set.

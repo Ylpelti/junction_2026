@@ -5,6 +5,7 @@ from pydantic import Field, model_validator
 
 from app.contracts.common import Contract, MissingInformation
 from app.contracts.evidence import SourceReference
+from app.contracts.qcancer import QCancerPredictors
 from app.reasoning.vocabulary import NOTE_FINDINGS  # Constants only; no rule/model execution.
 from app.schemas.records import NonEmpty
 
@@ -36,6 +37,7 @@ class ExtractedFinding(Contract):
 class ExtractionOutput(Contract):
     findings: tuple[ExtractedFinding, ...] = Field(max_length=64)
     missing_information: tuple[MissingInformation, ...]
+    qcancer_predictors: QCancerPredictors = Field(default_factory=QCancerPredictors)
 
 
 def output_schema() -> dict:

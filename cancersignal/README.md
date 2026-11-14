@@ -11,8 +11,10 @@ This repository currently contains a Next.js nurse dashboard and physician queue
 a FastAPI API, a PostgreSQL/pgvector backend foundation, relational patient/evidence
 models, a small synthetic seed dataset, and database-backed patient and analysis
 APIs. The internal pipeline has baseline history retrieval, a structured-source
-demo extractor, and sourced demonstration rules. LLM/free-text extraction,
-ML and simulations are not implemented. The independent [RAG engine](backend/app/rag/README.md)
+demo extractor, and sourced demonstration rules. A standalone QCancer-2013
+calculator and synthetic joint-output demo are available, but QCancer is not
+connected to the API or nurse dashboard. LLM/free-text extraction, a Finnish
+validated risk model, and simulations are not implemented. The independent [RAG engine](backend/app/rag/README.md)
 also supports optional local dense/hybrid retrieval; the API still uses its demo
 retriever until downstream integration. See [the API contract](docs/contracts.md)
 and [the data model](docs/data-model.md).
@@ -41,6 +43,7 @@ cancersignal/
 │   │   ├── services/ # Database-backed use cases and analysis orchestration
 │   │   ├── rag/    # Internal retrieval and replaceable extraction
 │   │   ├── reasoning/ # Demonstration rule engine and Python interfaces
+│   │   ├── risk_models/ # Standalone QCancer-2013 prototype and demo
 │   │   └── main.py
 │   ├── alembic/    # Versioned schema migrations
 │   ├── tests/      # API, schema, and opt-in PostgreSQL tests

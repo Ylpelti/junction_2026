@@ -10,6 +10,9 @@ import type {
   Medication,
   Patient,
   PatientRecord,
+  QueueItem,
+  QueueLevel,
+  QCancerEstimate,
   Referral,
 } from "./types";
 
@@ -58,6 +61,13 @@ type ApiFinding = {
   evidence: ApiEvidence[];
 };
 
+type ApiPrediction = {
+  model_name: string;
+  prediction_type: string;
+  value: unknown;
+  uncertainty: string | null;
+};
+
 type ApiTrigger = {
   id: string;
   rule_name: string;
@@ -81,6 +91,7 @@ export type ApiAnalysisResponse = {
   status: "pending" | "running" | "completed" | "failed";
   findings: ApiFinding[];
   trigger_results: ApiTrigger[];
+  predictions?: ApiPrediction[];
   source_observations: ApiObservation[];
   explanation: string;
   provenance: {
@@ -140,6 +151,10 @@ export function observationRef(o: Pick<ApiObservation, "id" | "observation_type"
 
 function valueText(o: ApiObservation): string {
   return o.numeric_value === null ? "" : `${displayDecimal(o.numeric_value)}${o.unit ? ` ${o.unit}` : ""}`;
+}
+
+function isObj(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
 // ---- Mappers -------------------------------------------------------------
@@ -206,8 +221,28 @@ const ERROR_TEXT: Record<string, string> = {
   pipeline_execution_failed: "The analysis pipeline failed.",
 };
 
+function qcancerEstimate(predictions: ApiPrediction[] | undefined): QCancerEstimate | undefined {
+  const prediction = predictions?.find((row) =>
+    row.model_name === "QCancer-2013" && row.prediction_type === "current_undiagnosed_cancer_risk",
+  );
+  if (!prediction || !isObj(prediction.value)) return undefined;
+  const value = prediction.value;
+  const allowed = ["calculated", "insufficient_data", "invalid_input", "unsupported_input"] as const;
+  if (typeof value.status !== "string" || !allowed.includes(value.status as (typeof allowed)[number])) return undefined;
+  const risk = (candidate: unknown) => typeof candidate === "number" && Number.isFinite(candidate) ? candidate : null;
+  return {
+    status: value.status as QCancerEstimate["status"],
+    horizonYears: typeof value.horizon_years === "number" ? value.horizon_years : 2,
+    anyCancerRiskPercent: risk(value.any_cancer_risk_percent),
+    colorectalCancerRiskPercent: risk(value.colorectal_cancer_risk_percent),
+    missingInputs: Array.isArray(value.missing_inputs) ? value.missing_inputs.filter((x): x is string => typeof x === "string") : [],
+    uncertainty: prediction.uncertainty,
+  };
+}
+
 export function toAnalysis(r: ApiAnalysisResponse): AnalysisResult {
   const missing = [...(r.provenance.missing_information ?? [])];
+  const qcancer = qcancerEstimate(r.predictions);
 
   if (r.status !== "completed") {
     const code = r.provenance.error_code;
@@ -255,7 +290,7 @@ export function toAnalysis(r: ApiAnalysisResponse): AnalysisResult {
         title: t.rule_name,
         detail: [t.explanation, ...support.map((f) => f.description)].join(" "),
         sources: chips,
-        rule: `${t.rule_name} v${t.rule_version}${t.demonstration_only ? " (demonstration rule)" : ""}`,
+        rule: `${t.rule_name} (${t.rule_version}${t.demonstration_only ? ", demonstration rule" : ""})`,
         ruleSrc: [t.rule_source, t.rule_source_section].filter(Boolean).join(" "),
         priority: priorityOf(t),
       };
@@ -267,7 +302,50 @@ export function toAnalysis(r: ApiAnalysisResponse): AnalysisResult {
     status: findings.some((f) => f.priority === "urgent") ? "urgent" : findings.length > 0 ? "review" : "none",
     summary: r.explanation,
     findings,
+    qcancer,
     missing,
+    origin: "backend",
+    analysisId: r.id,
+  };
+}
+
+// ---- Physician review requests (docs/physician-review-api.md) -------------
+
+export type ApiReviewRequest = {
+  id: string;
+  patient_id: string;
+  analysis_id: string;
+  status: "pending";
+  /** Snapshotted by the backend from triggered rule priorities; never set by the client. */
+  priority: "urgent" | "review" | "normal";
+  created_at: string;
+  submitted_by: string | null;
+  patient: ApiPatient;
+  analysis: ApiAnalysisResponse;
+};
+
+function receivedAt(iso: string, today = new Date()): string {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return iso;
+  const time = `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+  const sameDay = d.toDateString() === today.toDateString();
+  return sameDay ? time : `${displayDate(iso)} ${time}`;
+}
+
+export function toQueueItem(r: ApiReviewRequest): QueueItem {
+  const analysis = toAnalysis(r.analysis);
+  const level: QueueLevel = r.priority === "urgent" ? "urgent" : r.priority === "review" ? "review" : "normal";
+  return {
+    key: r.id,
+    name: r.patient.synthetic_name,
+    demo: toPatient(r.patient, undefined).demo,
+    time: receivedAt(r.created_at),
+    from: r.submitted_by ?? "Not recorded",
+    level,
+    cs: level !== "normal",
+    summary: r.analysis.explanation,
+    findings: analysis.findings,
+    missing: analysis.missing,
     origin: "backend",
   };
 }

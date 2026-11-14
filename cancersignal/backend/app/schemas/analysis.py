@@ -5,6 +5,7 @@ from uuid import UUID
 from pydantic import AwareDatetime, Field, model_validator
 
 from app.models.enums import AnalysisStatus, FindingStatus
+from app.contracts.predictions import ModelPrediction
 from app.contracts.evidence import EvidenceReference
 from app.contracts.findings import FindingContent
 from app.schemas.records import (
@@ -53,6 +54,7 @@ class AnalysisProvenance(Record):
     missing_information: list[str] = Field(default_factory=list)
     # Patient-level facts computed in Python at the cutoff, e.g. {"age_years": 67}.
     patient_facts: dict[str, int] = Field(default_factory=dict)
+    predictions: list[ModelPrediction] = Field(default_factory=list)
     error_code: str | None = None
 
 
@@ -84,6 +86,7 @@ class AnalysisResponse(Record):
     status: AnalysisStatus
     findings: list[FindingResponse]
     trigger_results: list[TriggerResponse]
+    predictions: list[ModelPrediction] = Field(default_factory=list)
     # Original records for resolving every evidence reference in this response.
     source_observations: list[ObservationRead]
     explanation: str

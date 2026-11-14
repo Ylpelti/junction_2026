@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 import type { AnalysisResult, DataSource, Patient, PatientRecord } from "../lib/types";
-import { FindingsPanel } from "./FindingsPanel";
+import { FindingsPanel, QCancerEstimateCard } from "./FindingsPanel";
 import { UrgentModal } from "./UrgentModal";
 
 type Load<T> = { status: "loading" } | { status: "ready"; data: T } | { status: "error"; error: string };
@@ -23,6 +23,9 @@ export type NurseState = {
   unresolved: boolean;
   panelOpen: boolean;
   sent: boolean;
+  sending: boolean;
+  sendError: string;
+  sendNotice: string;
   dismissed: string;
   choosing: boolean;
   reason: string;
@@ -253,6 +256,13 @@ export function NurseView({ s, on }: { s: NurseState; on: NurseHandlers }) {
               )}
 
               <RecordSection s={s} findingFor={findingFor} />
+              {res?.status === "none" && res.qcancer && (
+                <section aria-label="CancerSignal model results" className="flex flex-col gap-2 rounded-xl border border-line bg-white p-4.5">
+                  <h2 className="m-0 text-base font-bold">No evidence-table review alert</h2>
+                  <p className="m-0 text-[13.5px] leading-[1.45] text-mute">The QCancer estimate is shown separately for this synthetic demo. It does not set or route a review alert.</p>
+                  <QCancerEstimateCard estimate={res.qcancer} />
+                </section>
+              )}
             </>
           )}
         </main>

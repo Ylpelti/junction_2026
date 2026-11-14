@@ -6,6 +6,7 @@ from pydantic import model_validator
 from app.contracts.common import ComponentProvenance, MissingInformation, PatientScope, PipelineIssue
 from app.contracts.features import ComputedFeature
 from app.contracts.findings import ClinicalFinding
+from app.contracts.qcancer import QCancerPredictors
 
 
 class StageReport(PatientScope):
@@ -29,6 +30,7 @@ class StageReport(PatientScope):
 
 class FindingBatch(StageReport):
     findings: tuple[ClinicalFinding, ...] = ()
+    qcancer_predictors: QCancerPredictors | None = None
 
     @model_validator(mode="after")
     def finding_producer(self):

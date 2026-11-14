@@ -5,13 +5,26 @@ import type {
   ApiAnalysisResponse,
   ApiObservation,
   ApiPatient,
+  ApiReviewRequest,
 } from "./mappers";
 
 const BASE = `${(process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000").replace(/\/$/, "")}/api/v1`;
 
 export const API_ORIGIN = BASE.replace(/\/api\/v1$/, "");
 
-export class ApiError extends Error {}
+export class ApiError extends Error {
+  /** HTTP status, or undefined when the backend could not be reached at all. */
+  readonly status?: number;
+
+  constructor(message: string, status?: number) {
+    super(message);
+    this.status = status;
+  }
+
+  get unreachable() {
+    return this.status === undefined;
+  }
+}
 
 async function request<T>(path: string, init?: RequestInit, check?: (body: unknown) => boolean): Promise<T> {
   let response: Response;
@@ -31,10 +44,10 @@ async function request<T>(path: string, init?: RequestInit, check?: (body: unkno
     // Non-JSON body; handled below.
   }
   if (!response.ok) {
-    throw new ApiError(`Backend returned ${response.status}: ${describeDetail(body)}`);
+    throw new ApiError(`Backend returned ${response.status}: ${describeDetail(body)}`, response.status);
   }
   if (check && !check(body)) {
-    throw new ApiError(`Unexpected response shape from ${path}.`);
+    throw new ApiError(`Unexpected response shape from ${path}.`, response.status);
   }
   return body as T;
 }
@@ -103,4 +116,34 @@ export function analyseNote(note: NewNote) {
     { method: "POST", body: JSON.stringify({ note: notePayload(note) }) },
     isAnalysis,
   );
+}
+
+const isReviewRequest = (v: unknown) =>
+  isObj(v) &&
+  typeof v.id === "string" &&
+  typeof v.analysis_id === "string" &&
+  (v.priority === "urgent" || v.priority === "review" || v.priority === "normal") &&
+  isPatient(v.patient) &&
+  isAnalysis(v.analysis);
+
+/**
+ * POST /patients/{id}/review-requests. 201 = new request, 200 = this analysis was
+ * already sent (the original request is returned). Both are success.
+ */
+export function createReviewRequest(patientId: string, analysisId: string, submittedBy: string) {
+  return request<ApiReviewRequest>(
+    `/patients/${encodeURIComponent(patientId)}/review-requests`,
+    { method: "POST", body: JSON.stringify({ analysis_id: analysisId, submitted_by: submittedBy }) },
+    isReviewRequest,
+  );
+}
+
+/** GET /review-requests: pending queue, already ordered urgent → review → normal, oldest first. */
+export function listReviewRequests() {
+  return request<ApiReviewRequest[]>("/review-requests?status=pending&limit=200", undefined, listOf(isReviewRequest));
+}
+
+/** GET /review-requests/{id} */
+export function getReviewRequest(id: string) {
+  return request<ApiReviewRequest>(`/review-requests/${encodeURIComponent(id)}`, undefined, isReviewRequest);
 }

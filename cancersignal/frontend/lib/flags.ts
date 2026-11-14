@@ -4,7 +4,17 @@
 /** Appointment time and reason for visit (backend has no appointment data). */
 export const USE_FALLBACK_APPOINTMENTS = true;
 
-/** Send to physician, dismiss with reason and physician decisions live in client state (no endpoints). */
+/**
+ * Send to physician and the physician queue use the backend review-request API
+ * (docs/physician-review-api.md). Falls back to the local workflow when the
+ * backend is unreachable or the prototype dataset is selected.
+ */
+export const USE_BACKEND_REVIEW_QUEUE = true;
+
+/**
+ * Browser-state workflow: dismissal with reason and physician decisions (no endpoints yet),
+ * plus send/queue whenever the backend review API is not used.
+ */
 export const USE_LOCAL_WORKFLOW = true;
 
 /** Pre-filled routine/other-nurse items in the physician queue (no queue endpoint). */

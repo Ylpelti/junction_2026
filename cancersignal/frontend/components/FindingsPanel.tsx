@@ -1,4 +1,5 @@
 import type { NurseHandlers, NurseState } from "./NurseView";
+import type { QCancerEstimate } from "../lib/types";
 
 const REASONS = [
   "Physician already aware or investigation under way",
@@ -6,6 +7,20 @@ const REASONS = [
   "Patient declined further investigation",
   "Other (explained in the record)",
 ];
+
+export function QCancerEstimateCard({ estimate }: { estimate: QCancerEstimate }) {
+  return (
+    <section aria-label="QCancer synthetic model estimate" className="flex flex-col gap-1 rounded-[10px] border border-line-2 bg-side px-3.5 py-3 text-[13.5px] leading-[1.45]">
+      <strong>QCancer numerical estimate · synthetic demo</strong>
+      {estimate.status === "calculated" ? (
+        <span>{estimate.horizonYears}-year estimate: colorectal {estimate.colorectalCancerRiskPercent ?? "—"}% · all included cancer sites {estimate.anyCancerRiskPercent ?? "—"}%.</span>
+      ) : (
+        <span>Not calculated because required information is missing or outside the model’s supported range. Check the source records.</span>
+      )}
+      <span className="text-xs text-mute-2">UK model. Townsend is set to 0 for this synthetic demo; the estimate is not calibrated for Finland and does not set the review alert.</span>
+    </section>
+  );
+}
 
 export function FindingsPanel({ s, on }: { s: NurseState; on: NurseHandlers }) {
   const res = s.result!;
@@ -68,6 +83,10 @@ export function FindingsPanel({ s, on }: { s: NurseState; on: NurseHandlers }) {
         </div>
       )}
 
+      {res.qcancer && (
+        <QCancerEstimateCard estimate={res.qcancer} />
+      )}
+
       <div className="flex flex-col gap-2.5">
         {res.findings.map((f) => (
           <div key={f.id} className="flex flex-col gap-1.5 rounded-[10px] border border-line-2 px-3.5 py-3">
@@ -111,10 +130,21 @@ export function FindingsPanel({ s, on }: { s: NurseState; on: NurseHandlers }) {
         </div>
       )}
 
+      {s.unresolved && s.sendError && (
+        <div role="alert" className="rounded-[10px] border border-red-line bg-red-soft px-3.5 py-3 text-[13.5px] leading-[1.45] text-red-ink">
+          {s.sendError} You can try again.
+        </div>
+      )}
+
       {canRequest && (
         <div className="flex flex-wrap gap-2.5">
-          <button type="button" onClick={on.send} className="min-h-11 cursor-pointer rounded-[10px] border-0 bg-brand px-4 py-2.5 text-sm font-semibold text-white">
-            Send to physician
+          <button
+            type="button"
+            onClick={on.send}
+            disabled={s.sending}
+            className="min-h-11 cursor-pointer rounded-[10px] border-0 bg-brand px-4 py-2.5 text-sm font-semibold text-white disabled:cursor-wait disabled:opacity-70"
+          >
+            {s.sending ? "Sending…" : s.sendError ? "Try sending again" : "Send to physician"}
           </button>
           <button
             type="button"
@@ -129,9 +159,10 @@ export function FindingsPanel({ s, on }: { s: NurseState; on: NurseHandlers }) {
       {s.sent && (
         <div className="flex flex-col gap-2 rounded-[10px] border border-brand-line bg-brand-tint px-3.5 py-3 text-[13.5px] leading-[1.45] text-brand-dark">
           <span>
-            <strong>Sent to the physician.</strong> The evidence and a draft referral go with it. The physician decides on a stool blood test
-            (FIT), referral or no action.
+            <strong>Sent to the physician.</strong> The findings and their source records go with it. The physician decides on a stool blood
+            test (FIT), referral or no action.
           </span>
+          {s.sendNotice && <span className="font-semibold text-red-ink">{s.sendNotice}</span>}
           <button
             type="button"
             onClick={on.toDoctor}
