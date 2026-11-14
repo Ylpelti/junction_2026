@@ -50,6 +50,7 @@ export type Referral = {
 };
 
 export type PatientRecord = {
+  observations?: import("./mappers").ApiObservation[];
   history: HistoryEntry[];
   labs: LabResult[];
   meds: Medication[];
@@ -103,12 +104,18 @@ export type AnalysisResult = {
   origin: DataSource;
   /** Saved backend analysis id; needed to send a physician review request. */
   analysisId?: string;
+  sourceObservations?: import("./mappers").ApiObservation[];
+  clinicalFindings?: { id: string; description: string; status: string; uncertainty: string | null }[];
 };
 
 export type QueueLevel = "urgent" | "review" | "normal";
 
 export type QueueItem = {
   key: string;
+  status?: "pending" | "reviewed";
+  analysisId?: string;
+  patientId?: string;
+  analysis?: AnalysisResult;
   name: string;
   demo: string;
   time: string;

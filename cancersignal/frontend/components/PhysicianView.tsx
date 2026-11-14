@@ -1,4 +1,7 @@
 import { ClinicalExplanationCard } from "./ClinicalExplanationCard";
+import { type DecisionAction } from "../lib/api";
+import { QCancerEstimateCard } from "./FindingsPanel";
+import { AnalysisEvidence } from "./AnalysisEvidence";
 import type { QueueItem, QueueLevel } from "../lib/types";
 
 const STYLE: Record<QueueLevel, { chip: string; chipCls: string; stripe: string }> = {
@@ -7,16 +10,18 @@ const STYLE: Record<QueueLevel, { chip: string; chipCls: string; stripe: string 
   normal: { chip: "Routine", chipCls: "bg-chip text-mute", stripe: "bg-field" },
 };
 
-const CS_ACTIONS: [string, string][] = [
-  ["Order FIT (stool blood test)", "FIT ordered"],
-  ["Refer to specialist care", "Referral made"],
-  ["No action", "No action"],
+const CS_ACTIONS: [string, DecisionAction][] = [
+  ["Simulate FIT order (stool blood test)", "fit_ordered"],
+  ["Simulate referral to specialist care", "referral_made"],
+  ["No action", "no_action"],
 ];
 
 type Props = {
   queue: QueueItem[];
+  history?: QueueItem[];
+  busy?: string;
   decisions: Record<string, string>;
-  onDecide: (key: string, decision: string) => void;
+  onDecide: (key: string, decision: DecisionAction) => void;
   loading?: boolean;
   notice?: string;
   onRefresh?: () => void;
@@ -84,7 +89,7 @@ function Reasons({ item }: { item: QueueItem }) {
   );
 }
 
-export function PhysicianView({ queue, decisions, onDecide, loading, notice, onRefresh }: Props) {
+export function PhysicianView({ queue, history = [], busy, decisions, onDecide, loading, notice, onRefresh }: Props) {
   const waiting = queue.filter((q) => !decisions[q.key]).length;
   return (
     <>
@@ -117,15 +122,18 @@ export function PhysicianView({ queue, decisions, onDecide, loading, notice, onR
             {notice}
           </div>
         )}
+        <p className="text-sm text-mute">Simulation only. These actions create no real medical orders or referrals.</p>
+        {!loading && !notice && queue.length === 0 && <p>No pending review requests.</p>}
         <ol className="m-0 flex list-none flex-col gap-2.5 p-0">
-          {queue.map((q) => {
+          {[...queue, ...history].map((q, index) => {
             const st = STYLE[q.level];
             const decision = decisions[q.key];
-            const actions = q.cs ? CS_ACTIONS : ([["Acknowledge", "Acknowledged"]] as [string, string][]);
+            const actions = q.cs ? CS_ACTIONS : ([["Acknowledge", "acknowledged"]] as [string, DecisionAction][]);
             return (
               <li key={q.key} className="flex overflow-hidden rounded-xl border border-line bg-white">
                 <span className={`w-1.5 shrink-0 ${st.stripe}`} aria-hidden="true" />
                 <div className="flex min-w-0 flex-1 flex-col gap-2 px-4 py-3.5">
+                  {index === queue.length && history.length > 0 && <h2 className="text-base font-bold">Reviewed history</h2>}
                   <div className="flex flex-wrap items-center gap-2.5">
                     <span className={`rounded-full px-2.5 py-[3px] text-xs font-bold ${st.chipCls}`}>{st.chip}</span>
                     <span className="text-[15px] font-bold">{q.name}</span>
@@ -143,26 +151,29 @@ export function PhysicianView({ queue, decisions, onDecide, loading, notice, onR
                   <span className="text-sm leading-normal text-ink-2">{q.summary}</span>
                   {q.clinicalExplanation && <ClinicalExplanationCard value={q.clinicalExplanation} />}
                   {q.cs && q.findings.length > 0 && <Reasons item={q} />}
-                  {/* TODO(backend): no decision endpoint yet; decisions are browser state only. */}
+                  {q.analysis?.qcancer && <QCancerEstimateCard estimate={q.analysis.qcancer} />}
+                  {q.analysis && <AnalysisEvidence analysis={q.analysis} />}
+                  {q.status === "reviewed" && !decision && <span>Reviewed · saved decision unavailable</span>}
                   {decision ? (
                     <span className="text-[13.5px] font-semibold text-ok">
                       Decided: {decision}
-                      {q.origin === "backend" && <span className="font-normal text-mute-2"> (this browser only, not saved)</span>}
+                      {q.origin === "backend" && <span className="font-normal text-mute-2"> (saved simulation)</span>}
                     </span>
-                  ) : (
+                  ) : q.status !== "reviewed" ? (
                     <div className="flex flex-wrap gap-2">
                       {actions.map(([label, result]) => (
                         <button
                           key={label}
                           type="button"
                           onClick={() => onDecide(q.key, result)}
+                          disabled={!!busy || loading}
                           className="min-h-11 cursor-pointer rounded-lg border border-field bg-white px-3.5 py-2 text-[13.5px] font-semibold text-ink"
                         >
-                          {label}
+                          {busy === q.key ? "Saving decision…" : label}
                         </button>
                       ))}
                     </div>
-                  )}
+                  ) : null}
                 </div>
               </li>
             );

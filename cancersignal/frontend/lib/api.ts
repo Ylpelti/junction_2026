@@ -81,7 +81,7 @@ const isAnalysis = (v: unknown) =>
 
 /** GET /patients */
 export function listPatients() {
-  return request<ApiPatient[]>("/patients?limit=200", undefined, listOf(isPatient));
+  return pages<ApiPatient>("/patients?", isPatient);
 }
 
 /** GET /patients/{id}/observations (all types; split in the mapper). */
@@ -143,11 +143,65 @@ export function createReviewRequest(patientId: string, analysisId: string, submi
 }
 
 /** GET /review-requests: pending queue, already ordered urgent → review → normal, oldest first. */
-export function listReviewRequests() {
-  return request<ApiReviewRequest[]>("/review-requests?status=pending&limit=200", undefined, listOf(isReviewRequest));
+export function listReviewRequests(status: "pending" | "reviewed" | "all" = "pending", patientId?: string) {
+  return pages<ApiReviewRequest>(`/review-requests?status=${status}&${patientId ? `patient_id=${encodeURIComponent(patientId)}&` : ""}`, isReviewRequest);
 }
 
 /** GET /review-requests/{id} */
 export function getReviewRequest(id: string) {
   return request<ApiReviewRequest>(`/review-requests/${encodeURIComponent(id)}`, undefined, isReviewRequest);
 }
+
+async function pages<T>(path: string, check: (v: unknown) => boolean): Promise<T[]> {
+  const rows: T[] = [];
+  for (let offset = 0; ; offset += 200) {
+    const page = await request<T[]>(`${path}limit=200&offset=${offset}`, undefined, listOf(check));
+    rows.push(...page);
+    if (page.length < 200) return rows;
+  }
+}
+
+export function listAnalyses(patientId: string) {
+  return pages<ApiAnalysisResponse>(`/patients/${encodeURIComponent(patientId)}/analyses?`, isAnalysis);
+}
+export function analyseSavedNote(patientId: string, noteId: string) {
+  return request<ApiAnalysisResponse>(`/patients/${encodeURIComponent(patientId)}/analyses`,
+    { method: "POST", body: JSON.stringify({ note_observation_id: noteId }) }, isAnalysis);
+}
+
+export const DISMISSAL_REASONS = {
+  already_aware: "Physician already aware or investigation under way",
+  another_diagnosis: "Symptoms explained by another diagnosis",
+  patient_declined: "Patient declined further investigation",
+  other: "Other (explained in the record)",
+} as const;
+export const DECISION_ACTIONS = {
+  fit_ordered: "FIT ordered", referral_made: "Referral made", no_action: "No action", acknowledged: "Acknowledged",
+} as const;
+export type DismissalReason = keyof typeof DISMISSAL_REASONS;
+export type DecisionAction = keyof typeof DECISION_ACTIONS;
+export type Dismissal = { id: string; analysis_id: string; patient_id: string; reason_code: DismissalReason; actor: string; comment: string | null; created_at: string };
+export type Decision = { id: string; review_request_id: string; action: DecisionAction; actor: string; comment: string | null; created_at: string; status: "reviewed" };
+const isDismissal = (v: unknown) => isObj(v) && typeof v.id === "string" && typeof v.analysis_id === "string" && typeof v.patient_id === "string" && typeof v.created_at === "string" && typeof v.actor === "string" && typeof v.reason_code === "string" && Object.hasOwn(DISMISSAL_REASONS, v.reason_code);
+const isDecision = (v: unknown) => isObj(v) && typeof v.id === "string" && typeof v.review_request_id === "string" && v.status === "reviewed" && typeof v.created_at === "string" && typeof v.actor === "string" && typeof v.action === "string" && Object.hasOwn(DECISION_ACTIONS, v.action);
+async function optional<T>(path: string, check: (v: unknown) => boolean): Promise<T | null> {
+  try { return await request<T>(path, undefined, check); }
+  catch (e) { if (e instanceof ApiError && e.status === 404) return null; throw e; }
+}
+export const getDismissal = (id: string) => optional<Dismissal>(`/analyses/${encodeURIComponent(id)}/dismissal`, isDismissal);
+export const getDecision = (id: string) => optional<Decision>(`/review-requests/${encodeURIComponent(id)}/decision`, isDecision);
+
+// A POST may have committed even when its response was lost. Always read back;
+// return the actual saved action, which may differ from the attempted action.
+async function persist<T>(path: string, body: unknown, check: (v: unknown) => boolean, read: () => Promise<T | null>): Promise<T> {
+  try { return await request<T>(path, { method: "POST", body: JSON.stringify(body) }, check); }
+  catch (error) {
+    const saved = await read();
+    if (saved) return saved;
+    throw error;
+  }
+}
+export const saveDismissal = (id: string, patientId: string, reason: DismissalReason) => persist<Dismissal>(
+  `/analyses/${encodeURIComponent(id)}/dismissal`, { patient_id: patientId, reason_code: reason, actor: "SYNTHETIC Nurse H. Virtanen" }, isDismissal, () => getDismissal(id));
+export const saveDecision = (id: string, action: DecisionAction) => persist<Decision>(
+  `/review-requests/${encodeURIComponent(id)}/decision`, { action, actor: "SYNTHETIC Physician M. Salo" }, isDecision, () => getDecision(id));

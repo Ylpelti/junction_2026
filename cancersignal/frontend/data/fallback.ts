@@ -4,7 +4,7 @@
 import type { AnalysisResult, Patient, PatientRecord, QueueItem } from "../lib/types";
 
 // TODO(backend): appointment time and reason for visit have no endpoint.
-// Applied to backend patients by list order while USE_FALLBACK_APPOINTMENTS is on.
+// Retained for the explicit prototype dataset only; never applied to API patients.
 export const FALLBACK_APPOINTMENTS: { time: string; visit: string }[] = [
   { time: "08:15", visit: "Stomach bug" },
   { time: "08:45", visit: "Fatigue" },

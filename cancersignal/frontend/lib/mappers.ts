@@ -216,7 +216,7 @@ export function toRecord(observations: ApiObservation[]): PatientRecord {
       open: o.status !== "completed",
     }));
 
-  return { history, labs, meds, refs };
+  return { history, labs, meds, refs, observations };
 }
 
 const ERROR_TEXT: Record<string, string> = {
@@ -246,7 +246,7 @@ export function toAnalysis(r: ApiAnalysisResponse): AnalysisResult {
   const missing = [...(r.provenance.missing_information ?? [])];
   const qcancer = qcancerEstimate(r.predictions);
 
-  if (r.status !== "completed") {
+  if (r.status !== "completed" || r.provenance.error_code) {
     const code = r.provenance.error_code;
     return {
       status: "unavailable",
@@ -254,10 +254,11 @@ export function toAnalysis(r: ApiAnalysisResponse): AnalysisResult {
       findings: [],
       missing,
       error:
-        r.status === "failed"
+        (r.status === "failed" || code)
           ? `Analysis failed${code ? ` (${ERROR_TEXT[code] ?? code})` : ""}.`
           : "Analysis has not completed.",
       origin: "backend",
+      analysisId: r.id,
     };
   }
 
@@ -309,6 +310,8 @@ export function toAnalysis(r: ApiAnalysisResponse): AnalysisResult {
     missing,
     origin: "backend",
     analysisId: r.id,
+    sourceObservations: r.source_observations,
+    clinicalFindings: r.findings,
   };
 }
 
@@ -318,7 +321,7 @@ export type ApiReviewRequest = {
   id: string;
   patient_id: string;
   analysis_id: string;
-  status: "pending";
+  status: "pending" | "reviewed";
   /** Snapshotted by the backend from triggered rule priorities; never set by the client. */
   priority: "urgent" | "review" | "normal";
   created_at: string;
@@ -340,6 +343,10 @@ export function toQueueItem(r: ApiReviewRequest): QueueItem {
   const level: QueueLevel = r.priority === "urgent" ? "urgent" : r.priority === "review" ? "review" : "normal";
   return {
     key: r.id,
+    status: r.status,
+    analysisId: r.analysis_id,
+    patientId: r.patient_id,
+    analysis,
     name: r.patient.synthetic_name,
     demo: toPatient(r.patient, undefined).demo,
     time: receivedAt(r.created_at),

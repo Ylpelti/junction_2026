@@ -16,12 +16,12 @@ Inherit `../AGENTS.md`. Paths below are relative to `frontend/`.
   separately, including missing-input status, and never route patients.
 - Failed, pending or running analysis is unavailable, not a negative result.
   Preserve the unavailable state when the backend cannot be reached.
-- Backend review submissions and the pending physician queue are connected.
-  Dismissals and physician decisions remain local state; backend-item decisions
-  must remain visibly unsaved. Do not imply local state survives reloads.
-- Appointment details, routine queue items and the selectable prototype dataset
-  still have fallbacks. Keep synthetic prototype results clearly labelled and
-  inspect `lib/flags.ts` before changing fallback behavior.
+- Review submissions, dismissals and physician decisions persist through the
+  workflow API, scoped to analysis/request UUIDs. Only GET 404 means absent;
+  conflicts and lost responses require readback. Display saved server timestamps.
+- Live mode uses API patients, histories, analyses and pending/reviewed queues.
+  Prototype fixtures and browser-only actions require explicit prototype mode.
+  Do not silently substitute fixtures when the API fails.
 - Keep numeric clinical calculations in Python. Do not infer lab reference
   ranges, abnormal flags, missing facts or risk cutoffs in the UI.
 
@@ -39,11 +39,24 @@ npm start
 ```
 
 If the environment blocks Turbopack's build-worker port, use
-`npm run build -- --webpack`. No frontend test runner is configured. Verify
-changed interactions in the browser when available, especially note saving,
-alerts/evidence, physician submission and failures; report checks actually run.
+`npm run build -- --webpack`. Playwright covers API/mapping tests and mocked browser interactions (`npm test`).
+Install Chromium with `npx playwright install chromium`; an existing binary can
+be selected with `PLAYWRIGHT_CHROMIUM_EXECUTABLE`. From this directory, run the
+backend virtualenv Python on `tests/run_real_e2e.py` for real FastAPI + disposable
+PostgreSQL browser verification. It never migrates or resets the shared database.
+See `../docs/final-frontend-integration.md` for results and contract limitations.
 
 The default backend origin is `http://localhost:8000`. Set `NEXT_PUBLIC_API_URL`
 in `.env.local` to another origin without `/api/v1`, then restart/rebuild Next.js.
 Configure backend `CORS_ORIGINS` for the frontend origin. Do not put secrets in
 `NEXT_PUBLIC_*` variables.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+## This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

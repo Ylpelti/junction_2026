@@ -1,12 +1,8 @@
 import type { NurseHandlers, NurseState } from "./NurseView";
+import { DISMISSAL_REASONS } from "../lib/api";
 import type { QCancerEstimate } from "../lib/types";
 
-const REASONS = [
-  "Physician already aware or investigation under way",
-  "Symptoms explained by another diagnosis",
-  "Patient declined further investigation",
-  "Other (explained in the record)",
-];
+const REASONS = Object.values(DISMISSAL_REASONS);
 
 export function QCancerEstimateCard({ estimate }: { estimate: QCancerEstimate }) {
   return (
@@ -17,6 +13,11 @@ export function QCancerEstimateCard({ estimate }: { estimate: QCancerEstimate })
       ) : (
         <span>Not calculated because required information is missing or outside the model’s supported range. Check the source records.</span>
       )}
+      {(estimate.missingInputs.length > 0 || estimate.uncertainty) && <details>
+        <summary className="cursor-pointer">Research model limitations and unavailable inputs</summary>
+        {estimate.missingInputs.length > 0 && <p className="break-words">Unavailable inputs: {estimate.missingInputs.join(", ")}</p>}
+        {estimate.uncertainty && <p>{estimate.uncertainty}</p>}
+      </details>}
       <span className="text-xs text-mute-2">UK model. Townsend is set to 0 for this synthetic demo; the estimate is not calibrated for Finland and does not set the review alert.</span>
     </section>
   );
@@ -126,7 +127,7 @@ export function FindingsPanel({ s, on }: { s: NurseState; on: NurseHandlers }) {
         </div>
       )}
 
-      {s.unresolved && s.sendError && (
+      {s.sendError && (
         <div role="alert" className="rounded-[10px] border border-red-line bg-red-soft px-3.5 py-3 text-[13.5px] leading-[1.45] text-red-ink">
           {s.sendError} You can try again.
         </div>
@@ -137,7 +138,7 @@ export function FindingsPanel({ s, on }: { s: NurseState; on: NurseHandlers }) {
           <button
             type="button"
             onClick={on.send}
-            disabled={s.sending}
+            disabled={s.locked}
             className="min-h-11 cursor-pointer rounded-[10px] border-0 bg-brand px-4 py-2.5 text-sm font-semibold text-white disabled:cursor-wait disabled:opacity-70"
           >
             {s.sending ? "Sending…" : s.sendError ? "Try sending again" : "Send to physician"}
@@ -145,6 +146,7 @@ export function FindingsPanel({ s, on }: { s: NurseState; on: NurseHandlers }) {
           <button
             type="button"
             onClick={on.dismiss}
+            disabled={s.locked}
             className="min-h-11 cursor-pointer rounded-[10px] border border-line-3 bg-white px-4 py-2.5 text-sm font-semibold text-ink"
           >
             Dismiss with reason
@@ -158,7 +160,7 @@ export function FindingsPanel({ s, on }: { s: NurseState; on: NurseHandlers }) {
             <strong>Sent to the physician.</strong> The findings and their source records go with it. The physician decides on a stool blood
             test (FIT), referral or no action.
           </span>
-          {s.sendNotice && <span className="font-semibold text-red-ink">{s.sendNotice}</span>}
+          {s.sendNotice && <span className="font-semibold">{s.sendNotice}</span>}
           <button
             type="button"
             onClick={on.toDoctor}
@@ -195,10 +197,10 @@ export function FindingsPanel({ s, on }: { s: NurseState; on: NurseHandlers }) {
             <button
               type="button"
               onClick={on.confirmDismiss}
-              disabled={!s.reason}
+              disabled={!s.reason || s.locked}
               className="min-h-11 cursor-pointer rounded-[10px] border-0 bg-header px-4 py-2.5 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:bg-[#6B7280]"
             >
-              Confirm dismissal
+              {s.sending ? "Saving dismissal…" : "Confirm dismissal"}
             </button>
             <button
               type="button"
@@ -213,7 +215,7 @@ export function FindingsPanel({ s, on }: { s: NurseState; on: NurseHandlers }) {
 
       {s.dismissed && (
         <div className="rounded-[10px] border border-line-3 bg-side px-3.5 py-3 text-[13.5px] text-mute">
-          Dismissed: {s.dismissed}. Logged with your name and time (simulated).
+          Dismissed: {s.dismissed}. Synthetic workflow action.
         </div>
       )}
 

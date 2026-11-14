@@ -38,3 +38,7 @@ secrets.json
 
 # A/B/C evaluation run outputs (python -m eval.evaluate); not versioned.
 backend/eval/results/
+
+# Browser verification artifacts
+frontend/test-results/
+frontend/playwright-report/

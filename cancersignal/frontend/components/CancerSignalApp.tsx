@@ -1,378 +1,293 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
-
-import { FALLBACK_APPOINTMENTS, FALLBACK_QUEUE, PROTOTYPE_PATIENTS } from "../data/fallback";
-import { analyseNote, ApiError, createNote, createReviewRequest, listObservations, listPatients, listReviewRequests } from "../lib/api";
-import {
-  ALLOW_PROTOTYPE_DATASET,
-  USE_BACKEND_REVIEW_QUEUE,
-  USE_FALLBACK_APPOINTMENTS,
-  USE_FALLBACK_QUEUE,
-  USE_LOCAL_WORKFLOW,
-} from "../lib/flags";
-import { toAnalysis, toPatient, toQueueItem, toRecord } from "../lib/mappers";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { FALLBACK_QUEUE, PROTOTYPE_PATIENTS } from "../data/fallback";
+import { analyseSavedNote, ApiError, createNote, createReviewRequest, listObservations, listPatients, listReviewRequests, listAnalyses, getDismissal, getDecision, saveDismissal, saveDecision, DISMISSAL_REASONS, DECISION_ACTIONS, type DecisionAction, type DismissalReason } from "../lib/api";
+import { ALLOW_PROTOTYPE_DATASET } from "../lib/flags";
+import { toAnalysis, toPatient, toQueueItem, toRecord, type ApiAnalysisResponse } from "../lib/mappers";
 import type { AnalysisResult, DataSource, Patient, PatientRecord, QueueItem } from "../lib/types";
 import { DemoBar } from "./DemoBar";
 import { NurseView, type NurseState } from "./NurseView";
 import { PhysicianView } from "./PhysicianView";
 
 type Load<T> = { status: "loading" } | { status: "ready"; data: T } | { status: "error"; error: string };
-
 type Visit = {
-  saving: boolean;
-  saved: boolean;
-  saveError: string;
-  result: AnalysisResult | null;
-  acked: boolean;
-  closed: boolean;
-  choosing: boolean;
-  reason: string;
-  blocked: boolean;
-  checkedAt: string;
-  sending: boolean;
-  /** Send failed (e.g. 404/409/422); the alert is NOT sent. */
-  sendError: string;
-  /** Send fell back to browser-only state because the backend was unreachable. */
-  sendNotice: string;
+  saving: boolean; saved: boolean; saveError: string; result: AnalysisResult | null;
+  acked: boolean; closed: boolean; choosing: boolean; reason: string; blocked: boolean;
+  checkedAt: string; sending: boolean; sendError: string; sendNotice: string;
 };
-
-const FRESH_VISIT: Visit = {
-  sending: false,
-  sendError: "",
-  sendNotice: "",
-  saving: false,
-  saved: false,
-  saveError: "",
-  result: null,
-  acked: false,
-  closed: false,
-  choosing: false,
-  reason: "",
-  blocked: false,
-  checkedAt: "",
-};
-
-const NURSE = "Nurse H. Virtanen";
-const hhmm = (d = new Date()) => `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
-const message = (e: unknown) => (e instanceof ApiError ? e.message : "Unexpected error.");
-const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+const FRESH_VISIT: Visit = { saving: false, saved: false, saveError: "", result: null, acked: false, closed: false, choosing: false, reason: "", blocked: false, checkedAt: "", sending: false, sendError: "", sendNotice: "" };
+const message = (e: unknown) => e instanceof Error ? e.message : "Unexpected error.";
+const stamp = (iso: string) => new Date(iso).toLocaleString();
+// Retain the original attempt identity in this browser tab across refreshes. It
+// prevents a lost POST response from causing a second note to be submitted.
+type Attempt = { patientId: string; text: string; at: string; noteId?: string; analyse: boolean };
+const ATTEMPT_KEY = "cancersignal.pending-note.v1";
+function readAttempt(): Attempt | null {
+  try { return JSON.parse(sessionStorage.getItem(ATTEMPT_KEY) ?? "null"); } catch { return null; }
+}
 
 export function CancerSignalApp() {
   const [view, setView] = useState<"nurse" | "doctor">("nurse");
   const [useCS, setUseCS] = useState(true);
   const [source, setSource] = useState<DataSource>("backend");
   const [patients, setPatients] = useState<Load<Patient[]>>({ status: "loading" });
-  const [pid, setPid] = useState<string>("");
-  const [records, setRecords] = useState<Record<string, Load<PatientRecord>>>({});
+  const [pid, setPid] = useState("");
+  const [record, setRecord] = useState<Load<PatientRecord>>({ status: "loading" });
   const [notes, setNotes] = useState<Record<string, string>>({});
   const [tab, setTab] = useState<NurseState["tab"]>("notes");
   const [visit, setVisit] = useState<Visit>(FRESH_VISIT);
-  // Browser-only sends (prototype data, or backend unreachable). Backend sends live in the review API.
-  const [sentItems, setSentItems] = useState<Record<string, QueueItem>>({});
-  // Backend sends: patient id -> analysis id that was submitted for review.
+  const [analyses, setAnalyses] = useState<ApiAnalysisResponse[]>([]);
+  const [selectedAnalysis, setSelectedAnalysis] = useState("");
+  const [restoring, setRestoring] = useState(false);
+  const [restoreError, setRestoreError] = useState("");
   const [sentAnalyses, setSentAnalyses] = useState<Record<string, string>>({});
-  // TODO(backend): no endpoint for dismissal with reason; browser state only (USE_LOCAL_WORKFLOW).
-  const [dismissedFor, setDismissedFor] = useState<Record<string, string>>({});
-  // TODO(backend): no endpoint for physician decisions; browser state only, shown as "not saved".
+  const [dismissals, setDismissals] = useState<Record<string, string>>({});
+  const [sentItems, setSentItems] = useState<Record<string, QueueItem>>({});
   const [decisions, setDecisions] = useState<Record<string, string>>({});
-  const [backendQueue, setBackendQueue] = useState<Load<QueueItem[]> | null>(null);
+  const [backendQueue, setBackendQueue] = useState<Load<QueueItem[]>>({ status: "loading" });
+  const [reviewed, setReviewed] = useState<QueueItem[]>([]);
+  const [decisionBusy, setDecisionBusy] = useState("");
+  const [decisionError, setDecisionError] = useState("");
   const [reloadKey, setReloadKey] = useState(0);
+  const [attempt, setAttempt] = useState<Attempt | null>(null);
+  const busy = useRef(false);
+  const selection = useRef(0);
+  const queueVersion = useRef(0);
+  const holdAttempt = (value: Attempt | null) => {
+    if (value) sessionStorage.setItem(ATTEMPT_KEY, JSON.stringify(value));
+    else sessionStorage.removeItem(ATTEMPT_KEY);
+    setAttempt(value);
+  };
 
-  // ---- Data loading ------------------------------------------------------
-
+  useEffect(() => { setAttempt(readAttempt()); }, []);
   useEffect(() => {
     let live = true;
-    setRecords({});
-    setVisit(FRESH_VISIT);
-    if (source === "prototype") {
-      const list = PROTOTYPE_PATIENTS.map((x) => x.patient);
-      setPatients({ status: "ready", data: list });
-      setRecords(Object.fromEntries(PROTOTYPE_PATIENTS.map((x) => [x.patient.id, { status: "ready", data: x.record }])));
-      setPid(list[0].id);
-      return;
-    }
     setPatients({ status: "loading" });
-    listPatients()
-      .then((rows) => {
-        if (!live) return;
-        // TODO(backend): appointment time/reason for visit come from fallback (USE_FALLBACK_APPOINTMENTS).
-        const list = rows.map((p, i) => toPatient(p, USE_FALLBACK_APPOINTMENTS ? FALLBACK_APPOINTMENTS[i] : undefined));
-        setPatients({ status: "ready", data: list });
-        setPid(list[0]?.id ?? "");
-      })
-      .catch((e) => live && setPatients({ status: "error", error: message(e) }));
-    return () => {
-      live = false;
-    };
+    const load = source === "prototype" ? Promise.resolve(PROTOTYPE_PATIENTS.map(x => x.patient)) : listPatients().then(rows => rows.map(p => toPatient(p, undefined)));
+    load.then(rows => {
+      if (!live) return;
+      setPatients({ status: "ready", data: rows });
+      setPid(current => rows.some(p => p.id === current) ? current : rows[0]?.id ?? "");
+    }).catch(e => live && setPatients({ status: "error", error: message(e) }));
+    return () => { live = false; };
   }, [source, reloadKey]);
 
-  const loadRecord = useCallback(
-    (id: string) => {
-      if (source !== "backend" || !id) return;
-      setRecords((r) => ({ ...r, [id]: r[id]?.status === "ready" ? r[id] : { status: "loading" } }));
-      listObservations(id)
-        .then((rows) => setRecords((r) => ({ ...r, [id]: { status: "ready", data: toRecord(rows) } })))
-        .catch((e) => setRecords((r) => ({ ...r, [id]: { status: "error", error: message(e) } })));
-    },
-    [source],
-  );
-
   useEffect(() => {
-    if (source === "backend" && pid && !records[pid]) loadRecord(pid);
-  }, [pid, source, records, loadRecord]);
+    const version = ++selection.current;
+    setVisit(FRESH_VISIT); setAnalyses([]); setSelectedAnalysis(""); setRestoreError("");
+    if (!pid) return;
+    if (source === "prototype") {
+      const demo = PROTOTYPE_PATIENTS.find(x => x.patient.id === pid);
+      if (demo) setRecord({ status: "ready", data: demo.record });
+      setRestoring(false);
+      return;
+    }
+    setRestoring(true); setRecord({ status: "loading" });
+    Promise.all([listObservations(pid), listAnalyses(pid), listReviewRequests("all", pid)]).then(async ([rows, runs, requests]) => {
+      const saved = await Promise.all(runs.map(async run => [run.id, await getDismissal(run.id)] as const));
+      if (version !== selection.current) return;
+      setRecord({ status: "ready", data: toRecord(rows) });
+      setAnalyses(runs); setSelectedAnalysis(runs[0]?.id ?? "");
+      setSentAnalyses(Object.fromEntries(requests.map(r => [r.analysis_id, `Sent ${stamp(r.created_at)} · ${r.status}`])));
+      setDismissals(Object.fromEntries(saved.filter(([, d]) => d).map(([id, d]) => [id, `${DISMISSAL_REASONS[d!.reason_code]} · ${d!.actor} · ${stamp(d!.created_at)}`])));
+      if (runs[0]) setVisit({ ...FRESH_VISIT, saved: true, acked: true, result: toAnalysis(runs[0]), checkedAt: stamp(runs[0].created_at) });
+    }).catch(e => {
+      if (version !== selection.current) return;
+      setRestoreError(`Saved patient state could not be loaded. ${message(e)}`);
+      setRecord({ status: "error", error: message(e) });
+    }).finally(() => { if (version === selection.current) setRestoring(false); });
+    return () => { selection.current++; };
+  }, [pid, source, reloadKey]);
 
-  // ---- Derived state (mirrors the prototype) -----------------------------
+  const refreshQueue = useCallback(async () => {
+    if (source !== "backend") return;
+    const version = ++queueVersion.current;
+    setBackendQueue({ status: "loading" });
+    try {
+      const [pending, history] = await Promise.all([listReviewRequests("pending"), listReviewRequests("reviewed")]);
+      const actions = await Promise.all(history.map(async row => {
+        const d = await getDecision(row.id);
+        if (!d) throw new Error("A reviewed request has no saved decision. Refresh to reconcile.");
+        return [row.id, `${DECISION_ACTIONS[d.action]} · ${d.actor} · ${stamp(d.created_at)}`] as const;
+      }));
+      if (version !== queueVersion.current) return;
+      setBackendQueue({ status: "ready", data: pending.map(toQueueItem) });
+      setReviewed(history.map(toQueueItem)); setDecisions(Object.fromEntries(actions));
+    } catch (e) { if (version === queueVersion.current) setBackendQueue({ status: "error", error: message(e) }); }
+  }, [source]);
+  useEffect(() => { if (view === "doctor") void refreshQueue(); }, [view, refreshQueue]);
 
   const patientList = patients.status === "ready" ? patients.data : [];
-  const patient = patientList.find((p) => p.id === pid) ?? null;
+  const patient = patientList.find(p => p.id === pid) ?? null;
   const res = visit.result;
-  const flagged = visit.saved && !!res && (res.status === "review" || res.status === "urgent");
-  const pending = flagged && !visit.acked;
-  const sent = !!sentItems[pid] || (!!res?.analysisId && sentAnalyses[pid] === res.analysisId);
-  const dismissed = dismissedFor[pid];
+  const actionKey = source === "backend" ? res?.analysisId ?? "" : `prototype-${pid}`;
+  const sent = !!sentAnalyses[actionKey] || (source === "prototype" && !!sentItems[pid]);
+  const dismissed = dismissals[actionKey] ?? "";
+  const flagged = useCS && !!res && (res.status === "review" || res.status === "urgent");
   const unresolved = flagged && !sent && !dismissed;
-  const panelOpen = flagged && visit.acked && !visit.closed;
-
-  // Backend review queue only for backend data with CancerSignal on; otherwise the local workflow.
-  const useBackendQueue = USE_BACKEND_REVIEW_QUEUE && source === "backend" && useCS;
-
-  const refreshQueue = useCallback(() => {
-    if (!useBackendQueue) return;
-    setBackendQueue((q) => (q?.status === "ready" ? q : { status: "loading" }));
-    listReviewRequests()
-      .then((rows) => setBackendQueue({ status: "ready", data: rows.map(toQueueItem) }))
-      .catch((e) => setBackendQueue({ status: "error", error: message(e) }));
-  }, [useBackendQueue]);
-
-  // Load the queue whenever the physician view opens.
-  useEffect(() => {
-    if (view === "doctor") refreshQueue();
-  }, [view, refreshQueue]);
-
-  const demoItems = useMemo(() => (USE_FALLBACK_QUEUE ? FALLBACK_QUEUE : []).map((x) => ({ ...x, origin: "demo" as const })), []);
-  const localSent = useMemo(() => Object.values(sentItems), [sentItems]);
-
-  const queue = useMemo(() => {
-    if (useBackendQueue && backendQueue?.status === "ready") {
-      // Keep the backend order (urgent → review → normal, oldest first); do not re-sort.
-      // Fallback routine items follow, marked as demo data; browser-only sends last.
-      return [...backendQueue.data, ...demoItems.filter((x) => !x.cs), ...localSent];
-    }
-    const rank = { urgent: 0, review: 1, normal: 2 } as const;
-    const items = [...demoItems.filter((x) => useCS || !x.cs), ...(useCS && USE_LOCAL_WORKFLOW ? localSent : [])];
-    return items.sort((a, b) => rank[a.level] - rank[b.level] || a.time.localeCompare(b.time));
-  }, [useBackendQueue, backendQueue, demoItems, localSent, useCS]);
-
-  const queueNotice =
-    useBackendQueue && backendQueue?.status === "error"
-      ? `Physician review queue could not be loaded from the backend (${backendQueue.error}). Showing the browser-only queue; it is not saved.`
-      : "";
-  const queueLoading = useBackendQueue && backendQueue?.status === "loading";
-
-  // ---- Actions -----------------------------------------------------------
-
-  const resetVisit = () => setVisit(FRESH_VISIT);
+  const locked = visit.saving || visit.sending || restoring || !!restoreError;
+  const noteText = patient ? notes[pid] ?? patient.draftNote : "";
+  const queue = useMemo(() => source === "backend" ? backendQueue.status === "ready" ? backendQueue.data : [] : [...FALLBACK_QUEUE.map(q => ({ ...q, origin: "demo" as const })), ...Object.values(sentItems)], [source, backendQueue, sentItems]);
 
   const pickPatient = (id: string) => {
-    if (id === pid || visit.saving || visit.sending) return;
-    if (unresolved) {
-      setVisit((v) => ({ ...v, blocked: true, acked: true, closed: false }));
-      return;
-    }
-    resetVisit();
-    setPid(id);
+    if (id === pid || busy.current || visit.saving || visit.sending) return;
+    setVisit(FRESH_VISIT); setPid(id);
+  };
+  const showAnalysis = (id: string) => {
+    if (locked || busy.current) return;
+    const run = analyses.find(r => r.id === id);
+    setSelectedAnalysis(id);
+    setVisit(run ? { ...FRESH_VISIT, saved: true, acked: true, result: toAnalysis(run), checkedAt: stamp(run.created_at) } : FRESH_VISIT);
+  };
+  const acceptRun = (run: ApiAnalysisResponse) => {
+    setAnalyses(old => [run, ...old.filter(r => r.id !== run.id)]); setSelectedAnalysis(run.id);
+    setVisit({ ...FRESH_VISIT, saved: true, result: toAnalysis(run), checkedAt: stamp(run.created_at) });
   };
 
-  const noteText = patient ? (notes[patient.id] ?? patient.draftNote) : "";
-
+  // Reconciliation never POSTs another note. A saved note can explicitly be
+  // analysed by its UUID, but only after checking all saved runs for that note.
+  const reconcile = async () => {
+    if (!attempt || busy.current || attempt.patientId !== pid) return;
+    busy.current = true; setVisit(v => ({ ...v, saving: true, saveError: "" }));
+    try {
+      const [rows, runs] = await Promise.all([listObservations(pid), listAnalyses(pid)]);
+      setRecord({ status: "ready", data: toRecord(rows) });
+      const matches = rows.filter(o => o.observation_type === "clinical_note" && o.text === attempt.text && Date.parse(o.observed_at) === Date.parse(attempt.at));
+      const note = attempt.noteId ? rows.find(o => o.id === attempt.noteId) : matches.length === 1 ? matches[0] : undefined;
+      if (!note) throw new Error("The original note is not yet confirmed in saved history. No note was resent. Refresh history again after the original request finishes.");
+      const run = runs.find(r => r.provenance.input_observation_id === note.id);
+      if (run) { acceptRun(run); holdAttempt(null); setReloadKey(k => k + 1); }
+      else if (!attempt.analyse) { holdAttempt(null); setVisit({ ...FRESH_VISIT, saved: true }); }
+      else { holdAttempt({ ...attempt, noteId: note.id }); setVisit(v => ({ ...v, saving: false, saveError: "Note confirmed. No analysis found. Use Analyse saved note when the original request has finished." })); }
+    } catch (e) { setVisit(v => ({ ...v, saving: false, saveError: message(e) })); }
+    finally { busy.current = false; }
+  };
+  const resumeAnalysis = async () => {
+    if (!attempt?.noteId || attempt.patientId !== pid || busy.current) return;
+    busy.current = true; setVisit(v => ({ ...v, saving: true, saveError: "" }));
+    try {
+      const runs = await listAnalyses(pid);
+      const existing = runs.find(r => r.provenance.input_observation_id === attempt.noteId);
+      acceptRun(existing ?? await analyseSavedNote(pid, attempt.noteId));
+      holdAttempt(null); setNotes(n => ({ ...n, [pid]: "" }));
+    } catch (e) { setVisit(v => ({ ...v, saving: false, saveError: `Analysis could not be confirmed. Reconcile saved history before retrying. ${message(e)}` })); }
+    finally { busy.current = false; }
+  };
   const save = async () => {
-    if (!patient || visit.saving) return;
+    if (!patient || busy.current || locked || (source === "backend" && attempt)) return;
     const text = noteText.trim();
-    if (!text) {
-      setVisit({ ...FRESH_VISIT, saveError: "Write a note before saving." });
-      return;
-    }
-    const at = new Date();
-    setVisit({ ...FRESH_VISIT, saving: true });
-
+    if (!text) { setVisit(v => ({ ...v, saveError: "Write a note before saving." })); return; }
+    busy.current = true; setVisit({ ...FRESH_VISIT, saving: true });
     if (source === "prototype") {
-      if (useCS) await wait(700);
-      const canned = PROTOTYPE_PATIENTS.find((x) => x.patient.id === patient.id)?.analysis;
-      const result: AnalysisResult | null = useCS && canned ? { ...canned, origin: "prototype" } : null;
-      setVisit({ ...FRESH_VISIT, saved: true, result, checkedAt: hhmm(at) });
-      return;
+      const canned = PROTOTYPE_PATIENTS.find(x => x.patient.id === pid)?.analysis;
+      setVisit({ ...FRESH_VISIT, saved: true, result: useCS && canned ? { ...canned, origin: "prototype" } : null });
+      busy.current = false; return;
     }
-
+    const pending: Attempt = { patientId: pid, text, at: new Date().toISOString(), analyse: useCS };
+    let noteConfirmed = false;
     try {
-      if (useCS) {
-        const result = toAnalysis(await analyseNote({ patientId: patient.id, text, at }));
-        setVisit({ ...FRESH_VISIT, saved: true, result, checkedAt: hhmm(at) });
-      } else {
-        await createNote({ patientId: patient.id, text, at });
-        setVisit({ ...FRESH_VISIT, saved: true, checkedAt: hhmm(at) });
+      holdAttempt(pending);
+      const note = await createNote({ patientId: pid, text, at: new Date(pending.at) });
+      noteConfirmed = true;
+      holdAttempt({ ...pending, noteId: note.id });
+      if (useCS) acceptRun(await analyseSavedNote(pid, note.id));
+      else setVisit({ ...FRESH_VISIT, saved: true });
+      holdAttempt(null); setNotes(n => ({ ...n, [pid]: "" }));
+      setRecord({ status: "ready", data: toRecord(await listObservations(pid)) });
+    } catch (e) {
+      if (!noteConfirmed && e instanceof ApiError && [404, 409, 422].includes(e.status ?? 0)) {
+        holdAttempt(null);
+        setVisit(v => ({ ...v, saving: false, saveError: `The note was rejected by the backend. ${message(e)}` }));
+        return;
       }
-      setNotes((n) => ({ ...n, [patient.id]: "" }));
-      loadRecord(patient.id);
-    } catch (e) {
-      // A lost response can occur after commit; do not claim the note was not saved.
-      setVisit({
-        ...FRESH_VISIT,
-        saveError: `Save could not be confirmed. Refresh patient history before retrying to avoid a duplicate note. ${message(e)}`,
-        result: useCS ? { status: "unavailable", summary: "", findings: [], missing: [], error: message(e), origin: "backend" } : null,
-      });
-    }
+      setVisit(v => ({ ...v, saving: false, saveError: `Save could not be fully confirmed. Reconcile saved history; do not submit the note again. ${message(e)}` }));
+    } finally { busy.current = false; }
   };
-
-  const sendLocally = (notice = "") => {
-    if (!patient || !res || (res.status !== "review" && res.status !== "urgent")) return;
-    setSentItems((s) => ({
-      ...s,
-      [patient.id]: {
-        key: `sent-${patient.id}`,
-        name: patient.name,
-        demo: patient.demo,
-        time: hhmm(),
-        from: NURSE,
-        level: res.status === "urgent" ? "urgent" : "review",
-        cs: true,
-        summary: res.summary,
-        findings: res.findings,
-        missing: res.missing,
-        origin: "local",
-      },
-    }));
-    setVisit((v) => ({ ...v, blocked: false, sending: false, sendError: "", sendNotice: notice }));
-  };
-
   const sendToPhysician = async () => {
-    if (!patient || !res || (res.status !== "review" && res.status !== "urgent") || visit.sending) return;
-    if (!(useBackendQueue && res.origin === "backend" && res.analysisId)) {
-      sendLocally();
-      return;
+    if (!patient || !res || !unresolved || locked || busy.current) return;
+    if (source === "prototype") {
+      setSentItems(s => ({ ...s, [pid]: { key: `prototype-${pid}`, name: patient.name, demo: patient.demo, time: stamp(new Date().toISOString()), from: "SYNTHETIC Nurse", level: res.status === "urgent" ? "urgent" : "review", cs: true, summary: res.summary, findings: res.findings, missing: res.missing, origin: "local" } })); return;
     }
-    const patientId = patient.id;
-    const analysisId = res.analysisId;
-    setVisit((v) => ({ ...v, sending: true, sendError: "", sendNotice: "" }));
+    if (!res.analysisId) return;
+    busy.current = true; setVisit(v => ({ ...v, sending: true, sendError: "" }));
     try {
-      // 201 = new request, 200 = already sent; both mean the physician has it.
-      await createReviewRequest(patientId, analysisId, NURSE);
-      setSentAnalyses((s) => ({ ...s, [patientId]: analysisId }));
-      setVisit((v) => ({ ...v, sending: false, blocked: false }));
-      refreshQueue();
+      let request;
+      try { request = await createReviewRequest(pid, res.analysisId, "SYNTHETIC Nurse H. Virtanen"); }
+      catch (e) {
+        request = (await listReviewRequests("all", pid)).find(r => r.analysis_id === res.analysisId);
+        if (!request) {
+          const d = await getDismissal(res.analysisId);
+          if (d) setDismissals(old => ({ ...old, [d.analysis_id]: `${DISMISSAL_REASONS[d.reason_code]} · ${d.actor} · ${stamp(d.created_at)}` }));
+          throw e;
+        }
+      }
+      setSentAnalyses(old => ({ ...old, [request.analysis_id]: `Sent ${stamp(request.created_at)} · ${request.status}` }));
+    } catch (e) { setVisit(v => ({ ...v, sendError: `Submission could not be confirmed. Retrying this analysis is safe. ${message(e)}` })); }
+    finally { setVisit(v => ({ ...v, sending: false })); busy.current = false; }
+  };
+  const confirmDismiss = async () => {
+    if (!patient || !unresolved || !visit.reason || busy.current || locked) return;
+    if (source === "prototype") { setDismissals(d => ({ ...d, [actionKey]: `${visit.reason} · browser only` })); setVisit(v => ({ ...v, choosing: false })); return; }
+    if (!res?.analysisId) return;
+    busy.current = true; setVisit(v => ({ ...v, sending: true, sendError: "" }));
+    try {
+      const reason = (Object.keys(DISMISSAL_REASONS) as DismissalReason[]).find(code => DISMISSAL_REASONS[code] === visit.reason);
+      if (!reason) throw new Error("Select a dismissal reason.");
+      const saved = await saveDismissal(res.analysisId, pid, reason);
+      setDismissals(d => ({ ...d, [saved.analysis_id]: `${DISMISSAL_REASONS[saved.reason_code]} · ${saved.actor} · ${stamp(saved.created_at)}` }));
+      setVisit(v => ({ ...v, choosing: false }));
     } catch (e) {
-      setVisit((v) => ({ ...v, sending: false, sendError: `Physician submission could not be confirmed. Retrying this analysis is safe. ${message(e)}` }));
-    }
+      try { const requests = await listReviewRequests("all", pid); setSentAnalyses(Object.fromEntries(requests.map(r => [r.analysis_id, `Sent ${stamp(r.created_at)} · ${r.status}`]))); } catch { /* Original failure remains visible; no success inferred. */ }
+      setVisit(v => ({ ...v, sendError: `Dismissal could not be confirmed. ${message(e)}` }));
+    } finally { busy.current = false; setVisit(v => ({ ...v, sending: false })); }
   };
-
-  const confirmDismiss = () => {
-    if (!patient || !visit.reason) return;
-    setDismissedFor((d) => ({ ...d, [patient.id]: visit.reason }));
-    setVisit((v) => ({ ...v, choosing: false, blocked: false }));
+  const decide = async (key: string, action: DecisionAction) => {
+    if (busy.current) return;
+    if (source === "prototype") { setDecisions(d => ({ ...d, [key]: `${DECISION_ACTIONS[action]} · browser only` })); return; }
+    const item = queue.find(q => q.key === key && q.origin === "backend" && q.status === "pending");
+    if (!item) return;
+    busy.current = true; setDecisionBusy(key); setDecisionError("");
+    queueVersion.current++;
+    try {
+      const saved = await saveDecision(key, action);
+      setDecisions(d => ({ ...d, [key]: `${DECISION_ACTIONS[saved.action]} · ${saved.actor} · ${stamp(saved.created_at)}` }));
+      await refreshQueue();
+    } catch (e) { setDecisionError(`Decision could not be confirmed. ${message(e)}`); }
+    finally { busy.current = false; setDecisionBusy(""); }
   };
-
   const resetDemo = () => {
-    if (visit.saving || visit.sending) return;
-    setView("nurse");
-    setUseCS(true);
-    setSentItems({});
-    // Saved review requests stay in the backend; only this browser forgets which ones it sent.
-    setSentAnalyses({});
-    setBackendQueue(null);
-    setDismissedFor({});
-    setDecisions({});
-    setNotes({});
-    setTab("notes");
-    resetVisit();
-    setPid(patientList[0]?.id ?? "");
+    if (busy.current) return;
+    setVisit(FRESH_VISIT); setNotes({}); setSentItems({}); setDecisions({}); setDismissals({}); setSentAnalyses({}); setTab("notes"); setReloadKey(k => k + 1);
   };
-
   const state: NurseState = {
-    source,
-    useCS,
-    patients,
-    patient,
-    pid,
-    record: patient ? (records[patient.id] ?? { status: "loading" }) : null,
-    tab,
-    note: noteText,
-    saving: visit.saving,
-    saved: visit.saved,
-    saveError: visit.saveError,
-    result: res,
-    pending,
-    unresolved,
-    panelOpen,
-    sent,
-    sending: visit.sending,
-    sendError: visit.sendError,
-    sendNotice: visit.sendNotice,
-    dismissed: dismissed ?? "",
-    choosing: visit.choosing,
-    reason: visit.reason,
-    blocked: visit.blocked,
-    checkedAt: visit.checkedAt,
+    source, useCS, patients, patient, pid, record, tab, note: noteText,
+    ...visit, result: res, pending: flagged && !visit.acked && !sent && !dismissed,
+    unresolved, panelOpen: flagged && visit.acked && !visit.closed, sent, dismissed,
+    sendNotice: sentAnalyses[actionKey] ?? "", locked, restoring, restoreError,
+    analyses: analyses.map(r => ({ id: r.id, label: `${stamp(r.created_at)} · ${r.status}` })), selectedAnalysis,
+    pendingAttempt: source === "backend" && !!attempt,
+    canReconcile: attempt?.patientId === pid, canResume: attempt?.patientId === pid && !!attempt?.noteId,
   };
-
   return (
     <div className="flex min-h-screen flex-col bg-page text-ink">
-      <DemoBar
-        view={view}
-        onView={setView}
-        useCS={useCS}
-        onToggleCS={() => {
-          if (visit.saving || visit.sending) return;
-          setUseCS((v) => !v);
-          resetVisit();
-        }}
-        source={source}
-        onSource={
-          ALLOW_PROTOTYPE_DATASET
-            ? (s) => {
-                if (visit.saving || visit.sending) return;
-                if (s !== source) {
-                  resetDemo();
-                  setSource(s);
-                }
-              }
-            : undefined
-        }
-        onReset={resetDemo}
-      />
-      {view === "nurse" ? (
-        <NurseView
-          s={state}
-          on={{
-            pickPatient,
-            tab: setTab,
-            note: (text) => {
-              if (!patient) return;
-              setNotes((n) => ({ ...n, [patient.id]: text }));
-              if (visit.saved || visit.saveError) resetVisit();
-            },
-            save,
-            ack: () => setVisit((v) => ({ ...v, acked: true, closed: false })),
-            close: () => setVisit((v) => ({ ...v, closed: true })),
-            send: sendToPhysician,
-            dismiss: () => setVisit((v) => ({ ...v, choosing: true })),
-            reason: (reason) => setVisit((v) => ({ ...v, reason })),
-            confirmDismiss,
-            cancelDismiss: () => setVisit((v) => ({ ...v, choosing: false, reason: "" })),
-            toDoctor: () => setView("doctor"),
-            retry: () => setReloadKey((k) => k + 1),
-            usePrototype: ALLOW_PROTOTYPE_DATASET ? () => setSource("prototype") : undefined,
-          }}
-        />
-      ) : (
-        <PhysicianView
-          queue={queue}
-          decisions={decisions}
-          onDecide={(key, d) => setDecisions((x) => ({ ...x, [key]: d }))}
-          loading={queueLoading}
-          notice={queueNotice}
-          onRefresh={useBackendQueue ? refreshQueue : undefined}
-        />
-      )}
+      <DemoBar view={view} onView={v => { if (!busy.current) setView(v); }} useCS={useCS}
+        onToggleCS={() => { if (!busy.current) setUseCS(v => !v); }} source={source}
+        onSource={ALLOW_PROTOTYPE_DATASET ? s => { if (!busy.current && s !== source) { resetDemo(); setPid(""); setSource(s); queueVersion.current++; } } : undefined}
+        onReset={resetDemo} />
+      {view === "nurse" ? <NurseView s={state} on={{
+        pickPatient, tab: setTab, note: text => { if (!busy.current) setNotes(n => ({ ...n, [pid]: text })); }, save,
+        ack: () => setVisit(v => ({ ...v, acked: true, closed: false })), close: () => setVisit(v => ({ ...v, closed: true })),
+        send: sendToPhysician, dismiss: () => { if (!locked) setVisit(v => ({ ...v, choosing: true })); },
+        reason: reason => setVisit(v => ({ ...v, reason })), confirmDismiss,
+        cancelDismiss: () => { if (!busy.current) setVisit(v => ({ ...v, choosing: false, reason: "" })); },
+        toDoctor: () => setView("doctor"), retry: () => { if (!busy.current) setReloadKey(k => k + 1); },
+        selectAnalysis: showAnalysis, reconcile, resumeAnalysis,
+        usePrototype: ALLOW_PROTOTYPE_DATASET ? () => { if (!busy.current) { setPid(""); setSource("prototype"); } } : undefined,
+      }} /> : <PhysicianView queue={queue} history={source === "backend" ? reviewed : []} decisions={decisions} onDecide={decide}
+        loading={source === "backend" && backendQueue.status === "loading"} busy={decisionBusy}
+        notice={decisionError || (source === "backend" && backendQueue.status === "error" ? `Review queue unavailable. ${backendQueue.error}` : "")}
+        onRefresh={source === "backend" ? () => { if (!busy.current) void refreshQueue(); } : undefined} />}
     </div>
   );
 }

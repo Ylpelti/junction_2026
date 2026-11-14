@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import type { AnalysisResult, DataSource, Patient, PatientRecord } from "../lib/types";
+import { AnalysisEvidence } from "./AnalysisEvidence";
 import { ClinicalExplanationCard } from "./ClinicalExplanationCard";
 import { FindingsPanel, QCancerEstimateCard } from "./FindingsPanel";
 import { UrgentModal } from "./UrgentModal";
@@ -8,6 +9,14 @@ import { UrgentModal } from "./UrgentModal";
 type Load<T> = { status: "loading" } | { status: "ready"; data: T } | { status: "error"; error: string };
 
 export type NurseState = {
+  locked: boolean;
+  restoring: boolean;
+  restoreError: string;
+  analyses: { id: string; label: string }[];
+  selectedAnalysis: string;
+  pendingAttempt: boolean;
+  canReconcile: boolean;
+  canResume: boolean;
   source: DataSource;
   useCS: boolean;
   patients: Load<Patient[]>;
@@ -35,6 +44,9 @@ export type NurseState = {
 };
 
 export type NurseHandlers = {
+  selectAnalysis: (id: string) => void;
+  reconcile: () => void;
+  resumeAnalysis: () => void;
   pickPatient: (id: string) => void;
   tab: (t: NurseState["tab"]) => void;
   note: (text: string) => void;
@@ -132,7 +144,7 @@ export function NurseView({ s, on }: { s: NurseState; on: NurseHandlers }) {
       <div className="flex flex-1 flex-wrap items-stretch">
         <nav aria-label="Today's appointments" className="box-border flex flex-[1_1_270px] flex-col gap-1.5 border-r border-line bg-side px-3 py-4 md:flex-[0_0_270px]">
           <div className="flex items-baseline justify-between px-1.5 pb-1.5">
-            <span className="text-sm font-bold">Appointments</span>
+            <span className="text-sm font-bold">{s.source === "backend" ? "Patients" : "Appointments · prototype"}</span>
             <span className="text-[12.5px] text-mute-2">Sat 14 Nov 2026</span>
           </div>
           {s.patients.status === "loading" && <span className="px-1.5 text-sm text-mute-2">Loading patients…</span>}
@@ -147,6 +159,7 @@ export function NurseView({ s, on }: { s: NurseState; on: NurseHandlers }) {
                   key={p.id}
                   type="button"
                   onClick={() => on.pickPatient(p.id)}
+                  disabled={s.saving || s.sending}
                   aria-pressed={active}
                   className={`flex min-h-11 cursor-pointer items-start gap-3 rounded-[10px] border px-3 py-2.5 text-left ${
                     active ? "border-brand bg-brand-soft" : "border-line bg-white"
@@ -198,6 +211,18 @@ export function NurseView({ s, on }: { s: NurseState; on: NurseHandlers }) {
                 <span className="text-[13.5px] text-mute">Reason for visit: {s.patient.visit}</span>
               </div>
 
+              {s.restoring && <p role="status">Loading observations and saved workflow…</p>}
+              {s.restoreError && <div role="alert">{s.restoreError} <button onClick={on.retry}>Retry loading</button></div>}
+              {s.analyses.length > 0 && <label className="text-sm">Saved analysis
+                <select aria-label="Saved analysis" value={s.selectedAnalysis} disabled={s.locked} onChange={e => on.selectAnalysis(e.target.value)} className="ml-2 rounded-lg border border-field p-2">
+                  {s.analyses.map(a => <option key={a.id} value={a.id}>{a.label}</option>)}
+                </select>
+              </label>}
+              {s.pendingAttempt && <div role="alert" className="text-sm text-mute">
+                A note submission needs reconciliation. Select its patient and check saved history before continuing.
+                {s.canReconcile && <button className="ml-2 rounded-lg border p-2" disabled={s.saving} onClick={on.reconcile}>Reconcile saved history</button>}
+                {s.canResume && <button className="ml-2 rounded-lg border p-2" disabled={s.saving} onClick={on.resumeAnalysis}>Analyse saved note</button>}
+              </div>}
               <div role="tablist" aria-label="Patient record sections" className="flex flex-wrap gap-1 border-b border-line">
                 {TABS.map(([k, label]) => {
                   const active = s.tab === k;
@@ -229,6 +254,7 @@ export function NurseView({ s, on }: { s: NurseState; on: NurseHandlers }) {
                   </label>
                   <textarea
                     id="note"
+                    disabled={s.locked || s.pendingAttempt}
                     value={s.note}
                     onChange={(e) => on.note(e.target.value)}
                     rows={5}
@@ -239,7 +265,7 @@ export function NurseView({ s, on }: { s: NurseState; on: NurseHandlers }) {
                     <button
                       type="button"
                       onClick={on.save}
-                      disabled={s.saving}
+                      disabled={s.locked || s.pendingAttempt}
                       className="min-h-11 cursor-pointer rounded-lg border-0 bg-header px-5.5 py-2.5 text-sm font-semibold text-white disabled:cursor-wait disabled:opacity-70"
                     >
                       Save
@@ -256,8 +282,11 @@ export function NurseView({ s, on }: { s: NurseState; on: NurseHandlers }) {
                 </section>
               )}
 
+              {s.useCS && res && !res.clinicalExplanation && <p className="text-sm text-mute">{res.summary || "No explanation available."} Structured Finnish explanation unavailable for this analysis.</p>}
+              {s.useCS && res?.status === "none" && <p className="text-sm">No signals identified. This does not rule out cancer.</p>}
               {s.useCS && res?.clinicalExplanation && <ClinicalExplanationCard value={res.clinicalExplanation} />}
               {s.useCS && res?.qcancer && <QCancerEstimateCard estimate={res.qcancer} />}
+              {s.useCS && res && <AnalysisEvidence analysis={res} />}
               <RecordSection s={s} findingFor={findingFor} />
             </>
           )}
