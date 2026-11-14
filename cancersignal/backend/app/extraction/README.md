@@ -102,6 +102,17 @@ How the adapter behaves:
 - **Offline demo:** run once with live calls allowed and a cache directory, then turn live calls off. Only cached notes (identical text and history) succeed, and others fail explicitly.
 - **Dependency:** live calls need the `llm` extra (`httpx`).
 
+The validated extraction output also has a `qcancer_predictors` object. It carries
+source-backed BMI or height/weight, smoking, UK alcohol units per day, and
+sex-specific binary factors. `c_hb` is deliberately excluded because Python
+derives it from a supported haemoglobin record. Unknown values remain null; the
+LLM does not calculate a score. In the analysis API, a Python adapter converts
+these fields to QCancer inputs and stores the separate estimate in
+`AnalysisResponse.predictions`. If any required value is unknown, QCancer returns
+`insufficient_data`; this does not fail extraction or affect the deterministic
+rule-based review alert. See [risk-models.md](../../../docs/risk-models.md) for the
+full handoff and its synthetic-demo limitations.
+
 ## Provider configuration and authorized live use
 
 Use exported environment variables or an explicitly selected local settings file.

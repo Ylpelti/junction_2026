@@ -2,6 +2,7 @@ from uuid import UUID
 
 from pydantic import AwareDatetime, Field
 
+from app.contracts.qcancer import QCancerPredictors
 from app.schemas.analysis import StructuredFinding
 from app.schemas.records import ObservationRead, Record
 
@@ -22,3 +23,4 @@ class RetrievedContext(Record):
 class ExtractionResult(Record):
     findings: list[StructuredFinding] = Field(default_factory=list)
     missing_information: list[str] = Field(default_factory=list)
+    qcancer_predictors: QCancerPredictors | None = None

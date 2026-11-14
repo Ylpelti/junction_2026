@@ -7,6 +7,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session, selectinload
 from app.contracts.clinical_context import SourceObservation
 from app.contracts.validation import EvidenceValidationError, validate_evidence
+from app.contracts.qcancer import QCancerPredictors
 
 from app.models import (
     AnalysisRun, ClinicalFinding, FindingEvidence, Observation,
@@ -17,6 +18,8 @@ from app.rag.context import ExtractionResult, RetrievedContext
 from app.reasoning.derived_findings import derive_lab_findings
 from app.reasoning.interfaces import AnalysisPipeline, TriggerEvaluation
 from app.reasoning.vocabulary import AGE_YEARS
+from app.risk_models.adapter import build_qcancer_input
+from app.risk_models.qcancer_2013 import qcancer_prediction
 from app.schemas.analysis import (
     AnalysisProvenance, AnalysisRequest, AnalysisResponse, EvidenceReference,
     FindingResponse, RuleSnapshot, TriggerResponse,
@@ -79,6 +82,7 @@ def get_analysis(session: Session, analysis_id: UUID) -> AnalysisResponse:
             evidence_observation_ids=sorted((ref.observation_id for ref in result.evidence), key=str)))
     source_ids = {ref.observation_id for finding in findings for ref in finding.evidence}
     source_ids.update(identifier for result in results for identifier in result.evidence_observation_ids)
+    source_ids.update(identifier for prediction in provenance.predictions for identifier in prediction.evidence_observation_ids)
     sources = session.scalars(select(Observation).where(Observation.id.in_(source_ids))
         .order_by(Observation.observed_at, Observation.id)).all() if source_ids else []
     if run.status == AnalysisStatus.FAILED:
@@ -90,7 +94,7 @@ def get_analysis(session: Session, analysis_id: UUID) -> AnalysisResponse:
     else:
         explanation = "No signals identified by configured demonstration rules. Review missing information; this is not a diagnosis."
     return AnalysisResponse(id=run.id, patient_id=run.patient_id, status=run.status,
-        created_at=run.created_at, findings=findings, trigger_results=results,
+        created_at=run.created_at, findings=findings, trigger_results=results, predictions=provenance.predictions,
         source_observations=[ObservationRead.model_validate(row) for row in sources],
         explanation=explanation, provenance=provenance)
 
@@ -138,6 +142,20 @@ def verify_findings(findings, allowed):
             raise PipelineError("invalid_numeric_evidence")
 
 
+def verify_qcancer_predictors(predictors: QCancerPredictors | None, allowed):
+    if predictors is None:
+        return
+    references = predictors.evidence_references()
+    if references and not allowed:
+        raise PipelineError("invalid_qcancer_evidence")
+    sources = tuple(SourceObservation.model_validate(row) for row in allowed.values())
+    for reference in references:
+        try:
+            validate_evidence(sources[0].patient_id, (reference,), sources)
+        except EvidenceValidationError:
+            raise PipelineError("invalid_qcancer_evidence") from None
+
+
 def create_analysis(session: Session, patient_id: UUID, payload: AnalysisRequest, pipeline: AnalysisPipeline):
     patient = get_patient(session, patient_id)
     if payload.note is not None:
@@ -172,6 +190,14 @@ def create_analysis(session: Session, patient_id: UUID, payload: AnalysisRequest
             extraction.missing_information.extend(derived_missing)
             verify_findings(extraction.findings, allowed)
             metadata.missing_information = extraction.missing_information
+            verify_qcancer_predictors(extraction.qcancer_predictors, allowed)
+            qcancer_inputs = build_qcancer_input(
+                patient_id=patient_id, as_of=note.observed_at, sex=patient.sex,
+                age_years=patient_facts[AGE_YEARS], predictors=extraction.qcancer_predictors,
+                observations=[ObservationRead.model_validate(row) for row in allowed.values()],
+            )
+            qcancer_result = qcancer_prediction(qcancer_inputs)
+            metadata.predictions = [qcancer_result]
             rules = session.scalars(select(TriggerRule).where(TriggerRule.enabled.is_(True)).order_by(TriggerRule.id)).all()
             metadata.rule_snapshots = {str(rule.id): rule_snapshot(rule) for rule in rules}
             if not rules:
@@ -208,6 +234,7 @@ def create_analysis(session: Session, patient_id: UUID, payload: AnalysisRequest
     except Exception as error:
         run.status = AnalysisStatus.FAILED
         metadata.error_code = error.code if isinstance(error, PipelineError) else "pipeline_execution_failed"
+        metadata.predictions = []
         metadata.missing_information.append("Analysis did not complete; no clinical conclusion is available.")
     else:
         run.status = AnalysisStatus.COMPLETED
