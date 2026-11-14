@@ -35,3 +35,6 @@ coverage/
 *.key
 credentials.json
 secrets.json
+
+# A/B/C evaluation run outputs (python -m eval.evaluate); not versioned.
+backend/eval/results/
