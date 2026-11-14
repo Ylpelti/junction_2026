@@ -1,5 +1,6 @@
 from functools import lru_cache
 from pathlib import Path
+from typing import Literal
 from urllib.parse import urlsplit
 
 from pydantic import Field, SecretStr, field_validator
@@ -68,3 +69,30 @@ class WebSettings(BaseSettings):
 @lru_cache
 def get_web_settings() -> WebSettings:
     return WebSettings()
+
+
+class PipelineSettings(BaseSettings):
+    """Analysis pipeline switches; no database credentials or API keys here.
+
+    CANCERSIGNAL_EXTRACTION=off keeps the structured-only demo extractor (default).
+    CANCERSIGNAL_EXTRACTION=llm adds LLM note extraction (app/extraction). Provider
+    settings (EXTRACTION_MODEL, EXTRACTION_API_KEY, ...) come from the environment
+    or from CANCERSIGNAL_EXTRACTION_ENV_FILE. Live calls happen only when
+    CANCERSIGNAL_EXTRACTION_ALLOW_LIVE=true; otherwise only cached responses work.
+    """
+    model_config = SettingsConfigDict(
+        env_file=Path(__file__).resolve().parents[3] / ".env",
+        env_file_encoding="utf-8",
+        env_prefix="CANCERSIGNAL_",
+        extra="ignore",
+    )
+
+    extraction: Literal["off", "llm"] = "off"
+    extraction_env_file: Path | None = None
+    extraction_allow_live: bool = False
+    extraction_cache_dir: Path | None = None
+
+
+@lru_cache
+def get_pipeline_settings() -> PipelineSettings:
+    return PipelineSettings()

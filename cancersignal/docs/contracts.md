@@ -138,7 +138,15 @@ information. The default `structured-source-demo-v1` extractor copies the latest
 explicitly coded symptom/lab per type/code and its source state/quote. Completed
 prior labs are historical measurements; planned/unknown states remain uncertain.
 It reports that free-text extraction is unavailable and never infers a diagnosis
-or lab threshold. No LLM or numerical trend calculation is implemented.
+or lab threshold.
+
+With `CANCERSIGNAL_EXTRACTION=llm`, `get_analysis_pipeline()` uses
+`services/llm_extraction.LlmNoteExtractor` instead. It runs the structured extractor
+first and then adds LLM note findings from `app/extraction` (shared vocabulary,
+explicit negation, verbatim quotes). A failed or misconfigured extraction stores
+the run as `failed` with error code `clinical_extraction_<code>`. Live calls require
+`CANCERSIGNAL_EXTRACTION_ALLOW_LIVE=true`; otherwise only cached responses are used.
+See `backend/app/extraction/README.md`. No numerical trend calculation is implemented.
 
 The orchestrator rechecks retrieved records against PostgreSQL, validates evidence
 ownership and time scope, verifies quotes and offset bounds, and matches numeric
