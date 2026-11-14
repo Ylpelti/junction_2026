@@ -10,6 +10,8 @@ import type {
   Medication,
   Patient,
   PatientRecord,
+  QueueItem,
+  QueueLevel,
   Referral,
 } from "./types";
 
@@ -255,7 +257,7 @@ export function toAnalysis(r: ApiAnalysisResponse): AnalysisResult {
         title: t.rule_name,
         detail: [t.explanation, ...support.map((f) => f.description)].join(" "),
         sources: chips,
-        rule: `${t.rule_name} v${t.rule_version}${t.demonstration_only ? " (demonstration rule)" : ""}`,
+        rule: `${t.rule_name} (${t.rule_version}${t.demonstration_only ? ", demonstration rule" : ""})`,
         ruleSrc: [t.rule_source, t.rule_source_section].filter(Boolean).join(" "),
         priority: priorityOf(t),
       };
@@ -268,6 +270,48 @@ export function toAnalysis(r: ApiAnalysisResponse): AnalysisResult {
     summary: r.explanation,
     findings,
     missing,
+    origin: "backend",
+    analysisId: r.id,
+  };
+}
+
+// ---- Physician review requests (docs/physician-review-api.md) -------------
+
+export type ApiReviewRequest = {
+  id: string;
+  patient_id: string;
+  analysis_id: string;
+  status: "pending";
+  /** Snapshotted by the backend from triggered rule priorities; never set by the client. */
+  priority: "urgent" | "review" | "normal";
+  created_at: string;
+  submitted_by: string | null;
+  patient: ApiPatient;
+  analysis: ApiAnalysisResponse;
+};
+
+function receivedAt(iso: string, today = new Date()): string {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return iso;
+  const time = `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+  const sameDay = d.toDateString() === today.toDateString();
+  return sameDay ? time : `${displayDate(iso)} ${time}`;
+}
+
+export function toQueueItem(r: ApiReviewRequest): QueueItem {
+  const analysis = toAnalysis(r.analysis);
+  const level: QueueLevel = r.priority === "urgent" ? "urgent" : r.priority === "review" ? "review" : "normal";
+  return {
+    key: r.id,
+    name: r.patient.synthetic_name,
+    demo: toPatient(r.patient, undefined).demo,
+    time: receivedAt(r.created_at),
+    from: r.submitted_by ?? "Not recorded",
+    level,
+    cs: level !== "normal",
+    summary: r.analysis.explanation,
+    findings: analysis.findings,
+    missing: analysis.missing,
     origin: "backend",
   };
 }

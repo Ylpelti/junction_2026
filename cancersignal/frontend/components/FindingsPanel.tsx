@@ -111,10 +111,21 @@ export function FindingsPanel({ s, on }: { s: NurseState; on: NurseHandlers }) {
         </div>
       )}
 
+      {s.unresolved && s.sendError && (
+        <div role="alert" className="rounded-[10px] border border-red-line bg-red-soft px-3.5 py-3 text-[13.5px] leading-[1.45] text-red-ink">
+          {s.sendError} You can try again.
+        </div>
+      )}
+
       {canRequest && (
         <div className="flex flex-wrap gap-2.5">
-          <button type="button" onClick={on.send} className="min-h-11 cursor-pointer rounded-[10px] border-0 bg-brand px-4 py-2.5 text-sm font-semibold text-white">
-            Send to physician
+          <button
+            type="button"
+            onClick={on.send}
+            disabled={s.sending}
+            className="min-h-11 cursor-pointer rounded-[10px] border-0 bg-brand px-4 py-2.5 text-sm font-semibold text-white disabled:cursor-wait disabled:opacity-70"
+          >
+            {s.sending ? "Sending…" : s.sendError ? "Try sending again" : "Send to physician"}
           </button>
           <button
             type="button"
@@ -129,9 +140,10 @@ export function FindingsPanel({ s, on }: { s: NurseState; on: NurseHandlers }) {
       {s.sent && (
         <div className="flex flex-col gap-2 rounded-[10px] border border-brand-line bg-brand-tint px-3.5 py-3 text-[13.5px] leading-[1.45] text-brand-dark">
           <span>
-            <strong>Sent to the physician.</strong> The evidence and a draft referral go with it. The physician decides on a stool blood test
-            (FIT), referral or no action.
+            <strong>Sent to the physician.</strong> The findings and their source records go with it. The physician decides on a stool blood
+            test (FIT), referral or no action.
           </span>
+          {s.sendNotice && <span className="font-semibold text-red-ink">{s.sendNotice}</span>}
           <button
             type="button"
             onClick={on.toDoctor}

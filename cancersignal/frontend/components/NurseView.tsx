@@ -23,6 +23,9 @@ export type NurseState = {
   unresolved: boolean;
   panelOpen: boolean;
   sent: boolean;
+  sending: boolean;
+  sendError: string;
+  sendNotice: string;
   dismissed: string;
   choosing: boolean;
   reason: string;

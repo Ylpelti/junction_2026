@@ -61,18 +61,20 @@ The UI shows these from local fallback data or leaves them empty.
 
 ## Missing endpoints
 
-The [physician review handoff API](physician-review-api.md) now persists
-submissions and exposes the pending queue. The frontend still uses browser state
-until its developer connects these endpoints; see the exact integration mapping
-in that document. Frontend implementation was not changed in this task.
+The [physician review handoff API](physician-review-api.md) persists submissions
+and exposes the pending queue. The frontend uses it with backend data when
+`USE_BACKEND_REVIEW_QUEUE` is on (`feat/frontend-review-requests`), and falls back
+to browser state for prototype data or an unreachable backend.
 
-- **Backend ready:** send an existing completed analysis with references to its
-  findings/evidence using `POST /patients/{id}/review-requests`. A referral draft
-  is not created by this workflow.
-- Dismiss an alert with one of four reasons, logged with user and time.
-- **Backend ready:** `GET /review-requests`, sorted urgent → review → routine
-  (`normal`), then oldest received first; detail is `GET /review-requests/{id}`.
-- The physician's decision: order FIT / refer to specialist care / no action / acknowledge.
+- ~~Send an alert to the physician~~ **Done**, frontend connected:
+  - "Send to physician" calls `POST /patients/{id}/review-requests` with the alert's analysis id.
+  - 201 and 200 count as sent.
+  - 404/409/422 show an error, and the alert stays unsent.
+  - No referral draft is created.
+- Dismiss an alert with one of four reasons, logged with user and time. *Still browser state only (`TODO(backend)`).*
+- ~~Physician consultation queue~~ **Done**, frontend connected. `GET /review-requests` loads when the physician view opens and after a send. The backend order is kept.
+- The physician's decision: order FIT / refer to specialist care / no action / acknowledge. *Still browser state only; shown as "not saved" for backend items (`TODO(backend)`).*
+- Sent state is not restored after a page reload (could use `GET /review-requests?patient_id=…`).
 
 ## Other notes
 

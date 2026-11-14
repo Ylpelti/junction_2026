@@ -12,14 +12,22 @@ const CS_ACTIONS: [string, string][] = [
   ["No action", "No action"],
 ];
 
-type Props = { queue: QueueItem[]; decisions: Record<string, string>; onDecide: (key: string, decision: string) => void };
+type Props = {
+  queue: QueueItem[];
+  decisions: Record<string, string>;
+  onDecide: (key: string, decision: string) => void;
+  loading?: boolean;
+  notice?: string;
+  onRefresh?: () => void;
+};
 
 /**
  * Why CancerSignal flagged this patient. Everything shown comes from the analysis
  * (rule priority, rule sources, evidence records); the UI does not judge urgency.
  */
 function Reasons({ item }: { item: QueueItem }) {
-  const urgentRules = item.findings.filter((f) => f.priority === "urgent").map((f) => f.rule);
+  // Show the rule ID (e.g. "SUO-08") when the rule text starts with one.
+  const urgentRules = item.findings.filter((f) => f.priority === "urgent").map((f) => f.rule.match(/^[A-Z]+-\d+/)?.[0] ?? f.rule);
   return (
     <section aria-label={`Reasons for the CancerSignal alert for ${item.name}`} className="flex flex-col gap-2.5 border-t border-line-2 pt-2.5">
       <h3 className="m-0 text-[12.5px] font-semibold tracking-[0.06em] text-mute-2 uppercase">Why CancerSignal flagged this</h3>
@@ -75,7 +83,7 @@ function Reasons({ item }: { item: QueueItem }) {
   );
 }
 
-export function PhysicianView({ queue, decisions, onDecide }: Props) {
+export function PhysicianView({ queue, decisions, onDecide, loading, notice, onRefresh }: Props) {
   const waiting = queue.filter((q) => !decisions[q.key]).length;
   return (
     <>
@@ -88,7 +96,26 @@ export function PhysicianView({ queue, decisions, onDecide }: Props) {
         <div className="flex flex-wrap items-baseline gap-3.5">
           <h1 className="m-0 text-xl font-bold">Consultation queue</h1>
           <span className="text-[13.5px] text-mute">{waiting} waiting · sorted by urgency</span>
+          {onRefresh && (
+            <button
+              type="button"
+              onClick={onRefresh}
+              className="ml-auto min-h-11 cursor-pointer rounded-lg border border-field bg-white px-3.5 py-2 text-[13.5px] font-semibold text-ink"
+            >
+              Refresh queue
+            </button>
+          )}
         </div>
+        {loading && (
+          <span role="status" className="text-sm text-mute-2">
+            Loading the review queue…
+          </span>
+        )}
+        {notice && (
+          <div role="alert" className="rounded-xl border border-red-line bg-red-soft px-4 py-3 text-sm text-red-ink">
+            {notice}
+          </div>
+        )}
         <ol className="m-0 flex list-none flex-col gap-2.5 p-0">
           {queue.map((q) => {
             const st = STYLE[q.level];
@@ -102,14 +129,24 @@ export function PhysicianView({ queue, decisions, onDecide }: Props) {
                     <span className={`rounded-full px-2.5 py-[3px] text-xs font-bold ${st.chipCls}`}>{st.chip}</span>
                     <span className="text-[15px] font-bold">{q.name}</span>
                     <span className="text-[13px] text-mute">{q.demo}</span>
+                    {q.origin === "demo" && (
+                      <span className="rounded-md bg-chip px-2 py-0.5 text-[11.5px] font-semibold text-mute">Demo data</span>
+                    )}
+                    {q.origin === "local" && (
+                      <span className="rounded-md bg-chip px-2 py-0.5 text-[11.5px] font-semibold text-mute">Browser only · not saved</span>
+                    )}
                     <span className="ml-auto text-[12.5px] text-mute-2">
                       Received {q.time} · {q.from}
                     </span>
                   </div>
                   <span className="text-sm leading-normal text-ink-2">{q.summary}</span>
                   {q.cs && q.findings.length > 0 && <Reasons item={q} />}
+                  {/* TODO(backend): no decision endpoint yet; decisions are browser state only. */}
                   {decision ? (
-                    <span className="text-[13.5px] font-semibold text-ok">Decided: {decision}</span>
+                    <span className="text-[13.5px] font-semibold text-ok">
+                      Decided: {decision}
+                      {q.origin === "backend" && <span className="font-normal text-mute-2"> (this browser only, not saved)</span>}
+                    </span>
                   ) : (
                     <div className="flex flex-wrap gap-2">
                       {actions.map(([label, result]) => (
