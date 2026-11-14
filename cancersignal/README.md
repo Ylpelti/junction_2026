@@ -9,9 +9,11 @@ cancer-related risk signals with references to original records for physician re
 
 This repository currently contains a Next.js placeholder page, a FastAPI health
 endpoint, a PostgreSQL/pgvector backend foundation, relational patient/evidence
-models, and a small synthetic seed dataset.
-Patient API workflows, AI/RAG, ML, rule evaluation, and simulations are not
-implemented. See [the data model](docs/data-model.md) for the shared storage contract.
+models, a small synthetic seed dataset, and database-backed patient and analysis
+APIs. The internal pipeline has baseline history retrieval, a structured-source
+demo extractor, and sourced demonstration rules. LLM/free-text extraction, vector
+search, ML, and simulations are not implemented. See [the API contract](docs/contracts.md)
+and [the data model](docs/data-model.md).
 
 ## Structure
 
@@ -30,6 +32,9 @@ cancersignal/
 │   │   ├── db/     # SQLAlchemy sessions, connectivity check, extension init
 │   │   ├── models/ # Relational records and enums
 │   │   ├── schemas/ # Pydantic create/read contracts
+│   │   ├── services/ # Database-backed use cases and analysis orchestration
+│   │   ├── rag/    # Internal retrieval and replaceable extraction
+│   │   ├── reasoning/ # Demonstration rule engine and Python interfaces
 │   │   └── main.py
 │   ├── alembic/    # Versioned schema migrations
 │   ├── tests/      # API, schema, and opt-in PostgreSQL tests
@@ -42,7 +47,8 @@ cancersignal/
 
 The frontend and backend run independently in two terminals. PostgreSQL runs in
 Docker; Python runs locally. No external service or API key is required.
-AI packages and patient API routes are not implemented.
+No external LLM provider is configured. Existing fixtures contain no enabled rules;
+analysis responses explicitly report unavailable extraction and missing rules.
 
 ## Prerequisites
 
@@ -119,8 +125,11 @@ curl --fail http://localhost:8000/health
 
 Expected response: `{"status":"ok"}`. This is a liveness endpoint; it does not
 check database readiness. The API and its test can run without PostgreSQL or `.env`.
-The API root has no route yet; use `/docs` or `/health`. The frontend does not call
-the backend yet; integration will be added with the first feature.
+The API root has no route; use `/docs`, `/health`, or `/api/v1/patients`. Public
+patient, observation, timeline, and analysis endpoints use the `/api/v1` prefix.
+Analysis accepts either an existing note UUID or a new `ObservationCreate` note;
+see [docs/contracts.md](docs/contracts.md) for payloads, filtering, and adapter interfaces.
+The frontend has not been changed in this task.
 
 Checks (from `backend/`, with the virtual environment activated):
 

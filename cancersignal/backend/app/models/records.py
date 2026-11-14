@@ -142,6 +142,7 @@ class AnalysisRun(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     status: Mapped[AnalysisStatus] = mapped_column(enum_column(AnalysisStatus, "analysis_status"))
     model_name: Mapped[str | None] = mapped_column(String(200))
+    details: Mapped[dict] = mapped_column(JSONB, default=dict, server_default=text("'{}'::jsonb"))
 
     patient: Mapped[Patient] = relationship(viewonly=True)
     findings: Mapped[list["ClinicalFinding"]] = relationship(viewonly=True)
@@ -163,6 +164,7 @@ class ClinicalFinding(Base):
     finding_type: Mapped[str] = mapped_column(String(100))
     description: Mapped[str] = mapped_column(Text)
     status: Mapped[FindingStatus] = mapped_column(enum_column(FindingStatus, "finding_status"))
+    uncertainty: Mapped[str | None] = mapped_column(Text)
 
     analysis_run: Mapped[AnalysisRun] = relationship(viewonly=True)
     evidence: Mapped[list["FindingEvidence"]] = relationship(viewonly=True)

@@ -1,9 +1,9 @@
 # Standardized storage contract
 
-This is a synthetic-data prototype contract, not a clinical risk model. No patient
-API, retrieval, embedding generation, extraction, rule evaluation, or ML is implemented.
-Existing API responses are unchanged. `docs/contracts.md` does not exist yet;
-this document describes storage and Python schemas, not a replacement API contract.
+This is a synthetic-data prototype contract, not a clinical risk model. The public
+API and replaceable demonstration pipeline are described in [contracts.md](contracts.md).
+Embedding generation, LLM integration, and ML remain unimplemented. This document
+describes storage; Pydantic schemas define the public API contract separately.
 
 ## Tables
 
@@ -14,8 +14,8 @@ this document describes storage and Python schemas, not a replacement API contra
 | `observations` | Original source notes, symptoms, labs and investigation reports; belongs to a patient and optionally their encounter. |
 | `observation_embeddings` | Nullable `vector(1536)`, model identifier and timestamp, linked to one source observation. Unique per observation/model. |
 | `trigger_rules` | Patient-independent, versioned rule definitions stored as JSONB. Unique name/version; disabled by default. |
-| `analysis_runs` | Patient-specific run metadata and processing status; does not modify source records. |
-| `clinical_findings` | Generated findings linked to their run, separate from original observations. |
+| `analysis_runs` | Patient-specific run metadata, status, and provenance/warnings in `details` JSONB; does not modify source records. |
+| `clinical_findings` | Generated findings linked to their run, optional uncertainty, separate from original observations. |
 | `finding_evidence` | Finding/observation links, optional verbatim excerpt and character offsets. |
 | `trigger_results` | One result per run/rule, with explicit boolean outcome and clinician-review flag. |
 | `trigger_result_evidence` | Result/observation links supporting traceability. |
@@ -37,7 +37,8 @@ SQLAlchemy models are in `backend/app/models/records.py`; relationships are
 read-only navigation (`viewonly=True`). Write explicit foreign-key fields and
 flush parents before inserting children. Create/read schemas are in
 `backend/app/schemas/records.py`; use `Create.model_dump()` for ORM construction
-and `Read.model_validate(record)` for serialization. No schemas create API routes.
+and `Read.model_validate(record)` for serialization. Public response schemas extend
+these records with evidence and saved provenance; see `schemas/analysis.py`.
 
 ## Source observations and statuses
 
@@ -59,9 +60,9 @@ No source status or finding means “no cancer.”
 
 Rule `conditions` must be a JSON object with nonblank string `lahde` and
 `lahde_kohta` source references, preserving the project rule-provenance requirement.
-Other condition keys are opaque to this storage layer. This table does not replace
-the planned `rules.csv` rule engine; integration and rule semantics require a
-separate agreed contract. No clinical rules are invented by the seed.
+The demonstration engine's condition format is documented in `contracts.md`. This
+table does not replace the planned `rules.csv` engine; integration requires explicit
+mapping. No clinical rules are invented by the seed.
 
 ## Time and evidence
 
@@ -76,14 +77,14 @@ Future history consumers must filter **patient ID first**, then require
 `observed_at < t` and `recorded_at < t` before ranking. Use the note's timestamp as
 the cutoff; never include the current note as its own historical evidence. Indexes
 cover patient/time filters. Clinical/event time and recording time remain distinct.
-There is no retrieval component yet; a database test demonstrates this cutoff.
+The retrieval component and database tests enforce this cutoff.
 
 Evidence must reference actual observation UUIDs. Offsets are zero-based Unicode
 character indexes, with an exclusive end: `observation.text[start_offset:end_offset]`.
 Both offsets must be null or form a nonempty range with an excerpt. Numeric evidence
-can reference an observation without an excerpt. The writer must verify that an
+can reference an observation without an excerpt. The analysis service verifies that an
 excerpt matches original text and offsets fit the text; the database enforces range
-shape and patient ownership, not verbatim text matching. Future explanations must
+shape and patient ownership, not verbatim text matching. Explanations must
 only cite persisted observation and rule IDs.
 
 ## RAG and ML consumption

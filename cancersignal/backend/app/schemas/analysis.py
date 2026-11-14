@@ -1,0 +1,109 @@
+from decimal import Decimal
+from typing import Annotated, Literal
+from uuid import UUID
+
+from pydantic import AwareDatetime, Field, model_validator
+
+from app.models.enums import AnalysisStatus, FindingStatus
+from app.schemas.records import (
+    ClinicalFindingRead, EncounterRead, NonEmpty,
+    ObservationCreate, ObservationRead, Record,
+)
+
+
+class EvidenceReference(Record):
+    observation_id: UUID
+    source_excerpt: NonEmpty | None = None
+    start_offset: int | None = Field(default=None, ge=0)
+    end_offset: int | None = Field(default=None, ge=1)
+
+    @model_validator(mode="after")
+    def validate_offsets(self):
+        if self.start_offset is None and self.end_offset is None:
+            return self
+        if (self.start_offset is None or self.end_offset is None
+                or self.end_offset <= self.start_offset or self.source_excerpt is None):
+            raise ValueError("Offsets require an excerpt and a nonempty [start, end) range.")
+        return self
+
+
+class StructuredFinding(Record):
+    finding_type: Annotated[NonEmpty, Field(max_length=100)]
+    status: FindingStatus
+    description: NonEmpty
+    evidence: list[EvidenceReference] = Field(min_length=1)
+    uncertainty: str | None = None
+    numeric_value: Decimal | None = Field(default=None, allow_inf_nan=False)
+    unit: str | None = None
+
+
+class AnalysisRequest(Record):
+    note_observation_id: UUID | None = None
+    note: ObservationCreate | None = None
+
+    @model_validator(mode="after")
+    def exactly_one_note(self):
+        if (self.note_observation_id is None) == (self.note is None):
+            raise ValueError("Supply either note_observation_id or note, exclusively.")
+        if self.note is not None and (self.note.observation_type != "clinical_note" or not self.note.text):
+            raise ValueError("Analysis requires a clinical_note with source text.")
+        return self
+
+
+class RuleSnapshot(Record):
+    name: str
+    version: str
+    source: str
+    source_section: str
+    recommended_action: str
+    demonstration_only: bool
+
+
+class AnalysisProvenance(Record):
+    input_observation_id: UUID | None = None
+    cutoff: AwareDatetime | None = None
+    context_observation_ids: list[UUID] = Field(default_factory=list)
+    retrieval_method: str | None = None
+    extraction_method: str | None = None
+    rule_snapshots: dict[str, RuleSnapshot] = Field(default_factory=dict)
+    missing_information: list[str] = Field(default_factory=list)
+    error_code: str | None = None
+
+
+class FindingResponse(ClinicalFindingRead):
+    evidence: list[EvidenceReference]
+
+
+class TriggerResponse(Record):
+    id: UUID
+    trigger_rule_id: UUID
+    rule_name: str
+    rule_version: str
+    demonstration_only: bool
+    rule_source: str
+    rule_source_section: str
+    triggered: bool
+    explanation: str
+    recommended_action: str | None
+    requires_clinician_review: bool
+    evidence_observation_ids: list[UUID]
+
+
+class AnalysisResponse(Record):
+    id: UUID
+    patient_id: UUID
+    created_at: AwareDatetime
+    status: AnalysisStatus
+    findings: list[FindingResponse]
+    trigger_results: list[TriggerResponse]
+    # Original records for resolving every evidence reference in this response.
+    source_observations: list[ObservationRead]
+    explanation: str
+    provenance: AnalysisProvenance
+
+
+class TimelineEvent(Record):
+    event_type: Literal["encounter", "observation"]
+    occurred_at: AwareDatetime
+    encounter: EncounterRead | None = None
+    observation: ObservationRead | None = None

@@ -123,6 +123,7 @@ class ClinicalFindingCreate(IdentifiedRecord):
     finding_type: Annotated[NonEmpty, Field(max_length=100)]
     description: NonEmpty
     status: FindingStatus
+    uncertainty: str | None = None
 
 
 class ClinicalFindingRead(ClinicalFindingCreate):
