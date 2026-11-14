@@ -83,12 +83,19 @@ export type QCancerEstimate = {
   uncertainty: string | null;
 };
 
+export type ExplanationStatement = {
+  key: string; text_fi: string; observation_ids: string[];
+  rule_reference?: { trigger_rule_id: string } | null;
+  requires_clinician_review?: boolean | null;
+};
 export type ClinicalExplanation = {
+  issues?: { code: string; message: string }[];
+  provenance?: { name: string; method: string; version: string };
   mode: "llm" | "fallback" | "unavailable";
   summary_fi: string;
-  findings: { key: string; text_fi: string; observation_ids: string[] }[];
-  mathematical_outputs: { key: string; text_fi: string; observation_ids: string[] }[];
-  rule_results: { key: string; text_fi: string; observation_ids: string[] }[];
+  findings: ExplanationStatement[];
+  mathematical_outputs: ExplanationStatement[];
+  rule_results: ExplanationStatement[];
   limitations: { code: string; text_fi: string }[];
 };
 
@@ -104,6 +111,7 @@ export type AnalysisResult = {
   origin: DataSource;
   /** Saved backend analysis id; needed to send a physician review request. */
   analysisId?: string;
+  triggeredRuleIds?: string[];
   sourceObservations?: import("./mappers").ApiObservation[];
   clinicalFindings?: { id: string; description: string; status: string; uncertainty: string | null }[];
 };
@@ -115,6 +123,7 @@ export type QueueItem = {
   status?: "pending" | "reviewed";
   analysisId?: string;
   patientId?: string;
+  observations?: import("./mappers").ApiObservation[];
   analysis?: AnalysisResult;
   name: string;
   demo: string;

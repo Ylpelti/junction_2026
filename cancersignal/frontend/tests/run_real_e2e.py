@@ -19,6 +19,7 @@ from alembic.config import Config
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import Session
 from app.core.config import get_settings
+from app.db.seed import seed, synthetic_id
 from app.db.demo import seed_demo
 from app.db.seed_rules import seed_rules
 
@@ -38,6 +39,7 @@ def main():
             config.attributes['connection'] = conn
             command.upgrade(config, 'head')
         with Session(engine) as session:
+            seed(session)  # Mix older fixtures with canonical patients in this disposable DB.
             seed_demo(session)
             seed_rules(session)
             session.commit()
@@ -63,6 +65,14 @@ def main():
                 time.sleep(.1)
             else:
                 raise RuntimeError('FastAPI readiness timeout')
+            # A real noncanonical request must stay stored but out of the UI.
+            legacy_id = str(synthetic_id('patient/0'))
+            result = client.post(f'http://127.0.0.1:{port}/api/v1/patients/{legacy_id}/analyses',
+                                 json={'note_observation_id': str(synthetic_id('note/0/3'))})
+            result.raise_for_status()
+            handoff = client.post(f'http://127.0.0.1:{port}/api/v1/patients/{legacy_id}/review-requests',
+                                  json={'analysis_id': result.json()['id'], 'submitted_by': 'SYNTHETIC legacy dataset test'})
+            handoff.raise_for_status()
         subprocess.run(['npm', 'run', 'test:e2e'], cwd=ROOT / 'frontend', env=env, check=True)
     finally:
         if api:

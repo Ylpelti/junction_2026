@@ -71,6 +71,7 @@ type ApiPrediction = {
 
 type ApiTrigger = {
   id: string;
+  trigger_rule_id?: string;
   rule_name: string;
   rule_version: string;
   demonstration_only: boolean;
@@ -310,6 +311,7 @@ export function toAnalysis(r: ApiAnalysisResponse): AnalysisResult {
     missing,
     origin: "backend",
     analysisId: r.id,
+    triggeredRuleIds: r.trigger_results.filter(t => t.triggered).flatMap(t => t.trigger_rule_id ? [t.trigger_rule_id] : []),
     sourceObservations: r.source_observations,
     clinicalFindings: r.findings,
   };
@@ -353,7 +355,7 @@ export function toQueueItem(r: ApiReviewRequest): QueueItem {
     from: r.submitted_by ?? "Not recorded",
     level,
     cs: level !== "normal",
-    summary: r.analysis.explanation,
+    summary: r.analysis.clinical_explanation?.summary_fi || r.analysis.explanation,
     clinicalExplanation: analysis.clinicalExplanation,
     findings: analysis.findings,
     missing: analysis.missing,

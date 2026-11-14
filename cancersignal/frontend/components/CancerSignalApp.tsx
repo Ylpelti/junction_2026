@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FALLBACK_QUEUE, PROTOTYPE_PATIENTS } from "../data/fallback";
 import { analyseSavedNote, ApiError, createNote, createReviewRequest, listObservations, listPatients, listReviewRequests, listAnalyses, getDismissal, getDecision, saveDismissal, saveDecision, DISMISSAL_REASONS, DECISION_ACTIONS, type DecisionAction, type DismissalReason } from "../lib/api";
 import { ALLOW_PROTOTYPE_DATASET } from "../lib/flags";
-import { toAnalysis, toPatient, toQueueItem, toRecord, type ApiAnalysisResponse } from "../lib/mappers";
+import { toAnalysis, toPatient, toQueueItem, toRecord, type ApiAnalysisResponse, type ApiObservation } from "../lib/mappers";
 import type { AnalysisResult, DataSource, Patient, PatientRecord, QueueItem } from "../lib/types";
 import { DemoBar } from "./DemoBar";
 import { NurseView, type NurseState } from "./NurseView";
@@ -104,16 +104,20 @@ export function CancerSignalApp() {
     if (source !== "backend") return;
     const version = ++queueVersion.current;
     setBackendQueue({ status: "loading" });
+    setReviewed([]);
     try {
       const [pending, history] = await Promise.all([listReviewRequests("pending"), listReviewRequests("reviewed")]);
+      const patientIds = [...new Set([...pending, ...history].map(r => r.patient_id))];
+      const observations = new Map(await Promise.all(patientIds.map(async id => [id, await listObservations(id)] as const)));
+      const mapRequest = (r: (typeof pending)[number]) => ({ ...toQueueItem(r), observations: observations.get(r.patient_id) });
       const actions = await Promise.all(history.map(async row => {
         const d = await getDecision(row.id);
         if (!d) throw new Error("A reviewed request has no saved decision. Refresh to reconcile.");
         return [row.id, `${DECISION_ACTIONS[d.action]} · ${d.actor} · ${stamp(d.created_at)}`] as const;
       }));
       if (version !== queueVersion.current) return;
-      setBackendQueue({ status: "ready", data: pending.map(toQueueItem) });
-      setReviewed(history.map(toQueueItem)); setDecisions(Object.fromEntries(actions));
+      setBackendQueue({ status: "ready", data: pending.map(mapRequest) });
+      setReviewed(history.map(mapRequest)); setDecisions(Object.fromEntries(actions));
     } catch (e) { if (version === queueVersion.current) setBackendQueue({ status: "error", error: message(e) }); }
   }, [source]);
   useEffect(() => { if (view === "doctor") void refreshQueue(); }, [view, refreshQueue]);
@@ -258,6 +262,7 @@ export function CancerSignalApp() {
   };
   const resetDemo = () => {
     if (busy.current) return;
+    setBackendQueue({ status: "loading" }); setReviewed([]); setDecisionError("");
     setVisit(FRESH_VISIT); setNotes({}); setSentItems({}); setDecisions({}); setDismissals({}); setSentAnalyses({}); setTab("notes"); setReloadKey(k => k + 1);
   };
   const state: NurseState = {
@@ -275,6 +280,9 @@ export function CancerSignalApp() {
         onToggleCS={() => { if (!busy.current) setUseCS(v => !v); }} source={source}
         onSource={ALLOW_PROTOTYPE_DATASET ? s => { if (!busy.current && s !== source) { resetDemo(); setPid(""); setSource(s); queueVersion.current++; } } : undefined}
         onReset={resetDemo} />
+      <p role="status" className="m-0 border-b border-line bg-side px-6 py-2 text-sm text-mute">
+        {source === "backend" ? "Backend demo · canonical PostgreSQL patients only. Legacy datasets are excluded." : "Prototype only · canned patients and findings; actions are not saved to PostgreSQL."}
+      </p>
       {view === "nurse" ? <NurseView s={state} on={{
         pickPatient, tab: setTab, note: text => { if (!busy.current) setNotes(n => ({ ...n, [pid]: text })); }, save,
         ack: () => setVisit(v => ({ ...v, acked: true, closed: false })), close: () => setVisit(v => ({ ...v, closed: true })),

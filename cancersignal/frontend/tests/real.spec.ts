@@ -4,6 +4,7 @@ test("real PostgreSQL: nurse handoff, physician decision, reload, and separate d
   const errors: string[] = []; page.on("pageerror", e => errors.push(e.message));
   await page.goto("/");
   for (const name of ["Laine", "Nieminen", "Heikkinen", "Korhonen"]) await expect(page.getByRole("button", { name: new RegExp(`SYNTHETIC ${name}`) })).toBeVisible();
+  await expect(page.getByRole("button", { name: /SYNTHETIC Patient/ })).toHaveCount(0);
   await page.getByRole("button", { name: /SYNTHETIC Laine/ }).click();
   await page.getByLabel("Nursing note", { exact: true }).fill("SYNTHETIC — Hoitajan seurantakäynti. Tarkistetaan aiemmat havainnot.");
   await page.getByRole("button", { name: "Save", exact: true }).click();
@@ -19,6 +20,7 @@ test("real PostgreSQL: nurse handoff, physician decision, reload, and separate d
   await page.reload(); await page.getByRole("button", { name: /SYNTHETIC Laine/ }).click();
   await expect(page.getByText("Sent to the physician.", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Physician view", exact: true }).click();
+  await page.getByText("Record a simulated decision", { exact: true }).click();
   await page.getByRole("button", { name: "Simulate FIT order (stool blood test)", exact: true }).click();
   await expect(page.getByText(/Decided: FIT ordered/)).toBeVisible();
   await expect(page.getByText("No pending review requests.")).toBeVisible();
@@ -26,8 +28,12 @@ test("real PostgreSQL: nurse handoff, physician decision, reload, and separate d
   await expect(page.getByText(/Decided: FIT ordered/)).toBeVisible();
   const api = process.env.E2E_API_URL!;
   const reviews = await (await request.get(`${api}/api/v1/review-requests?status=all`)).json();
-  expect(reviews).toHaveLength(1); expect(reviews[0].status).toBe("reviewed");
-  const decision = await (await request.get(`${api}/api/v1/review-requests/${reviews[0].id}/decision`)).json();
+  expect(reviews).toHaveLength(2); // Legacy pending request remains stored, never displayed.
+  const canonical = reviews.find((r: { patient_id: string }) => r.patient_id === "138fff92-bea8-5f85-a95a-5fb502fd9e57");
+  expect(canonical.status).toBe("reviewed");
+  await expect(page.locator("ol > li")).toHaveCount(1);
+  await expect(page.getByText("SYNTHETIC legacy dataset test", { exact: false })).toHaveCount(0);
+  const decision = await (await request.get(`${api}/api/v1/review-requests/${canonical.id}/decision`)).json();
   expect(decision.action).toBe("fit_ordered"); expect(decision.created_at).toBeTruthy();
   await page.getByRole("button", { name: "Nurse view", exact: true }).click();
   await page.getByRole("button", { name: /SYNTHETIC Laine/ }).click();
@@ -41,7 +47,7 @@ test("real PostgreSQL: nurse handoff, physician decision, reload, and separate d
   await expect(page.getByText(/Dismissed: Physician already aware/)).toBeVisible();
   await page.reload(); await page.getByRole("button", { name: /SYNTHETIC Laine/ }).click();
   await expect(page.getByText(/Dismissed: Physician already aware/)).toBeVisible();
-  await page.getByLabel("Saved analysis", { exact: true }).selectOption(reviews[0].analysis_id);
+  await page.getByLabel("Saved analysis", { exact: true }).selectOption(canonical.analysis_id);
   await expect(page.getByText("Sent to the physician.", { exact: true })).toBeVisible();
   await expect(page.getByText(/Dismissed:/)).toHaveCount(0);
   await page.screenshot({ path: "test-results/real-workflow.png", fullPage: true });

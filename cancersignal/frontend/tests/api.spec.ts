@@ -19,8 +19,8 @@ test("observations load every page and retain source metadata", async () => {
 });
 test("patients and reviews page without reordering and use status=all", async () => {
   let count = 0;
-  globalThis.fetch = async url => { expect(String(url)).toContain("status=all"); expect(String(url)).toContain(`patient_id=${patient.id}`); return response(++count === 1 ? Array(200).fill(review) : [{ ...review, id: "last", status: "reviewed" }]); };
-  expect((await listReviewRequests("all", patient.id)).at(-1)?.id).toBe("last");
+  globalThis.fetch = async url => { expect(String(url)).toContain("status=all"); expect(String(url)).toContain(`patient_id=${patient.id}`); return response(++count === 1 ? Array(200).fill(review) : [{ ...review, id: "55555555-5555-4555-8555-555555555555", status: "reviewed" }]); };
+  expect((await listReviewRequests("all", patient.id)).at(-1)?.id).toBe("55555555-5555-4555-8555-555555555555");
   globalThis.fetch = async () => response([patient]); expect(await listPatients()).toEqual([patient]);
 });
 test("only a dismissal GET 404 means absent", async () => {

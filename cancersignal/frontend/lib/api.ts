@@ -1,6 +1,8 @@
 // One function per backend endpoint used by the UI. Responses are validated
 // lightly here and mapped to UI types in mappers.ts.
 
+import { isCanonicalPatient, isUuid } from "./demo-dataset";
+
 import type {
   ApiAnalysisResponse,
   ApiObservation,
@@ -81,7 +83,7 @@ const isAnalysis = (v: unknown) =>
 
 /** GET /patients */
 export function listPatients() {
-  return pages<ApiPatient>("/patients?", isPatient);
+  return pages<ApiPatient>("/patients?", isPatient).then(rows => rows.filter(p => isCanonicalPatient(p.id)));
 }
 
 /** GET /patients/{id}/observations (all types; split in the mapper). */
@@ -93,7 +95,10 @@ export async function listObservations(patientId: string) {
       undefined, listOf(isObservation),
     );
     rows.push(...page);
-    if (page.length < 200) return rows;
+    if (page.length < 200) {
+      if (rows.some(o => o.patient_id !== patientId)) throw new ApiError("Observation history contains a different patient's records.");
+      return rows;
+    }
   }
 }
 
@@ -119,16 +124,19 @@ export function analyseNote(note: NewNote) {
     `/patients/${encodeURIComponent(note.patientId)}/analyses`,
     { method: "POST", body: JSON.stringify({ note: notePayload(note) }) },
     isAnalysis,
-  );
+  ).then(run => { assertAnalysisPatient(run, note.patientId); return run; });
 }
 
 const isReviewRequest = (v: unknown) =>
   isObj(v) &&
-  typeof v.id === "string" &&
-  typeof v.analysis_id === "string" &&
+  isUuid(v.id) &&
+  isUuid(v.analysis_id) &&
+  (v.status === "pending" || v.status === "reviewed") &&
   (v.priority === "urgent" || v.priority === "review" || v.priority === "normal") &&
   isPatient(v.patient) &&
-  isAnalysis(v.analysis);
+  isAnalysis(v.analysis) &&
+  isObj(v.patient) && v.patient.id === v.patient_id &&
+  isObj(v.analysis) && v.analysis.id === v.analysis_id && v.analysis.patient_id === v.patient_id;
 
 /**
  * POST /patients/{id}/review-requests. 201 = new request, 200 = this analysis was
@@ -139,12 +147,20 @@ export function createReviewRequest(patientId: string, analysisId: string, submi
     `/patients/${encodeURIComponent(patientId)}/review-requests`,
     { method: "POST", body: JSON.stringify({ analysis_id: analysisId, submitted_by: submittedBy }) },
     isReviewRequest,
-  );
+  ).then(r => {
+    if (r.analysis_id !== analysisId) throw new ApiError("Review request references a different analysis.");
+    assertAnalysisPatient(r.analysis, patientId);
+    return r;
+  });
 }
 
 /** GET /review-requests: pending queue, already ordered urgent → review → normal, oldest first. */
 export function listReviewRequests(status: "pending" | "reviewed" | "all" = "pending", patientId?: string) {
-  return pages<ApiReviewRequest>(`/review-requests?status=${status}&${patientId ? `patient_id=${encodeURIComponent(patientId)}&` : ""}`, isReviewRequest);
+  return pages<ApiReviewRequest>(`/review-requests?status=${status}&${patientId ? `patient_id=${encodeURIComponent(patientId)}&` : ""}`, isReviewRequest).then(rows => rows.filter(r => isCanonicalPatient(r.patient_id)).map(r => {
+    if (patientId && r.patient_id !== patientId) throw new ApiError("Review request belongs to a different patient.");
+    assertAnalysisPatient(r.analysis, r.patient_id);
+    return r;
+  }));
 }
 
 /** GET /review-requests/{id} */
@@ -162,11 +178,15 @@ async function pages<T>(path: string, check: (v: unknown) => boolean): Promise<T
 }
 
 export function listAnalyses(patientId: string) {
-  return pages<ApiAnalysisResponse>(`/patients/${encodeURIComponent(patientId)}/analyses?`, isAnalysis);
+  return pages<ApiAnalysisResponse>(`/patients/${encodeURIComponent(patientId)}/analyses?`, isAnalysis).then(rows => rows.map(r => {
+    assertAnalysisPatient(r, patientId);
+    return r;
+  }));
 }
 export function analyseSavedNote(patientId: string, noteId: string) {
   return request<ApiAnalysisResponse>(`/patients/${encodeURIComponent(patientId)}/analyses`,
-    { method: "POST", body: JSON.stringify({ note_observation_id: noteId }) }, isAnalysis);
+    { method: "POST", body: JSON.stringify({ note_observation_id: noteId }) }, isAnalysis)
+    .then(run => { assertAnalysisPatient(run, patientId); return run; });
 }
 
 export const DISMISSAL_REASONS = {
@@ -205,3 +225,9 @@ export const saveDismissal = (id: string, patientId: string, reason: DismissalRe
   `/analyses/${encodeURIComponent(id)}/dismissal`, { patient_id: patientId, reason_code: reason, actor: "SYNTHETIC Nurse H. Virtanen" }, isDismissal, () => getDismissal(id));
 export const saveDecision = (id: string, action: DecisionAction) => persist<Decision>(
   `/review-requests/${encodeURIComponent(id)}/decision`, { action, actor: "SYNTHETIC Physician M. Salo" }, isDecision, () => getDecision(id));
+
+function assertAnalysisPatient(run: ApiAnalysisResponse, patientId: string) {
+  if (!isUuid(run.id) || run.patient_id !== patientId || run.source_observations.some(o => !isUuid(o.id) || o.patient_id !== patientId)) {
+    throw new ApiError("Analysis identity or source-patient relationship is invalid. No findings are displayed.");
+  }
+}

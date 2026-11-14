@@ -19,9 +19,14 @@ Inherit `../AGENTS.md`. Paths below are relative to `frontend/`.
 - Review submissions, dismissals and physician decisions persist through the
   workflow API, scoped to analysis/request UUIDs. Only GET 404 means absent;
   conflicts and lost responses require readback. Display saved server timestamps.
-- Live mode uses API patients, histories, analyses and pending/reviewed queues.
+- Backend demo mode uses only the four canonical UUIDs from `lib/demo-dataset.ts`,
+  checked against the backend fixture by regression tests. API histories, analyses
+  and pending/reviewed queues preserve patient ownership and server ordering.
   Prototype fixtures and browser-only actions require explicit prototype mode.
   Do not silently substitute fixtures when the API fails.
+- Physician summaries use saved Finnish text and only triggered rule explanations;
+  technical warnings remain expandable. Completed tests do not imply repeat orders.
+  See `../docs/demo-dataset-isolation.md` for the running-demo investigation.
 - Keep numeric clinical calculations in Python. Do not infer lab reference
   ranges, abnormal flags, missing facts or risk cutoffs in the UI.
 

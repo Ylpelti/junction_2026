@@ -1,3 +1,4 @@
+import { formatMeasurement } from "../lib/format";
 import type { AnalysisResult } from "../lib/types";
 
 /** Original API records; presentation only, no derived clinical quantities. */
@@ -8,7 +9,8 @@ export function AnalysisEvidence({ analysis }: { analysis: AnalysisResult }) {
     {analysis.sourceObservations?.map(o => <article key={o.id} className="mt-3 border-t border-line pt-2">
       <p className="break-all text-xs text-mute">{o.id} · {o.observed_at} · recorded {o.recorded_at}</p>
       <p className="whitespace-pre-wrap">{o.text}</p>
-      <p>{[o.code, o.numeric_value, o.unit, o.status].filter(v => v != null).join(" · ")}</p>
+      <p>{[o.code, formatMeasurement(o.numeric_value, o.unit), o.status].filter(v => v != null).join(" · ")}</p>
+      <details className="text-xs text-mute"><summary>Original stored measurement</summary>{o.numeric_value ?? "—"} {o.unit ?? ""}</details>
       {o.encounter_id && <p className="break-all text-xs">Encounter: {o.encounter_id}</p>}
     </article>)}
     {!analysis.sourceObservations?.length && <p>No source observations returned.</p>}

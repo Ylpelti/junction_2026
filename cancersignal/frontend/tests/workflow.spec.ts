@@ -49,6 +49,7 @@ test("handoff and physician decision persist across reload, reviewed leaves pend
   await expect(page.getByText("Sent to the physician.", { exact: true })).toBeVisible();
   await page.reload(); await expect(page.getByText("Sent to the physician.", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Physician view", exact: true }).click();
+  await page.getByText("Record a simulated decision", { exact: true }).click();
   await page.getByRole("button", { name: "Simulate FIT order (stool blood test)", exact: true }).click();
   await expect(page.getByText("No pending review requests.")).toBeVisible();
   await expect(page.getByText(/Decided: FIT ordered/)).toBeVisible();

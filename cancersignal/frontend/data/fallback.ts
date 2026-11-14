@@ -1,5 +1,5 @@
 // Local data taken from docs/design/Main.dc.html (synthetic, fictional).
-// Used only for gaps in the backend API; see lib/flags.ts.
+// Explicit prototype mode only. Never merge with API patients or queue items.
 
 import type { AnalysisResult, Patient, PatientRecord, QueueItem } from "../lib/types";
 
@@ -16,7 +16,7 @@ export const FALLBACK_APPOINTMENTS: { time: string; visit: string }[] = [
   { time: "13:00", visit: "Fatigue" },
 ];
 
-// TODO(backend): no physician queue endpoint. Items other nurses sent earlier today.
+// Canned prototype queue, deliberately separate from the persisted API queue.
 export const FALLBACK_QUEUE: QueueItem[] = [
   {
     key: "q1",
