@@ -1,0 +1,347 @@
+{
+  "synthetic": true,
+  "scenario": "negated_resolved",
+  "rag_context": {
+    "patient_id": "5184f7d0-3b50-5e33-9bbf-1248a94547f4",
+    "as_of": "2026-01-01T00:00:00Z",
+    "observed_since": null,
+    "recorded_before": "2026-01-01T00:00:00Z",
+    "contract_version": "1.0",
+    "query": "SYNTHETIC longitudinal context",
+    "retrieved_observations": [
+      {
+        "source": {
+          "id": "eec7bf6d-ed94-5ccc-84f3-f2e53d3d7530",
+          "patient_id": "5184f7d0-3b50-5e33-9bbf-1248a94547f4",
+          "encounter_id": null,
+          "observation_type": "symptom",
+          "code": null,
+          "text": "SYNTHETIC: Denies blood in stool.",
+          "numeric_value": null,
+          "unit": null,
+          "status": "negated",
+          "observed_at": "2025-05-01T10:00:00Z",
+          "recorded_at": "2025-05-01T11:00:00Z"
+        },
+        "relevance": {
+          "value": 2.5,
+          "metric": "synthetic_bm25",
+          "higher_is_better": true
+        },
+        "retrieval_method": "keyword"
+      },
+      {
+        "source": {
+          "id": "181e23a5-e1e1-52f1-bef0-ac93dd6cf5f3",
+          "patient_id": "5184f7d0-3b50-5e33-9bbf-1248a94547f4",
+          "encounter_id": null,
+          "observation_type": "symptom",
+          "code": null,
+          "text": "SYNTHETIC: Previous abdominal discomfort has resolved.",
+          "numeric_value": null,
+          "unit": null,
+          "status": "resolved",
+          "observed_at": "2024-05-01T10:00:00Z",
+          "recorded_at": "2024-05-01T11:00:00Z"
+        },
+        "relevance": {
+          "value": 2.5,
+          "metric": "synthetic_bm25",
+          "higher_is_better": true
+        },
+        "retrieval_method": "keyword"
+      }
+    ],
+    "retrieval": {
+      "name": "synthetic-keyword-fixture",
+      "version": "1.0",
+      "method": "keyword",
+      "provider": null,
+      "model": null,
+      "prompt_version": null,
+      "configuration_digest": null
+    },
+    "coverage": {
+      "status": "complete",
+      "eligible_count": 2,
+      "missing_information": []
+    },
+    "generated_at": null
+  },
+  "structured_context": {
+    "patient_id": "5184f7d0-3b50-5e33-9bbf-1248a94547f4",
+    "as_of": "2026-01-01T00:00:00Z",
+    "observed_since": null,
+    "recorded_before": "2026-01-01T00:00:00Z",
+    "contract_version": "1.0",
+    "observations": [],
+    "requested_codes": null,
+    "coverage": {
+      "status": "complete",
+      "eligible_count": 0,
+      "missing_information": []
+    },
+    "access": {
+      "name": "synthetic-direct-history",
+      "version": "1.0",
+      "method": "structured",
+      "provider": null,
+      "model": null,
+      "prompt_version": null,
+      "configuration_digest": null
+    }
+  },
+  "analysis_result": {
+    "patient_id": "5184f7d0-3b50-5e33-9bbf-1248a94547f4",
+    "as_of": "2026-01-01T00:00:00Z",
+    "observed_since": null,
+    "recorded_before": "2026-01-01T00:00:00Z",
+    "contract_version": "1.0",
+    "validation_scope": "reference_integrity_only",
+    "analysis_id": "684d36a2-dff4-5f4d-8d5a-7c8b974291b6",
+    "created_at": "2026-01-02T00:00:00Z",
+    "status": "completed",
+    "input_note_id": null,
+    "findings": [
+      {
+        "finding_type": "blood_in_stool",
+        "description": "SYNTHETIC: Explicit denial.",
+        "evidence": [
+          {
+            "observation_id": "eec7bf6d-ed94-5ccc-84f3-f2e53d3d7530",
+            "source_excerpt": "SYNTHETIC: Denies blood in stool.",
+            "start_offset": 0,
+            "end_offset": 33
+          }
+        ],
+        "uncertainty": null,
+        "id": "432291b7-5480-5b6e-adfa-87a9fb7d5d8c",
+        "patient_id": "5184f7d0-3b50-5e33-9bbf-1248a94547f4",
+        "polarity": "absent",
+        "temporal_status": "current",
+        "missing_information": [],
+        "provenance": {
+          "name": "synthetic-manual-finding-fixture",
+          "version": "1.0",
+          "method": "manual",
+          "provider": null,
+          "model": null,
+          "prompt_version": null,
+          "configuration_digest": null
+        }
+      },
+      {
+        "finding_type": "abdominal_discomfort",
+        "description": "SYNTHETIC: Previously present, now resolved.",
+        "evidence": [
+          {
+            "observation_id": "181e23a5-e1e1-52f1-bef0-ac93dd6cf5f3",
+            "source_excerpt": "SYNTHETIC: Previous abdominal discomfort has resolved.",
+            "start_offset": 0,
+            "end_offset": 54
+          }
+        ],
+        "uncertainty": null,
+        "id": "09216601-e3d3-5f64-900c-bb5696ca3eed",
+        "patient_id": "5184f7d0-3b50-5e33-9bbf-1248a94547f4",
+        "polarity": "present",
+        "temporal_status": "resolved",
+        "missing_information": [],
+        "provenance": {
+          "name": "synthetic-manual-finding-fixture",
+          "version": "1.0",
+          "method": "manual",
+          "provider": null,
+          "model": null,
+          "prompt_version": null,
+          "configuration_digest": null
+        }
+      }
+    ],
+    "computed_features": [],
+    "trigger_evaluations": [
+      {
+        "trigger_rule_id": "00b6fafe-9f49-553b-bb17-4f25dffb848a",
+        "trigger_rule_version": "demo-v1",
+        "patient_id": "5184f7d0-3b50-5e33-9bbf-1248a94547f4",
+        "evaluation_status": "not_matched",
+        "explanation": "SYNTHETIC demonstration outcome only; not a clinical interpretation.",
+        "supporting_finding_ids": [
+          "432291b7-5480-5b6e-adfa-87a9fb7d5d8c",
+          "09216601-e3d3-5f64-900c-bb5696ca3eed"
+        ],
+        "supporting_feature_ids": [],
+        "supporting_observation_ids": [
+          "181e23a5-e1e1-52f1-bef0-ac93dd6cf5f3",
+          "eec7bf6d-ed94-5ccc-84f3-f2e53d3d7530"
+        ],
+        "missing_information": [],
+        "requires_clinician_review": false
+      }
+    ],
+    "predictions": [],
+    "source_observations": [
+      {
+        "id": "eec7bf6d-ed94-5ccc-84f3-f2e53d3d7530",
+        "patient_id": "5184f7d0-3b50-5e33-9bbf-1248a94547f4",
+        "encounter_id": null,
+        "observation_type": "symptom",
+        "code": null,
+        "text": "SYNTHETIC: Denies blood in stool.",
+        "numeric_value": null,
+        "unit": null,
+        "status": "negated",
+        "observed_at": "2025-05-01T10:00:00Z",
+        "recorded_at": "2025-05-01T11:00:00Z"
+      },
+      {
+        "id": "181e23a5-e1e1-52f1-bef0-ac93dd6cf5f3",
+        "patient_id": "5184f7d0-3b50-5e33-9bbf-1248a94547f4",
+        "encounter_id": null,
+        "observation_type": "symptom",
+        "code": null,
+        "text": "SYNTHETIC: Previous abdominal discomfort has resolved.",
+        "numeric_value": null,
+        "unit": null,
+        "status": "resolved",
+        "observed_at": "2024-05-01T10:00:00Z",
+        "recorded_at": "2024-05-01T11:00:00Z"
+      }
+    ],
+    "metadata": {
+      "pipeline_version": "synthetic-contract-fixture-v1",
+      "components": [
+        {
+          "name": "synthetic-keyword-fixture",
+          "version": "1.0",
+          "method": "keyword",
+          "provider": null,
+          "model": null,
+          "prompt_version": null,
+          "configuration_digest": null
+        },
+        {
+          "name": "synthetic-manual-finding-fixture",
+          "version": "1.0",
+          "method": "manual",
+          "provider": null,
+          "model": null,
+          "prompt_version": null,
+          "configuration_digest": null
+        }
+      ],
+      "rules": [
+        {
+          "trigger_rule_id": "00b6fafe-9f49-553b-bb17-4f25dffb848a",
+          "version": "demo-v1",
+          "source": "SYNTHETIC_CONTRACT_FIXTURE_NOT_CLINICAL_GUIDANCE",
+          "source_section": "negated_resolved"
+        }
+      ],
+      "source_snapshot_digest": "6d02d8b8d2f7efab7372d76e27e5b84a1ce6c4410493d2a8f5a0cca2c6ca761f",
+      "evaluation": {
+        "dataset_id": "synthetic-contract-examples",
+        "dataset_version": "1.0",
+        "split": "demo",
+        "input_mode": "C"
+      }
+    },
+    "missing_information": [],
+    "issues": []
+  },
+  "finding_batch": {
+    "patient_id": "5184f7d0-3b50-5e33-9bbf-1248a94547f4",
+    "as_of": "2026-01-01T00:00:00Z",
+    "observed_since": null,
+    "recorded_before": "2026-01-01T00:00:00Z",
+    "contract_version": "1.0",
+    "status": "complete",
+    "provenance": {
+      "name": "synthetic-manual-finding-fixture",
+      "version": "1.0",
+      "method": "manual",
+      "provider": null,
+      "model": null,
+      "prompt_version": null,
+      "configuration_digest": null
+    },
+    "missing_information": [],
+    "issues": [],
+    "findings": [
+      {
+        "finding_type": "blood_in_stool",
+        "description": "SYNTHETIC: Explicit denial.",
+        "evidence": [
+          {
+            "observation_id": "eec7bf6d-ed94-5ccc-84f3-f2e53d3d7530",
+            "source_excerpt": "SYNTHETIC: Denies blood in stool.",
+            "start_offset": 0,
+            "end_offset": 33
+          }
+        ],
+        "uncertainty": null,
+        "id": "432291b7-5480-5b6e-adfa-87a9fb7d5d8c",
+        "patient_id": "5184f7d0-3b50-5e33-9bbf-1248a94547f4",
+        "polarity": "absent",
+        "temporal_status": "current",
+        "missing_information": [],
+        "provenance": {
+          "name": "synthetic-manual-finding-fixture",
+          "version": "1.0",
+          "method": "manual",
+          "provider": null,
+          "model": null,
+          "prompt_version": null,
+          "configuration_digest": null
+        }
+      },
+      {
+        "finding_type": "abdominal_discomfort",
+        "description": "SYNTHETIC: Previously present, now resolved.",
+        "evidence": [
+          {
+            "observation_id": "181e23a5-e1e1-52f1-bef0-ac93dd6cf5f3",
+            "source_excerpt": "SYNTHETIC: Previous abdominal discomfort has resolved.",
+            "start_offset": 0,
+            "end_offset": 54
+          }
+        ],
+        "uncertainty": null,
+        "id": "09216601-e3d3-5f64-900c-bb5696ca3eed",
+        "patient_id": "5184f7d0-3b50-5e33-9bbf-1248a94547f4",
+        "polarity": "present",
+        "temporal_status": "resolved",
+        "missing_information": [],
+        "provenance": {
+          "name": "synthetic-manual-finding-fixture",
+          "version": "1.0",
+          "method": "manual",
+          "provider": null,
+          "model": null,
+          "prompt_version": null,
+          "configuration_digest": null
+        }
+      }
+    ]
+  },
+  "feature_batch": {
+    "patient_id": "5184f7d0-3b50-5e33-9bbf-1248a94547f4",
+    "as_of": "2026-01-01T00:00:00Z",
+    "observed_since": null,
+    "recorded_before": "2026-01-01T00:00:00Z",
+    "contract_version": "1.0",
+    "status": "complete",
+    "provenance": {
+      "name": "synthetic-arithmetic-fixture",
+      "version": "1.0",
+      "method": "deterministic",
+      "provider": null,
+      "model": null,
+      "prompt_version": null,
+      "configuration_digest": null
+    },
+    "missing_information": [],
+    "issues": [],
+    "features": []
+  }
+}

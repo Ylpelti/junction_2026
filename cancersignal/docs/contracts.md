@@ -5,6 +5,11 @@ Pydantic in `app/schemas/records.py` and `app/schemas/analysis.py` is the source
 truth for `/openapi.json` and `/docs`. No diagnosis, cancer probability, or automatic
 referral is produced. No frontend changes are included.
 
+For the next component handoffs, use the versioned [shared contracts package](../backend/app/contracts/README.md).
+It separates RAG from numerical history, polarity from temporal state, and
+three-state rule outcomes from booleans. API v1 below remains compatible; the
+rich handoff schemas are not automatically persisted or exposed over HTTP.
+
 ## Public REST endpoints
 
 All paths below use the prefix `/api/v1`. `/health` remains unchanged.

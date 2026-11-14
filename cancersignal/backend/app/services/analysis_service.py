@@ -3,6 +3,8 @@ from uuid import UUID
 from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session, selectinload
+from app.contracts.clinical_context import SourceObservation
+from app.contracts.validation import EvidenceValidationError, validate_evidence
 
 from app.models import (
     AnalysisRun, ClinicalFinding, FindingEvidence, Observation,
@@ -96,22 +98,18 @@ def validate_context(session: Session, context: RetrievedContext, note: Observat
 
 
 def verify_findings(findings, allowed):
+    sources = tuple(SourceObservation.model_validate(row) for row in allowed.values())
+    if findings and not sources:
+        raise PipelineError("invalid_finding_evidence")
     for finding in findings:
+        # Preserve API v1 error codes while sharing reference checks with new adapters.
+        try:
+            validate_evidence(sources[0].patient_id, finding.evidence, sources)
+        except EvidenceValidationError as error:
+            code = {"duplicate_evidence": "duplicate_finding_evidence", "missing_observation": "invalid_finding_evidence",
+                    "cross_patient_evidence": "invalid_finding_evidence"}.get(error.code, error.code)
+            raise PipelineError(code) from None
         identifiers = [ref.observation_id for ref in finding.evidence]
-        if len(set(identifiers)) != len(identifiers):
-            raise PipelineError("duplicate_finding_evidence")
-        for ref in finding.evidence:
-            row = allowed.get(ref.observation_id)
-            if row is None:
-                raise PipelineError("invalid_finding_evidence")
-            if ref.source_excerpt is not None:
-                if row.text is None or ref.source_excerpt not in row.text:
-                    raise PipelineError("invalid_source_quote")
-                if ref.start_offset is not None and (ref.end_offset > len(row.text)
-                        or row.text[ref.start_offset:ref.end_offset] != ref.source_excerpt):
-                    raise PipelineError("invalid_source_offsets")
-            elif row.numeric_value is None:
-                raise PipelineError("missing_source_quote")
         if finding.numeric_value is not None and not any(
                 allowed[identifier].numeric_value == finding.numeric_value
                 and allowed[identifier].unit == finding.unit for identifier in identifiers):

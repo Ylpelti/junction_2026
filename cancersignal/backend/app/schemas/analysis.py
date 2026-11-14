@@ -1,38 +1,20 @@
 from decimal import Decimal
-from typing import Annotated, Literal
+from typing import Literal
 from uuid import UUID
 
 from pydantic import AwareDatetime, Field, model_validator
 
 from app.models.enums import AnalysisStatus, FindingStatus
+from app.contracts.evidence import EvidenceReference
+from app.contracts.findings import FindingContent
 from app.schemas.records import (
     ClinicalFindingRead, EncounterRead, NonEmpty,
     ObservationCreate, ObservationRead, Record,
 )
 
 
-class EvidenceReference(Record):
-    observation_id: UUID
-    source_excerpt: NonEmpty | None = None
-    start_offset: int | None = Field(default=None, ge=0)
-    end_offset: int | None = Field(default=None, ge=1)
-
-    @model_validator(mode="after")
-    def validate_offsets(self):
-        if self.start_offset is None and self.end_offset is None:
-            return self
-        if (self.start_offset is None or self.end_offset is None
-                or self.end_offset <= self.start_offset or self.source_excerpt is None):
-            raise ValueError("Offsets require an excerpt and a nonempty [start, end) range.")
-        return self
-
-
-class StructuredFinding(Record):
-    finding_type: Annotated[NonEmpty, Field(max_length=100)]
+class StructuredFinding(FindingContent):
     status: FindingStatus
-    description: NonEmpty
-    evidence: list[EvidenceReference] = Field(min_length=1)
-    uncertainty: str | None = None
     numeric_value: Decimal | None = Field(default=None, allow_inf_nan=False)
     unit: str | None = None
 

@@ -4,10 +4,11 @@ from datetime import datetime
 from typing import Protocol
 from uuid import UUID
 
-from pydantic import AwareDatetime, Field, JsonValue
+from pydantic import Field
 from sqlalchemy.orm import Session
 
 from app.rag.context import ExtractionResult, RetrievedContext
+from app.contracts.predictions import ModelPrediction
 from app.schemas.analysis import StructuredFinding
 from app.schemas.records import ObservationRead, Record, TriggerRuleRead
 
@@ -27,18 +28,6 @@ class TriggerEvaluation(Record):
     triggered: bool
     explanation: str
     evidence_observation_ids: list[UUID] = Field(default_factory=list)
-
-
-class ModelPrediction(Record):
-    """Future output type, not accepted as an extracted fact; no model or persistence."""
-    patient_id: UUID
-    model_name: str
-    model_version: str
-    as_of: AwareDatetime
-    prediction_type: str
-    value: JsonValue
-    evidence_observation_ids: list[UUID] = Field(default_factory=list)
-    uncertainty: str | None = None
 
 
 @dataclass(frozen=True)

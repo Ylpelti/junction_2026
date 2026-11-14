@@ -15,6 +15,10 @@ demo extractor, and sourced demonstration rules. LLM/free-text extraction, vecto
 search, ML, and simulations are not implemented. See [the API contract](docs/contracts.md)
 and [the data model](docs/data-model.md).
 
+Independent RAG, extraction and mathematical components can use the
+[shared pipeline contracts](backend/app/contracts/README.md), including pure
+evidence validation and synthetic JSON examples. These handoffs do not change API v1.
+
 ## Structure
 
 ```text

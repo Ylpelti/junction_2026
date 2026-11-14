@@ -1,0 +1,284 @@
+{
+  "synthetic": true,
+  "scenario": "no_matching_trigger",
+  "rag_context": {
+    "patient_id": "aecd8c00-5a30-5786-9662-b6b26caf5a38",
+    "as_of": "2026-01-01T00:00:00Z",
+    "observed_since": null,
+    "recorded_before": "2026-01-01T00:00:00Z",
+    "contract_version": "1.0",
+    "query": "SYNTHETIC longitudinal context",
+    "retrieved_observations": [
+      {
+        "source": {
+          "id": "12626676-64f5-5360-99cf-8496a2163d39",
+          "patient_id": "aecd8c00-5a30-5786-9662-b6b26caf5a38",
+          "encounter_id": null,
+          "observation_type": "symptom",
+          "code": null,
+          "text": "SYNTHETIC: Routine visit; no new symptoms reported.",
+          "numeric_value": null,
+          "unit": null,
+          "status": "negated",
+          "observed_at": "2025-05-01T10:00:00Z",
+          "recorded_at": "2025-05-01T11:00:00Z"
+        },
+        "relevance": {
+          "value": 2.5,
+          "metric": "synthetic_bm25",
+          "higher_is_better": true
+        },
+        "retrieval_method": "keyword"
+      }
+    ],
+    "retrieval": {
+      "name": "synthetic-keyword-fixture",
+      "version": "1.0",
+      "method": "keyword",
+      "provider": null,
+      "model": null,
+      "prompt_version": null,
+      "configuration_digest": null
+    },
+    "coverage": {
+      "status": "complete",
+      "eligible_count": 1,
+      "missing_information": []
+    },
+    "generated_at": null
+  },
+  "structured_context": {
+    "patient_id": "aecd8c00-5a30-5786-9662-b6b26caf5a38",
+    "as_of": "2026-01-01T00:00:00Z",
+    "observed_since": null,
+    "recorded_before": "2026-01-01T00:00:00Z",
+    "contract_version": "1.0",
+    "observations": [
+      {
+        "id": "2fabcaef-7230-5f3b-b217-ab1e3400ab76",
+        "patient_id": "aecd8c00-5a30-5786-9662-b6b26caf5a38",
+        "encounter_id": null,
+        "observation_type": "laboratory",
+        "code": "SYNTHETIC-HB",
+        "text": "SYNTHETIC: Routine laboratory report.",
+        "numeric_value": "140",
+        "unit": "g/L",
+        "status": "completed",
+        "observed_at": "2025-05-01T10:00:00Z",
+        "recorded_at": "2025-05-01T11:00:00Z"
+      }
+    ],
+    "requested_codes": null,
+    "coverage": {
+      "status": "complete",
+      "eligible_count": 1,
+      "missing_information": []
+    },
+    "access": {
+      "name": "synthetic-direct-history",
+      "version": "1.0",
+      "method": "structured",
+      "provider": null,
+      "model": null,
+      "prompt_version": null,
+      "configuration_digest": null
+    }
+  },
+  "analysis_result": {
+    "patient_id": "aecd8c00-5a30-5786-9662-b6b26caf5a38",
+    "as_of": "2026-01-01T00:00:00Z",
+    "observed_since": null,
+    "recorded_before": "2026-01-01T00:00:00Z",
+    "contract_version": "1.0",
+    "validation_scope": "reference_integrity_only",
+    "analysis_id": "befe98b8-c0e6-55d8-abc4-56ebd195a64e",
+    "created_at": "2026-01-02T00:00:00Z",
+    "status": "completed",
+    "input_note_id": null,
+    "findings": [
+      {
+        "finding_type": "new_symptom",
+        "description": "SYNTHETIC: No new symptom documented in this source.",
+        "evidence": [
+          {
+            "observation_id": "12626676-64f5-5360-99cf-8496a2163d39",
+            "source_excerpt": "SYNTHETIC: Routine visit; no new symptoms reported.",
+            "start_offset": 0,
+            "end_offset": 51
+          }
+        ],
+        "uncertainty": null,
+        "id": "8ca41037-30aa-5b2e-a96f-155b7e5bf402",
+        "patient_id": "aecd8c00-5a30-5786-9662-b6b26caf5a38",
+        "polarity": "absent",
+        "temporal_status": "current",
+        "missing_information": [],
+        "provenance": {
+          "name": "synthetic-manual-finding-fixture",
+          "version": "1.0",
+          "method": "manual",
+          "provider": null,
+          "model": null,
+          "prompt_version": null,
+          "configuration_digest": null
+        }
+      }
+    ],
+    "computed_features": [],
+    "trigger_evaluations": [
+      {
+        "trigger_rule_id": "0b9a907a-f52a-5c5c-9df0-e5a585c4a8a7",
+        "trigger_rule_version": "demo-v1",
+        "patient_id": "aecd8c00-5a30-5786-9662-b6b26caf5a38",
+        "evaluation_status": "not_matched",
+        "explanation": "SYNTHETIC demonstration outcome only; not a clinical interpretation.",
+        "supporting_finding_ids": [
+          "8ca41037-30aa-5b2e-a96f-155b7e5bf402"
+        ],
+        "supporting_feature_ids": [],
+        "supporting_observation_ids": [
+          "12626676-64f5-5360-99cf-8496a2163d39"
+        ],
+        "missing_information": [],
+        "requires_clinician_review": false
+      }
+    ],
+    "predictions": [],
+    "source_observations": [
+      {
+        "id": "12626676-64f5-5360-99cf-8496a2163d39",
+        "patient_id": "aecd8c00-5a30-5786-9662-b6b26caf5a38",
+        "encounter_id": null,
+        "observation_type": "symptom",
+        "code": null,
+        "text": "SYNTHETIC: Routine visit; no new symptoms reported.",
+        "numeric_value": null,
+        "unit": null,
+        "status": "negated",
+        "observed_at": "2025-05-01T10:00:00Z",
+        "recorded_at": "2025-05-01T11:00:00Z"
+      },
+      {
+        "id": "2fabcaef-7230-5f3b-b217-ab1e3400ab76",
+        "patient_id": "aecd8c00-5a30-5786-9662-b6b26caf5a38",
+        "encounter_id": null,
+        "observation_type": "laboratory",
+        "code": "SYNTHETIC-HB",
+        "text": "SYNTHETIC: Routine laboratory report.",
+        "numeric_value": "140",
+        "unit": "g/L",
+        "status": "completed",
+        "observed_at": "2025-05-01T10:00:00Z",
+        "recorded_at": "2025-05-01T11:00:00Z"
+      }
+    ],
+    "metadata": {
+      "pipeline_version": "synthetic-contract-fixture-v1",
+      "components": [
+        {
+          "name": "synthetic-keyword-fixture",
+          "version": "1.0",
+          "method": "keyword",
+          "provider": null,
+          "model": null,
+          "prompt_version": null,
+          "configuration_digest": null
+        },
+        {
+          "name": "synthetic-manual-finding-fixture",
+          "version": "1.0",
+          "method": "manual",
+          "provider": null,
+          "model": null,
+          "prompt_version": null,
+          "configuration_digest": null
+        }
+      ],
+      "rules": [
+        {
+          "trigger_rule_id": "0b9a907a-f52a-5c5c-9df0-e5a585c4a8a7",
+          "version": "demo-v1",
+          "source": "SYNTHETIC_CONTRACT_FIXTURE_NOT_CLINICAL_GUIDANCE",
+          "source_section": "no_matching_trigger"
+        }
+      ],
+      "source_snapshot_digest": "b12a7f05e9ed5632c22c4eaeb360411209a5d1221f5f33c1816a3f5d889cd153",
+      "evaluation": {
+        "dataset_id": "synthetic-contract-examples",
+        "dataset_version": "1.0",
+        "split": "demo",
+        "input_mode": "C"
+      }
+    },
+    "missing_information": [],
+    "issues": []
+  },
+  "finding_batch": {
+    "patient_id": "aecd8c00-5a30-5786-9662-b6b26caf5a38",
+    "as_of": "2026-01-01T00:00:00Z",
+    "observed_since": null,
+    "recorded_before": "2026-01-01T00:00:00Z",
+    "contract_version": "1.0",
+    "status": "complete",
+    "provenance": {
+      "name": "synthetic-manual-finding-fixture",
+      "version": "1.0",
+      "method": "manual",
+      "provider": null,
+      "model": null,
+      "prompt_version": null,
+      "configuration_digest": null
+    },
+    "missing_information": [],
+    "issues": [],
+    "findings": [
+      {
+        "finding_type": "new_symptom",
+        "description": "SYNTHETIC: No new symptom documented in this source.",
+        "evidence": [
+          {
+            "observation_id": "12626676-64f5-5360-99cf-8496a2163d39",
+            "source_excerpt": "SYNTHETIC: Routine visit; no new symptoms reported.",
+            "start_offset": 0,
+            "end_offset": 51
+          }
+        ],
+        "uncertainty": null,
+        "id": "8ca41037-30aa-5b2e-a96f-155b7e5bf402",
+        "patient_id": "aecd8c00-5a30-5786-9662-b6b26caf5a38",
+        "polarity": "absent",
+        "temporal_status": "current",
+        "missing_information": [],
+        "provenance": {
+          "name": "synthetic-manual-finding-fixture",
+          "version": "1.0",
+          "method": "manual",
+          "provider": null,
+          "model": null,
+          "prompt_version": null,
+          "configuration_digest": null
+        }
+      }
+    ]
+  },
+  "feature_batch": {
+    "patient_id": "aecd8c00-5a30-5786-9662-b6b26caf5a38",
+    "as_of": "2026-01-01T00:00:00Z",
+    "observed_since": null,
+    "recorded_before": "2026-01-01T00:00:00Z",
+    "contract_version": "1.0",
+    "status": "complete",
+    "provenance": {
+      "name": "synthetic-arithmetic-fixture",
+      "version": "1.0",
+      "method": "deterministic",
+      "provider": null,
+      "model": null,
+      "prompt_version": null,
+      "configuration_digest": null
+    },
+    "missing_information": [],
+    "issues": [],
+    "features": []
+  }
+}

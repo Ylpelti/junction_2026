@@ -1,0 +1,446 @@
+{
+  "synthetic": true,
+  "scenario": "longitudinal",
+  "rag_context": {
+    "patient_id": "9ecf2e55-f8f0-52ed-92eb-95d8776e5162",
+    "as_of": "2026-01-01T00:00:00Z",
+    "observed_since": null,
+    "recorded_before": "2026-01-01T00:00:00Z",
+    "contract_version": "1.0",
+    "query": "SYNTHETIC longitudinal context",
+    "retrieved_observations": [
+      {
+        "source": {
+          "id": "be68c96e-31f2-5fba-8933-957d5db9acf6",
+          "patient_id": "9ecf2e55-f8f0-52ed-92eb-95d8776e5162",
+          "encounter_id": null,
+          "observation_type": "symptom",
+          "code": null,
+          "text": "SYNTHETIC: Fatigue documented.",
+          "numeric_value": null,
+          "unit": null,
+          "status": "current",
+          "observed_at": "2020-05-01T10:00:00Z",
+          "recorded_at": "2020-05-01T11:00:00Z"
+        },
+        "relevance": {
+          "value": 2.5,
+          "metric": "synthetic_bm25",
+          "higher_is_better": true
+        },
+        "retrieval_method": "keyword"
+      },
+      {
+        "source": {
+          "id": "ac3c1491-dcc3-5f99-a12a-8a9cf545b96b",
+          "patient_id": "9ecf2e55-f8f0-52ed-92eb-95d8776e5162",
+          "encounter_id": null,
+          "observation_type": "symptom",
+          "code": null,
+          "text": "SYNTHETIC: Fatigue documented again.",
+          "numeric_value": null,
+          "unit": null,
+          "status": "current",
+          "observed_at": "2025-05-01T10:00:00Z",
+          "recorded_at": "2025-05-01T11:00:00Z"
+        },
+        "relevance": {
+          "value": 2.5,
+          "metric": "synthetic_bm25",
+          "higher_is_better": true
+        },
+        "retrieval_method": "keyword"
+      }
+    ],
+    "retrieval": {
+      "name": "synthetic-keyword-fixture",
+      "version": "1.0",
+      "method": "keyword",
+      "provider": null,
+      "model": null,
+      "prompt_version": null,
+      "configuration_digest": null
+    },
+    "coverage": {
+      "status": "complete",
+      "eligible_count": 2,
+      "missing_information": []
+    },
+    "generated_at": null
+  },
+  "structured_context": {
+    "patient_id": "9ecf2e55-f8f0-52ed-92eb-95d8776e5162",
+    "as_of": "2026-01-01T00:00:00Z",
+    "observed_since": null,
+    "recorded_before": "2026-01-01T00:00:00Z",
+    "contract_version": "1.0",
+    "observations": [
+      {
+        "id": "3de03882-8787-51ab-9934-abe13cd5e816",
+        "patient_id": "9ecf2e55-f8f0-52ed-92eb-95d8776e5162",
+        "encounter_id": null,
+        "observation_type": "laboratory",
+        "code": "SYNTHETIC-HB",
+        "text": "SYNTHETIC: Hb laboratory report.",
+        "numeric_value": "145",
+        "unit": "g/L",
+        "status": "completed",
+        "observed_at": "2020-05-01T10:00:00Z",
+        "recorded_at": "2020-05-01T11:00:00Z"
+      },
+      {
+        "id": "5fb925d1-fd4b-52ea-ae70-fc895023b04b",
+        "patient_id": "9ecf2e55-f8f0-52ed-92eb-95d8776e5162",
+        "encounter_id": null,
+        "observation_type": "laboratory",
+        "code": "SYNTHETIC-HB",
+        "text": "SYNTHETIC: Hb laboratory report.",
+        "numeric_value": "123",
+        "unit": "g/L",
+        "status": "completed",
+        "observed_at": "2025-05-01T10:00:00Z",
+        "recorded_at": "2025-05-01T11:00:00Z"
+      }
+    ],
+    "requested_codes": null,
+    "coverage": {
+      "status": "complete",
+      "eligible_count": 2,
+      "missing_information": []
+    },
+    "access": {
+      "name": "synthetic-direct-history",
+      "version": "1.0",
+      "method": "structured",
+      "provider": null,
+      "model": null,
+      "prompt_version": null,
+      "configuration_digest": null
+    }
+  },
+  "analysis_result": {
+    "patient_id": "9ecf2e55-f8f0-52ed-92eb-95d8776e5162",
+    "as_of": "2026-01-01T00:00:00Z",
+    "observed_since": null,
+    "recorded_before": "2026-01-01T00:00:00Z",
+    "contract_version": "1.0",
+    "validation_scope": "reference_integrity_only",
+    "analysis_id": "d75bd2ad-b19d-5989-9d29-d1823f829c5c",
+    "created_at": "2026-01-02T00:00:00Z",
+    "status": "completed",
+    "input_note_id": null,
+    "findings": [
+      {
+        "finding_type": "fatigue",
+        "description": "SYNTHETIC: Repeated documented fatigue.",
+        "evidence": [
+          {
+            "observation_id": "be68c96e-31f2-5fba-8933-957d5db9acf6",
+            "source_excerpt": "SYNTHETIC: Fatigue documented.",
+            "start_offset": 0,
+            "end_offset": 30
+          },
+          {
+            "observation_id": "ac3c1491-dcc3-5f99-a12a-8a9cf545b96b",
+            "source_excerpt": "SYNTHETIC: Fatigue documented again.",
+            "start_offset": 0,
+            "end_offset": 36
+          }
+        ],
+        "uncertainty": null,
+        "id": "cf5537e1-595c-5ca2-9cb8-af9641543eed",
+        "patient_id": "9ecf2e55-f8f0-52ed-92eb-95d8776e5162",
+        "polarity": "present",
+        "temporal_status": "historical",
+        "missing_information": [],
+        "provenance": {
+          "name": "synthetic-manual-finding-fixture",
+          "version": "1.0",
+          "method": "manual",
+          "provider": null,
+          "model": null,
+          "prompt_version": null,
+          "configuration_digest": null
+        }
+      }
+    ],
+    "computed_features": [
+      {
+        "id": "dc94d227-289d-5ec5-b030-f98d3a6d68d3",
+        "patient_id": "9ecf2e55-f8f0-52ed-92eb-95d8776e5162",
+        "feature_type": "hemoglobin_change",
+        "status": "computed",
+        "value": "-22",
+        "unit": "g/L",
+        "input_units": [
+          "g/L"
+        ],
+        "unit_handling": "preserved",
+        "conversion_method": null,
+        "calculation_method": "latest_minus_baseline",
+        "provenance": {
+          "name": "synthetic-arithmetic-fixture",
+          "version": "1.0",
+          "method": "deterministic",
+          "provider": null,
+          "model": null,
+          "prompt_version": null,
+          "configuration_digest": null
+        },
+        "evidence_observation_ids": [
+          "3de03882-8787-51ab-9934-abe13cd5e816",
+          "5fb925d1-fd4b-52ea-ae70-fc895023b04b"
+        ],
+        "reference_window": {
+          "start": "2020-01-01T00:00:00Z",
+          "end": "2026-01-01T00:00:00Z"
+        },
+        "missing_information": [],
+        "input_coverage": {
+          "status": "complete",
+          "eligible_count": 2,
+          "missing_information": []
+        }
+      }
+    ],
+    "trigger_evaluations": [
+      {
+        "trigger_rule_id": "6c121af0-17d4-5072-840e-bdc25dfb3be0",
+        "trigger_rule_version": "demo-v1",
+        "patient_id": "9ecf2e55-f8f0-52ed-92eb-95d8776e5162",
+        "evaluation_status": "matched",
+        "explanation": "SYNTHETIC demonstration outcome only; not a clinical interpretation.",
+        "supporting_finding_ids": [
+          "cf5537e1-595c-5ca2-9cb8-af9641543eed"
+        ],
+        "supporting_feature_ids": [
+          "dc94d227-289d-5ec5-b030-f98d3a6d68d3"
+        ],
+        "supporting_observation_ids": [
+          "3de03882-8787-51ab-9934-abe13cd5e816",
+          "5fb925d1-fd4b-52ea-ae70-fc895023b04b",
+          "ac3c1491-dcc3-5f99-a12a-8a9cf545b96b",
+          "be68c96e-31f2-5fba-8933-957d5db9acf6"
+        ],
+        "missing_information": [],
+        "requires_clinician_review": true
+      }
+    ],
+    "predictions": [],
+    "source_observations": [
+      {
+        "id": "be68c96e-31f2-5fba-8933-957d5db9acf6",
+        "patient_id": "9ecf2e55-f8f0-52ed-92eb-95d8776e5162",
+        "encounter_id": null,
+        "observation_type": "symptom",
+        "code": null,
+        "text": "SYNTHETIC: Fatigue documented.",
+        "numeric_value": null,
+        "unit": null,
+        "status": "current",
+        "observed_at": "2020-05-01T10:00:00Z",
+        "recorded_at": "2020-05-01T11:00:00Z"
+      },
+      {
+        "id": "ac3c1491-dcc3-5f99-a12a-8a9cf545b96b",
+        "patient_id": "9ecf2e55-f8f0-52ed-92eb-95d8776e5162",
+        "encounter_id": null,
+        "observation_type": "symptom",
+        "code": null,
+        "text": "SYNTHETIC: Fatigue documented again.",
+        "numeric_value": null,
+        "unit": null,
+        "status": "current",
+        "observed_at": "2025-05-01T10:00:00Z",
+        "recorded_at": "2025-05-01T11:00:00Z"
+      },
+      {
+        "id": "3de03882-8787-51ab-9934-abe13cd5e816",
+        "patient_id": "9ecf2e55-f8f0-52ed-92eb-95d8776e5162",
+        "encounter_id": null,
+        "observation_type": "laboratory",
+        "code": "SYNTHETIC-HB",
+        "text": "SYNTHETIC: Hb laboratory report.",
+        "numeric_value": "145",
+        "unit": "g/L",
+        "status": "completed",
+        "observed_at": "2020-05-01T10:00:00Z",
+        "recorded_at": "2020-05-01T11:00:00Z"
+      },
+      {
+        "id": "5fb925d1-fd4b-52ea-ae70-fc895023b04b",
+        "patient_id": "9ecf2e55-f8f0-52ed-92eb-95d8776e5162",
+        "encounter_id": null,
+        "observation_type": "laboratory",
+        "code": "SYNTHETIC-HB",
+        "text": "SYNTHETIC: Hb laboratory report.",
+        "numeric_value": "123",
+        "unit": "g/L",
+        "status": "completed",
+        "observed_at": "2025-05-01T10:00:00Z",
+        "recorded_at": "2025-05-01T11:00:00Z"
+      }
+    ],
+    "metadata": {
+      "pipeline_version": "synthetic-contract-fixture-v1",
+      "components": [
+        {
+          "name": "synthetic-keyword-fixture",
+          "version": "1.0",
+          "method": "keyword",
+          "provider": null,
+          "model": null,
+          "prompt_version": null,
+          "configuration_digest": null
+        },
+        {
+          "name": "synthetic-manual-finding-fixture",
+          "version": "1.0",
+          "method": "manual",
+          "provider": null,
+          "model": null,
+          "prompt_version": null,
+          "configuration_digest": null
+        },
+        {
+          "name": "synthetic-arithmetic-fixture",
+          "version": "1.0",
+          "method": "deterministic",
+          "provider": null,
+          "model": null,
+          "prompt_version": null,
+          "configuration_digest": null
+        }
+      ],
+      "rules": [
+        {
+          "trigger_rule_id": "6c121af0-17d4-5072-840e-bdc25dfb3be0",
+          "version": "demo-v1",
+          "source": "SYNTHETIC_CONTRACT_FIXTURE_NOT_CLINICAL_GUIDANCE",
+          "source_section": "longitudinal"
+        }
+      ],
+      "source_snapshot_digest": "92804a04d2cd5733eb8cbc194ac006133cfba3728c05f9d2ce87462ec3dade75",
+      "evaluation": {
+        "dataset_id": "synthetic-contract-examples",
+        "dataset_version": "1.0",
+        "split": "demo",
+        "input_mode": "C"
+      }
+    },
+    "missing_information": [],
+    "issues": []
+  },
+  "finding_batch": {
+    "patient_id": "9ecf2e55-f8f0-52ed-92eb-95d8776e5162",
+    "as_of": "2026-01-01T00:00:00Z",
+    "observed_since": null,
+    "recorded_before": "2026-01-01T00:00:00Z",
+    "contract_version": "1.0",
+    "status": "complete",
+    "provenance": {
+      "name": "synthetic-manual-finding-fixture",
+      "version": "1.0",
+      "method": "manual",
+      "provider": null,
+      "model": null,
+      "prompt_version": null,
+      "configuration_digest": null
+    },
+    "missing_information": [],
+    "issues": [],
+    "findings": [
+      {
+        "finding_type": "fatigue",
+        "description": "SYNTHETIC: Repeated documented fatigue.",
+        "evidence": [
+          {
+            "observation_id": "be68c96e-31f2-5fba-8933-957d5db9acf6",
+            "source_excerpt": "SYNTHETIC: Fatigue documented.",
+            "start_offset": 0,
+            "end_offset": 30
+          },
+          {
+            "observation_id": "ac3c1491-dcc3-5f99-a12a-8a9cf545b96b",
+            "source_excerpt": "SYNTHETIC: Fatigue documented again.",
+            "start_offset": 0,
+            "end_offset": 36
+          }
+        ],
+        "uncertainty": null,
+        "id": "cf5537e1-595c-5ca2-9cb8-af9641543eed",
+        "patient_id": "9ecf2e55-f8f0-52ed-92eb-95d8776e5162",
+        "polarity": "present",
+        "temporal_status": "historical",
+        "missing_information": [],
+        "provenance": {
+          "name": "synthetic-manual-finding-fixture",
+          "version": "1.0",
+          "method": "manual",
+          "provider": null,
+          "model": null,
+          "prompt_version": null,
+          "configuration_digest": null
+        }
+      }
+    ]
+  },
+  "feature_batch": {
+    "patient_id": "9ecf2e55-f8f0-52ed-92eb-95d8776e5162",
+    "as_of": "2026-01-01T00:00:00Z",
+    "observed_since": null,
+    "recorded_before": "2026-01-01T00:00:00Z",
+    "contract_version": "1.0",
+    "status": "complete",
+    "provenance": {
+      "name": "synthetic-arithmetic-fixture",
+      "version": "1.0",
+      "method": "deterministic",
+      "provider": null,
+      "model": null,
+      "prompt_version": null,
+      "configuration_digest": null
+    },
+    "missing_information": [],
+    "issues": [],
+    "features": [
+      {
+        "id": "dc94d227-289d-5ec5-b030-f98d3a6d68d3",
+        "patient_id": "9ecf2e55-f8f0-52ed-92eb-95d8776e5162",
+        "feature_type": "hemoglobin_change",
+        "status": "computed",
+        "value": "-22",
+        "unit": "g/L",
+        "input_units": [
+          "g/L"
+        ],
+        "unit_handling": "preserved",
+        "conversion_method": null,
+        "calculation_method": "latest_minus_baseline",
+        "provenance": {
+          "name": "synthetic-arithmetic-fixture",
+          "version": "1.0",
+          "method": "deterministic",
+          "provider": null,
+          "model": null,
+          "prompt_version": null,
+          "configuration_digest": null
+        },
+        "evidence_observation_ids": [
+          "3de03882-8787-51ab-9934-abe13cd5e816",
+          "5fb925d1-fd4b-52ea-ae70-fc895023b04b"
+        ],
+        "reference_window": {
+          "start": "2020-01-01T00:00:00Z",
+          "end": "2026-01-01T00:00:00Z"
+        },
+        "missing_information": [],
+        "input_coverage": {
+          "status": "complete",
+          "eligible_count": 2,
+          "missing_information": []
+        }
+      }
+    ]
+  }
+}
