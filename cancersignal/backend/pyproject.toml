@@ -28,3 +28,6 @@ include = ["app*"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 markers = ["integration: requires a migrated PostgreSQL test database"]
+
+[tool.setuptools.package-data]
+"app.db" = ["demo_data/*.json"]

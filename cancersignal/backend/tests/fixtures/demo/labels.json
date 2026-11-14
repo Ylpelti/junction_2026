@@ -1,0 +1,49 @@
+{
+  "notice": "Synthetic scenario properties, not diagnoses or guaranteed pipeline predictions. Never load into clinical observations.",
+  "cases": [
+    {
+      "patient": "laine",
+      "sources": [
+        "laine/2020-09-14/hb",
+        "laine/2022-03-08/hb",
+        "laine/2024-05-21/hb",
+        "laine/2026-08-19/hb"
+      ],
+      "question": "Miten hemoglobiini on muuttunut?",
+      "expectation": "142 → 134 → 124 → 113 g/L; cite dated measurements. Decline alone does not establish iron deficiency or cancer."
+    },
+    {
+      "patient": "nieminen",
+      "sources": [
+        "nieminen/2025-02-18/colonoscopy",
+        "nieminen/2025-06-05/note",
+        "nieminen/2026-10-29/followup"
+      ],
+      "question": "Onko suunniteltu tähystys tehty?",
+      "expectation": "Planned; completion undocumented/uncertain, not proof it never occurred. Include later follow-up evidence."
+    },
+    {
+      "patient": "heikkinen",
+      "sources": [
+        "heikkinen/2022-04-07/note",
+        "heikkinen/2022-06-16/colonoscopy",
+        "heikkinen/2022-09-20/symptoms",
+        "heikkinen/2026-11-12/note"
+      ],
+      "question": "Ovatko vanhat vatsaoireet edelleen aktiivisia?",
+      "expectation": "Document completed investigation and later resolution/negative evidence. Current visit concerns shoulder pain. Historical negative investigation is not lifetime exclusion of cancer."
+    },
+    {
+      "patient": "korhonen",
+      "sources": [
+        "korhonen/2020-01-22/hb",
+        "korhonen/2022-10-06/hb",
+        "korhonen/2024-06-13/hb",
+        "korhonen/2026-09-10/hb",
+        "korhonen/2026-09-10/note"
+      ],
+      "question": "Mitä varoitusmerkkejä historiassa on?",
+      "expectation": "Stable Hb and documented relevant negatives; do not invent unresolved warnings or claim no cancer."
+    }
+  ]
+}

@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session, selectinload
 from app.contracts.clinical_context import SourceObservation
 from app.contracts.common import PatientScope
 from app.contracts.validation import EvidenceValidationError, validate_evidence
-from app.models import AnalysisRun, Observation, PhysicianReviewRequest
+from app.models import AnalysisRun, Observation, PhysicianReviewRequest, AlertDismissal
 from app.models.enums import AnalysisStatus
 from app.schemas.analysis import AnalysisResponse
 from app.schemas.records import PatientRead
@@ -65,6 +65,8 @@ def create_review_request(session: Session, patient_id: UUID, payload: ReviewReq
         AnalysisRun.patient_id == patient_id).with_for_update())
     if run is None:
         raise ServiceError(404, "Analysis not found for this patient.")
+    if session.scalar(select(AlertDismissal.id).where(AlertDismissal.analysis_id == run.id)):
+        raise ServiceError(409, "A dismissed analysis cannot be sent for physician review.")
     analysis = checked_analysis(session, run)
     triggered = [result for result in analysis.trigger_results if result.triggered]
     priority = ("urgent" if any(result.priority == "urgent" for result in triggered)
@@ -78,15 +80,17 @@ def create_review_request(session: Session, patient_id: UUID, payload: ReviewReq
     return result, inserted_id is not None
 
 
-def list_review_requests(session: Session, *, patient_id: UUID | None = None, limit=100, offset=0):
+def list_review_requests(session: Session, *, status="pending", patient_id: UUID | None = None, limit=100, offset=0):
     if patient_id is not None:
         get_patient(session, patient_id)
     statement = select(PhysicianReviewRequest).join(PhysicianReviewRequest.analysis_run).where(
-        PhysicianReviewRequest.status == "pending", AnalysisRun.status == AnalysisStatus.COMPLETED,
+        AnalysisRun.status == AnalysisStatus.COMPLETED,
         AnalysisRun.details["error_code"].as_string().is_(None),
         AnalysisRun.details["input_observation_id"].as_string().is_not(None),
         AnalysisRun.details["cutoff"].as_string().is_not(None),
     ).options(selectinload(PhysicianReviewRequest.patient), selectinload(PhysicianReviewRequest.analysis_run))
+    if status != "all":
+        statement = statement.where(PhysicianReviewRequest.status == status)
     if patient_id is not None:
         statement = statement.where(PhysicianReviewRequest.patient_id == patient_id)
     # Server priority first, FIFO within each priority, UUID for deterministic ties.

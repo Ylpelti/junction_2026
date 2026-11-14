@@ -17,7 +17,7 @@ class ReviewRequestRead(Record):
     id: UUID
     patient_id: UUID
     analysis_id: UUID
-    status: Literal["pending"]
+    status: Literal["pending", "reviewed"]
     priority: Literal["urgent", "review", "normal"]
     created_at: AwareDatetime
     submitted_by: str | None

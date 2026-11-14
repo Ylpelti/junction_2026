@@ -22,10 +22,10 @@ def submit_review_request(patient_id: UUID, payload: ReviewRequestCreate, respon
 
 
 @router.get("/review-requests", response_model=list[ReviewRequestResponse])
-def review_queue(status: Literal["pending"] = "pending", patient_id: UUID | None = None,
+def review_queue(status: Literal["pending", "reviewed", "all"] = "pending", patient_id: UUID | None = None,
                  limit: int = Query(100, ge=1, le=200), offset: int = Query(0, ge=0),
                  session: Session = Depends(get_session)):
-    return review_service.list_review_requests(session, patient_id=patient_id, limit=limit, offset=offset)
+    return review_service.list_review_requests(session, status=status, patient_id=patient_id, limit=limit, offset=offset)
 
 
 @router.get("/review-requests/{request_id}", response_model=ReviewRequestResponse)
