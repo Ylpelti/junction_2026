@@ -2,21 +2,26 @@
 
 ## Project Context
 
-We are a team of four building **CancerSignal**, a prototype during a 48-hour hackathon.
+We are a team of three building **CancerSignal**, a prototype during a 48-hour hackathon.
 
 Our goal is to create a compelling, functional MVP that solves a real problem and can be demonstrated reliably to judges.
 
 **Challenge:** AstraZeneca — Equitable and Effective Cancer Care in Finland.
 
-**Solution:** AI-assisted clinical decision support to reduce delays in primary healthcare. The system uses RAG and LLMs to analyze longitudinal patient records, identify potentially overlooked cancer-related findings, and provide evidence with direct references to historical clinical events. Physicians review findings and determine further actions. A simulation explores potential improvements in patient flow and healthcare capacity.
+**Solution:** AI-assisted clinical decision support to reduce delays in primary healthcare. When a nurse enters a new note, the system retrieves the same patient's earlier notes and lab results, identifies potentially overlooked findings suggestive of colorectal cancer, and shows evidence with direct references to the source notes and labs. A physician reviews the finding and decides on further action. A simulation compares patient flow before and after.
 
-**Intended tech stack:**
+**Scope (MVP):** colorectal cancer only. Lung cancer only if time permits.
+
+**Tech stack:**
 - Frontend: Next.js, React, TypeScript, Tailwind CSS
 - Backend: Python, FastAPI, Pydantic
 - Database: PostgreSQL + pgvector, Docker Compose
-- AI: Verda/OpenAI-compatible LLM API, hybrid RAG, embeddings
+- AI: Verda/OpenAI-compatible LLM API with structured (JSON schema) output, hybrid RAG, embeddings
+- Retrieval: always filter by patient ID and date (before time t) before ranking
 - Optimization & simulation: OR-Tools, SimPy
-- Data: Synthetic patient records only
+- Data: synthetic patient records only
+
+Out of scope for the MVP: own ML risk model, EHR integration, authentication.
 
 Priorities:
 1. Demonstrate the core value proposition.
@@ -24,6 +29,48 @@ Priorities:
 3. Maintain a clear and intuitive user experience.
 4. Keep the implementation simple and reliable.
 5. Add extra features only when time permits.
+
+## Product Rules (non-negotiable)
+
+These rules define the product. Do not change them without team agreement.
+
+1. **The LLM never decides risk.** The LLM only (a) extracts facts from text into a fixed JSON schema and (b) writes the explanation and referral draft. Risk level comes only from deterministic Python rules in `rules.csv`.
+2. **Every rule has a source.** Each row in `rules.csv` has `lahde` and `lahde_kohta` (e.g. NICE NG12 / DG56 section). No rule without a source.
+3. **Every finding is traceable.** Each extracted symptom carries a verbatim quote and the source note ID; each lab-based finding carries the lab record ID. The explanation may only cite rule IDs and record IDs that exist in the pipeline output; the backend rejects any other reference.
+4. **No data after time t.** History retrieval only returns notes and labs dated before the note being analysed. Add a test for this.
+5. **Negations and uncertainty are explicit fields** ("ei verta ulosteessa" must not trigger a rule).
+6. **Never output "no cancer".** No match means "no signals identified".
+7. **Humans decide.** The system suggests a physician review; it never makes a diagnosis or sends a referral.
+8. **Numbers in Python, not in the LLM.** Lab values, trends and dates are computed in code.
+
+## Pipeline and Ownership
+
+| Step | File | Owner |
+| --- | --- | --- |
+| Symptom codes | `backend/app/symptoms.py` | Mathematician |
+| Rule table + engine | `backend/data/rules.csv`, `backend/app/rules.py` | Mathematician |
+| Synthetic patients + ground truth | `backend/data/patients/` | Niklas (with mathematician) |
+| 1. Extraction (LLM) | `backend/app/extract.py` | Coder |
+| 2. History retrieval | `backend/app/history.py` | Coder |
+| 3. Temporal reconciliation | `backend/app/reconcile.py` | Coder |
+| 4. Triggers | uses `rules.py` | Mathematician |
+| 5. Explanation + reference check (LLM) | `backend/app/explain.py` | Coder |
+| Nurse dashboard | `frontend/` | Coder |
+| Evaluation A/B/C | `backend/eval/evaluate.py` | Mathematician |
+| Simulation | `backend/sim/simulate.py` | Mathematician |
+
+Data contracts (patient record, extraction JSON, rules.csv columns, API responses) are defined in `docs/contracts.md`. Read it before touching any interface. Change it only with team agreement.
+
+## Evaluation
+
+The key result is a comparison on synthetic held-out patients:
+- **A:** latest nurse note only
+- **B:** latest note + structured labs
+- **C:** CancerSignal (note + history retrieval + reconciliation + rules)
+
+Metrics: recall, precision, false alarms per 100 patients, grounding accuracy (does each finding point to the correct source record).
+
+Ground-truth labels are defined from the rule criteria by a human, not generated by the same code that produces the data. Do not tune rules on the held-out set. Report results as prototype test results, not clinical validation.
 
 ## Development Principles
 
@@ -64,7 +111,7 @@ Never claim that code has been tested unless the relevant checks were actually e
 
 Multiple developers may use Claude Code and Codex simultaneously.
 
-- Respect assigned tasks and file ownership.
+- Respect assigned tasks and file ownership (see Pipeline and Ownership).
 - Use separate branches or worktrees for parallel work.
 - Never overwrite another developer's changes.
 - Do not modify shared APIs or schemas without coordination.
@@ -78,10 +125,11 @@ Multiple developers may use Claude Code and Codex simultaneously.
 - Prioritize the critical end-to-end user journey.
 - Verify integrations between components.
 - Run relevant tests, type checks, and builds.
-- Add focused tests for important functionality.
+- Add focused tests for important functionality, at minimum: rule engine, date cutoff, reference check.
 - Use browser-based verification when available.
 - Fix critical bugs before adding optional features.
 - Clearly report any unverified functionality.
+- Cache LLM responses for the demo patients so the demo works without network.
 
 ## Security
 
@@ -134,7 +182,7 @@ type check and a backend smoke check. There is no root build script or monorepo
 task runner. Database, Docker Compose, and external-service configurations are
 not implemented in the current scaffold.
 
-Core demo flow: Nurse enters clinical note → AI retrieves patient history → evidence-grounded findings with source references → physician review → optional healthcare pathway simulation.
+Core demo flow: Nurse enters clinical note → system retrieves the patient's earlier notes and labs (before time t) → rules identify signals → evidence-grounded findings with source references → physician review → optional before/after pathway simulation.
 
 Architecture constraints: FastAPI backend, modular components, synthetic patient data, traceable AI findings. No autonomous diagnosis or referral decisions.
 
