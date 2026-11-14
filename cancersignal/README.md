@@ -87,7 +87,7 @@ documented local/demo fallbacks; see [backend-todo.md](docs/backend-todo.md).
 
 The repository-root `render.yaml` provisions the Next.js frontend, FastAPI backend
 and PostgreSQL database as one Render Blueprint. The frontend proxies same-origin
-API calls to FastAPI over Render's private network. Database migrations and the
+API calls to the FastAPI service URL. Database migrations and the
 synthetic patient/rule seeds run when the API service starts. To publish, connect
 the GitHub repository to Render, create a Blueprint from `render.yaml`, review
 the three resources and deploy. No LLM provider key is required; structured demo

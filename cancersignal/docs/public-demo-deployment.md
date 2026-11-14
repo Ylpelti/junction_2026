@@ -7,8 +7,8 @@ This repository includes a Render Blueprint at the repository root. It creates:
 - `cancersignal-demo-db`: PostgreSQL for synthetic demo records.
 
 The browser sends `/api/v1/*` requests to the same public frontend origin. Next.js
-rewrites those requests to FastAPI over Render's private network. This keeps the
-backend hostname private and avoids browser CORS configuration.
+rewrites those requests to the public FastAPI service URL. This keeps browser
+requests same-origin and avoids browser CORS configuration.
 
 ## Publish
 

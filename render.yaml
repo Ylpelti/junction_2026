@@ -50,11 +50,8 @@ services:
     envVars:
       - key: NODE_VERSION
         value: 22.14.0
-      - key: CANCERSIGNAL_API_INTERNAL_HOSTPORT
-        fromService:
-          name: cancersignal-api
-          type: web
-          property: hostport
+      - key: NEXT_PUBLIC_API_URL
+        value: https://cancersignal-api.onrender.com
 
 databases:
   - name: cancersignal-demo-db
