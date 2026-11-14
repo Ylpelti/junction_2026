@@ -1,0 +1,190 @@
+{
+  "context": {
+    "patient_id": "10000000-0000-4000-8000-000000000001",
+    "as_of": "2026-11-14T10:00:00Z",
+    "observed_since": null,
+    "recorded_before": "2026-11-14T10:00:00Z",
+    "contract_version": "1.0",
+    "query": "colorectal symptoms and investigations",
+    "retrieved_observations": [
+      {
+        "source": {
+          "id": "20000000-0000-4000-8000-000000000001",
+          "patient_id": "10000000-0000-4000-8000-000000000001",
+          "encounter_id": null,
+          "observation_type": "clinical_note",
+          "code": null,
+          "text": "Verta ulosteessa. Kolonoskopia suunnitteilla.",
+          "numeric_value": null,
+          "unit": null,
+          "status": null,
+          "observed_at": "2026-10-01T10:00:00Z",
+          "recorded_at": "2026-10-01T10:00:00Z"
+        },
+        "relevance": null,
+        "retrieval_method": null
+      },
+      {
+        "source": {
+          "id": "20000000-0000-4000-8000-000000000002",
+          "patient_id": "10000000-0000-4000-8000-000000000001",
+          "encounter_id": null,
+          "observation_type": "clinical_note",
+          "code": null,
+          "text": "Kolonoskopia tehty. Vatsakipu loppunut.",
+          "numeric_value": null,
+          "unit": null,
+          "status": null,
+          "observed_at": "2026-10-20T10:00:00Z",
+          "recorded_at": "2026-10-20T10:00:00Z"
+        },
+        "relevance": null,
+        "retrieval_method": null
+      }
+    ],
+    "retrieval": {
+      "name": "synthetic-fixture",
+      "version": "1",
+      "method": "hybrid",
+      "provider": null,
+      "model": null,
+      "prompt_version": null,
+      "configuration_digest": null
+    },
+    "coverage": {
+      "status": "complete",
+      "eligible_count": 2,
+      "missing_information": []
+    },
+    "generated_at": null
+  },
+  "input_note": {
+    "id": "20000000-0000-4000-8000-000000000003",
+    "patient_id": "10000000-0000-4000-8000-000000000001",
+    "encounter_id": null,
+    "observation_type": "clinical_note",
+    "code": null,
+    "text": "Ei verta ulosteessa nyt. Potilas kertoo, ettei kolonoskopiaa tehty. Tahaton laihtuminen jatkuu.",
+    "numeric_value": null,
+    "unit": null,
+    "status": null,
+    "observed_at": "2026-11-14T10:00:00Z",
+    "recorded_at": "2026-11-14T10:00:00Z"
+  },
+  "synthetic_response": {
+    "findings": [
+      {
+        "finding_type": "rectal_bleeding",
+        "description": "Bleeding explicitly denied in the current note.",
+        "polarity": "absent",
+        "temporal_status": "current",
+        "evidence": [
+          {
+            "observation_id": "20000000-0000-4000-8000-000000000003",
+            "source_excerpt": "Ei verta ulosteessa nyt.",
+            "start_offset": 0,
+            "end_offset": 24
+          }
+        ],
+        "uncertainty": null,
+        "missing_information": []
+      },
+      {
+        "finding_type": "rectal_bleeding",
+        "description": "Bleeding documented in the earlier note.",
+        "polarity": "present",
+        "temporal_status": "historical",
+        "evidence": [
+          {
+            "observation_id": "20000000-0000-4000-8000-000000000001",
+            "source_excerpt": "Verta ulosteessa.",
+            "start_offset": 0,
+            "end_offset": 17
+          }
+        ],
+        "uncertainty": null,
+        "missing_information": []
+      },
+      {
+        "finding_type": "abdominal_pain",
+        "description": "The earlier note explicitly states the pain resolved.",
+        "polarity": "present",
+        "temporal_status": "resolved",
+        "evidence": [
+          {
+            "observation_id": "20000000-0000-4000-8000-000000000002",
+            "source_excerpt": "Vatsakipu loppunut.",
+            "start_offset": 20,
+            "end_offset": 39
+          }
+        ],
+        "uncertainty": null,
+        "missing_information": []
+      },
+      {
+        "finding_type": "weight_loss",
+        "description": "Continuing unintentional weight loss documented in the current note.",
+        "polarity": "present",
+        "temporal_status": "current",
+        "evidence": [
+          {
+            "observation_id": "20000000-0000-4000-8000-000000000003",
+            "source_excerpt": "Tahaton laihtuminen jatkuu.",
+            "start_offset": 68,
+            "end_offset": 95
+          }
+        ],
+        "uncertainty": null,
+        "missing_information": []
+      },
+      {
+        "finding_type": "investigation_planned",
+        "description": "A colonoscopy was planned in the earlier note.",
+        "polarity": "present",
+        "temporal_status": "historical",
+        "evidence": [
+          {
+            "observation_id": "20000000-0000-4000-8000-000000000001",
+            "source_excerpt": "Kolonoskopia suunnitteilla.",
+            "start_offset": 18,
+            "end_offset": 45
+          }
+        ],
+        "uncertainty": null,
+        "missing_information": []
+      },
+      {
+        "finding_type": "investigation_completed",
+        "description": "Completion was documented in the earlier record, but is disputed by the current account.",
+        "polarity": "uncertain",
+        "temporal_status": "historical",
+        "evidence": [
+          {
+            "observation_id": "20000000-0000-4000-8000-000000000002",
+            "source_excerpt": "Kolonoskopia tehty.",
+            "start_offset": 0,
+            "end_offset": 19
+          },
+          {
+            "observation_id": "20000000-0000-4000-8000-000000000003",
+            "source_excerpt": "Potilas kertoo, ettei kolonoskopiaa tehty.",
+            "start_offset": 25,
+            "end_offset": 67
+          }
+        ],
+        "uncertainty": "Records conflict about completion; the actual investigation status needs review.",
+        "missing_information": [
+          {
+            "code": "contradictory_records",
+            "description": "Colonoscopy completion is disputed; no result is provided in this fixture.",
+            "observation_ids": [
+              "20000000-0000-4000-8000-000000000002",
+              "20000000-0000-4000-8000-000000000003"
+            ]
+          }
+        ]
+      }
+    ],
+    "missing_information": []
+  }
+}

@@ -128,6 +128,7 @@ export const PROTOTYPE_PATIENTS: PrototypePatient[] = [
             { id: "NOTE-0905", label: "NOTE-0905" },
           ],
           rule: "SUO-01",
+          priority: "review",
           ruleSrc: "NICE DG56 §1.1: offer FIT",
         },
         {
@@ -136,6 +137,7 @@ export const PROTOTYPE_PATIENTS: PrototypePatient[] = [
           detail: "Recorded 2.9. lasting about 3 weeks, with lower abdominal pain. Not mentioned as resolved.",
           sources: [{ id: "NOTE-0902", label: "NOTE-0902" }],
           rule: "SUO-03",
+          priority: "review",
           ruleSrc: "NICE DG56 §1.1: offer FIT",
         },
       ],
@@ -186,6 +188,7 @@ export const PROTOTYPE_PATIENTS: PrototypePatient[] = [
           detail: "FIT 48 µg Hb/g on 30.10., above the 10 µg/g threshold. No physician review or referral recorded since.",
           sources: [{ id: "LAB-1030", label: "LAB-1030" }],
           rule: "SUO-06",
+          priority: "urgent",
           ruleSrc: "NICE DG56 §1.2: suspected cancer pathway referral",
         },
         {
@@ -197,6 +200,7 @@ export const PROTOTYPE_PATIENTS: PrototypePatient[] = [
             { id: "NOTE-1022", label: "NOTE-1022" },
           ],
           rule: "SUO-04",
+          priority: "review",
           ruleSrc: "NICE DG56 §1.1: offer FIT",
         },
       ],

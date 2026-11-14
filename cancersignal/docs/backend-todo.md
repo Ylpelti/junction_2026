@@ -38,8 +38,13 @@ How the frontend reads an analysis:
 These must be done before the real backend can show any alert.
 
 1. ~~**No enabled rules in the seed**~~ **Done** (`feat/colorectal-rules`). `python -m app.db.seed` now also inserts the enabled colorectal rules SUO-01…SUO-10 ([rulebook-colorectal.md](rulebook-colorectal.md)). Lab-derived `anaemia` / `iron_deficiency_anaemia` / `fit_result` findings are computed in Python, so the seeded patients with low Hb can already trigger SUO-07 at age 60+.
-2. **Free-text notes are not read** (owner: Coder, `extract.py`). The `structured-source-demo-v1` extractor only copies coded symptom and lab records, so the nurse's note text can never trigger a rule. Needs LLM extraction into the shared vocabulary in `app/reasoning/vocabulary.py` (`rectal_bleeding`, `change_in_bowel_habit`, `abdominal_pain`, `weight_loss`, `abdominal_mass`, `rectal_mass`), with verbatim quotes and explicit negation.
-3. ~~**No urgency level**~~ **Done** in the backend. `TriggerResponse.priority` is `"urgent" | "review"`, set by the rule (SUO-08 and SUO-09 are urgent). Remaining: the frontend mapper still maps every triggered result to `review` and should use the highest `priority`.
+2. ~~**Free-text notes are not read**~~ **Wired, needs configuration.** LLM note extraction (`app/extraction`) is connected through `app/services/llm_extraction.py` when `CANCERSIGNAL_EXTRACTION=llm`. Still to do:
+   - set the Verda model ID and key;
+   - record cached responses for the demo notes, so the demo works offline;
+   - check live extraction quality on the demo patients.
+
+   The default is still `off`.
+3. ~~**No urgency level**~~ **Done.** `TriggerResponse.priority` is `"urgent" | "review"`, set by the rule (SUO-08 and SUO-09 are urgent). The frontend (`feat/frontend-priority`) shows a red urgent alert when any triggered rule is `urgent`, lists urgent findings first with an "Urgent" label, and treats a missing priority as `review`.
 4. **Demo patients missing** (owner: Niklas + Mathematician). The prototype patients should be seed data with ground-truth labels, named `SYNTHETIC …` because the API requires that prefix. They are Korhonen (none), Laine (review), Nieminen (urgent) and Heikkinen (none, already investigated).
 
 ## Missing data fields
@@ -56,11 +61,17 @@ The UI shows these from local fallback data or leaves them empty.
 
 ## Missing endpoints
 
-These run only in browser state (`USE_LOCAL_WORKFLOW`) and are lost on reload.
+The [physician review handoff API](physician-review-api.md) now persists
+submissions and exposes the pending queue. The frontend still uses browser state
+until its developer connects these endpoints; see the exact integration mapping
+in that document. Frontend implementation was not changed in this task.
 
-- Send an alert to the physician, with the evidence and a referral draft.
+- **Backend ready:** send an existing completed analysis with references to its
+  findings/evidence using `POST /patients/{id}/review-requests`. A referral draft
+  is not created by this workflow.
 - Dismiss an alert with one of four reasons, logged with user and time.
-- The physician consultation queue, sorted urgent → review → routine, then by time received.
+- **Backend ready:** `GET /review-requests`, sorted urgent → review → routine
+  (`normal`), then oldest received first; detail is `GET /review-requests/{id}`.
 - The physician's decision: order FIT / refer to specialist care / no action / acknowledge.
 
 ## Other notes

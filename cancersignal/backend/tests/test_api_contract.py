@@ -11,7 +11,9 @@ def test_docs_and_openapi_expose_public_routes_only():
     assert set(paths) == {"/health", "/api/v1/patients", "/api/v1/patients/{patient_id}",
         "/api/v1/patients/{patient_id}/encounters", "/api/v1/patients/{patient_id}/observations",
         "/api/v1/observations/{observation_id}", "/api/v1/patients/{patient_id}/timeline",
-        "/api/v1/patients/{patient_id}/analyses", "/api/v1/analyses/{analysis_id}"}
+        "/api/v1/patients/{patient_id}/analyses", "/api/v1/analyses/{analysis_id}",
+        "/api/v1/patients/{patient_id}/review-requests", "/api/v1/review-requests",
+        "/api/v1/review-requests/{request_id}"}
     assert "post" in paths["/api/v1/patients/{patient_id}/analyses"]
     assert "post" in paths["/api/v1/patients"]
     assert "AnalysisResponse" in schema["components"]["schemas"]

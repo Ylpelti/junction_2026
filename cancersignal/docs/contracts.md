@@ -27,6 +27,9 @@ All paths below use the prefix `/api/v1`. `/health` remains unchanged.
 | POST | `/patients/{patient_id}/analyses` | `AnalysisRequest` → `AnalysisResponse` (201) |
 | GET | `/patients/{patient_id}/analyses` | Saved `AnalysisResponse[]`, newest first |
 | GET | `/analyses/{analysis_id}` | Saved `AnalysisResponse` |
+| POST | `/patients/{patient_id}/review-requests` | `ReviewRequestCreate` → `ReviewRequestResponse` (201 new; 200 duplicate) |
+| GET | `/review-requests` | Pending `ReviewRequestResponse[]`, server-priority/FIFO order |
+| GET | `/review-requests/{request_id}` | `ReviewRequestResponse` with existing patient and analysis schemas |
 
 Lists accept `limit` (default 100, max 200) and `offset` (default 0). Observations
 and timeline accept `observation_type`, exact `code`, inclusive `date_from` and
@@ -51,6 +54,14 @@ Reads return 200, creates 201, missing resources 404, invalid input/ownership 42
 ID/constraint conflicts 409, and database failures 503. Errors have `detail`;
 FastAPI validation errors use a structured detail list. A foreign patient's input
 note returns 404. Driver/provider errors and clinical text are not exposed in errors.
+
+The additive [physician review handoff API](physician-review-api.md) persists
+one request per completed analysis. Only the nurse's analysis ID and optional
+demo submitting identity are accepted; priority comes from saved deterministic
+rule results. Failed/incomplete runs and invalid evidence cannot enter the
+actionable queue. The existing analysis/patient response contracts are unchanged.
+See the linked document for eligibility, idempotency, ordering, error responses
+and exact frontend integration instructions.
 
 ## Analysis request and response
 
@@ -127,7 +138,15 @@ information. The default `structured-source-demo-v1` extractor copies the latest
 explicitly coded symptom/lab per type/code and its source state/quote. Completed
 prior labs are historical measurements; planned/unknown states remain uncertain.
 It reports that free-text extraction is unavailable and never infers a diagnosis
-or lab threshold. No LLM or numerical trend calculation is implemented.
+or lab threshold.
+
+With `CANCERSIGNAL_EXTRACTION=llm`, `get_analysis_pipeline()` uses
+`services/llm_extraction.LlmNoteExtractor` instead. It runs the structured extractor
+first and then adds LLM note findings from `app/extraction` (shared vocabulary,
+explicit negation, verbatim quotes). A failed or misconfigured extraction stores
+the run as `failed` with error code `clinical_extraction_<code>`. Live calls require
+`CANCERSIGNAL_EXTRACTION_ALLOW_LIVE=true`; otherwise only cached responses are used.
+See `backend/app/extraction/README.md`. No numerical trend calculation is implemented.
 
 The orchestrator rechecks retrieved records against PostgreSQL, validates evidence
 ownership and time scope, verifies quotes and offset bounds, and matches numeric

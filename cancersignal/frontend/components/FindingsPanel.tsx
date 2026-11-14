@@ -74,6 +74,11 @@ export function FindingsPanel({ s, on }: { s: NurseState; on: NurseHandlers }) {
             <div className="flex items-center gap-2">
               <span className="rounded-md bg-badge-bg px-2 py-0.5 text-[11.5px] font-bold text-badge-fg">{f.id}</span>
               <span className="text-[14.5px] font-semibold">{f.title}</span>
+              {f.priority === "urgent" && (
+                <span className="ml-auto shrink-0 rounded-md border border-red-line bg-red-soft px-2 py-0.5 text-[11.5px] font-bold text-red-ink uppercase">
+                  Urgent
+                </span>
+              )}
             </div>
             <span className="text-[13.5px] leading-[1.45] text-mute">{f.detail}</span>
             <div className="flex flex-wrap items-center gap-1.5">

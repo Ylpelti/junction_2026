@@ -227,3 +227,34 @@ def test_invalid_evaluator_rule_references_are_rejected(client):
     assert result["status"] == "failed"
     assert result["provenance"]["error_code"] == "invalid_trigger_rule_references"
     assert not result["trigger_results"] and not result["findings"]
+
+
+def test_llm_note_extraction_triggers_a_sourced_rule(client, db_session):
+    """End-to-end with a hand-authored fixture response (no network): note text -> finding -> SUO-06."""
+    import json
+    from app.db.seed_rules import seed_rules
+    from app.extraction.providers import FixtureProvider
+    from app.extraction.service import ClinicalExtractor
+    from app.rag.extraction import StructuredSourceExtractor
+    from app.services.llm_extraction import LlmNoteExtractor
+
+    seed_rules(db_session)
+    db_session.flush()
+    note_id = str(uuid4())
+    text = "SYNTHETIC: verta ulosteessa viime viikolla."
+    fixture = json.dumps({"missing_information": [], "findings": [{
+        "finding_type": "rectal_bleeding", "description": "SYNTHETIC rectal bleeding reported.",
+        "polarity": "present", "temporal_status": "current", "uncertainty": None, "missing_information": [],
+        "evidence": [{"observation_id": note_id, "source_excerpt": "verta ulosteessa", "start_offset": None, "end_offset": None}],
+    }]})
+    extractor = LlmNoteExtractor(StructuredSourceExtractor(), clinical=ClinicalExtractor(FixtureProvider(fixture)))
+    pipeline = replace(get_analysis_pipeline(), extractor=extractor)
+    app.dependency_overrides[get_analysis_pipeline] = lambda: pipeline
+    result = client.post(f"{PREFIX}/patients/{PATIENT}/analyses", json={"note": note_payload(id=note_id, text=text)}).json()
+    assert result["status"] == "completed", result
+    assert result["provenance"]["patient_facts"]["age_years"] >= 50
+    triggered = {row["rule_name"].split(":")[0]: row for row in result["trigger_results"] if row["triggered"]}
+    assert "SUO-06" in triggered
+    assert note_id in triggered["SUO-06"]["evidence_observation_ids"]
+    assert triggered["SUO-06"]["priority"] == "review"
+    assert any(row["id"] == note_id for row in result["source_observations"])

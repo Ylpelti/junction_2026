@@ -1,8 +1,11 @@
+from functools import lru_cache
+from pathlib import Path
 from typing import Annotated
 
 from fastapi import Query
 from pydantic import AwareDatetime
 
+from app.core.config import get_pipeline_settings
 from app.models.enums import ObservationType
 from app.rag.extraction import StructuredSourceExtractor
 from app.rag.retrieval import retrieve_context
@@ -10,8 +13,22 @@ from app.reasoning.interfaces import AnalysisPipeline
 from app.reasoning.trigger_engine import evaluate_triggers
 
 
+@lru_cache
+def build_extractor(extraction: str, env_file: Path | None, allow_live: bool, cache_dir: Path | None):
+    """One extractor per configuration, reused across requests."""
+    if extraction == "off":
+        return StructuredSourceExtractor()
+    # Imported only when enabled, so the default API never loads the LLM provider code.
+    from app.services.llm_extraction import LlmNoteExtractor, build_from_settings
+    return LlmNoteExtractor(StructuredSourceExtractor(),
+                            build_clinical=build_from_settings(env_file, allow_live, cache_dir))
+
+
 def get_analysis_pipeline() -> AnalysisPipeline:
-    return AnalysisPipeline(retrieve=retrieve_context, extractor=StructuredSourceExtractor(), evaluate=evaluate_triggers)
+    settings = get_pipeline_settings()
+    extractor = build_extractor(settings.extraction, settings.extraction_env_file,
+                                settings.extraction_allow_live, settings.extraction_cache_dir)
+    return AnalysisPipeline(retrieve=retrieve_context, extractor=extractor, evaluate=evaluate_triggers)
 
 
 def observation_filters(observation_type: ObservationType | None = None,
