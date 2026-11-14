@@ -1,0 +1,9 @@
+{
+  "source_commit": "12200d7",
+  "source_file": "cancersignal/backend/eval/cases.json",
+  "source_sha256": "078a1497671adffc2004e14777b2d475ba009f96658d4c1665013bc6a0e37e3e",
+  "dataset_version": "eval-cases-v1",
+  "limitation": "Synthetic, fictional patients only. Expected labels written by hand from docs/rulebook-colorectal.md, not produced by the engine.",
+  "coded_answers_excluded": true,
+  "labels_separate": true
+}

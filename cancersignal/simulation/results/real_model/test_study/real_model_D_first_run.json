@@ -1,0 +1,4241 @@
+{
+  "scenario": "optimized",
+  "model": "D",
+  "seed": 1001,
+  "capacities": {
+    "nurse": 2,
+    "gp": 2,
+    "diagnostic": 2,
+    "specialist": 1
+  },
+  "patients": [
+    {
+      "patient_id": "db41f561-4115-5032-a3f9-e0a82279b0db",
+      "arrival": 35.75,
+      "relevant": true,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "test",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": true,
+      "baseline_referral": true,
+      "baseline_plan": "discharge",
+      "symptom_change": false,
+      "change_investigation": true,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": false,
+      "repeat_duplicate_evidence": false,
+      "signal": true,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "retain",
+      "selective_review_skipped": false,
+      "real_predictions_used": [
+        {
+          "decision_id": "initial",
+          "time": 35.907624480938864,
+          "input_sha256": "afdfdb15cc13f9ffbeb228fa69975103ccaece9ce8b4623b3d69afaf6243292e",
+          "response_sha256": "c7f9a025994fe6ccadce1f9eb85da9b0fef0796d7cd70761efe61fdc181031fb",
+          "recommendation": {
+            "review_signal": true,
+            "urgency": "review",
+            "recommended_actions": [
+              "Physician review: consider FIT"
+            ],
+            "matched_rule_ids": [
+              "efb5f89f-5734-5ba5-971a-46ec6eb464a9"
+            ],
+            "model_predictions": [
+              {
+                "patient_id": "db41f561-4115-5032-a3f9-e0a82279b0db",
+                "model_name": "QCancer-2013",
+                "model_version": "QCancer-2013-open-source",
+                "as_of": "2026-11-14T09:00:00Z",
+                "prediction_type": "current_undiagnosed_cancer_risk",
+                "value": {
+                  "status": "insufficient_data",
+                  "population": "UK primary care; model ages 25\u201389",
+                  "limitations": [
+                    "QCancer-2013 was developed for UK primary care; it has not been calibrated or clinically validated for Finland.",
+                    "The Junction synthetic demo uses Townsend score 0 as a placeholder, not a Finnish deprivation score.",
+                    "This is a prototype estimate, not a diagnosis, referral decision, or Finnish clinical recommendation."
+                  ],
+                  "horizon_years": 2,
+                  "source_notice": "The initial version of this file, to be found at http://svn.clinrisk.co.uk/opensource/qcancer, faithfully implements QCancer-2013. We have released this code under the GNU Affero General Public License to enable others to implement the algorithm faithfully. However, the nature of the GNU Affero Public License is such that we cannot prevent, for example, someone accidentally altering the coefficients, getting the inputs wrong, or just poor programming. We stress, therefore, that it is the responsibility of the end user to check that the source that they receive produces the same results as the original code posted at http://svn.clinrisk.co.uk/opensource/qcancer. Inaccurate implementations of risk scores can lead to wrong patients being given the wrong treatment.",
+                  "invalid_inputs": [],
+                  "missing_inputs": [
+                    "bmi",
+                    "alcohol_cat4",
+                    "smoke_cat",
+                    "binary_factors.b_chronicpan",
+                    "binary_factors.b_copd",
+                    "binary_factors.b_type2",
+                    "binary_factors.fh_gicancer",
+                    "binary_factors.fh_prostatecancer",
+                    "binary_factors.new_abdodist",
+                    "binary_factors.new_abdopain",
+                    "binary_factors.new_appetiteloss",
+                    "binary_factors.new_dysphagia",
+                    "binary_factors.new_gibleed",
+                    "binary_factors.new_haematuria",
+                    "binary_factors.new_haemoptysis",
+                    "binary_factors.new_heartburn",
+                    "binary_factors.new_indigestion",
+                    "binary_factors.new_necklump",
+                    "binary_factors.new_nightsweats",
+                    "binary_factors.new_rectalbleed",
+                    "binary_factors.new_testespain",
+                    "binary_factors.new_testicularlump",
+                    "binary_factors.new_vte",
+                    "binary_factors.new_weightloss",
+                    "binary_factors.s1_bowelchange",
+                    "binary_factors.s1_constipation",
+                    "binary_factors.s1_cough",
+                    "binary_factors.s1_impotence",
+                    "binary_factors.s1_nocturia",
+                    "binary_factors.s1_urinaryfreq",
+                    "binary_factors.s1_urinaryretention"
+                  ],
+                  "any_cancer_risk_percent": null,
+                  "cancer_site_risks_percent": null,
+                  "colorectal_cancer_risk_percent": null
+                },
+                "evidence_observation_ids": [
+                  "584c2a6a-7e7b-53fc-8d38-8c24db685a62"
+                ],
+                "uncertainty": "QCancer-2013 did not calculate a risk because required inputs are missing: bmi, alcohol_cat4, smoke_cat, binary_factors.b_chronicpan, binary_factors.b_copd, binary_factors.b_type2, binary_factors.fh_gicancer, binary_factors.fh_prostatecancer, binary_factors.new_abdodist, binary_factors.new_abdopain, binary_factors.new_appetiteloss, binary_factors.new_dysphagia, binary_factors.new_gibleed, binary_factors.new_haematuria, binary_factors.new_haemoptysis, binary_factors.new_heartburn, binary_factors.new_indigestion, binary_factors.new_necklump, binary_factors.new_nightsweats, binary_factors.new_rectalbleed, binary_factors.new_testespain, binary_factors.new_testicularlump, binary_factors.new_vte, binary_factors.new_weightloss, binary_factors.s1_bowelchange, binary_factors.s1_constipation, binary_factors.s1_cough, binary_factors.s1_impotence, binary_factors.s1_nocturia, binary_factors.s1_urinaryfreq, binary_factors.s1_urinaryretention"
+              }
+            ],
+            "missing_information": [
+              "Demonstration output is not a diagnosis or clinically validated risk assessment.",
+              "The supplied records do not document rectal bleeding, change in bowel habit, abdominal pain, weight loss, abdominal or rectal mass, or a related investigation plan or completion.",
+              "Source IDs, quotes, offsets and patient/time scope validated; clinical interpretation and completeness require review. (clinical_interpretation_not_verified)",
+              "No ferritin result before this note; iron deficiency could not be assessed."
+            ]
+          }
+        }
+      ],
+      "nurse_queue": 35.75,
+      "nurse_start": 35.75,
+      "nurse_end": 35.78877171394221,
+      "gp_queue": 35.78877171394221,
+      "gp_start": 35.78877171394221,
+      "gp_end": 35.907624480938864,
+      "baseline_decision_time": 35.907624480938864,
+      "signal_time": 35.907624480938864,
+      "signal_urgency": "review",
+      "review_queue": 35.95762448093886,
+      "review_start": 35.95762448093886,
+      "review_end": 35.98110292303206,
+      "actual_plan": "discharge",
+      "pathway_exit": 35.98110292303206
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "arrival": 36.0,
+      "relevant": true,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "test",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": true,
+      "baseline_followup_investigation": false,
+      "baseline_referral": true,
+      "baseline_plan": "followup",
+      "symptom_change": false,
+      "change_investigation": true,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": true,
+      "repeat_duplicate_evidence": false,
+      "signal": true,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [
+        {
+          "decision_id": "initial",
+          "time": 36.152564345849974,
+          "input_sha256": "2f3a7c9bab3aaa9343c3af9d889c16c606b9f26fefb373013aeced169fa3f510",
+          "response_sha256": "22023c0543d0e717369b6eb6d684567204ee41a797abaea50311831d2b2b2dc8",
+          "recommendation": {
+            "review_signal": true,
+            "urgency": "review",
+            "recommended_actions": [
+              "Physician review: consider FIT"
+            ],
+            "matched_rule_ids": [
+              "436373e3-bf13-5f8d-a925-a9338a2f3a03"
+            ],
+            "model_predictions": [
+              {
+                "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+                "model_name": "QCancer-2013",
+                "model_version": "QCancer-2013-open-source",
+                "as_of": "2026-11-14T09:00:00Z",
+                "prediction_type": "current_undiagnosed_cancer_risk",
+                "value": {
+                  "status": "insufficient_data",
+                  "population": "UK primary care; model ages 25\u201389",
+                  "limitations": [
+                    "QCancer-2013 was developed for UK primary care; it has not been calibrated or clinically validated for Finland.",
+                    "The Junction synthetic demo uses Townsend score 0 as a placeholder, not a Finnish deprivation score.",
+                    "This is a prototype estimate, not a diagnosis, referral decision, or Finnish clinical recommendation."
+                  ],
+                  "horizon_years": 2,
+                  "source_notice": "The initial version of this file, to be found at http://svn.clinrisk.co.uk/opensource/qcancer, faithfully implements QCancer-2013. We have released this code under the GNU Affero General Public License to enable others to implement the algorithm faithfully. However, the nature of the GNU Affero Public License is such that we cannot prevent, for example, someone accidentally altering the coefficients, getting the inputs wrong, or just poor programming. We stress, therefore, that it is the responsibility of the end user to check that the source that they receive produces the same results as the original code posted at http://svn.clinrisk.co.uk/opensource/qcancer. Inaccurate implementations of risk scores can lead to wrong patients being given the wrong treatment.",
+                  "invalid_inputs": [],
+                  "missing_inputs": [
+                    "bmi",
+                    "alcohol_cat4",
+                    "smoke_cat",
+                    "binary_factors.b_chronicpan",
+                    "binary_factors.b_copd",
+                    "binary_factors.b_endometrial",
+                    "binary_factors.b_type2",
+                    "binary_factors.fh_breastcancer",
+                    "binary_factors.fh_gicancer",
+                    "binary_factors.fh_ovariancancer",
+                    "binary_factors.new_abdodist",
+                    "binary_factors.new_appetiteloss",
+                    "binary_factors.new_breastlump",
+                    "binary_factors.new_breastpain",
+                    "binary_factors.new_breastskin",
+                    "binary_factors.new_dysphagia",
+                    "binary_factors.new_gibleed",
+                    "binary_factors.new_haematuria",
+                    "binary_factors.new_haemoptysis",
+                    "binary_factors.new_heartburn",
+                    "binary_factors.new_imb",
+                    "binary_factors.new_indigestion",
+                    "binary_factors.new_necklump",
+                    "binary_factors.new_nightsweats",
+                    "binary_factors.new_pmb",
+                    "binary_factors.new_postcoital",
+                    "binary_factors.new_rectalbleed",
+                    "binary_factors.new_vte",
+                    "binary_factors.new_weightloss",
+                    "binary_factors.s1_bowelchange",
+                    "binary_factors.s1_bruising",
+                    "binary_factors.s1_constipation",
+                    "binary_factors.s1_cough"
+                  ],
+                  "any_cancer_risk_percent": null,
+                  "cancer_site_risks_percent": null,
+                  "colorectal_cancer_risk_percent": null
+                },
+                "evidence_observation_ids": [
+                  "483504ca-696f-5caa-bf6d-68075db7d21f",
+                  "dd344872-b027-54b9-a19f-01470efc867c"
+                ],
+                "uncertainty": "QCancer-2013 did not calculate a risk because required inputs are missing: bmi, alcohol_cat4, smoke_cat, binary_factors.b_chronicpan, binary_factors.b_copd, binary_factors.b_endometrial, binary_factors.b_type2, binary_factors.fh_breastcancer, binary_factors.fh_gicancer, binary_factors.fh_ovariancancer, binary_factors.new_abdodist, binary_factors.new_appetiteloss, binary_factors.new_breastlump, binary_factors.new_breastpain, binary_factors.new_breastskin, binary_factors.new_dysphagia, binary_factors.new_gibleed, binary_factors.new_haematuria, binary_factors.new_haemoptysis, binary_factors.new_heartburn, binary_factors.new_imb, binary_factors.new_indigestion, binary_factors.new_necklump, binary_factors.new_nightsweats, binary_factors.new_pmb, binary_factors.new_postcoital, binary_factors.new_rectalbleed, binary_factors.new_vte, binary_factors.new_weightloss, binary_factors.s1_bowelchange, binary_factors.s1_bruising, binary_factors.s1_constipation, binary_factors.s1_cough"
+              }
+            ],
+            "missing_information": [
+              "Demonstration output is not a diagnosis or clinically validated risk assessment.",
+              "Source IDs, quotes, offsets and patient/time scope validated; clinical interpretation and completeness require review. (clinical_interpretation_not_verified)"
+            ]
+          }
+        }
+      ],
+      "nurse_queue": 36.0,
+      "nurse_start": 36.0,
+      "nurse_end": 36.03632624897639,
+      "gp_queue": 36.03632624897639,
+      "gp_start": 36.03632624897639,
+      "gp_end": 36.152564345849974,
+      "baseline_decision_time": 36.152564345849974,
+      "first_indication": 36.152564345849974,
+      "signal_time": 36.152564345849974,
+      "signal_urgency": "review",
+      "diagnostic_queue": 43.152564345849974,
+      "diagnostic_start": 43.152564345849974,
+      "diagnostic_end": 43.321157921745,
+      "referral": 43.321157921745,
+      "specialist_queue": 57.321157921745,
+      "specialist_start": 57.321157921745,
+      "specialist_end": 57.53338655340598,
+      "diagnosis": 62.53338655340598,
+      "treatment": 83.53338655340599,
+      "pathway_exit": 83.53338655340599
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "arrival": 36.5,
+      "relevant": true,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "test",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": true,
+      "baseline_followup_investigation": true,
+      "baseline_referral": true,
+      "baseline_plan": "monitor",
+      "symptom_change": false,
+      "change_investigation": true,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": false,
+      "repeat_duplicate_evidence": false,
+      "signal": false,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [
+        {
+          "decision_id": "initial",
+          "time": 36.64060917781673,
+          "input_sha256": "ef7bdb76d7052e9da2c24182e212227bcac34f19de946b52c8d6d2e0960b6355",
+          "response_sha256": "b2d00181cb8477ed0f6f1622e2df1dc1e0e70c0bb8ca069dc7ef4d6bc8fe0e77",
+          "recommendation": {
+            "review_signal": false,
+            "urgency": "none",
+            "recommended_actions": [],
+            "matched_rule_ids": [],
+            "model_predictions": [
+              {
+                "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+                "model_name": "QCancer-2013",
+                "model_version": "QCancer-2013-open-source",
+                "as_of": "2026-11-14T09:00:00Z",
+                "prediction_type": "current_undiagnosed_cancer_risk",
+                "value": {
+                  "status": "insufficient_data",
+                  "population": "UK primary care; model ages 25\u201389",
+                  "limitations": [
+                    "QCancer-2013 was developed for UK primary care; it has not been calibrated or clinically validated for Finland.",
+                    "The Junction synthetic demo uses Townsend score 0 as a placeholder, not a Finnish deprivation score.",
+                    "This is a prototype estimate, not a diagnosis, referral decision, or Finnish clinical recommendation."
+                  ],
+                  "horizon_years": 2,
+                  "source_notice": "The initial version of this file, to be found at http://svn.clinrisk.co.uk/opensource/qcancer, faithfully implements QCancer-2013. We have released this code under the GNU Affero General Public License to enable others to implement the algorithm faithfully. However, the nature of the GNU Affero Public License is such that we cannot prevent, for example, someone accidentally altering the coefficients, getting the inputs wrong, or just poor programming. We stress, therefore, that it is the responsibility of the end user to check that the source that they receive produces the same results as the original code posted at http://svn.clinrisk.co.uk/opensource/qcancer. Inaccurate implementations of risk scores can lead to wrong patients being given the wrong treatment.",
+                  "invalid_inputs": [],
+                  "missing_inputs": [
+                    "bmi",
+                    "alcohol_cat4",
+                    "smoke_cat",
+                    "binary_factors.b_chronicpan",
+                    "binary_factors.b_copd",
+                    "binary_factors.b_endometrial",
+                    "binary_factors.b_type2",
+                    "binary_factors.c_hb",
+                    "binary_factors.fh_breastcancer",
+                    "binary_factors.fh_gicancer",
+                    "binary_factors.fh_ovariancancer",
+                    "binary_factors.new_abdodist",
+                    "binary_factors.new_abdopain",
+                    "binary_factors.new_breastlump",
+                    "binary_factors.new_breastpain",
+                    "binary_factors.new_breastskin",
+                    "binary_factors.new_dysphagia",
+                    "binary_factors.new_gibleed",
+                    "binary_factors.new_haematuria",
+                    "binary_factors.new_haemoptysis",
+                    "binary_factors.new_heartburn",
+                    "binary_factors.new_imb",
+                    "binary_factors.new_indigestion",
+                    "binary_factors.new_necklump",
+                    "binary_factors.new_nightsweats",
+                    "binary_factors.new_pmb",
+                    "binary_factors.new_postcoital",
+                    "binary_factors.new_rectalbleed",
+                    "binary_factors.new_vte",
+                    "binary_factors.new_weightloss",
+                    "binary_factors.s1_bowelchange",
+                    "binary_factors.s1_bruising",
+                    "binary_factors.s1_constipation",
+                    "binary_factors.s1_cough"
+                  ],
+                  "any_cancer_risk_percent": null,
+                  "cancer_site_risks_percent": null,
+                  "colorectal_cancer_risk_percent": null
+                },
+                "evidence_observation_ids": [
+                  "f6ec7502-cea4-54bd-a31e-2e78e4fd755a"
+                ],
+                "uncertainty": "QCancer-2013 did not calculate a risk because required inputs are missing: bmi, alcohol_cat4, smoke_cat, binary_factors.b_chronicpan, binary_factors.b_copd, binary_factors.b_endometrial, binary_factors.b_type2, binary_factors.c_hb, binary_factors.fh_breastcancer, binary_factors.fh_gicancer, binary_factors.fh_ovariancancer, binary_factors.new_abdodist, binary_factors.new_abdopain, binary_factors.new_breastlump, binary_factors.new_breastpain, binary_factors.new_breastskin, binary_factors.new_dysphagia, binary_factors.new_gibleed, binary_factors.new_haematuria, binary_factors.new_haemoptysis, binary_factors.new_heartburn, binary_factors.new_imb, binary_factors.new_indigestion, binary_factors.new_necklump, binary_factors.new_nightsweats, binary_factors.new_pmb, binary_factors.new_postcoital, binary_factors.new_rectalbleed, binary_factors.new_vte, binary_factors.new_weightloss, binary_factors.s1_bowelchange, binary_factors.s1_bruising, binary_factors.s1_constipation, binary_factors.s1_cough"
+              }
+            ],
+            "missing_information": [
+              "Demonstration output is not a diagnosis or clinically validated risk assessment.",
+              "The current status of the previously palpated right-sided abdominal resistance is not documented.",
+              "Completion and results of the planned abdominal ultrasound are not documented.",
+              "Source IDs, quotes, offsets and patient/time scope validated; clinical interpretation and completeness require review. (clinical_interpretation_not_verified)",
+              "No haemoglobin result before this note."
+            ]
+          }
+        }
+      ],
+      "nurse_queue": 36.5,
+      "nurse_start": 36.5,
+      "nurse_end": 36.53566875532189,
+      "gp_queue": 36.53566875532189,
+      "gp_start": 36.53566875532189,
+      "gp_end": 36.64060917781673,
+      "baseline_decision_time": 36.64060917781673,
+      "first_indication": 36.64060917781673,
+      "signal_time": 36.64060917781673,
+      "signal_urgency": "none",
+      "diagnostic_queue": 43.64060917781673,
+      "diagnostic_start": 43.64060917781673,
+      "diagnostic_end": 43.75687816255353,
+      "referral": 43.75687816255353,
+      "specialist_queue": 57.75687816255353,
+      "specialist_start": 57.75687816255353,
+      "specialist_end": 57.95427101856262,
+      "diagnosis": 62.95427101856262,
+      "treatment": 83.95427101856262,
+      "pathway_exit": 83.95427101856262
+    },
+    {
+      "patient_id": "ea6665d3-7edc-5629-9e08-1c99b8552d12",
+      "arrival": 37.25,
+      "relevant": true,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "test",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": true,
+      "baseline_referral": true,
+      "baseline_plan": "monitor",
+      "symptom_change": false,
+      "change_investigation": false,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": false,
+      "repeat_duplicate_evidence": false,
+      "signal": true,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "retain",
+      "selective_review_skipped": false,
+      "real_predictions_used": [
+        {
+          "decision_id": "initial",
+          "time": 37.445766058094264,
+          "input_sha256": "fd2962baedd7d499d444890d35f6387cd24c681bb775acb7331663b162572043",
+          "response_sha256": "2b2a490f8acd980f2d53ca37f51d06c3c837e9b27356c33e1bb9b2cbf0ffc348",
+          "recommendation": {
+            "review_signal": true,
+            "urgency": "review",
+            "recommended_actions": [
+              "Physician review: consider FIT"
+            ],
+            "matched_rule_ids": [
+              "44004b66-43fe-5bca-89ab-7fcd1fe48daa"
+            ],
+            "model_predictions": [
+              {
+                "patient_id": "ea6665d3-7edc-5629-9e08-1c99b8552d12",
+                "model_name": "QCancer-2013",
+                "model_version": "QCancer-2013-open-source",
+                "as_of": "2026-11-14T09:00:00Z",
+                "prediction_type": "current_undiagnosed_cancer_risk",
+                "value": {
+                  "status": "insufficient_data",
+                  "population": "UK primary care; model ages 25\u201389",
+                  "limitations": [
+                    "QCancer-2013 was developed for UK primary care; it has not been calibrated or clinically validated for Finland.",
+                    "The Junction synthetic demo uses Townsend score 0 as a placeholder, not a Finnish deprivation score.",
+                    "This is a prototype estimate, not a diagnosis, referral decision, or Finnish clinical recommendation."
+                  ],
+                  "horizon_years": 2,
+                  "source_notice": "The initial version of this file, to be found at http://svn.clinrisk.co.uk/opensource/qcancer, faithfully implements QCancer-2013. We have released this code under the GNU Affero General Public License to enable others to implement the algorithm faithfully. However, the nature of the GNU Affero Public License is such that we cannot prevent, for example, someone accidentally altering the coefficients, getting the inputs wrong, or just poor programming. We stress, therefore, that it is the responsibility of the end user to check that the source that they receive produces the same results as the original code posted at http://svn.clinrisk.co.uk/opensource/qcancer. Inaccurate implementations of risk scores can lead to wrong patients being given the wrong treatment.",
+                  "invalid_inputs": [],
+                  "missing_inputs": [
+                    "bmi",
+                    "alcohol_cat4",
+                    "smoke_cat",
+                    "binary_factors.b_chronicpan",
+                    "binary_factors.b_copd",
+                    "binary_factors.b_endometrial",
+                    "binary_factors.b_type2",
+                    "binary_factors.c_hb",
+                    "binary_factors.fh_breastcancer",
+                    "binary_factors.fh_gicancer",
+                    "binary_factors.fh_ovariancancer",
+                    "binary_factors.new_abdodist",
+                    "binary_factors.new_appetiteloss",
+                    "binary_factors.new_breastlump",
+                    "binary_factors.new_breastpain",
+                    "binary_factors.new_breastskin",
+                    "binary_factors.new_dysphagia",
+                    "binary_factors.new_haematuria",
+                    "binary_factors.new_haemoptysis",
+                    "binary_factors.new_heartburn",
+                    "binary_factors.new_imb",
+                    "binary_factors.new_indigestion",
+                    "binary_factors.new_necklump",
+                    "binary_factors.new_nightsweats",
+                    "binary_factors.new_pmb",
+                    "binary_factors.new_postcoital",
+                    "binary_factors.new_vte",
+                    "binary_factors.new_weightloss",
+                    "binary_factors.s1_bowelchange",
+                    "binary_factors.s1_bruising",
+                    "binary_factors.s1_constipation",
+                    "binary_factors.s1_cough"
+                  ],
+                  "any_cancer_risk_percent": null,
+                  "cancer_site_risks_percent": null,
+                  "colorectal_cancer_risk_percent": null
+                },
+                "evidence_observation_ids": [
+                  "e3d2d569-87f5-5f2a-84e5-c1607cc160d2"
+                ],
+                "uncertainty": "QCancer-2013 did not calculate a risk because required inputs are missing: bmi, alcohol_cat4, smoke_cat, binary_factors.b_chronicpan, binary_factors.b_copd, binary_factors.b_endometrial, binary_factors.b_type2, binary_factors.c_hb, binary_factors.fh_breastcancer, binary_factors.fh_gicancer, binary_factors.fh_ovariancancer, binary_factors.new_abdodist, binary_factors.new_appetiteloss, binary_factors.new_breastlump, binary_factors.new_breastpain, binary_factors.new_breastskin, binary_factors.new_dysphagia, binary_factors.new_haematuria, binary_factors.new_haemoptysis, binary_factors.new_heartburn, binary_factors.new_imb, binary_factors.new_indigestion, binary_factors.new_necklump, binary_factors.new_nightsweats, binary_factors.new_pmb, binary_factors.new_postcoital, binary_factors.new_vte, binary_factors.new_weightloss, binary_factors.s1_bowelchange, binary_factors.s1_bruising, binary_factors.s1_constipation, binary_factors.s1_cough"
+              }
+            ],
+            "missing_information": [
+              "Demonstration output is not a diagnosis or clinically validated risk assessment.",
+              "No eligible patient history exists before the input note.",
+              "The supplied record does not document further symptom characteristics, examination findings, investigation results, or follow-up information.",
+              "Source IDs, quotes, offsets and patient/time scope validated; clinical interpretation and completeness require review. (clinical_interpretation_not_verified)",
+              "No haemoglobin result before this note."
+            ]
+          }
+        }
+      ],
+      "nurse_queue": 37.25,
+      "nurse_start": 37.25,
+      "nurse_end": 37.28794515482111,
+      "gp_queue": 37.28794515482111,
+      "gp_start": 37.28794515482111,
+      "gp_end": 37.445766058094264,
+      "baseline_decision_time": 37.445766058094264,
+      "signal_time": 37.445766058094264,
+      "signal_urgency": "review",
+      "review_queue": 37.49576605809426,
+      "review_start": 37.49576605809426,
+      "review_end": 37.52755305415431,
+      "actual_plan": "monitor",
+      "pathway_exit": 37.52755305415431
+    },
+    {
+      "patient_id": "5d3159a1-9555-510b-adb7-f9d2161ea6a9",
+      "arrival": 37.75,
+      "relevant": true,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "test",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": true,
+      "baseline_referral": true,
+      "baseline_plan": "monitor",
+      "symptom_change": false,
+      "change_investigation": true,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": true,
+      "repeat_duplicate_evidence": false,
+      "signal": true,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [
+        {
+          "decision_id": "initial",
+          "time": 37.93545403223495,
+          "input_sha256": "8958afe0aa8d03bc8850e72bcb04cbd5f1e01f721a53d98ce03b0d3e9d5c4bf8",
+          "response_sha256": "c722264814ce599b51f611a96d4a4f7dbe1010c8786c29e5a5aa916b3c9878e1",
+          "recommendation": {
+            "review_signal": true,
+            "urgency": "urgent",
+            "recommended_actions": [
+              "Urgent physician review: consider suspected cancer referral without FIT"
+            ],
+            "matched_rule_ids": [
+              "b1549098-b0be-50e2-8322-cf5c336694d7"
+            ],
+            "model_predictions": [
+              {
+                "patient_id": "5d3159a1-9555-510b-adb7-f9d2161ea6a9",
+                "model_name": "QCancer-2013",
+                "model_version": "QCancer-2013-open-source",
+                "as_of": "2026-11-14T09:00:00Z",
+                "prediction_type": "current_undiagnosed_cancer_risk",
+                "value": {
+                  "status": "insufficient_data",
+                  "population": "UK primary care; model ages 25\u201389",
+                  "limitations": [
+                    "QCancer-2013 was developed for UK primary care; it has not been calibrated or clinically validated for Finland.",
+                    "The Junction synthetic demo uses Townsend score 0 as a placeholder, not a Finnish deprivation score.",
+                    "This is a prototype estimate, not a diagnosis, referral decision, or Finnish clinical recommendation."
+                  ],
+                  "horizon_years": 2,
+                  "source_notice": "The initial version of this file, to be found at http://svn.clinrisk.co.uk/opensource/qcancer, faithfully implements QCancer-2013. We have released this code under the GNU Affero General Public License to enable others to implement the algorithm faithfully. However, the nature of the GNU Affero Public License is such that we cannot prevent, for example, someone accidentally altering the coefficients, getting the inputs wrong, or just poor programming. We stress, therefore, that it is the responsibility of the end user to check that the source that they receive produces the same results as the original code posted at http://svn.clinrisk.co.uk/opensource/qcancer. Inaccurate implementations of risk scores can lead to wrong patients being given the wrong treatment.",
+                  "invalid_inputs": [],
+                  "missing_inputs": [
+                    "bmi",
+                    "alcohol_cat4",
+                    "smoke_cat",
+                    "binary_factors.b_chronicpan",
+                    "binary_factors.b_copd",
+                    "binary_factors.b_endometrial",
+                    "binary_factors.b_type2",
+                    "binary_factors.c_hb",
+                    "binary_factors.fh_breastcancer",
+                    "binary_factors.fh_gicancer",
+                    "binary_factors.fh_ovariancancer",
+                    "binary_factors.new_abdodist",
+                    "binary_factors.new_abdopain",
+                    "binary_factors.new_appetiteloss",
+                    "binary_factors.new_breastlump",
+                    "binary_factors.new_breastpain",
+                    "binary_factors.new_breastskin",
+                    "binary_factors.new_dysphagia",
+                    "binary_factors.new_gibleed",
+                    "binary_factors.new_haematuria",
+                    "binary_factors.new_haemoptysis",
+                    "binary_factors.new_heartburn",
+                    "binary_factors.new_imb",
+                    "binary_factors.new_indigestion",
+                    "binary_factors.new_necklump",
+                    "binary_factors.new_nightsweats",
+                    "binary_factors.new_pmb",
+                    "binary_factors.new_postcoital",
+                    "binary_factors.new_rectalbleed",
+                    "binary_factors.new_vte",
+                    "binary_factors.new_weightloss",
+                    "binary_factors.s1_bowelchange",
+                    "binary_factors.s1_bruising",
+                    "binary_factors.s1_constipation",
+                    "binary_factors.s1_cough"
+                  ],
+                  "any_cancer_risk_percent": null,
+                  "cancer_site_risks_percent": null,
+                  "colorectal_cancer_risk_percent": null
+                },
+                "evidence_observation_ids": [],
+                "uncertainty": "QCancer-2013 did not calculate a risk because required inputs are missing: bmi, alcohol_cat4, smoke_cat, binary_factors.b_chronicpan, binary_factors.b_copd, binary_factors.b_endometrial, binary_factors.b_type2, binary_factors.c_hb, binary_factors.fh_breastcancer, binary_factors.fh_gicancer, binary_factors.fh_ovariancancer, binary_factors.new_abdodist, binary_factors.new_abdopain, binary_factors.new_appetiteloss, binary_factors.new_breastlump, binary_factors.new_breastpain, binary_factors.new_breastskin, binary_factors.new_dysphagia, binary_factors.new_gibleed, binary_factors.new_haematuria, binary_factors.new_haemoptysis, binary_factors.new_heartburn, binary_factors.new_imb, binary_factors.new_indigestion, binary_factors.new_necklump, binary_factors.new_nightsweats, binary_factors.new_pmb, binary_factors.new_postcoital, binary_factors.new_rectalbleed, binary_factors.new_vte, binary_factors.new_weightloss, binary_factors.s1_bowelchange, binary_factors.s1_bruising, binary_factors.s1_constipation, binary_factors.s1_cough"
+              }
+            ],
+            "missing_information": [
+              "Demonstration output is not a diagnosis or clinically validated risk assessment.",
+              "No eligible patient history exists before the input note.",
+              "Lis\u00e4tutkimussuunnitelma ja mahdollisten tutkimusten tulokset puuttuvat.",
+              "Source IDs, quotes, offsets and patient/time scope validated; clinical interpretation and completeness require review. (clinical_interpretation_not_verified)",
+              "No haemoglobin result before this note."
+            ]
+          }
+        }
+      ],
+      "nurse_queue": 37.75,
+      "nurse_start": 37.75,
+      "nurse_end": 37.821312388000706,
+      "gp_queue": 37.821312388000706,
+      "gp_start": 37.821312388000706,
+      "gp_end": 37.93545403223495,
+      "baseline_decision_time": 37.93545403223495,
+      "signal_time": 37.93545403223495,
+      "signal_urgency": "urgent",
+      "actual_plan": "monitor",
+      "pathway_exit": 37.93545403223495
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "arrival": 38.75,
+      "relevant": true,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "test",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": true,
+      "baseline_followup_investigation": true,
+      "baseline_referral": true,
+      "baseline_plan": "monitor",
+      "symptom_change": false,
+      "change_investigation": false,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": false,
+      "repeat_duplicate_evidence": false,
+      "signal": true,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [
+        {
+          "decision_id": "initial",
+          "time": 38.87914885784549,
+          "input_sha256": "91413dad39e711204da3afdfe089fb300650206f248f528993f5d04a3ee29288",
+          "response_sha256": "adf00aa39f662e88c966631260d2098e337246495474882c97b867794bb8c60c",
+          "recommendation": {
+            "review_signal": true,
+            "urgency": "urgent",
+            "recommended_actions": [
+              "Urgent physician review: suspected cancer pathway referral"
+            ],
+            "matched_rule_ids": [
+              "1ada9a2a-58b2-5528-8da5-c7c0693df684"
+            ],
+            "model_predictions": [
+              {
+                "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+                "model_name": "QCancer-2013",
+                "model_version": "QCancer-2013-open-source",
+                "as_of": "2026-11-14T09:00:00Z",
+                "prediction_type": "current_undiagnosed_cancer_risk",
+                "value": {
+                  "status": "insufficient_data",
+                  "population": "UK primary care; model ages 25\u201389",
+                  "limitations": [
+                    "QCancer-2013 was developed for UK primary care; it has not been calibrated or clinically validated for Finland.",
+                    "The Junction synthetic demo uses Townsend score 0 as a placeholder, not a Finnish deprivation score.",
+                    "This is a prototype estimate, not a diagnosis, referral decision, or Finnish clinical recommendation."
+                  ],
+                  "horizon_years": 2,
+                  "source_notice": "The initial version of this file, to be found at http://svn.clinrisk.co.uk/opensource/qcancer, faithfully implements QCancer-2013. We have released this code under the GNU Affero General Public License to enable others to implement the algorithm faithfully. However, the nature of the GNU Affero Public License is such that we cannot prevent, for example, someone accidentally altering the coefficients, getting the inputs wrong, or just poor programming. We stress, therefore, that it is the responsibility of the end user to check that the source that they receive produces the same results as the original code posted at http://svn.clinrisk.co.uk/opensource/qcancer. Inaccurate implementations of risk scores can lead to wrong patients being given the wrong treatment.",
+                  "invalid_inputs": [],
+                  "missing_inputs": [
+                    "bmi",
+                    "alcohol_cat4",
+                    "smoke_cat",
+                    "binary_factors.b_chronicpan",
+                    "binary_factors.b_copd",
+                    "binary_factors.b_endometrial",
+                    "binary_factors.b_type2",
+                    "binary_factors.c_hb",
+                    "binary_factors.fh_breastcancer",
+                    "binary_factors.fh_gicancer",
+                    "binary_factors.fh_ovariancancer",
+                    "binary_factors.new_abdodist",
+                    "binary_factors.new_appetiteloss",
+                    "binary_factors.new_breastlump",
+                    "binary_factors.new_breastpain",
+                    "binary_factors.new_breastskin",
+                    "binary_factors.new_dysphagia",
+                    "binary_factors.new_gibleed",
+                    "binary_factors.new_haematuria",
+                    "binary_factors.new_haemoptysis",
+                    "binary_factors.new_heartburn",
+                    "binary_factors.new_imb",
+                    "binary_factors.new_indigestion",
+                    "binary_factors.new_necklump",
+                    "binary_factors.new_nightsweats",
+                    "binary_factors.new_pmb",
+                    "binary_factors.new_postcoital",
+                    "binary_factors.new_vte",
+                    "binary_factors.s1_bowelchange",
+                    "binary_factors.s1_bruising",
+                    "binary_factors.s1_constipation",
+                    "binary_factors.s1_cough"
+                  ],
+                  "any_cancer_risk_percent": null,
+                  "cancer_site_risks_percent": null,
+                  "colorectal_cancer_risk_percent": null
+                },
+                "evidence_observation_ids": [
+                  "fe28ba8f-c1a4-5c8c-ba63-36f6db5f06d5"
+                ],
+                "uncertainty": "QCancer-2013 did not calculate a risk because required inputs are missing: bmi, alcohol_cat4, smoke_cat, binary_factors.b_chronicpan, binary_factors.b_copd, binary_factors.b_endometrial, binary_factors.b_type2, binary_factors.c_hb, binary_factors.fh_breastcancer, binary_factors.fh_gicancer, binary_factors.fh_ovariancancer, binary_factors.new_abdodist, binary_factors.new_appetiteloss, binary_factors.new_breastlump, binary_factors.new_breastpain, binary_factors.new_breastskin, binary_factors.new_dysphagia, binary_factors.new_gibleed, binary_factors.new_haematuria, binary_factors.new_haemoptysis, binary_factors.new_heartburn, binary_factors.new_imb, binary_factors.new_indigestion, binary_factors.new_necklump, binary_factors.new_nightsweats, binary_factors.new_pmb, binary_factors.new_postcoital, binary_factors.new_vte, binary_factors.s1_bowelchange, binary_factors.s1_bruising, binary_factors.s1_constipation, binary_factors.s1_cough"
+              }
+            ],
+            "missing_information": [
+              "Demonstration output is not a diagnosis or clinically validated risk assessment.",
+              "Source IDs, quotes, offsets and patient/time scope validated; clinical interpretation and completeness require review. (clinical_interpretation_not_verified)",
+              "No haemoglobin result before this note."
+            ]
+          }
+        }
+      ],
+      "nurse_queue": 38.75,
+      "nurse_start": 38.75,
+      "nurse_end": 38.77667407472149,
+      "gp_queue": 38.77667407472149,
+      "gp_start": 38.77667407472149,
+      "gp_end": 38.87914885784549,
+      "baseline_decision_time": 38.87914885784549,
+      "first_indication": 38.87914885784549,
+      "signal_time": 38.87914885784549,
+      "signal_urgency": "urgent",
+      "diagnostic_queue": 45.87914885784549,
+      "diagnostic_start": 45.87914885784549,
+      "diagnostic_end": 45.95080605404336,
+      "referral": 45.95080605404336,
+      "specialist_queue": 59.95080605404336,
+      "specialist_start": 59.95080605404336,
+      "specialist_end": 60.02906345212693,
+      "diagnosis": 65.02906345212693,
+      "treatment": 86.02906345212693,
+      "pathway_exit": 86.02906345212693
+    },
+    {
+      "patient_id": "8e8e372f-de68-5f68-afe4-6f3073d9d234",
+      "arrival": 39.25,
+      "relevant": false,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "test",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": false,
+      "baseline_referral": false,
+      "baseline_plan": "monitor",
+      "symptom_change": false,
+      "change_investigation": true,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": true,
+      "repeat_duplicate_evidence": false,
+      "signal": false,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [
+        {
+          "decision_id": "initial",
+          "time": 39.51237386694142,
+          "input_sha256": "d4f6fc7de1c03cc11bbdf1d44e559a2b63cc498ff14efe327b9560f773805555",
+          "response_sha256": "e98553d0c69c306abc17df3a507325a3f6b65b6c9aa3bb924193585eca8655a2",
+          "recommendation": {
+            "review_signal": false,
+            "urgency": "none",
+            "recommended_actions": [],
+            "matched_rule_ids": [],
+            "model_predictions": [
+              {
+                "patient_id": "8e8e372f-de68-5f68-afe4-6f3073d9d234",
+                "model_name": "QCancer-2013",
+                "model_version": "QCancer-2013-open-source",
+                "as_of": "2026-11-14T09:00:00Z",
+                "prediction_type": "current_undiagnosed_cancer_risk",
+                "value": {
+                  "status": "insufficient_data",
+                  "population": "UK primary care; model ages 25\u201389",
+                  "limitations": [
+                    "QCancer-2013 was developed for UK primary care; it has not been calibrated or clinically validated for Finland.",
+                    "The Junction synthetic demo uses Townsend score 0 as a placeholder, not a Finnish deprivation score.",
+                    "This is a prototype estimate, not a diagnosis, referral decision, or Finnish clinical recommendation."
+                  ],
+                  "horizon_years": 2,
+                  "source_notice": "The initial version of this file, to be found at http://svn.clinrisk.co.uk/opensource/qcancer, faithfully implements QCancer-2013. We have released this code under the GNU Affero General Public License to enable others to implement the algorithm faithfully. However, the nature of the GNU Affero Public License is such that we cannot prevent, for example, someone accidentally altering the coefficients, getting the inputs wrong, or just poor programming. We stress, therefore, that it is the responsibility of the end user to check that the source that they receive produces the same results as the original code posted at http://svn.clinrisk.co.uk/opensource/qcancer. Inaccurate implementations of risk scores can lead to wrong patients being given the wrong treatment.",
+                  "invalid_inputs": [],
+                  "missing_inputs": [
+                    "bmi",
+                    "alcohol_cat4",
+                    "smoke_cat",
+                    "binary_factors.b_chronicpan",
+                    "binary_factors.b_copd",
+                    "binary_factors.b_endometrial",
+                    "binary_factors.b_type2",
+                    "binary_factors.c_hb",
+                    "binary_factors.fh_breastcancer",
+                    "binary_factors.fh_gicancer",
+                    "binary_factors.fh_ovariancancer",
+                    "binary_factors.new_abdodist",
+                    "binary_factors.new_abdopain",
+                    "binary_factors.new_appetiteloss",
+                    "binary_factors.new_breastlump",
+                    "binary_factors.new_breastpain",
+                    "binary_factors.new_breastskin",
+                    "binary_factors.new_dysphagia",
+                    "binary_factors.new_gibleed",
+                    "binary_factors.new_haematuria",
+                    "binary_factors.new_haemoptysis",
+                    "binary_factors.new_heartburn",
+                    "binary_factors.new_imb",
+                    "binary_factors.new_indigestion",
+                    "binary_factors.new_necklump",
+                    "binary_factors.new_nightsweats",
+                    "binary_factors.new_pmb",
+                    "binary_factors.new_postcoital",
+                    "binary_factors.new_rectalbleed",
+                    "binary_factors.new_vte",
+                    "binary_factors.new_weightloss",
+                    "binary_factors.s1_bowelchange",
+                    "binary_factors.s1_bruising",
+                    "binary_factors.s1_constipation",
+                    "binary_factors.s1_cough"
+                  ],
+                  "any_cancer_risk_percent": null,
+                  "cancer_site_risks_percent": null,
+                  "colorectal_cancer_risk_percent": null
+                },
+                "evidence_observation_ids": [],
+                "uncertainty": "QCancer-2013 did not calculate a risk because required inputs are missing: bmi, alcohol_cat4, smoke_cat, binary_factors.b_chronicpan, binary_factors.b_copd, binary_factors.b_endometrial, binary_factors.b_type2, binary_factors.c_hb, binary_factors.fh_breastcancer, binary_factors.fh_gicancer, binary_factors.fh_ovariancancer, binary_factors.new_abdodist, binary_factors.new_abdopain, binary_factors.new_appetiteloss, binary_factors.new_breastlump, binary_factors.new_breastpain, binary_factors.new_breastskin, binary_factors.new_dysphagia, binary_factors.new_gibleed, binary_factors.new_haematuria, binary_factors.new_haemoptysis, binary_factors.new_heartburn, binary_factors.new_imb, binary_factors.new_indigestion, binary_factors.new_necklump, binary_factors.new_nightsweats, binary_factors.new_pmb, binary_factors.new_postcoital, binary_factors.new_rectalbleed, binary_factors.new_vte, binary_factors.new_weightloss, binary_factors.s1_bowelchange, binary_factors.s1_bruising, binary_factors.s1_constipation, binary_factors.s1_cough"
+              }
+            ],
+            "missing_information": [
+              "Demonstration output is not a diagnosis or clinically validated risk assessment.",
+              "No eligible patient history exists before the input note.",
+              "Source IDs, quotes, offsets and patient/time scope validated; clinical interpretation and completeness require review. (clinical_interpretation_not_verified)",
+              "No haemoglobin result before this note."
+            ]
+          }
+        }
+      ],
+      "nurse_queue": 39.25,
+      "nurse_start": 39.25,
+      "nurse_end": 39.297085043306026,
+      "gp_queue": 39.297085043306026,
+      "gp_start": 39.297085043306026,
+      "gp_end": 39.51237386694142,
+      "baseline_decision_time": 39.51237386694142,
+      "signal_time": 39.51237386694142,
+      "signal_urgency": "none",
+      "actual_plan": "monitor",
+      "pathway_exit": 39.51237386694142
+    },
+    {
+      "patient_id": "9a0130ab-757b-5ff6-9e71-0226cb9c29b6",
+      "arrival": 39.75,
+      "relevant": false,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "test",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": false,
+      "baseline_referral": false,
+      "baseline_plan": "monitor",
+      "symptom_change": false,
+      "change_investigation": false,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": true,
+      "repeat_duplicate_evidence": false,
+      "signal": false,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [
+        {
+          "decision_id": "initial",
+          "time": 39.93083872142464,
+          "input_sha256": "acafeaae9d888f277d84562c0e9e58a121b226083419b65dde11bfc118e06464",
+          "response_sha256": "233a394035886f1e39be6de1ceb25e94a581688b5a975e3b6b65eda91e7cd035",
+          "recommendation": {
+            "review_signal": false,
+            "urgency": "none",
+            "recommended_actions": [],
+            "matched_rule_ids": [],
+            "model_predictions": [
+              {
+                "patient_id": "9a0130ab-757b-5ff6-9e71-0226cb9c29b6",
+                "model_name": "QCancer-2013",
+                "model_version": "QCancer-2013-open-source",
+                "as_of": "2026-11-14T09:00:00Z",
+                "prediction_type": "current_undiagnosed_cancer_risk",
+                "value": {
+                  "status": "insufficient_data",
+                  "population": "UK primary care; model ages 25\u201389",
+                  "limitations": [
+                    "QCancer-2013 was developed for UK primary care; it has not been calibrated or clinically validated for Finland.",
+                    "The Junction synthetic demo uses Townsend score 0 as a placeholder, not a Finnish deprivation score.",
+                    "This is a prototype estimate, not a diagnosis, referral decision, or Finnish clinical recommendation."
+                  ],
+                  "horizon_years": 2,
+                  "source_notice": "The initial version of this file, to be found at http://svn.clinrisk.co.uk/opensource/qcancer, faithfully implements QCancer-2013. We have released this code under the GNU Affero General Public License to enable others to implement the algorithm faithfully. However, the nature of the GNU Affero Public License is such that we cannot prevent, for example, someone accidentally altering the coefficients, getting the inputs wrong, or just poor programming. We stress, therefore, that it is the responsibility of the end user to check that the source that they receive produces the same results as the original code posted at http://svn.clinrisk.co.uk/opensource/qcancer. Inaccurate implementations of risk scores can lead to wrong patients being given the wrong treatment.",
+                  "invalid_inputs": [],
+                  "missing_inputs": [
+                    "bmi",
+                    "alcohol_cat4",
+                    "smoke_cat",
+                    "binary_factors.b_chronicpan",
+                    "binary_factors.b_copd",
+                    "binary_factors.b_endometrial",
+                    "binary_factors.b_type2",
+                    "binary_factors.fh_breastcancer",
+                    "binary_factors.fh_gicancer",
+                    "binary_factors.fh_ovariancancer",
+                    "binary_factors.new_abdodist",
+                    "binary_factors.new_abdopain",
+                    "binary_factors.new_appetiteloss",
+                    "binary_factors.new_breastlump",
+                    "binary_factors.new_breastpain",
+                    "binary_factors.new_breastskin",
+                    "binary_factors.new_dysphagia",
+                    "binary_factors.new_gibleed",
+                    "binary_factors.new_haematuria",
+                    "binary_factors.new_haemoptysis",
+                    "binary_factors.new_heartburn",
+                    "binary_factors.new_imb",
+                    "binary_factors.new_indigestion",
+                    "binary_factors.new_necklump",
+                    "binary_factors.new_nightsweats",
+                    "binary_factors.new_pmb",
+                    "binary_factors.new_postcoital",
+                    "binary_factors.new_rectalbleed",
+                    "binary_factors.new_vte",
+                    "binary_factors.new_weightloss",
+                    "binary_factors.s1_bowelchange",
+                    "binary_factors.s1_bruising",
+                    "binary_factors.s1_constipation",
+                    "binary_factors.s1_cough"
+                  ],
+                  "any_cancer_risk_percent": null,
+                  "cancer_site_risks_percent": null,
+                  "colorectal_cancer_risk_percent": null
+                },
+                "evidence_observation_ids": [
+                  "047aaf63-a074-5d42-8ac0-91a14a80f296"
+                ],
+                "uncertainty": "QCancer-2013 did not calculate a risk because required inputs are missing: bmi, alcohol_cat4, smoke_cat, binary_factors.b_chronicpan, binary_factors.b_copd, binary_factors.b_endometrial, binary_factors.b_type2, binary_factors.fh_breastcancer, binary_factors.fh_gicancer, binary_factors.fh_ovariancancer, binary_factors.new_abdodist, binary_factors.new_abdopain, binary_factors.new_appetiteloss, binary_factors.new_breastlump, binary_factors.new_breastpain, binary_factors.new_breastskin, binary_factors.new_dysphagia, binary_factors.new_gibleed, binary_factors.new_haematuria, binary_factors.new_haemoptysis, binary_factors.new_heartburn, binary_factors.new_imb, binary_factors.new_indigestion, binary_factors.new_necklump, binary_factors.new_nightsweats, binary_factors.new_pmb, binary_factors.new_postcoital, binary_factors.new_rectalbleed, binary_factors.new_vte, binary_factors.new_weightloss, binary_factors.s1_bowelchange, binary_factors.s1_bruising, binary_factors.s1_constipation, binary_factors.s1_cough"
+              }
+            ],
+            "missing_information": [
+              "Demonstration output is not a diagnosis or clinically validated risk assessment.",
+              "The general statement that there are no other symptoms does not establish the presence or absence of individual colorectal symptoms or any investigation or follow-up plan.",
+              "Source IDs, quotes, offsets and patient/time scope validated; clinical interpretation and completeness require review. (clinical_interpretation_not_verified)"
+            ]
+          }
+        }
+      ],
+      "nurse_queue": 39.75,
+      "nurse_start": 39.75,
+      "nurse_end": 39.8299139532076,
+      "gp_queue": 39.8299139532076,
+      "gp_start": 39.8299139532076,
+      "gp_end": 39.93083872142464,
+      "baseline_decision_time": 39.93083872142464,
+      "signal_time": 39.93083872142464,
+      "signal_urgency": "none",
+      "actual_plan": "monitor",
+      "pathway_exit": 39.93083872142464
+    },
+    {
+      "patient_id": "b194c212-83e9-5751-a60d-76bb7166d46e",
+      "arrival": 40.25,
+      "relevant": false,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "test",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": false,
+      "baseline_referral": false,
+      "baseline_plan": "followup",
+      "symptom_change": false,
+      "change_investigation": true,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": false,
+      "repeat_duplicate_evidence": false,
+      "signal": false,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [
+        {
+          "decision_id": "initial",
+          "time": 40.450824879614466,
+          "input_sha256": "7e73d339a6305ece4b227e3ee4123915d98e187d6a4d28192d32c85d449090f2",
+          "response_sha256": "8576409e2169559ab52a241b66d8858fa9861878e0fdd8fd02c59fb7f018a016",
+          "recommendation": {
+            "review_signal": false,
+            "urgency": "none",
+            "recommended_actions": [],
+            "matched_rule_ids": [],
+            "model_predictions": [
+              {
+                "patient_id": "b194c212-83e9-5751-a60d-76bb7166d46e",
+                "model_name": "QCancer-2013",
+                "model_version": "QCancer-2013-open-source",
+                "as_of": "2026-11-14T09:00:00Z",
+                "prediction_type": "current_undiagnosed_cancer_risk",
+                "value": {
+                  "status": "insufficient_data",
+                  "population": "UK primary care; model ages 25\u201389",
+                  "limitations": [
+                    "QCancer-2013 was developed for UK primary care; it has not been calibrated or clinically validated for Finland.",
+                    "The Junction synthetic demo uses Townsend score 0 as a placeholder, not a Finnish deprivation score.",
+                    "This is a prototype estimate, not a diagnosis, referral decision, or Finnish clinical recommendation."
+                  ],
+                  "horizon_years": 2,
+                  "source_notice": "The initial version of this file, to be found at http://svn.clinrisk.co.uk/opensource/qcancer, faithfully implements QCancer-2013. We have released this code under the GNU Affero General Public License to enable others to implement the algorithm faithfully. However, the nature of the GNU Affero Public License is such that we cannot prevent, for example, someone accidentally altering the coefficients, getting the inputs wrong, or just poor programming. We stress, therefore, that it is the responsibility of the end user to check that the source that they receive produces the same results as the original code posted at http://svn.clinrisk.co.uk/opensource/qcancer. Inaccurate implementations of risk scores can lead to wrong patients being given the wrong treatment.",
+                  "invalid_inputs": [],
+                  "missing_inputs": [
+                    "bmi",
+                    "alcohol_cat4",
+                    "smoke_cat",
+                    "binary_factors.b_chronicpan",
+                    "binary_factors.b_copd",
+                    "binary_factors.b_endometrial",
+                    "binary_factors.b_type2",
+                    "binary_factors.c_hb",
+                    "binary_factors.fh_breastcancer",
+                    "binary_factors.fh_gicancer",
+                    "binary_factors.fh_ovariancancer",
+                    "binary_factors.new_abdodist",
+                    "binary_factors.new_abdopain",
+                    "binary_factors.new_appetiteloss",
+                    "binary_factors.new_breastlump",
+                    "binary_factors.new_breastpain",
+                    "binary_factors.new_breastskin",
+                    "binary_factors.new_dysphagia",
+                    "binary_factors.new_gibleed",
+                    "binary_factors.new_haematuria",
+                    "binary_factors.new_haemoptysis",
+                    "binary_factors.new_heartburn",
+                    "binary_factors.new_imb",
+                    "binary_factors.new_indigestion",
+                    "binary_factors.new_necklump",
+                    "binary_factors.new_nightsweats",
+                    "binary_factors.new_pmb",
+                    "binary_factors.new_postcoital",
+                    "binary_factors.new_rectalbleed",
+                    "binary_factors.new_vte",
+                    "binary_factors.new_weightloss",
+                    "binary_factors.s1_bowelchange",
+                    "binary_factors.s1_bruising",
+                    "binary_factors.s1_constipation",
+                    "binary_factors.s1_cough"
+                  ],
+                  "any_cancer_risk_percent": null,
+                  "cancer_site_risks_percent": null,
+                  "colorectal_cancer_risk_percent": null
+                },
+                "evidence_observation_ids": [],
+                "uncertainty": "QCancer-2013 did not calculate a risk because required inputs are missing: bmi, alcohol_cat4, smoke_cat, binary_factors.b_chronicpan, binary_factors.b_copd, binary_factors.b_endometrial, binary_factors.b_type2, binary_factors.c_hb, binary_factors.fh_breastcancer, binary_factors.fh_gicancer, binary_factors.fh_ovariancancer, binary_factors.new_abdodist, binary_factors.new_abdopain, binary_factors.new_appetiteloss, binary_factors.new_breastlump, binary_factors.new_breastpain, binary_factors.new_breastskin, binary_factors.new_dysphagia, binary_factors.new_gibleed, binary_factors.new_haematuria, binary_factors.new_haemoptysis, binary_factors.new_heartburn, binary_factors.new_imb, binary_factors.new_indigestion, binary_factors.new_necklump, binary_factors.new_nightsweats, binary_factors.new_pmb, binary_factors.new_postcoital, binary_factors.new_rectalbleed, binary_factors.new_vte, binary_factors.new_weightloss, binary_factors.s1_bowelchange, binary_factors.s1_bruising, binary_factors.s1_constipation, binary_factors.s1_cough"
+              }
+            ],
+            "missing_information": [
+              "Demonstration output is not a diagnosis or clinically validated risk assessment.",
+              "No eligible patient history exists before the input note.",
+              "Nykyisess\u00e4 merkinn\u00e4ss\u00e4 dokumentoidaan vain kyyn\u00e4rtaipeiden ihottuma; per\u00e4suolen verenvuotoa, suolentoiminnan muutosta, vatsakipua, painonlaskua tai vatsan tai per\u00e4suolen massaa ei ole dokumentoitu, eik\u00e4 niiden puuttumista voida p\u00e4\u00e4tell\u00e4.",
+              "Source IDs, quotes, offsets and patient/time scope validated; clinical interpretation and completeness require review. (clinical_interpretation_not_verified)",
+              "No haemoglobin result before this note."
+            ]
+          }
+        }
+      ],
+      "nurse_queue": 40.25,
+      "nurse_start": 40.25,
+      "nurse_end": 40.325890638216364,
+      "gp_queue": 40.325890638216364,
+      "gp_start": 40.325890638216364,
+      "gp_end": 40.450824879614466,
+      "baseline_decision_time": 40.450824879614466,
+      "signal_time": 40.450824879614466,
+      "signal_urgency": "none",
+      "actual_plan": "followup",
+      "gp_followup_queue": 54.450824879614466,
+      "gp_followup_start": 54.450824879614466,
+      "gp_followup_end": 54.57465375063178,
+      "pathway_exit": 54.57465375063178
+    },
+    {
+      "patient_id": "7f2bc1b4-d951-5090-b9e7-77c05c9b0051",
+      "arrival": 40.75,
+      "relevant": false,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "test",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": false,
+      "baseline_referral": false,
+      "baseline_plan": "followup",
+      "symptom_change": false,
+      "change_investigation": false,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": true,
+      "repeat_duplicate_evidence": false,
+      "signal": false,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [
+        {
+          "decision_id": "initial",
+          "time": 40.959608671809775,
+          "input_sha256": "e514587455baeb0116d603593314838aea93f0a99c45ab1bfd909117a8c69819",
+          "response_sha256": "cc1ad84b26efb22a9560d55cd7826c8f38d8f055627db598c223ec7d0db36ccf",
+          "recommendation": {
+            "review_signal": false,
+            "urgency": "none",
+            "recommended_actions": [],
+            "matched_rule_ids": [],
+            "model_predictions": [
+              {
+                "patient_id": "7f2bc1b4-d951-5090-b9e7-77c05c9b0051",
+                "model_name": "QCancer-2013",
+                "model_version": "QCancer-2013-open-source",
+                "as_of": "2026-11-14T09:00:00Z",
+                "prediction_type": "current_undiagnosed_cancer_risk",
+                "value": {
+                  "status": "insufficient_data",
+                  "population": "UK primary care; model ages 25\u201389",
+                  "limitations": [
+                    "QCancer-2013 was developed for UK primary care; it has not been calibrated or clinically validated for Finland.",
+                    "The Junction synthetic demo uses Townsend score 0 as a placeholder, not a Finnish deprivation score.",
+                    "This is a prototype estimate, not a diagnosis, referral decision, or Finnish clinical recommendation."
+                  ],
+                  "horizon_years": 2,
+                  "source_notice": "The initial version of this file, to be found at http://svn.clinrisk.co.uk/opensource/qcancer, faithfully implements QCancer-2013. We have released this code under the GNU Affero General Public License to enable others to implement the algorithm faithfully. However, the nature of the GNU Affero Public License is such that we cannot prevent, for example, someone accidentally altering the coefficients, getting the inputs wrong, or just poor programming. We stress, therefore, that it is the responsibility of the end user to check that the source that they receive produces the same results as the original code posted at http://svn.clinrisk.co.uk/opensource/qcancer. Inaccurate implementations of risk scores can lead to wrong patients being given the wrong treatment.",
+                  "invalid_inputs": [],
+                  "missing_inputs": [
+                    "bmi",
+                    "alcohol_cat4",
+                    "smoke_cat",
+                    "binary_factors.b_chronicpan",
+                    "binary_factors.b_copd",
+                    "binary_factors.b_type2",
+                    "binary_factors.c_hb",
+                    "binary_factors.fh_gicancer",
+                    "binary_factors.fh_prostatecancer",
+                    "binary_factors.new_abdodist",
+                    "binary_factors.new_appetiteloss",
+                    "binary_factors.new_dysphagia",
+                    "binary_factors.new_gibleed",
+                    "binary_factors.new_haematuria",
+                    "binary_factors.new_haemoptysis",
+                    "binary_factors.new_heartburn",
+                    "binary_factors.new_indigestion",
+                    "binary_factors.new_necklump",
+                    "binary_factors.new_nightsweats",
+                    "binary_factors.new_testespain",
+                    "binary_factors.new_testicularlump",
+                    "binary_factors.new_vte",
+                    "binary_factors.new_weightloss",
+                    "binary_factors.s1_bowelchange",
+                    "binary_factors.s1_constipation",
+                    "binary_factors.s1_cough",
+                    "binary_factors.s1_impotence",
+                    "binary_factors.s1_nocturia",
+                    "binary_factors.s1_urinaryfreq",
+                    "binary_factors.s1_urinaryretention"
+                  ],
+                  "any_cancer_risk_percent": null,
+                  "cancer_site_risks_percent": null,
+                  "colorectal_cancer_risk_percent": null
+                },
+                "evidence_observation_ids": [
+                  "b5e63b97-b379-50a6-bf22-e3c47b59d02b"
+                ],
+                "uncertainty": "QCancer-2013 did not calculate a risk because required inputs are missing: bmi, alcohol_cat4, smoke_cat, binary_factors.b_chronicpan, binary_factors.b_copd, binary_factors.b_type2, binary_factors.c_hb, binary_factors.fh_gicancer, binary_factors.fh_prostatecancer, binary_factors.new_abdodist, binary_factors.new_appetiteloss, binary_factors.new_dysphagia, binary_factors.new_gibleed, binary_factors.new_haematuria, binary_factors.new_haemoptysis, binary_factors.new_heartburn, binary_factors.new_indigestion, binary_factors.new_necklump, binary_factors.new_nightsweats, binary_factors.new_testespain, binary_factors.new_testicularlump, binary_factors.new_vte, binary_factors.new_weightloss, binary_factors.s1_bowelchange, binary_factors.s1_constipation, binary_factors.s1_cough, binary_factors.s1_impotence, binary_factors.s1_nocturia, binary_factors.s1_urinaryfreq, binary_factors.s1_urinaryretention"
+              }
+            ],
+            "missing_information": [
+              "Demonstration output is not a diagnosis or clinically validated risk assessment.",
+              "No eligible patient history exists before the input note.",
+              "Source IDs, quotes, offsets and patient/time scope validated; clinical interpretation and completeness require review. (clinical_interpretation_not_verified)",
+              "No haemoglobin result before this note."
+            ]
+          }
+        }
+      ],
+      "nurse_queue": 40.75,
+      "nurse_start": 40.75,
+      "nurse_end": 40.80157844090004,
+      "gp_queue": 40.80157844090004,
+      "gp_start": 40.80157844090004,
+      "gp_end": 40.959608671809775,
+      "baseline_decision_time": 40.959608671809775,
+      "signal_time": 40.959608671809775,
+      "signal_urgency": "none",
+      "actual_plan": "followup",
+      "gp_followup_queue": 54.959608671809775,
+      "gp_followup_start": 54.959608671809775,
+      "gp_followup_end": 55.084964204272126,
+      "pathway_exit": 55.084964204272126
+    },
+    {
+      "patient_id": "dd26d162-a045-5819-92e9-92b0773ff641",
+      "arrival": 41.25,
+      "relevant": false,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "test",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": false,
+      "baseline_referral": false,
+      "baseline_plan": "followup",
+      "symptom_change": false,
+      "change_investigation": true,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": false,
+      "repeat_duplicate_evidence": false,
+      "signal": false,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [
+        {
+          "decision_id": "initial",
+          "time": 41.40561378551018,
+          "input_sha256": "1d3dc92e72ace906cb62df25cf92f5df8351a420227b83c2dba4020a88b55e17",
+          "response_sha256": "62718b1a453042a781de78598a0663021ee85711cdbd27b8692f42e6ff916220",
+          "recommendation": {
+            "review_signal": false,
+            "urgency": "none",
+            "recommended_actions": [],
+            "matched_rule_ids": [],
+            "model_predictions": [
+              {
+                "patient_id": "dd26d162-a045-5819-92e9-92b0773ff641",
+                "model_name": "QCancer-2013",
+                "model_version": "QCancer-2013-open-source",
+                "as_of": "2026-11-14T09:00:00Z",
+                "prediction_type": "current_undiagnosed_cancer_risk",
+                "value": {
+                  "status": "insufficient_data",
+                  "population": "UK primary care; model ages 25\u201389",
+                  "limitations": [
+                    "QCancer-2013 was developed for UK primary care; it has not been calibrated or clinically validated for Finland.",
+                    "The Junction synthetic demo uses Townsend score 0 as a placeholder, not a Finnish deprivation score.",
+                    "This is a prototype estimate, not a diagnosis, referral decision, or Finnish clinical recommendation."
+                  ],
+                  "horizon_years": 2,
+                  "source_notice": "The initial version of this file, to be found at http://svn.clinrisk.co.uk/opensource/qcancer, faithfully implements QCancer-2013. We have released this code under the GNU Affero General Public License to enable others to implement the algorithm faithfully. However, the nature of the GNU Affero Public License is such that we cannot prevent, for example, someone accidentally altering the coefficients, getting the inputs wrong, or just poor programming. We stress, therefore, that it is the responsibility of the end user to check that the source that they receive produces the same results as the original code posted at http://svn.clinrisk.co.uk/opensource/qcancer. Inaccurate implementations of risk scores can lead to wrong patients being given the wrong treatment.",
+                  "invalid_inputs": [],
+                  "missing_inputs": [
+                    "bmi",
+                    "alcohol_cat4",
+                    "smoke_cat",
+                    "binary_factors.b_chronicpan",
+                    "binary_factors.b_copd",
+                    "binary_factors.b_type2",
+                    "binary_factors.c_hb",
+                    "binary_factors.fh_gicancer",
+                    "binary_factors.fh_prostatecancer",
+                    "binary_factors.new_abdodist",
+                    "binary_factors.new_appetiteloss",
+                    "binary_factors.new_dysphagia",
+                    "binary_factors.new_gibleed",
+                    "binary_factors.new_haematuria",
+                    "binary_factors.new_haemoptysis",
+                    "binary_factors.new_heartburn",
+                    "binary_factors.new_indigestion",
+                    "binary_factors.new_necklump",
+                    "binary_factors.new_nightsweats",
+                    "binary_factors.new_rectalbleed",
+                    "binary_factors.new_testespain",
+                    "binary_factors.new_testicularlump",
+                    "binary_factors.new_vte",
+                    "binary_factors.s1_bowelchange",
+                    "binary_factors.s1_constipation",
+                    "binary_factors.s1_cough",
+                    "binary_factors.s1_impotence",
+                    "binary_factors.s1_nocturia",
+                    "binary_factors.s1_urinaryfreq",
+                    "binary_factors.s1_urinaryretention"
+                  ],
+                  "any_cancer_risk_percent": null,
+                  "cancer_site_risks_percent": null,
+                  "colorectal_cancer_risk_percent": null
+                },
+                "evidence_observation_ids": [
+                  "f2626108-a698-5ac6-ad22-0af45973009a"
+                ],
+                "uncertainty": "QCancer-2013 did not calculate a risk because required inputs are missing: bmi, alcohol_cat4, smoke_cat, binary_factors.b_chronicpan, binary_factors.b_copd, binary_factors.b_type2, binary_factors.c_hb, binary_factors.fh_gicancer, binary_factors.fh_prostatecancer, binary_factors.new_abdodist, binary_factors.new_appetiteloss, binary_factors.new_dysphagia, binary_factors.new_gibleed, binary_factors.new_haematuria, binary_factors.new_haemoptysis, binary_factors.new_heartburn, binary_factors.new_indigestion, binary_factors.new_necklump, binary_factors.new_nightsweats, binary_factors.new_rectalbleed, binary_factors.new_testespain, binary_factors.new_testicularlump, binary_factors.new_vte, binary_factors.s1_bowelchange, binary_factors.s1_constipation, binary_factors.s1_cough, binary_factors.s1_impotence, binary_factors.s1_nocturia, binary_factors.s1_urinaryfreq, binary_factors.s1_urinaryretention"
+              }
+            ],
+            "missing_information": [
+              "Demonstration output is not a diagnosis or clinically validated risk assessment.",
+              "No eligible patient history exists before the input note.",
+              "The current record does not establish whether rectal bleeding is present or absent.",
+              "The current record does not establish whether there has been a change in bowel habit.",
+              "No current height, current body weight, or BMI in kg/m\u00b2 is documented; the 5 kg weight change cannot supply these measurements.",
+              "Source IDs, quotes, offsets and patient/time scope validated; clinical interpretation and completeness require review. (clinical_interpretation_not_verified)",
+              "No haemoglobin result before this note."
+            ]
+          }
+        }
+      ],
+      "nurse_queue": 41.25,
+      "nurse_start": 41.25,
+      "nurse_end": 41.30623134925044,
+      "gp_queue": 41.30623134925044,
+      "gp_start": 41.30623134925044,
+      "gp_end": 41.40561378551018,
+      "baseline_decision_time": 41.40561378551018,
+      "signal_time": 41.40561378551018,
+      "signal_urgency": "none",
+      "actual_plan": "followup",
+      "gp_followup_queue": 55.40561378551018,
+      "gp_followup_start": 55.40561378551018,
+      "gp_followup_end": 55.48808251985508,
+      "pathway_exit": 55.48808251985508
+    },
+    {
+      "patient_id": "f260096a-08f4-5dce-88e3-ef03bac7d8ff",
+      "arrival": 41.75,
+      "relevant": false,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "test",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": false,
+      "baseline_referral": true,
+      "baseline_plan": "monitor",
+      "symptom_change": false,
+      "change_investigation": false,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": false,
+      "repeat_duplicate_evidence": false,
+      "signal": true,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": true,
+      "real_predictions_used": [
+        {
+          "decision_id": "initial",
+          "time": 41.996360144732904,
+          "input_sha256": "147a404793ffae1d393d2dafd02a3b305edb0cf9aace173fff15ebd8efd6d9f1",
+          "response_sha256": "9804861f2ce06e2ea63a3a9f97fb2c5673fe5698648a723622ccd165b19c4b5f",
+          "recommendation": {
+            "review_signal": true,
+            "urgency": "review",
+            "recommended_actions": [
+              "Physician review: consider FIT",
+              "Physician review: consider FIT"
+            ],
+            "matched_rule_ids": [
+              "efb5f89f-5734-5ba5-971a-46ec6eb464a9",
+              "436373e3-bf13-5f8d-a925-a9338a2f3a03"
+            ],
+            "model_predictions": [
+              {
+                "patient_id": "f260096a-08f4-5dce-88e3-ef03bac7d8ff",
+                "model_name": "QCancer-2013",
+                "model_version": "QCancer-2013-open-source",
+                "as_of": "2026-11-14T09:00:00Z",
+                "prediction_type": "current_undiagnosed_cancer_risk",
+                "value": {
+                  "status": "insufficient_data",
+                  "population": "UK primary care; model ages 25\u201389",
+                  "limitations": [
+                    "QCancer-2013 was developed for UK primary care; it has not been calibrated or clinically validated for Finland.",
+                    "The Junction synthetic demo uses Townsend score 0 as a placeholder, not a Finnish deprivation score.",
+                    "This is a prototype estimate, not a diagnosis, referral decision, or Finnish clinical recommendation."
+                  ],
+                  "horizon_years": 2,
+                  "source_notice": "The initial version of this file, to be found at http://svn.clinrisk.co.uk/opensource/qcancer, faithfully implements QCancer-2013. We have released this code under the GNU Affero General Public License to enable others to implement the algorithm faithfully. However, the nature of the GNU Affero Public License is such that we cannot prevent, for example, someone accidentally altering the coefficients, getting the inputs wrong, or just poor programming. We stress, therefore, that it is the responsibility of the end user to check that the source that they receive produces the same results as the original code posted at http://svn.clinrisk.co.uk/opensource/qcancer. Inaccurate implementations of risk scores can lead to wrong patients being given the wrong treatment.",
+                  "invalid_inputs": [],
+                  "missing_inputs": [
+                    "bmi",
+                    "alcohol_cat4",
+                    "smoke_cat",
+                    "binary_factors.b_chronicpan",
+                    "binary_factors.b_copd",
+                    "binary_factors.b_endometrial",
+                    "binary_factors.b_type2",
+                    "binary_factors.fh_breastcancer",
+                    "binary_factors.fh_gicancer",
+                    "binary_factors.fh_ovariancancer",
+                    "binary_factors.new_abdodist",
+                    "binary_factors.new_abdopain",
+                    "binary_factors.new_appetiteloss",
+                    "binary_factors.new_breastlump",
+                    "binary_factors.new_breastpain",
+                    "binary_factors.new_breastskin",
+                    "binary_factors.new_dysphagia",
+                    "binary_factors.new_gibleed",
+                    "binary_factors.new_haematuria",
+                    "binary_factors.new_haemoptysis",
+                    "binary_factors.new_heartburn",
+                    "binary_factors.new_imb",
+                    "binary_factors.new_indigestion",
+                    "binary_factors.new_necklump",
+                    "binary_factors.new_nightsweats",
+                    "binary_factors.new_pmb",
+                    "binary_factors.new_postcoital",
+                    "binary_factors.new_rectalbleed",
+                    "binary_factors.new_vte",
+                    "binary_factors.new_weightloss",
+                    "binary_factors.s1_bowelchange",
+                    "binary_factors.s1_bruising",
+                    "binary_factors.s1_constipation",
+                    "binary_factors.s1_cough"
+                  ],
+                  "any_cancer_risk_percent": null,
+                  "cancer_site_risks_percent": null,
+                  "colorectal_cancer_risk_percent": null
+                },
+                "evidence_observation_ids": [
+                  "7b762a7c-8b17-5079-af62-a5f40370e32a"
+                ],
+                "uncertainty": "QCancer-2013 did not calculate a risk because required inputs are missing: bmi, alcohol_cat4, smoke_cat, binary_factors.b_chronicpan, binary_factors.b_copd, binary_factors.b_endometrial, binary_factors.b_type2, binary_factors.fh_breastcancer, binary_factors.fh_gicancer, binary_factors.fh_ovariancancer, binary_factors.new_abdodist, binary_factors.new_abdopain, binary_factors.new_appetiteloss, binary_factors.new_breastlump, binary_factors.new_breastpain, binary_factors.new_breastskin, binary_factors.new_dysphagia, binary_factors.new_gibleed, binary_factors.new_haematuria, binary_factors.new_haemoptysis, binary_factors.new_heartburn, binary_factors.new_imb, binary_factors.new_indigestion, binary_factors.new_necklump, binary_factors.new_nightsweats, binary_factors.new_pmb, binary_factors.new_postcoital, binary_factors.new_rectalbleed, binary_factors.new_vte, binary_factors.new_weightloss, binary_factors.s1_bowelchange, binary_factors.s1_bruising, binary_factors.s1_constipation, binary_factors.s1_cough"
+              }
+            ],
+            "missing_information": [
+              "Demonstration output is not a diagnosis or clinically validated risk assessment.",
+              "The current follow-up note does not document the presence or absence of rectal bleeding, change in bowel habit, abdominal pain, weight loss, abdominal mass, or rectal mass.",
+              "Source IDs, quotes, offsets and patient/time scope validated; clinical interpretation and completeness require review. (clinical_interpretation_not_verified)"
+            ]
+          }
+        }
+      ],
+      "nurse_queue": 41.75,
+      "nurse_start": 41.75,
+      "nurse_end": 41.77616520778626,
+      "gp_queue": 41.77616520778626,
+      "gp_start": 41.77616520778626,
+      "gp_end": 41.996360144732904,
+      "baseline_decision_time": 41.996360144732904,
+      "signal_time": 41.996360144732904,
+      "signal_urgency": "review",
+      "selective_skip_time": 41.996360144732904,
+      "actual_plan": "monitor",
+      "pathway_exit": 41.996360144732904
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "arrival": 42.25,
+      "relevant": true,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "test",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": true,
+      "baseline_followup_investigation": true,
+      "baseline_referral": true,
+      "baseline_plan": "monitor",
+      "symptom_change": false,
+      "change_investigation": true,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": false,
+      "repeat_duplicate_evidence": false,
+      "signal": true,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [
+        {
+          "decision_id": "initial",
+          "time": 42.413179613911495,
+          "input_sha256": "7260b41f37d5f8f3dd0baa57e2768800cdd884d68c15a276f4a03260324ee3e0",
+          "response_sha256": "1773a8b20e659d41309119312f96f4143c0cd941cb1c2b0b3a9b33d594dd9328",
+          "recommendation": {
+            "review_signal": true,
+            "urgency": "review",
+            "recommended_actions": [
+              "Physician review: consider FIT"
+            ],
+            "matched_rule_ids": [
+              "e2d1e461-ef77-551c-90f3-793a1f32320e"
+            ],
+            "model_predictions": [
+              {
+                "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+                "model_name": "QCancer-2013",
+                "model_version": "QCancer-2013-open-source",
+                "as_of": "2026-11-14T09:00:00Z",
+                "prediction_type": "current_undiagnosed_cancer_risk",
+                "value": {
+                  "status": "insufficient_data",
+                  "population": "UK primary care; model ages 25\u201389",
+                  "limitations": [
+                    "QCancer-2013 was developed for UK primary care; it has not been calibrated or clinically validated for Finland.",
+                    "The Junction synthetic demo uses Townsend score 0 as a placeholder, not a Finnish deprivation score.",
+                    "This is a prototype estimate, not a diagnosis, referral decision, or Finnish clinical recommendation."
+                  ],
+                  "horizon_years": 2,
+                  "source_notice": "The initial version of this file, to be found at http://svn.clinrisk.co.uk/opensource/qcancer, faithfully implements QCancer-2013. We have released this code under the GNU Affero General Public License to enable others to implement the algorithm faithfully. However, the nature of the GNU Affero Public License is such that we cannot prevent, for example, someone accidentally altering the coefficients, getting the inputs wrong, or just poor programming. We stress, therefore, that it is the responsibility of the end user to check that the source that they receive produces the same results as the original code posted at http://svn.clinrisk.co.uk/opensource/qcancer. Inaccurate implementations of risk scores can lead to wrong patients being given the wrong treatment.",
+                  "invalid_inputs": [],
+                  "missing_inputs": [
+                    "bmi",
+                    "alcohol_cat4",
+                    "smoke_cat",
+                    "binary_factors.b_chronicpan",
+                    "binary_factors.b_copd",
+                    "binary_factors.b_type2",
+                    "binary_factors.c_hb",
+                    "binary_factors.fh_gicancer",
+                    "binary_factors.fh_prostatecancer",
+                    "binary_factors.new_abdodist",
+                    "binary_factors.new_appetiteloss",
+                    "binary_factors.new_dysphagia",
+                    "binary_factors.new_gibleed",
+                    "binary_factors.new_haematuria",
+                    "binary_factors.new_haemoptysis",
+                    "binary_factors.new_heartburn",
+                    "binary_factors.new_indigestion",
+                    "binary_factors.new_necklump",
+                    "binary_factors.new_nightsweats",
+                    "binary_factors.new_rectalbleed",
+                    "binary_factors.new_testespain",
+                    "binary_factors.new_testicularlump",
+                    "binary_factors.new_vte",
+                    "binary_factors.s1_bowelchange",
+                    "binary_factors.s1_constipation",
+                    "binary_factors.s1_cough",
+                    "binary_factors.s1_impotence",
+                    "binary_factors.s1_nocturia",
+                    "binary_factors.s1_urinaryfreq",
+                    "binary_factors.s1_urinaryretention"
+                  ],
+                  "any_cancer_risk_percent": null,
+                  "cancer_site_risks_percent": null,
+                  "colorectal_cancer_risk_percent": null
+                },
+                "evidence_observation_ids": [
+                  "4261169b-9fe4-54dd-b436-501204743c39"
+                ],
+                "uncertainty": "QCancer-2013 did not calculate a risk because required inputs are missing: bmi, alcohol_cat4, smoke_cat, binary_factors.b_chronicpan, binary_factors.b_copd, binary_factors.b_type2, binary_factors.c_hb, binary_factors.fh_gicancer, binary_factors.fh_prostatecancer, binary_factors.new_abdodist, binary_factors.new_appetiteloss, binary_factors.new_dysphagia, binary_factors.new_gibleed, binary_factors.new_haematuria, binary_factors.new_haemoptysis, binary_factors.new_heartburn, binary_factors.new_indigestion, binary_factors.new_necklump, binary_factors.new_nightsweats, binary_factors.new_rectalbleed, binary_factors.new_testespain, binary_factors.new_testicularlump, binary_factors.new_vte, binary_factors.s1_bowelchange, binary_factors.s1_constipation, binary_factors.s1_cough, binary_factors.s1_impotence, binary_factors.s1_nocturia, binary_factors.s1_urinaryfreq, binary_factors.s1_urinaryretention"
+              }
+            ],
+            "missing_information": [
+              "Demonstration output is not a diagnosis or clinically validated risk assessment.",
+              "No eligible patient history exists before the input note.",
+              "Source IDs, quotes, offsets and patient/time scope validated; clinical interpretation and completeness require review. (clinical_interpretation_not_verified)",
+              "No haemoglobin result before this note."
+            ]
+          }
+        }
+      ],
+      "nurse_queue": 42.25,
+      "nurse_start": 42.25,
+      "nurse_end": 42.28959022384569,
+      "gp_queue": 42.28959022384569,
+      "gp_start": 42.28959022384569,
+      "gp_end": 42.413179613911495,
+      "baseline_decision_time": 42.413179613911495,
+      "first_indication": 42.413179613911495,
+      "signal_time": 42.413179613911495,
+      "signal_urgency": "review",
+      "diagnostic_queue": 49.413179613911495,
+      "diagnostic_start": 49.413179613911495,
+      "diagnostic_end": 49.61196762910319,
+      "referral": 49.61196762910319,
+      "specialist_queue": 63.61196762910319,
+      "specialist_start": 63.61196762910319,
+      "specialist_end": 63.826096989270674,
+      "diagnosis": 68.82609698927067,
+      "treatment": 89.82609698927067,
+      "pathway_exit": 89.82609698927067
+    },
+    {
+      "patient_id": "8ce2d507-00ac-585d-8bb4-0139e5f95416",
+      "arrival": 42.75,
+      "relevant": false,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "test",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": false,
+      "baseline_referral": false,
+      "baseline_plan": "followup",
+      "symptom_change": false,
+      "change_investigation": false,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": false,
+      "repeat_duplicate_evidence": false,
+      "signal": false,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [
+        {
+          "decision_id": "initial",
+          "time": 42.97316080171917,
+          "input_sha256": "0942de1e24d65da0fcbab44799003b985d2e099199023aa25b08a951e96649e4",
+          "response_sha256": "ffb50b86ff0ad5be112afbb4f56c0d9e9446887f9befc67ba4402dc0455f79ac",
+          "recommendation": {
+            "review_signal": false,
+            "urgency": "none",
+            "recommended_actions": [],
+            "matched_rule_ids": [],
+            "model_predictions": [
+              {
+                "patient_id": "8ce2d507-00ac-585d-8bb4-0139e5f95416",
+                "model_name": "QCancer-2013",
+                "model_version": "QCancer-2013-open-source",
+                "as_of": "2026-11-14T09:00:00Z",
+                "prediction_type": "current_undiagnosed_cancer_risk",
+                "value": {
+                  "status": "insufficient_data",
+                  "population": "UK primary care; model ages 25\u201389",
+                  "limitations": [
+                    "QCancer-2013 was developed for UK primary care; it has not been calibrated or clinically validated for Finland.",
+                    "The Junction synthetic demo uses Townsend score 0 as a placeholder, not a Finnish deprivation score.",
+                    "This is a prototype estimate, not a diagnosis, referral decision, or Finnish clinical recommendation."
+                  ],
+                  "horizon_years": 2,
+                  "source_notice": "The initial version of this file, to be found at http://svn.clinrisk.co.uk/opensource/qcancer, faithfully implements QCancer-2013. We have released this code under the GNU Affero General Public License to enable others to implement the algorithm faithfully. However, the nature of the GNU Affero Public License is such that we cannot prevent, for example, someone accidentally altering the coefficients, getting the inputs wrong, or just poor programming. We stress, therefore, that it is the responsibility of the end user to check that the source that they receive produces the same results as the original code posted at http://svn.clinrisk.co.uk/opensource/qcancer. Inaccurate implementations of risk scores can lead to wrong patients being given the wrong treatment.",
+                  "invalid_inputs": [],
+                  "missing_inputs": [
+                    "bmi",
+                    "alcohol_cat4",
+                    "smoke_cat",
+                    "binary_factors.b_chronicpan",
+                    "binary_factors.b_copd",
+                    "binary_factors.b_endometrial",
+                    "binary_factors.b_type2",
+                    "binary_factors.c_hb",
+                    "binary_factors.fh_breastcancer",
+                    "binary_factors.fh_gicancer",
+                    "binary_factors.fh_ovariancancer",
+                    "binary_factors.new_abdodist",
+                    "binary_factors.new_appetiteloss",
+                    "binary_factors.new_breastlump",
+                    "binary_factors.new_breastpain",
+                    "binary_factors.new_breastskin",
+                    "binary_factors.new_dysphagia",
+                    "binary_factors.new_gibleed",
+                    "binary_factors.new_haematuria",
+                    "binary_factors.new_haemoptysis",
+                    "binary_factors.new_heartburn",
+                    "binary_factors.new_imb",
+                    "binary_factors.new_indigestion",
+                    "binary_factors.new_necklump",
+                    "binary_factors.new_nightsweats",
+                    "binary_factors.new_pmb",
+                    "binary_factors.new_postcoital",
+                    "binary_factors.new_rectalbleed",
+                    "binary_factors.new_vte",
+                    "binary_factors.new_weightloss",
+                    "binary_factors.s1_bowelchange",
+                    "binary_factors.s1_bruising",
+                    "binary_factors.s1_constipation",
+                    "binary_factors.s1_cough"
+                  ],
+                  "any_cancer_risk_percent": null,
+                  "cancer_site_risks_percent": null,
+                  "colorectal_cancer_risk_percent": null
+                },
+                "evidence_observation_ids": [
+                  "cf2dad89-fa9f-59d8-8c20-b5c282a3dc54"
+                ],
+                "uncertainty": "QCancer-2013 did not calculate a risk because required inputs are missing: bmi, alcohol_cat4, smoke_cat, binary_factors.b_chronicpan, binary_factors.b_copd, binary_factors.b_endometrial, binary_factors.b_type2, binary_factors.c_hb, binary_factors.fh_breastcancer, binary_factors.fh_gicancer, binary_factors.fh_ovariancancer, binary_factors.new_abdodist, binary_factors.new_appetiteloss, binary_factors.new_breastlump, binary_factors.new_breastpain, binary_factors.new_breastskin, binary_factors.new_dysphagia, binary_factors.new_gibleed, binary_factors.new_haematuria, binary_factors.new_haemoptysis, binary_factors.new_heartburn, binary_factors.new_imb, binary_factors.new_indigestion, binary_factors.new_necklump, binary_factors.new_nightsweats, binary_factors.new_pmb, binary_factors.new_postcoital, binary_factors.new_rectalbleed, binary_factors.new_vte, binary_factors.new_weightloss, binary_factors.s1_bowelchange, binary_factors.s1_bruising, binary_factors.s1_constipation, binary_factors.s1_cough"
+              }
+            ],
+            "missing_information": [
+              "Demonstration output is not a diagnosis or clinically validated risk assessment.",
+              "No eligible patient history exists before the input note.",
+              "The supplied record does not document rectal bleeding, change in bowel habit, weight loss, an abdominal mass, or a rectal mass.",
+              "Source IDs, quotes, offsets and patient/time scope validated; clinical interpretation and completeness require review. (clinical_interpretation_not_verified)",
+              "No haemoglobin result before this note."
+            ]
+          }
+        }
+      ],
+      "nurse_queue": 42.75,
+      "nurse_start": 42.75,
+      "nurse_end": 42.773514276896826,
+      "gp_queue": 42.773514276896826,
+      "gp_start": 42.773514276896826,
+      "gp_end": 42.97316080171917,
+      "baseline_decision_time": 42.97316080171917,
+      "signal_time": 42.97316080171917,
+      "signal_urgency": "none",
+      "actual_plan": "followup",
+      "gp_followup_queue": 56.97316080171917,
+      "gp_followup_start": 56.97316080171917,
+      "gp_followup_end": 57.03898439539881,
+      "pathway_exit": 57.03898439539881
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "arrival": 43.25,
+      "relevant": true,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "test",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": true,
+      "baseline_followup_investigation": true,
+      "baseline_referral": true,
+      "baseline_plan": "followup",
+      "symptom_change": false,
+      "change_investigation": false,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": true,
+      "repeat_duplicate_evidence": false,
+      "signal": true,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [
+        {
+          "decision_id": "initial",
+          "time": 43.379703338541866,
+          "input_sha256": "dd007b18ce12f100445b1564a73b86b8448b7d39a6150d7c801e59ce15010bec",
+          "response_sha256": "cda696928fc6f192e1642ef3050a9a8c6eaedc257ff608fec137f9d5f9d7710d",
+          "recommendation": {
+            "review_signal": true,
+            "urgency": "review",
+            "recommended_actions": [
+              "Physician review: consider FIT"
+            ],
+            "matched_rule_ids": [
+              "efb5f89f-5734-5ba5-971a-46ec6eb464a9"
+            ],
+            "model_predictions": [
+              {
+                "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+                "model_name": "QCancer-2013",
+                "model_version": "QCancer-2013-open-source",
+                "as_of": "2026-11-14T09:00:00Z",
+                "prediction_type": "current_undiagnosed_cancer_risk",
+                "value": {
+                  "status": "insufficient_data",
+                  "population": "UK primary care; model ages 25\u201389",
+                  "limitations": [
+                    "QCancer-2013 was developed for UK primary care; it has not been calibrated or clinically validated for Finland.",
+                    "The Junction synthetic demo uses Townsend score 0 as a placeholder, not a Finnish deprivation score.",
+                    "This is a prototype estimate, not a diagnosis, referral decision, or Finnish clinical recommendation."
+                  ],
+                  "horizon_years": 2,
+                  "source_notice": "The initial version of this file, to be found at http://svn.clinrisk.co.uk/opensource/qcancer, faithfully implements QCancer-2013. We have released this code under the GNU Affero General Public License to enable others to implement the algorithm faithfully. However, the nature of the GNU Affero Public License is such that we cannot prevent, for example, someone accidentally altering the coefficients, getting the inputs wrong, or just poor programming. We stress, therefore, that it is the responsibility of the end user to check that the source that they receive produces the same results as the original code posted at http://svn.clinrisk.co.uk/opensource/qcancer. Inaccurate implementations of risk scores can lead to wrong patients being given the wrong treatment.",
+                  "invalid_inputs": [],
+                  "missing_inputs": [
+                    "bmi",
+                    "alcohol_cat4",
+                    "smoke_cat",
+                    "binary_factors.b_chronicpan",
+                    "binary_factors.b_copd",
+                    "binary_factors.b_type2",
+                    "binary_factors.fh_gicancer",
+                    "binary_factors.fh_prostatecancer",
+                    "binary_factors.new_abdodist",
+                    "binary_factors.new_abdopain",
+                    "binary_factors.new_appetiteloss",
+                    "binary_factors.new_dysphagia",
+                    "binary_factors.new_gibleed",
+                    "binary_factors.new_haematuria",
+                    "binary_factors.new_haemoptysis",
+                    "binary_factors.new_heartburn",
+                    "binary_factors.new_indigestion",
+                    "binary_factors.new_necklump",
+                    "binary_factors.new_nightsweats",
+                    "binary_factors.new_rectalbleed",
+                    "binary_factors.new_testespain",
+                    "binary_factors.new_testicularlump",
+                    "binary_factors.new_vte",
+                    "binary_factors.new_weightloss",
+                    "binary_factors.s1_bowelchange",
+                    "binary_factors.s1_constipation",
+                    "binary_factors.s1_cough",
+                    "binary_factors.s1_impotence",
+                    "binary_factors.s1_nocturia",
+                    "binary_factors.s1_urinaryfreq",
+                    "binary_factors.s1_urinaryretention"
+                  ],
+                  "any_cancer_risk_percent": null,
+                  "cancer_site_risks_percent": null,
+                  "colorectal_cancer_risk_percent": null
+                },
+                "evidence_observation_ids": [
+                  "0f18676f-02e3-5e0c-aa9c-6b2bd7102e33"
+                ],
+                "uncertainty": "QCancer-2013 did not calculate a risk because required inputs are missing: bmi, alcohol_cat4, smoke_cat, binary_factors.b_chronicpan, binary_factors.b_copd, binary_factors.b_type2, binary_factors.fh_gicancer, binary_factors.fh_prostatecancer, binary_factors.new_abdodist, binary_factors.new_abdopain, binary_factors.new_appetiteloss, binary_factors.new_dysphagia, binary_factors.new_gibleed, binary_factors.new_haematuria, binary_factors.new_haemoptysis, binary_factors.new_heartburn, binary_factors.new_indigestion, binary_factors.new_necklump, binary_factors.new_nightsweats, binary_factors.new_rectalbleed, binary_factors.new_testespain, binary_factors.new_testicularlump, binary_factors.new_vte, binary_factors.new_weightloss, binary_factors.s1_bowelchange, binary_factors.s1_constipation, binary_factors.s1_cough, binary_factors.s1_impotence, binary_factors.s1_nocturia, binary_factors.s1_urinaryfreq, binary_factors.s1_urinaryretention"
+              }
+            ],
+            "missing_information": [
+              "Demonstration output is not a diagnosis or clinically validated risk assessment.",
+              "Source IDs, quotes, offsets and patient/time scope validated; clinical interpretation and completeness require review. (clinical_interpretation_not_verified)",
+              "No ferritin result before this note; iron deficiency could not be assessed."
+            ]
+          }
+        }
+      ],
+      "nurse_queue": 43.25,
+      "nurse_start": 43.25,
+      "nurse_end": 43.294776469869994,
+      "gp_queue": 43.294776469869994,
+      "gp_start": 43.294776469869994,
+      "gp_end": 43.379703338541866,
+      "baseline_decision_time": 43.379703338541866,
+      "first_indication": 43.379703338541866,
+      "signal_time": 43.379703338541866,
+      "signal_urgency": "review",
+      "diagnostic_queue": 50.379703338541866,
+      "diagnostic_start": 50.379703338541866,
+      "diagnostic_end": 50.52983576693302,
+      "referral": 50.52983576693302,
+      "specialist_queue": 64.52983576693302,
+      "specialist_start": 64.52983576693302,
+      "specialist_end": 64.72018424110306,
+      "diagnosis": 69.72018424110306,
+      "treatment": 90.72018424110306,
+      "pathway_exit": 90.72018424110306
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "arrival": 43.75,
+      "relevant": true,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "test",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": true,
+      "baseline_followup_investigation": true,
+      "baseline_referral": true,
+      "baseline_plan": "followup",
+      "symptom_change": false,
+      "change_investigation": true,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": true,
+      "repeat_duplicate_evidence": false,
+      "signal": true,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [
+        {
+          "decision_id": "initial",
+          "time": 44.03193150614114,
+          "input_sha256": "18b7af715249ade1b3ca5a481163fb2ffde7ec64244a33c67e30bef654b5c7ee",
+          "response_sha256": "034e88e10c2ef1c1e1f53686926e9f50e75f1ce7d9e3dbcf40233c4f6a42993a",
+          "recommendation": {
+            "review_signal": true,
+            "urgency": "urgent",
+            "recommended_actions": [
+              "Urgent physician review: suspected cancer pathway referral"
+            ],
+            "matched_rule_ids": [
+              "1ada9a2a-58b2-5528-8da5-c7c0693df684"
+            ],
+            "model_predictions": [
+              {
+                "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+                "model_name": "QCancer-2013",
+                "model_version": "QCancer-2013-open-source",
+                "as_of": "2026-11-14T09:00:00Z",
+                "prediction_type": "current_undiagnosed_cancer_risk",
+                "value": {
+                  "status": "insufficient_data",
+                  "population": "UK primary care; model ages 25\u201389",
+                  "limitations": [
+                    "QCancer-2013 was developed for UK primary care; it has not been calibrated or clinically validated for Finland.",
+                    "The Junction synthetic demo uses Townsend score 0 as a placeholder, not a Finnish deprivation score.",
+                    "This is a prototype estimate, not a diagnosis, referral decision, or Finnish clinical recommendation."
+                  ],
+                  "horizon_years": 2,
+                  "source_notice": "The initial version of this file, to be found at http://svn.clinrisk.co.uk/opensource/qcancer, faithfully implements QCancer-2013. We have released this code under the GNU Affero General Public License to enable others to implement the algorithm faithfully. However, the nature of the GNU Affero Public License is such that we cannot prevent, for example, someone accidentally altering the coefficients, getting the inputs wrong, or just poor programming. We stress, therefore, that it is the responsibility of the end user to check that the source that they receive produces the same results as the original code posted at http://svn.clinrisk.co.uk/opensource/qcancer. Inaccurate implementations of risk scores can lead to wrong patients being given the wrong treatment.",
+                  "invalid_inputs": [],
+                  "missing_inputs": [
+                    "bmi",
+                    "alcohol_cat4",
+                    "smoke_cat",
+                    "binary_factors.b_chronicpan",
+                    "binary_factors.b_copd",
+                    "binary_factors.b_endometrial",
+                    "binary_factors.b_type2",
+                    "binary_factors.c_hb",
+                    "binary_factors.fh_breastcancer",
+                    "binary_factors.fh_gicancer",
+                    "binary_factors.fh_ovariancancer",
+                    "binary_factors.new_abdodist",
+                    "binary_factors.new_abdopain",
+                    "binary_factors.new_appetiteloss",
+                    "binary_factors.new_breastlump",
+                    "binary_factors.new_breastpain",
+                    "binary_factors.new_breastskin",
+                    "binary_factors.new_dysphagia",
+                    "binary_factors.new_gibleed",
+                    "binary_factors.new_haematuria",
+                    "binary_factors.new_haemoptysis",
+                    "binary_factors.new_heartburn",
+                    "binary_factors.new_imb",
+                    "binary_factors.new_indigestion",
+                    "binary_factors.new_necklump",
+                    "binary_factors.new_nightsweats",
+                    "binary_factors.new_pmb",
+                    "binary_factors.new_postcoital",
+                    "binary_factors.new_rectalbleed",
+                    "binary_factors.new_vte",
+                    "binary_factors.new_weightloss",
+                    "binary_factors.s1_bowelchange",
+                    "binary_factors.s1_bruising",
+                    "binary_factors.s1_constipation",
+                    "binary_factors.s1_cough"
+                  ],
+                  "any_cancer_risk_percent": null,
+                  "cancer_site_risks_percent": null,
+                  "colorectal_cancer_risk_percent": null
+                },
+                "evidence_observation_ids": [],
+                "uncertainty": "QCancer-2013 did not calculate a risk because required inputs are missing: bmi, alcohol_cat4, smoke_cat, binary_factors.b_chronicpan, binary_factors.b_copd, binary_factors.b_endometrial, binary_factors.b_type2, binary_factors.c_hb, binary_factors.fh_breastcancer, binary_factors.fh_gicancer, binary_factors.fh_ovariancancer, binary_factors.new_abdodist, binary_factors.new_abdopain, binary_factors.new_appetiteloss, binary_factors.new_breastlump, binary_factors.new_breastpain, binary_factors.new_breastskin, binary_factors.new_dysphagia, binary_factors.new_gibleed, binary_factors.new_haematuria, binary_factors.new_haemoptysis, binary_factors.new_heartburn, binary_factors.new_imb, binary_factors.new_indigestion, binary_factors.new_necklump, binary_factors.new_nightsweats, binary_factors.new_pmb, binary_factors.new_postcoital, binary_factors.new_rectalbleed, binary_factors.new_vte, binary_factors.new_weightloss, binary_factors.s1_bowelchange, binary_factors.s1_bruising, binary_factors.s1_constipation, binary_factors.s1_cough"
+              }
+            ],
+            "missing_information": [
+              "Demonstration output is not a diagnosis or clinically validated risk assessment.",
+              "Individual bowel, rectal bleeding, abdominal pain, weight loss, and mass symptoms are not separately documented; only a general statement of no symptoms is available.",
+              "Source IDs, quotes, offsets and patient/time scope validated; clinical interpretation and completeness require review. (clinical_interpretation_not_verified)",
+              "No haemoglobin result before this note."
+            ]
+          }
+        }
+      ],
+      "nurse_queue": 43.75,
+      "nurse_start": 43.75,
+      "nurse_end": 43.78699290466197,
+      "gp_queue": 43.78699290466197,
+      "gp_start": 43.78699290466197,
+      "gp_end": 44.03193150614114,
+      "baseline_decision_time": 44.03193150614114,
+      "first_indication": 44.03193150614114,
+      "signal_time": 44.03193150614114,
+      "signal_urgency": "urgent",
+      "diagnostic_queue": 51.03193150614114,
+      "diagnostic_start": 51.03193150614114,
+      "diagnostic_end": 51.221282594064036,
+      "referral": 51.221282594064036,
+      "specialist_queue": 65.22128259406404,
+      "specialist_start": 65.22128259406404,
+      "specialist_end": 65.43904960343527,
+      "diagnosis": 70.43904960343527,
+      "treatment": 91.43904960343527,
+      "pathway_exit": 91.43904960343527
+    }
+  ],
+  "events": [
+    {
+      "patient_id": "db41f561-4115-5032-a3f9-e0a82279b0db",
+      "time": 35.75,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "db41f561-4115-5032-a3f9-e0a82279b0db",
+      "time": 35.75,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "db41f561-4115-5032-a3f9-e0a82279b0db",
+      "time": 35.75,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "db41f561-4115-5032-a3f9-e0a82279b0db",
+      "time": 35.78877171394221,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "db41f561-4115-5032-a3f9-e0a82279b0db",
+      "time": 35.78877171394221,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "db41f561-4115-5032-a3f9-e0a82279b0db",
+      "time": 35.78877171394221,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "db41f561-4115-5032-a3f9-e0a82279b0db",
+      "time": 35.907624480938864,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "db41f561-4115-5032-a3f9-e0a82279b0db",
+      "time": 35.95762448093886,
+      "stage": "review",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "db41f561-4115-5032-a3f9-e0a82279b0db",
+      "time": 35.95762448093886,
+      "stage": "review",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "db41f561-4115-5032-a3f9-e0a82279b0db",
+      "time": 35.98110292303206,
+      "stage": "review",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "db41f561-4115-5032-a3f9-e0a82279b0db",
+      "time": 35.98110292303206,
+      "stage": "pathway",
+      "event": "discharge_with_safety_net"
+    },
+    {
+      "patient_id": "db41f561-4115-5032-a3f9-e0a82279b0db",
+      "time": 35.98110292303206,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "time": 36.0,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "time": 36.0,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "time": 36.0,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "time": 36.03632624897639,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "time": 36.03632624897639,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "time": 36.03632624897639,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "time": 36.152564345849974,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "time": 36.5,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "time": 36.5,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "time": 36.5,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "time": 36.53566875532189,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "time": 36.53566875532189,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "time": 36.53566875532189,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "time": 36.64060917781673,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "ea6665d3-7edc-5629-9e08-1c99b8552d12",
+      "time": 37.25,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "ea6665d3-7edc-5629-9e08-1c99b8552d12",
+      "time": 37.25,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "ea6665d3-7edc-5629-9e08-1c99b8552d12",
+      "time": 37.25,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "ea6665d3-7edc-5629-9e08-1c99b8552d12",
+      "time": 37.28794515482111,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "ea6665d3-7edc-5629-9e08-1c99b8552d12",
+      "time": 37.28794515482111,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "ea6665d3-7edc-5629-9e08-1c99b8552d12",
+      "time": 37.28794515482111,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "ea6665d3-7edc-5629-9e08-1c99b8552d12",
+      "time": 37.445766058094264,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "ea6665d3-7edc-5629-9e08-1c99b8552d12",
+      "time": 37.49576605809426,
+      "stage": "review",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "ea6665d3-7edc-5629-9e08-1c99b8552d12",
+      "time": 37.49576605809426,
+      "stage": "review",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "ea6665d3-7edc-5629-9e08-1c99b8552d12",
+      "time": 37.52755305415431,
+      "stage": "review",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "ea6665d3-7edc-5629-9e08-1c99b8552d12",
+      "time": 37.52755305415431,
+      "stage": "pathway",
+      "event": "safety_net_monitoring"
+    },
+    {
+      "patient_id": "ea6665d3-7edc-5629-9e08-1c99b8552d12",
+      "time": 37.52755305415431,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "5d3159a1-9555-510b-adb7-f9d2161ea6a9",
+      "time": 37.75,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "5d3159a1-9555-510b-adb7-f9d2161ea6a9",
+      "time": 37.75,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "5d3159a1-9555-510b-adb7-f9d2161ea6a9",
+      "time": 37.75,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "5d3159a1-9555-510b-adb7-f9d2161ea6a9",
+      "time": 37.821312388000706,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "5d3159a1-9555-510b-adb7-f9d2161ea6a9",
+      "time": 37.821312388000706,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "5d3159a1-9555-510b-adb7-f9d2161ea6a9",
+      "time": 37.821312388000706,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "5d3159a1-9555-510b-adb7-f9d2161ea6a9",
+      "time": 37.93545403223495,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "5d3159a1-9555-510b-adb7-f9d2161ea6a9",
+      "time": 37.93545403223495,
+      "stage": "pathway",
+      "event": "safety_net_monitoring"
+    },
+    {
+      "patient_id": "5d3159a1-9555-510b-adb7-f9d2161ea6a9",
+      "time": 37.93545403223495,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "time": 38.75,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "time": 38.75,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "time": 38.75,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "time": 38.77667407472149,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "time": 38.77667407472149,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "time": 38.77667407472149,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "time": 38.87914885784549,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "8e8e372f-de68-5f68-afe4-6f3073d9d234",
+      "time": 39.25,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "8e8e372f-de68-5f68-afe4-6f3073d9d234",
+      "time": 39.25,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "8e8e372f-de68-5f68-afe4-6f3073d9d234",
+      "time": 39.25,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "8e8e372f-de68-5f68-afe4-6f3073d9d234",
+      "time": 39.297085043306026,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "8e8e372f-de68-5f68-afe4-6f3073d9d234",
+      "time": 39.297085043306026,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "8e8e372f-de68-5f68-afe4-6f3073d9d234",
+      "time": 39.297085043306026,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "8e8e372f-de68-5f68-afe4-6f3073d9d234",
+      "time": 39.51237386694142,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "8e8e372f-de68-5f68-afe4-6f3073d9d234",
+      "time": 39.51237386694142,
+      "stage": "pathway",
+      "event": "safety_net_monitoring"
+    },
+    {
+      "patient_id": "8e8e372f-de68-5f68-afe4-6f3073d9d234",
+      "time": 39.51237386694142,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "9a0130ab-757b-5ff6-9e71-0226cb9c29b6",
+      "time": 39.75,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "9a0130ab-757b-5ff6-9e71-0226cb9c29b6",
+      "time": 39.75,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "9a0130ab-757b-5ff6-9e71-0226cb9c29b6",
+      "time": 39.75,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "9a0130ab-757b-5ff6-9e71-0226cb9c29b6",
+      "time": 39.8299139532076,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "9a0130ab-757b-5ff6-9e71-0226cb9c29b6",
+      "time": 39.8299139532076,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "9a0130ab-757b-5ff6-9e71-0226cb9c29b6",
+      "time": 39.8299139532076,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "9a0130ab-757b-5ff6-9e71-0226cb9c29b6",
+      "time": 39.93083872142464,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "9a0130ab-757b-5ff6-9e71-0226cb9c29b6",
+      "time": 39.93083872142464,
+      "stage": "pathway",
+      "event": "safety_net_monitoring"
+    },
+    {
+      "patient_id": "9a0130ab-757b-5ff6-9e71-0226cb9c29b6",
+      "time": 39.93083872142464,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "b194c212-83e9-5751-a60d-76bb7166d46e",
+      "time": 40.25,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "b194c212-83e9-5751-a60d-76bb7166d46e",
+      "time": 40.25,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "b194c212-83e9-5751-a60d-76bb7166d46e",
+      "time": 40.25,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "b194c212-83e9-5751-a60d-76bb7166d46e",
+      "time": 40.325890638216364,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "b194c212-83e9-5751-a60d-76bb7166d46e",
+      "time": 40.325890638216364,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "b194c212-83e9-5751-a60d-76bb7166d46e",
+      "time": 40.325890638216364,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "b194c212-83e9-5751-a60d-76bb7166d46e",
+      "time": 40.450824879614466,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "7f2bc1b4-d951-5090-b9e7-77c05c9b0051",
+      "time": 40.75,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "7f2bc1b4-d951-5090-b9e7-77c05c9b0051",
+      "time": 40.75,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "7f2bc1b4-d951-5090-b9e7-77c05c9b0051",
+      "time": 40.75,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "7f2bc1b4-d951-5090-b9e7-77c05c9b0051",
+      "time": 40.80157844090004,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "7f2bc1b4-d951-5090-b9e7-77c05c9b0051",
+      "time": 40.80157844090004,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "7f2bc1b4-d951-5090-b9e7-77c05c9b0051",
+      "time": 40.80157844090004,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "7f2bc1b4-d951-5090-b9e7-77c05c9b0051",
+      "time": 40.959608671809775,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "dd26d162-a045-5819-92e9-92b0773ff641",
+      "time": 41.25,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "dd26d162-a045-5819-92e9-92b0773ff641",
+      "time": 41.25,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "dd26d162-a045-5819-92e9-92b0773ff641",
+      "time": 41.25,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "dd26d162-a045-5819-92e9-92b0773ff641",
+      "time": 41.30623134925044,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "dd26d162-a045-5819-92e9-92b0773ff641",
+      "time": 41.30623134925044,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "dd26d162-a045-5819-92e9-92b0773ff641",
+      "time": 41.30623134925044,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "dd26d162-a045-5819-92e9-92b0773ff641",
+      "time": 41.40561378551018,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "f260096a-08f4-5dce-88e3-ef03bac7d8ff",
+      "time": 41.75,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "f260096a-08f4-5dce-88e3-ef03bac7d8ff",
+      "time": 41.75,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "f260096a-08f4-5dce-88e3-ef03bac7d8ff",
+      "time": 41.75,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "f260096a-08f4-5dce-88e3-ef03bac7d8ff",
+      "time": 41.77616520778626,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "f260096a-08f4-5dce-88e3-ef03bac7d8ff",
+      "time": 41.77616520778626,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "f260096a-08f4-5dce-88e3-ef03bac7d8ff",
+      "time": 41.77616520778626,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "f260096a-08f4-5dce-88e3-ef03bac7d8ff",
+      "time": 41.996360144732904,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "f260096a-08f4-5dce-88e3-ef03bac7d8ff",
+      "time": 41.996360144732904,
+      "stage": "pathway",
+      "event": "safety_net_monitoring"
+    },
+    {
+      "patient_id": "f260096a-08f4-5dce-88e3-ef03bac7d8ff",
+      "time": 41.996360144732904,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "time": 42.25,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "time": 42.25,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "time": 42.25,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "time": 42.28959022384569,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "time": 42.28959022384569,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "time": 42.28959022384569,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "time": 42.413179613911495,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "8ce2d507-00ac-585d-8bb4-0139e5f95416",
+      "time": 42.75,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "8ce2d507-00ac-585d-8bb4-0139e5f95416",
+      "time": 42.75,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "8ce2d507-00ac-585d-8bb4-0139e5f95416",
+      "time": 42.75,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "8ce2d507-00ac-585d-8bb4-0139e5f95416",
+      "time": 42.773514276896826,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "8ce2d507-00ac-585d-8bb4-0139e5f95416",
+      "time": 42.773514276896826,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "8ce2d507-00ac-585d-8bb4-0139e5f95416",
+      "time": 42.773514276896826,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "8ce2d507-00ac-585d-8bb4-0139e5f95416",
+      "time": 42.97316080171917,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "time": 43.152564345849974,
+      "stage": "diagnostic",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "time": 43.152564345849974,
+      "stage": "diagnostic",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "time": 43.25,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "time": 43.25,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "time": 43.25,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "time": 43.294776469869994,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "time": 43.294776469869994,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "time": 43.294776469869994,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "time": 43.321157921745,
+      "stage": "diagnostic",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "time": 43.321157921745,
+      "stage": "specialist",
+      "event": "referral"
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "time": 43.379703338541866,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "time": 43.64060917781673,
+      "stage": "diagnostic",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "time": 43.64060917781673,
+      "stage": "diagnostic",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "time": 43.75,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "time": 43.75,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "time": 43.75,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "time": 43.75687816255353,
+      "stage": "diagnostic",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "time": 43.75687816255353,
+      "stage": "specialist",
+      "event": "referral"
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "time": 43.78699290466197,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "time": 43.78699290466197,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "time": 43.78699290466197,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "time": 44.03193150614114,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "time": 45.87914885784549,
+      "stage": "diagnostic",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "time": 45.87914885784549,
+      "stage": "diagnostic",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "time": 45.95080605404336,
+      "stage": "diagnostic",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "time": 45.95080605404336,
+      "stage": "specialist",
+      "event": "referral"
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "time": 49.413179613911495,
+      "stage": "diagnostic",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "time": 49.413179613911495,
+      "stage": "diagnostic",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "time": 49.61196762910319,
+      "stage": "diagnostic",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "time": 49.61196762910319,
+      "stage": "specialist",
+      "event": "referral"
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "time": 50.379703338541866,
+      "stage": "diagnostic",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "time": 50.379703338541866,
+      "stage": "diagnostic",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "time": 50.52983576693302,
+      "stage": "diagnostic",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "time": 50.52983576693302,
+      "stage": "specialist",
+      "event": "referral"
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "time": 51.03193150614114,
+      "stage": "diagnostic",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "time": 51.03193150614114,
+      "stage": "diagnostic",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "time": 51.221282594064036,
+      "stage": "diagnostic",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "time": 51.221282594064036,
+      "stage": "specialist",
+      "event": "referral"
+    },
+    {
+      "patient_id": "b194c212-83e9-5751-a60d-76bb7166d46e",
+      "time": 54.450824879614466,
+      "stage": "gp_followup",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "b194c212-83e9-5751-a60d-76bb7166d46e",
+      "time": 54.450824879614466,
+      "stage": "gp_followup",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "b194c212-83e9-5751-a60d-76bb7166d46e",
+      "time": 54.57465375063178,
+      "stage": "gp_followup",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "b194c212-83e9-5751-a60d-76bb7166d46e",
+      "time": 54.57465375063178,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "7f2bc1b4-d951-5090-b9e7-77c05c9b0051",
+      "time": 54.959608671809775,
+      "stage": "gp_followup",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "7f2bc1b4-d951-5090-b9e7-77c05c9b0051",
+      "time": 54.959608671809775,
+      "stage": "gp_followup",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "7f2bc1b4-d951-5090-b9e7-77c05c9b0051",
+      "time": 55.084964204272126,
+      "stage": "gp_followup",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "7f2bc1b4-d951-5090-b9e7-77c05c9b0051",
+      "time": 55.084964204272126,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "dd26d162-a045-5819-92e9-92b0773ff641",
+      "time": 55.40561378551018,
+      "stage": "gp_followup",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "dd26d162-a045-5819-92e9-92b0773ff641",
+      "time": 55.40561378551018,
+      "stage": "gp_followup",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "dd26d162-a045-5819-92e9-92b0773ff641",
+      "time": 55.48808251985508,
+      "stage": "gp_followup",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "dd26d162-a045-5819-92e9-92b0773ff641",
+      "time": 55.48808251985508,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "8ce2d507-00ac-585d-8bb4-0139e5f95416",
+      "time": 56.97316080171917,
+      "stage": "gp_followup",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "8ce2d507-00ac-585d-8bb4-0139e5f95416",
+      "time": 56.97316080171917,
+      "stage": "gp_followup",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "8ce2d507-00ac-585d-8bb4-0139e5f95416",
+      "time": 57.03898439539881,
+      "stage": "gp_followup",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "8ce2d507-00ac-585d-8bb4-0139e5f95416",
+      "time": 57.03898439539881,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "time": 57.321157921745,
+      "stage": "specialist",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "time": 57.321157921745,
+      "stage": "specialist",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "time": 57.53338655340598,
+      "stage": "specialist",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "time": 57.75687816255353,
+      "stage": "specialist",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "time": 57.75687816255353,
+      "stage": "specialist",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "time": 57.95427101856262,
+      "stage": "specialist",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "time": 59.95080605404336,
+      "stage": "specialist",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "time": 59.95080605404336,
+      "stage": "specialist",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "time": 60.02906345212693,
+      "stage": "specialist",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "time": 62.53338655340598,
+      "stage": "pathway",
+      "event": "diagnosis"
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "time": 62.95427101856262,
+      "stage": "pathway",
+      "event": "diagnosis"
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "time": 63.61196762910319,
+      "stage": "specialist",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "time": 63.61196762910319,
+      "stage": "specialist",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "time": 63.826096989270674,
+      "stage": "specialist",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "time": 64.52983576693302,
+      "stage": "specialist",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "time": 64.52983576693302,
+      "stage": "specialist",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "time": 64.72018424110306,
+      "stage": "specialist",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "time": 65.02906345212693,
+      "stage": "pathway",
+      "event": "diagnosis"
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "time": 65.22128259406404,
+      "stage": "specialist",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "time": 65.22128259406404,
+      "stage": "specialist",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "time": 65.43904960343527,
+      "stage": "specialist",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "time": 68.82609698927067,
+      "stage": "pathway",
+      "event": "diagnosis"
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "time": 69.72018424110306,
+      "stage": "pathway",
+      "event": "diagnosis"
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "time": 70.43904960343527,
+      "stage": "pathway",
+      "event": "diagnosis"
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "time": 83.53338655340599,
+      "stage": "pathway",
+      "event": "treatment"
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "time": 83.53338655340599,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "time": 83.95427101856262,
+      "stage": "pathway",
+      "event": "treatment"
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "time": 83.95427101856262,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "time": 86.02906345212693,
+      "stage": "pathway",
+      "event": "treatment"
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "time": 86.02906345212693,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "time": 89.82609698927067,
+      "stage": "pathway",
+      "event": "treatment"
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "time": 89.82609698927067,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "time": 90.72018424110306,
+      "stage": "pathway",
+      "event": "treatment"
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "time": 90.72018424110306,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "time": 91.43904960343527,
+      "stage": "pathway",
+      "event": "treatment"
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "time": 91.43904960343527,
+      "stage": "pathway",
+      "event": "exit"
+    }
+  ],
+  "resource_states": [
+    {
+      "time": 0,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 0,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 0,
+      "resource": "diagnostic",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 0,
+      "resource": "specialist",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 35.75,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 35.75,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 35.78877171394221,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 35.78877171394221,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 35.78877171394221,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 35.907624480938864,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 35.95762448093886,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 35.95762448093886,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 35.98110292303206,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 36.0,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 36.0,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 36.03632624897639,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 36.03632624897639,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 36.03632624897639,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 36.152564345849974,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 36.5,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 36.5,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 36.53566875532189,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 36.53566875532189,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 36.53566875532189,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 36.64060917781673,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 37.25,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 37.25,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 37.28794515482111,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 37.28794515482111,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 37.28794515482111,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 37.445766058094264,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 37.49576605809426,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 37.49576605809426,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 37.52755305415431,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 37.75,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 37.75,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 37.821312388000706,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 37.821312388000706,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 37.821312388000706,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 37.93545403223495,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 38.75,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 38.75,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 38.77667407472149,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 38.77667407472149,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 38.77667407472149,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 38.87914885784549,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 39.25,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 39.25,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 39.297085043306026,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 39.297085043306026,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 39.297085043306026,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 39.51237386694142,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 39.75,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 39.75,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 39.8299139532076,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 39.8299139532076,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 39.8299139532076,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 39.93083872142464,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 40.25,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 40.25,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 40.325890638216364,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 40.325890638216364,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 40.325890638216364,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 40.450824879614466,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 40.75,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 40.75,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 40.80157844090004,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 40.80157844090004,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 40.80157844090004,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 40.959608671809775,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 41.25,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 41.25,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 41.30623134925044,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 41.30623134925044,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 41.30623134925044,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 41.40561378551018,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 41.75,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 41.75,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 41.77616520778626,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 41.77616520778626,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 41.77616520778626,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 41.996360144732904,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 42.25,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 42.25,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 42.28959022384569,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 42.28959022384569,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 42.28959022384569,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 42.413179613911495,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 42.75,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 42.75,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 42.773514276896826,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 42.773514276896826,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 42.773514276896826,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 42.97316080171917,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 43.152564345849974,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 43.152564345849974,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 43.25,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 43.25,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 43.294776469869994,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 43.294776469869994,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 43.294776469869994,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 43.321157921745,
+      "resource": "diagnostic",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 43.379703338541866,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 43.64060917781673,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 43.64060917781673,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 43.75,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 43.75,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 43.75687816255353,
+      "resource": "diagnostic",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 43.78699290466197,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 43.78699290466197,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 43.78699290466197,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 44.03193150614114,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 45.87914885784549,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 45.87914885784549,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 45.95080605404336,
+      "resource": "diagnostic",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 49.413179613911495,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 49.413179613911495,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 49.61196762910319,
+      "resource": "diagnostic",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 50.379703338541866,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 50.379703338541866,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 50.52983576693302,
+      "resource": "diagnostic",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 51.03193150614114,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 51.03193150614114,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 51.221282594064036,
+      "resource": "diagnostic",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 54.450824879614466,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 54.450824879614466,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 54.57465375063178,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 54.959608671809775,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 54.959608671809775,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 55.084964204272126,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 55.40561378551018,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 55.40561378551018,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 55.48808251985508,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 56.97316080171917,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 56.97316080171917,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 57.03898439539881,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 57.321157921745,
+      "resource": "specialist",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 57.321157921745,
+      "resource": "specialist",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 57.53338655340598,
+      "resource": "specialist",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 57.75687816255353,
+      "resource": "specialist",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 57.75687816255353,
+      "resource": "specialist",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 57.95427101856262,
+      "resource": "specialist",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 59.95080605404336,
+      "resource": "specialist",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 59.95080605404336,
+      "resource": "specialist",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 60.02906345212693,
+      "resource": "specialist",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 63.61196762910319,
+      "resource": "specialist",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 63.61196762910319,
+      "resource": "specialist",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 63.826096989270674,
+      "resource": "specialist",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 64.52983576693302,
+      "resource": "specialist",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 64.52983576693302,
+      "resource": "specialist",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 64.72018424110306,
+      "resource": "specialist",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 65.22128259406404,
+      "resource": "specialist",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 65.22128259406404,
+      "resource": "specialist",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 65.43904960343527,
+      "resource": "specialist",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 180,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 180,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 180,
+      "resource": "diagnostic",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 180,
+      "resource": "specialist",
+      "busy": 0,
+      "queue": 0
+    }
+  ],
+  "excluded_arrivals": 0
+}

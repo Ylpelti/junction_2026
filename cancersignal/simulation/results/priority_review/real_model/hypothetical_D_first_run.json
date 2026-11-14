@@ -1,0 +1,5978 @@
+{
+  "scenario": "optimized",
+  "model": "D",
+  "seed": 1001,
+  "capacities": {
+    "nurse": 2,
+    "gp": 3,
+    "diagnostic": 2,
+    "specialist": 1
+  },
+  "patients": [
+    {
+      "patient_id": "8fc021f0-8d7c-59db-9f84-884454ca0f77",
+      "arrival": 35.0,
+      "relevant": true,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "dev",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": true,
+      "baseline_referral": true,
+      "baseline_plan": "monitor",
+      "symptom_change": false,
+      "change_investigation": true,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": true,
+      "repeat_duplicate_evidence": false,
+      "signal": false,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [],
+      "nurse_queue": 35.0,
+      "nurse_start": 35.0,
+      "nurse_end": 35.040741752289726,
+      "gp_queue": 35.040741752289726,
+      "gp_priority": 0,
+      "gp_start": 35.040741752289726,
+      "gp_end": 35.102291434510946,
+      "baseline_decision_time": 35.102291434510946,
+      "signal_time": 35.102291434510946,
+      "actual_plan": "monitor",
+      "pathway_exit": 35.102291434510946
+    },
+    {
+      "patient_id": "2c18e705-3a9c-538f-814a-23728bccc0f9",
+      "arrival": 35.25,
+      "relevant": true,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "dev",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": true,
+      "baseline_followup_investigation": true,
+      "baseline_referral": true,
+      "baseline_plan": "followup",
+      "symptom_change": false,
+      "change_investigation": true,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": false,
+      "repeat_duplicate_evidence": false,
+      "signal": true,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [],
+      "nurse_queue": 35.25,
+      "nurse_start": 35.25,
+      "nurse_end": 35.28850098133189,
+      "gp_queue": 35.28850098133189,
+      "gp_priority": 0,
+      "gp_start": 35.28850098133189,
+      "gp_end": 35.45956606584495,
+      "baseline_decision_time": 35.45956606584495,
+      "first_indication": 35.45956606584495,
+      "signal_time": 35.45956606584495,
+      "diagnostic_queue": 42.45956606584495,
+      "diagnostic_start": 42.45956606584495,
+      "diagnostic_end": 42.744729161439764,
+      "referral": 42.744729161439764,
+      "specialist_queue": 56.744729161439764,
+      "specialist_start": 56.82118165356819,
+      "specialist_end": 56.935499310188675,
+      "diagnosis": 61.935499310188675,
+      "treatment": 82.93549931018867,
+      "pathway_exit": 82.93549931018867
+    },
+    {
+      "patient_id": "e886dd20-4560-50fb-86d0-00fddc0b8d04",
+      "arrival": 35.5,
+      "relevant": true,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "dev",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": true,
+      "baseline_followup_investigation": true,
+      "baseline_referral": true,
+      "baseline_plan": "discharge",
+      "symptom_change": false,
+      "change_investigation": true,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": true,
+      "repeat_duplicate_evidence": false,
+      "signal": true,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [],
+      "nurse_queue": 35.5,
+      "nurse_start": 35.5,
+      "nurse_end": 35.53169684796293,
+      "gp_queue": 35.53169684796293,
+      "gp_priority": 0,
+      "gp_start": 35.53169684796293,
+      "gp_end": 35.628735994809105,
+      "baseline_decision_time": 35.628735994809105,
+      "first_indication": 35.628735994809105,
+      "signal_time": 35.628735994809105,
+      "diagnostic_queue": 42.628735994809105,
+      "diagnostic_start": 42.628735994809105,
+      "diagnostic_end": 42.73610087102498,
+      "referral": 42.73610087102498,
+      "specialist_queue": 56.73610087102498,
+      "specialist_start": 56.73610087102498,
+      "specialist_end": 56.82118165356819,
+      "diagnosis": 61.82118165356819,
+      "treatment": 82.82118165356819,
+      "pathway_exit": 82.82118165356819
+    },
+    {
+      "patient_id": "db41f561-4115-5032-a3f9-e0a82279b0db",
+      "arrival": 35.75,
+      "relevant": true,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "test",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": true,
+      "baseline_referral": true,
+      "baseline_plan": "discharge",
+      "symptom_change": false,
+      "change_investigation": true,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": false,
+      "repeat_duplicate_evidence": false,
+      "signal": false,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [],
+      "nurse_queue": 35.75,
+      "nurse_start": 35.75,
+      "nurse_end": 35.78877171394221,
+      "gp_queue": 35.78877171394221,
+      "gp_priority": 0,
+      "gp_start": 35.78877171394221,
+      "gp_end": 35.907624480938864,
+      "baseline_decision_time": 35.907624480938864,
+      "signal_time": 35.907624480938864,
+      "actual_plan": "discharge",
+      "pathway_exit": 35.907624480938864
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "arrival": 36.0,
+      "relevant": true,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "test",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": true,
+      "baseline_followup_investigation": false,
+      "baseline_referral": true,
+      "baseline_plan": "followup",
+      "symptom_change": false,
+      "change_investigation": true,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": true,
+      "repeat_duplicate_evidence": false,
+      "signal": true,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [],
+      "nurse_queue": 36.0,
+      "nurse_start": 36.0,
+      "nurse_end": 36.03632624897639,
+      "gp_queue": 36.03632624897639,
+      "gp_priority": 0,
+      "gp_start": 36.03632624897639,
+      "gp_end": 36.152564345849974,
+      "baseline_decision_time": 36.152564345849974,
+      "first_indication": 36.152564345849974,
+      "signal_time": 36.152564345849974,
+      "diagnostic_queue": 43.152564345849974,
+      "diagnostic_start": 43.152564345849974,
+      "diagnostic_end": 43.321157921745,
+      "referral": 43.321157921745,
+      "specialist_queue": 57.321157921745,
+      "specialist_start": 57.321157921745,
+      "specialist_end": 57.53338655340598,
+      "diagnosis": 62.53338655340598,
+      "treatment": 83.53338655340599,
+      "pathway_exit": 83.53338655340599
+    },
+    {
+      "patient_id": "e4a9be9c-b284-5401-ad25-077b4977b420",
+      "arrival": 36.25,
+      "relevant": true,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "dev",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": true,
+      "baseline_referral": true,
+      "baseline_plan": "discharge",
+      "symptom_change": false,
+      "change_investigation": true,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": true,
+      "repeat_duplicate_evidence": false,
+      "signal": true,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": true,
+      "real_predictions_used": [],
+      "nurse_queue": 36.25,
+      "nurse_start": 36.25,
+      "nurse_end": 36.28976639524902,
+      "gp_queue": 36.28976639524902,
+      "gp_priority": 0,
+      "gp_start": 36.28976639524902,
+      "gp_end": 36.39693706632435,
+      "baseline_decision_time": 36.39693706632435,
+      "signal_time": 36.39693706632435,
+      "selective_skip_time": 36.39693706632435,
+      "actual_plan": "discharge",
+      "pathway_exit": 36.39693706632435
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "arrival": 36.5,
+      "relevant": true,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "test",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": true,
+      "baseline_followup_investigation": true,
+      "baseline_referral": true,
+      "baseline_plan": "monitor",
+      "symptom_change": false,
+      "change_investigation": true,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": false,
+      "repeat_duplicate_evidence": false,
+      "signal": true,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [],
+      "nurse_queue": 36.5,
+      "nurse_start": 36.5,
+      "nurse_end": 36.53566875532189,
+      "gp_queue": 36.53566875532189,
+      "gp_priority": 0,
+      "gp_start": 36.53566875532189,
+      "gp_end": 36.64060917781673,
+      "baseline_decision_time": 36.64060917781673,
+      "first_indication": 36.64060917781673,
+      "signal_time": 36.64060917781673,
+      "diagnostic_queue": 43.64060917781673,
+      "diagnostic_start": 43.64060917781673,
+      "diagnostic_end": 43.75687816255353,
+      "referral": 43.75687816255353,
+      "specialist_queue": 57.75687816255353,
+      "specialist_start": 57.75687816255353,
+      "specialist_end": 57.95427101856262,
+      "diagnosis": 62.95427101856262,
+      "treatment": 83.95427101856262,
+      "pathway_exit": 83.95427101856262
+    },
+    {
+      "patient_id": "79270856-c410-5f77-9940-36c98957252e",
+      "arrival": 36.75,
+      "relevant": true,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "dev",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": false,
+      "baseline_referral": true,
+      "baseline_plan": "followup",
+      "symptom_change": false,
+      "change_investigation": true,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": true,
+      "repeat_duplicate_evidence": false,
+      "signal": true,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "retain",
+      "selective_review_skipped": false,
+      "real_predictions_used": [],
+      "nurse_queue": 36.75,
+      "nurse_start": 36.75,
+      "nurse_end": 36.81184066588379,
+      "gp_queue": 36.81184066588379,
+      "gp_priority": 0,
+      "gp_start": 36.81184066588379,
+      "gp_end": 36.971002581419064,
+      "baseline_decision_time": 36.971002581419064,
+      "signal_time": 36.971002581419064,
+      "review_queue": 37.02100258141906,
+      "review_priority": -1,
+      "review_start": 37.02100258141906,
+      "review_end": 37.05474785925721,
+      "actual_plan": "followup",
+      "gp_followup_queue": 51.05474785925721,
+      "gp_followup_priority": 0,
+      "gp_followup_start": 51.05474785925721,
+      "gp_followup_end": 51.14481130871262,
+      "pathway_exit": 51.14481130871262
+    },
+    {
+      "patient_id": "2190a55b-0379-50b4-b8e9-b1c5b0b83cbd",
+      "arrival": 37.0,
+      "relevant": true,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "dev",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": false,
+      "baseline_referral": false,
+      "baseline_plan": "monitor",
+      "symptom_change": false,
+      "change_investigation": false,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": true,
+      "repeat_duplicate_evidence": false,
+      "signal": true,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": true,
+      "real_predictions_used": [],
+      "nurse_queue": 37.0,
+      "nurse_start": 37.0,
+      "nurse_end": 37.04442963902061,
+      "gp_queue": 37.04442963902061,
+      "gp_priority": 0,
+      "gp_start": 37.04442963902061,
+      "gp_end": 37.10510429289266,
+      "baseline_decision_time": 37.10510429289266,
+      "signal_time": 37.10510429289266,
+      "selective_skip_time": 37.10510429289266,
+      "actual_plan": "monitor",
+      "pathway_exit": 37.10510429289266
+    },
+    {
+      "patient_id": "ea6665d3-7edc-5629-9e08-1c99b8552d12",
+      "arrival": 37.25,
+      "relevant": true,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "test",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": true,
+      "baseline_referral": true,
+      "baseline_plan": "monitor",
+      "symptom_change": false,
+      "change_investigation": false,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": false,
+      "repeat_duplicate_evidence": false,
+      "signal": true,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "retain",
+      "selective_review_skipped": false,
+      "real_predictions_used": [],
+      "nurse_queue": 37.25,
+      "nurse_start": 37.25,
+      "nurse_end": 37.28794515482111,
+      "gp_queue": 37.28794515482111,
+      "gp_priority": 0,
+      "gp_start": 37.28794515482111,
+      "gp_end": 37.445766058094264,
+      "baseline_decision_time": 37.445766058094264,
+      "signal_time": 37.445766058094264,
+      "review_queue": 37.49576605809426,
+      "review_priority": -1,
+      "review_start": 37.49576605809426,
+      "review_end": 37.52755305415431,
+      "actual_plan": "monitor",
+      "pathway_exit": 37.52755305415431
+    },
+    {
+      "patient_id": "2d116684-b29f-5f68-8af6-51ead419ae7e",
+      "arrival": 37.5,
+      "relevant": true,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "dev",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": false,
+      "baseline_referral": true,
+      "baseline_plan": "discharge",
+      "symptom_change": false,
+      "change_investigation": true,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": true,
+      "repeat_duplicate_evidence": false,
+      "signal": true,
+      "escalated": true,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "investigate",
+      "selective_review_skipped": false,
+      "real_predictions_used": [],
+      "nurse_queue": 37.5,
+      "nurse_start": 37.5,
+      "nurse_end": 37.54493098721409,
+      "gp_queue": 37.54493098721409,
+      "gp_priority": 0,
+      "gp_start": 37.54493098721409,
+      "gp_end": 37.63527075262949,
+      "baseline_decision_time": 37.63527075262949,
+      "signal_time": 37.63527075262949,
+      "review_queue": 37.685270752629485,
+      "review_priority": -1,
+      "review_start": 37.685270752629485,
+      "review_end": 37.70928291071395,
+      "first_indication": 37.70928291071395,
+      "diagnostic_queue": 44.70928291071395,
+      "diagnostic_start": 44.70928291071395,
+      "diagnostic_end": 44.8232704105968,
+      "referral": 44.8232704105968,
+      "specialist_queue": 58.8232704105968,
+      "specialist_start": 58.8232704105968,
+      "specialist_end": 59.01866370665609,
+      "diagnosis": 64.0186637066561,
+      "treatment": 85.0186637066561,
+      "pathway_exit": 85.0186637066561
+    },
+    {
+      "patient_id": "5d3159a1-9555-510b-adb7-f9d2161ea6a9",
+      "arrival": 37.75,
+      "relevant": true,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "test",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": true,
+      "baseline_referral": true,
+      "baseline_plan": "monitor",
+      "symptom_change": false,
+      "change_investigation": true,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": true,
+      "repeat_duplicate_evidence": false,
+      "signal": true,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [],
+      "nurse_queue": 37.75,
+      "nurse_start": 37.75,
+      "nurse_end": 37.821312388000706,
+      "gp_queue": 37.821312388000706,
+      "gp_priority": 0,
+      "gp_start": 37.821312388000706,
+      "gp_end": 37.93545403223495,
+      "baseline_decision_time": 37.93545403223495,
+      "signal_time": 37.93545403223495,
+      "actual_plan": "monitor",
+      "pathway_exit": 37.93545403223495
+    },
+    {
+      "patient_id": "36fb0bf9-656e-5d05-91d9-6424630ffbea",
+      "arrival": 38.0,
+      "relevant": true,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "dev",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": true,
+      "baseline_referral": false,
+      "baseline_plan": "followup",
+      "symptom_change": false,
+      "change_investigation": true,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": true,
+      "repeat_duplicate_evidence": false,
+      "signal": true,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": true,
+      "real_predictions_used": [],
+      "nurse_queue": 38.0,
+      "nurse_start": 38.0,
+      "nurse_end": 38.033636033078764,
+      "gp_queue": 38.033636033078764,
+      "gp_priority": 0,
+      "gp_start": 38.033636033078764,
+      "gp_end": 38.09825915437244,
+      "baseline_decision_time": 38.09825915437244,
+      "signal_time": 38.09825915437244,
+      "selective_skip_time": 38.09825915437244,
+      "actual_plan": "followup",
+      "gp_followup_queue": 52.09825915437244,
+      "gp_followup_priority": 0,
+      "gp_followup_start": 52.09825915437244,
+      "gp_followup_end": 52.24997225451055,
+      "first_indication": 52.24997225451055,
+      "diagnostic_queue": 59.24997225451055,
+      "diagnostic_start": 59.24997225451055,
+      "diagnostic_end": 59.382471018531604,
+      "pathway_exit": 59.382471018531604
+    },
+    {
+      "patient_id": "ceef762a-5715-5eb5-a135-14f10b781d52",
+      "arrival": 38.5,
+      "relevant": true,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "dev",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": true,
+      "baseline_referral": true,
+      "baseline_plan": "monitor",
+      "symptom_change": false,
+      "change_investigation": true,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": false,
+      "repeat_duplicate_evidence": false,
+      "signal": true,
+      "escalated": true,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "investigate",
+      "selective_review_skipped": false,
+      "real_predictions_used": [],
+      "nurse_queue": 38.5,
+      "nurse_start": 38.5,
+      "nurse_end": 38.52886201879881,
+      "gp_queue": 38.52886201879881,
+      "gp_priority": 0,
+      "gp_start": 38.52886201879881,
+      "gp_end": 38.64780723510021,
+      "baseline_decision_time": 38.64780723510021,
+      "signal_time": 38.64780723510021,
+      "review_queue": 38.69780723510021,
+      "review_priority": -1,
+      "review_start": 38.69780723510021,
+      "review_end": 38.75842278232748,
+      "first_indication": 38.75842278232748,
+      "diagnostic_queue": 45.75842278232748,
+      "diagnostic_start": 45.75842278232748,
+      "diagnostic_end": 45.86626120555529,
+      "referral": 45.86626120555529,
+      "specialist_queue": 59.86626120555529,
+      "specialist_start": 59.86626120555529,
+      "specialist_end": 59.92649486942892,
+      "diagnosis": 64.92649486942892,
+      "treatment": 85.92649486942892,
+      "pathway_exit": 85.92649486942892
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "arrival": 38.75,
+      "relevant": true,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "test",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": true,
+      "baseline_followup_investigation": true,
+      "baseline_referral": true,
+      "baseline_plan": "monitor",
+      "symptom_change": false,
+      "change_investigation": false,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": false,
+      "repeat_duplicate_evidence": false,
+      "signal": true,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [],
+      "nurse_queue": 38.75,
+      "nurse_start": 38.75,
+      "nurse_end": 38.77667407472149,
+      "gp_queue": 38.77667407472149,
+      "gp_priority": 0,
+      "gp_start": 38.77667407472149,
+      "gp_end": 38.87914885784549,
+      "baseline_decision_time": 38.87914885784549,
+      "first_indication": 38.87914885784549,
+      "signal_time": 38.87914885784549,
+      "diagnostic_queue": 45.87914885784549,
+      "diagnostic_start": 45.87914885784549,
+      "diagnostic_end": 45.95080605404336,
+      "referral": 45.95080605404336,
+      "specialist_queue": 59.95080605404336,
+      "specialist_start": 59.95080605404336,
+      "specialist_end": 60.02906345212693,
+      "diagnosis": 65.02906345212693,
+      "treatment": 86.02906345212693,
+      "pathway_exit": 86.02906345212693
+    },
+    {
+      "patient_id": "02530e6b-5856-5737-8c0a-d2a881c51fc7",
+      "arrival": 39.0,
+      "relevant": false,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "dev",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": false,
+      "baseline_referral": false,
+      "baseline_plan": "followup",
+      "symptom_change": false,
+      "change_investigation": false,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": true,
+      "repeat_duplicate_evidence": false,
+      "signal": false,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [],
+      "nurse_queue": 39.0,
+      "nurse_start": 39.0,
+      "nurse_end": 39.04211957608399,
+      "gp_queue": 39.04211957608399,
+      "gp_priority": 0,
+      "gp_start": 39.04211957608399,
+      "gp_end": 39.173925841814246,
+      "baseline_decision_time": 39.173925841814246,
+      "signal_time": 39.173925841814246,
+      "actual_plan": "followup",
+      "gp_followup_queue": 53.173925841814246,
+      "gp_followup_priority": 0,
+      "gp_followup_start": 53.173925841814246,
+      "gp_followup_end": 53.289283069434916,
+      "pathway_exit": 53.289283069434916
+    },
+    {
+      "patient_id": "8e8e372f-de68-5f68-afe4-6f3073d9d234",
+      "arrival": 39.25,
+      "relevant": false,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "test",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": false,
+      "baseline_referral": false,
+      "baseline_plan": "monitor",
+      "symptom_change": false,
+      "change_investigation": true,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": true,
+      "repeat_duplicate_evidence": false,
+      "signal": false,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [],
+      "nurse_queue": 39.25,
+      "nurse_start": 39.25,
+      "nurse_end": 39.297085043306026,
+      "gp_queue": 39.297085043306026,
+      "gp_priority": 0,
+      "gp_start": 39.297085043306026,
+      "gp_end": 39.51237386694142,
+      "baseline_decision_time": 39.51237386694142,
+      "signal_time": 39.51237386694142,
+      "actual_plan": "monitor",
+      "pathway_exit": 39.51237386694142
+    },
+    {
+      "patient_id": "7745beca-a82e-557d-978b-2827bde88f6b",
+      "arrival": 39.5,
+      "relevant": false,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "dev",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": false,
+      "baseline_referral": false,
+      "baseline_plan": "followup",
+      "symptom_change": false,
+      "change_investigation": false,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": true,
+      "repeat_duplicate_evidence": false,
+      "signal": false,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [],
+      "nurse_queue": 39.5,
+      "nurse_start": 39.5,
+      "nurse_end": 39.539809502306596,
+      "gp_queue": 39.539809502306596,
+      "gp_priority": 0,
+      "gp_start": 39.539809502306596,
+      "gp_end": 39.65357836368303,
+      "baseline_decision_time": 39.65357836368303,
+      "signal_time": 39.65357836368303,
+      "actual_plan": "followup",
+      "gp_followup_queue": 53.65357836368303,
+      "gp_followup_priority": 0,
+      "gp_followup_start": 53.65357836368303,
+      "gp_followup_end": 53.78560057724529,
+      "pathway_exit": 53.78560057724529
+    },
+    {
+      "patient_id": "9a0130ab-757b-5ff6-9e71-0226cb9c29b6",
+      "arrival": 39.75,
+      "relevant": false,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "test",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": false,
+      "baseline_referral": false,
+      "baseline_plan": "monitor",
+      "symptom_change": false,
+      "change_investigation": false,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": true,
+      "repeat_duplicate_evidence": false,
+      "signal": false,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [],
+      "nurse_queue": 39.75,
+      "nurse_start": 39.75,
+      "nurse_end": 39.8299139532076,
+      "gp_queue": 39.8299139532076,
+      "gp_priority": 0,
+      "gp_start": 39.8299139532076,
+      "gp_end": 39.93083872142464,
+      "baseline_decision_time": 39.93083872142464,
+      "signal_time": 39.93083872142464,
+      "actual_plan": "monitor",
+      "pathway_exit": 39.93083872142464
+    },
+    {
+      "patient_id": "c6a5602d-3d96-5118-b653-3b8125828ea4",
+      "arrival": 40.0,
+      "relevant": false,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "dev",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": false,
+      "baseline_referral": false,
+      "baseline_plan": "followup",
+      "symptom_change": false,
+      "change_investigation": true,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": false,
+      "repeat_duplicate_evidence": false,
+      "signal": false,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [],
+      "nurse_queue": 40.0,
+      "nurse_start": 40.0,
+      "nurse_end": 40.03870347752129,
+      "gp_queue": 40.03870347752129,
+      "gp_priority": 0,
+      "gp_start": 40.03870347752129,
+      "gp_end": 40.13589762855728,
+      "baseline_decision_time": 40.13589762855728,
+      "signal_time": 40.13589762855728,
+      "actual_plan": "followup",
+      "gp_followup_queue": 54.13589762855728,
+      "gp_followup_priority": 0,
+      "gp_followup_start": 54.13589762855728,
+      "gp_followup_end": 54.219771834799474,
+      "pathway_exit": 54.219771834799474
+    },
+    {
+      "patient_id": "b194c212-83e9-5751-a60d-76bb7166d46e",
+      "arrival": 40.25,
+      "relevant": false,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "test",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": false,
+      "baseline_referral": false,
+      "baseline_plan": "followup",
+      "symptom_change": false,
+      "change_investigation": true,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": false,
+      "repeat_duplicate_evidence": false,
+      "signal": false,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [],
+      "nurse_queue": 40.25,
+      "nurse_start": 40.25,
+      "nurse_end": 40.325890638216364,
+      "gp_queue": 40.325890638216364,
+      "gp_priority": 0,
+      "gp_start": 40.325890638216364,
+      "gp_end": 40.450824879614466,
+      "baseline_decision_time": 40.450824879614466,
+      "signal_time": 40.450824879614466,
+      "actual_plan": "followup",
+      "gp_followup_queue": 54.450824879614466,
+      "gp_followup_priority": 0,
+      "gp_followup_start": 54.450824879614466,
+      "gp_followup_end": 54.57465375063178,
+      "pathway_exit": 54.57465375063178
+    },
+    {
+      "patient_id": "07e5af50-65bf-5957-a93b-642aea94b24d",
+      "arrival": 40.5,
+      "relevant": false,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "dev",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": true,
+      "baseline_referral": false,
+      "baseline_plan": "followup",
+      "symptom_change": false,
+      "change_investigation": true,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": true,
+      "repeat_duplicate_evidence": false,
+      "signal": false,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [],
+      "nurse_queue": 40.5,
+      "nurse_start": 40.5,
+      "nurse_end": 40.53854541879273,
+      "gp_queue": 40.53854541879273,
+      "gp_priority": 0,
+      "gp_start": 40.53854541879273,
+      "gp_end": 40.6286055041683,
+      "baseline_decision_time": 40.6286055041683,
+      "signal_time": 40.6286055041683,
+      "actual_plan": "followup",
+      "gp_followup_queue": 54.6286055041683,
+      "gp_followup_priority": 0,
+      "gp_followup_start": 54.6286055041683,
+      "gp_followup_end": 54.75793056003965,
+      "first_indication": 54.75793056003965,
+      "diagnostic_queue": 61.75793056003965,
+      "diagnostic_start": 61.75793056003965,
+      "diagnostic_end": 61.92061858436553,
+      "pathway_exit": 61.92061858436553
+    },
+    {
+      "patient_id": "7f2bc1b4-d951-5090-b9e7-77c05c9b0051",
+      "arrival": 40.75,
+      "relevant": false,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "test",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": false,
+      "baseline_referral": false,
+      "baseline_plan": "followup",
+      "symptom_change": false,
+      "change_investigation": false,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": true,
+      "repeat_duplicate_evidence": false,
+      "signal": false,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [],
+      "nurse_queue": 40.75,
+      "nurse_start": 40.75,
+      "nurse_end": 40.80157844090004,
+      "gp_queue": 40.80157844090004,
+      "gp_priority": 0,
+      "gp_start": 40.80157844090004,
+      "gp_end": 40.959608671809775,
+      "baseline_decision_time": 40.959608671809775,
+      "signal_time": 40.959608671809775,
+      "actual_plan": "followup",
+      "gp_followup_queue": 54.959608671809775,
+      "gp_followup_priority": 0,
+      "gp_followup_start": 54.959608671809775,
+      "gp_followup_end": 55.084964204272126,
+      "pathway_exit": 55.084964204272126
+    },
+    {
+      "patient_id": "248b40d9-1e51-5c0b-ac12-5a29a2f2aa2e",
+      "arrival": 41.0,
+      "relevant": false,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "dev",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": false,
+      "baseline_referral": false,
+      "baseline_plan": "followup",
+      "symptom_change": false,
+      "change_investigation": false,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": false,
+      "repeat_duplicate_evidence": false,
+      "signal": false,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [],
+      "nurse_queue": 41.0,
+      "nurse_start": 41.0,
+      "nurse_end": 41.0231591015557,
+      "gp_queue": 41.0231591015557,
+      "gp_priority": 0,
+      "gp_start": 41.0231591015557,
+      "gp_end": 41.1418491126918,
+      "baseline_decision_time": 41.1418491126918,
+      "signal_time": 41.1418491126918,
+      "actual_plan": "followup",
+      "gp_followup_queue": 55.1418491126918,
+      "gp_followup_priority": 0,
+      "gp_followup_start": 55.1418491126918,
+      "gp_followup_end": 55.20350692951184,
+      "pathway_exit": 55.20350692951184
+    },
+    {
+      "patient_id": "dd26d162-a045-5819-92e9-92b0773ff641",
+      "arrival": 41.25,
+      "relevant": false,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "test",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": false,
+      "baseline_referral": false,
+      "baseline_plan": "followup",
+      "symptom_change": false,
+      "change_investigation": true,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": false,
+      "repeat_duplicate_evidence": false,
+      "signal": false,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [],
+      "nurse_queue": 41.25,
+      "nurse_start": 41.25,
+      "nurse_end": 41.30623134925044,
+      "gp_queue": 41.30623134925044,
+      "gp_priority": 0,
+      "gp_start": 41.30623134925044,
+      "gp_end": 41.40561378551018,
+      "baseline_decision_time": 41.40561378551018,
+      "signal_time": 41.40561378551018,
+      "actual_plan": "followup",
+      "gp_followup_queue": 55.40561378551018,
+      "gp_followup_priority": 0,
+      "gp_followup_start": 55.40561378551018,
+      "gp_followup_end": 55.48808251985508,
+      "pathway_exit": 55.48808251985508
+    },
+    {
+      "patient_id": "29c348cb-a6eb-592e-9853-081c0f6ef7ff",
+      "arrival": 41.5,
+      "relevant": false,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "dev",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": false,
+      "baseline_referral": false,
+      "baseline_plan": "followup",
+      "symptom_change": false,
+      "change_investigation": false,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": true,
+      "repeat_duplicate_evidence": false,
+      "signal": false,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [],
+      "nurse_queue": 41.5,
+      "nurse_start": 41.5,
+      "nurse_end": 41.5423028750539,
+      "gp_queue": 41.5423028750539,
+      "gp_priority": 0,
+      "gp_start": 41.5423028750539,
+      "gp_end": 41.62853221393653,
+      "baseline_decision_time": 41.62853221393653,
+      "signal_time": 41.62853221393653,
+      "actual_plan": "followup",
+      "gp_followup_queue": 55.62853221393653,
+      "gp_followup_priority": 0,
+      "gp_followup_start": 55.62853221393653,
+      "gp_followup_end": 55.73474656963592,
+      "pathway_exit": 55.73474656963592
+    },
+    {
+      "patient_id": "f260096a-08f4-5dce-88e3-ef03bac7d8ff",
+      "arrival": 41.75,
+      "relevant": false,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "test",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": false,
+      "baseline_referral": true,
+      "baseline_plan": "monitor",
+      "symptom_change": false,
+      "change_investigation": false,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": false,
+      "repeat_duplicate_evidence": false,
+      "signal": false,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [],
+      "nurse_queue": 41.75,
+      "nurse_start": 41.75,
+      "nurse_end": 41.77616520778626,
+      "gp_queue": 41.77616520778626,
+      "gp_priority": 0,
+      "gp_start": 41.77616520778626,
+      "gp_end": 41.996360144732904,
+      "baseline_decision_time": 41.996360144732904,
+      "signal_time": 41.996360144732904,
+      "actual_plan": "monitor",
+      "pathway_exit": 41.996360144732904
+    },
+    {
+      "patient_id": "67aaa974-5a2c-5405-9e6c-ac2cf926b389",
+      "arrival": 42.0,
+      "relevant": false,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "dev",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": false,
+      "baseline_referral": false,
+      "baseline_plan": "monitor",
+      "symptom_change": false,
+      "change_investigation": false,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": true,
+      "repeat_duplicate_evidence": false,
+      "signal": false,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [],
+      "nurse_queue": 42.0,
+      "nurse_start": 42.0,
+      "nurse_end": 42.03300530693047,
+      "gp_queue": 42.03300530693047,
+      "gp_priority": 0,
+      "gp_start": 42.03300530693047,
+      "gp_end": 42.1458213125254,
+      "baseline_decision_time": 42.1458213125254,
+      "signal_time": 42.1458213125254,
+      "actual_plan": "monitor",
+      "pathway_exit": 42.1458213125254
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "arrival": 42.25,
+      "relevant": true,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "test",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": true,
+      "baseline_followup_investigation": true,
+      "baseline_referral": true,
+      "baseline_plan": "monitor",
+      "symptom_change": false,
+      "change_investigation": true,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": false,
+      "repeat_duplicate_evidence": false,
+      "signal": false,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [],
+      "nurse_queue": 42.25,
+      "nurse_start": 42.25,
+      "nurse_end": 42.28959022384569,
+      "gp_queue": 42.28959022384569,
+      "gp_priority": 0,
+      "gp_start": 42.28959022384569,
+      "gp_end": 42.413179613911495,
+      "baseline_decision_time": 42.413179613911495,
+      "first_indication": 42.413179613911495,
+      "signal_time": 42.413179613911495,
+      "diagnostic_queue": 49.413179613911495,
+      "diagnostic_start": 49.413179613911495,
+      "diagnostic_end": 49.61196762910319,
+      "referral": 49.61196762910319,
+      "specialist_queue": 63.61196762910319,
+      "specialist_start": 63.61196762910319,
+      "specialist_end": 63.826096989270674,
+      "diagnosis": 68.82609698927067,
+      "treatment": 89.82609698927067,
+      "pathway_exit": 89.82609698927067
+    },
+    {
+      "patient_id": "8ce2d507-00ac-585d-8bb4-0139e5f95416",
+      "arrival": 42.75,
+      "relevant": false,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "test",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": false,
+      "baseline_referral": false,
+      "baseline_plan": "followup",
+      "symptom_change": false,
+      "change_investigation": false,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": false,
+      "repeat_duplicate_evidence": false,
+      "signal": false,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [],
+      "nurse_queue": 42.75,
+      "nurse_start": 42.75,
+      "nurse_end": 42.773514276896826,
+      "gp_queue": 42.773514276896826,
+      "gp_priority": 0,
+      "gp_start": 42.773514276896826,
+      "gp_end": 42.97316080171917,
+      "baseline_decision_time": 42.97316080171917,
+      "signal_time": 42.97316080171917,
+      "actual_plan": "followup",
+      "gp_followup_queue": 56.97316080171917,
+      "gp_followup_priority": 0,
+      "gp_followup_start": 56.97316080171917,
+      "gp_followup_end": 57.03898439539881,
+      "pathway_exit": 57.03898439539881
+    },
+    {
+      "patient_id": "297afd32-5667-5b20-a6af-70f23a843d0e",
+      "arrival": 43.0,
+      "relevant": false,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "dev",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": false,
+      "baseline_followup_investigation": true,
+      "baseline_referral": false,
+      "baseline_plan": "followup",
+      "symptom_change": false,
+      "change_investigation": false,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": false,
+      "repeat_duplicate_evidence": false,
+      "signal": false,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [],
+      "nurse_queue": 43.0,
+      "nurse_start": 43.0,
+      "nurse_end": 43.04965175293441,
+      "gp_queue": 43.04965175293441,
+      "gp_priority": 0,
+      "gp_start": 43.04965175293441,
+      "gp_end": 43.22568784645624,
+      "baseline_decision_time": 43.22568784645624,
+      "signal_time": 43.22568784645624,
+      "actual_plan": "followup",
+      "gp_followup_queue": 57.22568784645624,
+      "gp_followup_priority": 0,
+      "gp_followup_start": 57.22568784645624,
+      "gp_followup_end": 57.337573535711805,
+      "first_indication": 57.337573535711805,
+      "diagnostic_queue": 64.33757353571181,
+      "diagnostic_start": 64.33757353571181,
+      "diagnostic_end": 64.5748506697377,
+      "pathway_exit": 64.5748506697377
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "arrival": 43.25,
+      "relevant": true,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "test",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": true,
+      "baseline_followup_investigation": true,
+      "baseline_referral": true,
+      "baseline_plan": "followup",
+      "symptom_change": false,
+      "change_investigation": false,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": true,
+      "repeat_duplicate_evidence": false,
+      "signal": true,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [],
+      "nurse_queue": 43.25,
+      "nurse_start": 43.25,
+      "nurse_end": 43.294776469869994,
+      "gp_queue": 43.294776469869994,
+      "gp_priority": 0,
+      "gp_start": 43.294776469869994,
+      "gp_end": 43.379703338541866,
+      "baseline_decision_time": 43.379703338541866,
+      "first_indication": 43.379703338541866,
+      "signal_time": 43.379703338541866,
+      "diagnostic_queue": 50.379703338541866,
+      "diagnostic_start": 50.379703338541866,
+      "diagnostic_end": 50.52983576693302,
+      "referral": 50.52983576693302,
+      "specialist_queue": 64.52983576693302,
+      "specialist_start": 64.52983576693302,
+      "specialist_end": 64.72018424110306,
+      "diagnosis": 69.72018424110306,
+      "treatment": 90.72018424110306,
+      "pathway_exit": 90.72018424110306
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "arrival": 43.75,
+      "relevant": true,
+      "label_source": "Separately authored eval-cases-v1 hand labels derived from NICE rulebook; not independent clinical ground truth",
+      "cohort": "test",
+      "region": "unspecified",
+      "group": "unspecified",
+      "clinical_observations": [],
+      "prediction": null,
+      "as_of": "2026-11-14T09:00:00Z",
+      "baseline_initial_investigation": true,
+      "baseline_followup_investigation": true,
+      "baseline_referral": true,
+      "baseline_plan": "followup",
+      "symptom_change": false,
+      "change_investigation": true,
+      "repeat_planned": false,
+      "repeat_avoidable_reference": true,
+      "repeat_duplicate_evidence": false,
+      "signal": true,
+      "escalated": false,
+      "complete": true,
+      "repeat_avoided": false,
+      "review_action": "none",
+      "selective_review_skipped": false,
+      "real_predictions_used": [],
+      "nurse_queue": 43.75,
+      "nurse_start": 43.75,
+      "nurse_end": 43.78699290466197,
+      "gp_queue": 43.78699290466197,
+      "gp_priority": 0,
+      "gp_start": 43.78699290466197,
+      "gp_end": 44.03193150614114,
+      "baseline_decision_time": 44.03193150614114,
+      "first_indication": 44.03193150614114,
+      "signal_time": 44.03193150614114,
+      "diagnostic_queue": 51.03193150614114,
+      "diagnostic_start": 51.03193150614114,
+      "diagnostic_end": 51.221282594064036,
+      "referral": 51.221282594064036,
+      "specialist_queue": 65.22128259406404,
+      "specialist_start": 65.22128259406404,
+      "specialist_end": 65.43904960343527,
+      "diagnosis": 70.43904960343527,
+      "treatment": 91.43904960343527,
+      "pathway_exit": 91.43904960343527
+    }
+  ],
+  "events": [
+    {
+      "patient_id": "8fc021f0-8d7c-59db-9f84-884454ca0f77",
+      "time": 35.0,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "8fc021f0-8d7c-59db-9f84-884454ca0f77",
+      "time": 35.0,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "8fc021f0-8d7c-59db-9f84-884454ca0f77",
+      "time": 35.0,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "8fc021f0-8d7c-59db-9f84-884454ca0f77",
+      "time": 35.040741752289726,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "8fc021f0-8d7c-59db-9f84-884454ca0f77",
+      "time": 35.040741752289726,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "8fc021f0-8d7c-59db-9f84-884454ca0f77",
+      "time": 35.040741752289726,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "8fc021f0-8d7c-59db-9f84-884454ca0f77",
+      "time": 35.102291434510946,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "8fc021f0-8d7c-59db-9f84-884454ca0f77",
+      "time": 35.102291434510946,
+      "stage": "pathway",
+      "event": "safety_net_monitoring"
+    },
+    {
+      "patient_id": "8fc021f0-8d7c-59db-9f84-884454ca0f77",
+      "time": 35.102291434510946,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "2c18e705-3a9c-538f-814a-23728bccc0f9",
+      "time": 35.25,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "2c18e705-3a9c-538f-814a-23728bccc0f9",
+      "time": 35.25,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "2c18e705-3a9c-538f-814a-23728bccc0f9",
+      "time": 35.25,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "2c18e705-3a9c-538f-814a-23728bccc0f9",
+      "time": 35.28850098133189,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "2c18e705-3a9c-538f-814a-23728bccc0f9",
+      "time": 35.28850098133189,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "2c18e705-3a9c-538f-814a-23728bccc0f9",
+      "time": 35.28850098133189,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "2c18e705-3a9c-538f-814a-23728bccc0f9",
+      "time": 35.45956606584495,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "e886dd20-4560-50fb-86d0-00fddc0b8d04",
+      "time": 35.5,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "e886dd20-4560-50fb-86d0-00fddc0b8d04",
+      "time": 35.5,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "e886dd20-4560-50fb-86d0-00fddc0b8d04",
+      "time": 35.5,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "e886dd20-4560-50fb-86d0-00fddc0b8d04",
+      "time": 35.53169684796293,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "e886dd20-4560-50fb-86d0-00fddc0b8d04",
+      "time": 35.53169684796293,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "e886dd20-4560-50fb-86d0-00fddc0b8d04",
+      "time": 35.53169684796293,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "e886dd20-4560-50fb-86d0-00fddc0b8d04",
+      "time": 35.628735994809105,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "db41f561-4115-5032-a3f9-e0a82279b0db",
+      "time": 35.75,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "db41f561-4115-5032-a3f9-e0a82279b0db",
+      "time": 35.75,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "db41f561-4115-5032-a3f9-e0a82279b0db",
+      "time": 35.75,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "db41f561-4115-5032-a3f9-e0a82279b0db",
+      "time": 35.78877171394221,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "db41f561-4115-5032-a3f9-e0a82279b0db",
+      "time": 35.78877171394221,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "db41f561-4115-5032-a3f9-e0a82279b0db",
+      "time": 35.78877171394221,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "db41f561-4115-5032-a3f9-e0a82279b0db",
+      "time": 35.907624480938864,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "db41f561-4115-5032-a3f9-e0a82279b0db",
+      "time": 35.907624480938864,
+      "stage": "pathway",
+      "event": "discharge_with_safety_net"
+    },
+    {
+      "patient_id": "db41f561-4115-5032-a3f9-e0a82279b0db",
+      "time": 35.907624480938864,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "time": 36.0,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "time": 36.0,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "time": 36.0,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "time": 36.03632624897639,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "time": 36.03632624897639,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "time": 36.03632624897639,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "time": 36.152564345849974,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "e4a9be9c-b284-5401-ad25-077b4977b420",
+      "time": 36.25,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "e4a9be9c-b284-5401-ad25-077b4977b420",
+      "time": 36.25,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "e4a9be9c-b284-5401-ad25-077b4977b420",
+      "time": 36.25,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "e4a9be9c-b284-5401-ad25-077b4977b420",
+      "time": 36.28976639524902,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "e4a9be9c-b284-5401-ad25-077b4977b420",
+      "time": 36.28976639524902,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "e4a9be9c-b284-5401-ad25-077b4977b420",
+      "time": 36.28976639524902,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "e4a9be9c-b284-5401-ad25-077b4977b420",
+      "time": 36.39693706632435,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "e4a9be9c-b284-5401-ad25-077b4977b420",
+      "time": 36.39693706632435,
+      "stage": "pathway",
+      "event": "discharge_with_safety_net"
+    },
+    {
+      "patient_id": "e4a9be9c-b284-5401-ad25-077b4977b420",
+      "time": 36.39693706632435,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "time": 36.5,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "time": 36.5,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "time": 36.5,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "time": 36.53566875532189,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "time": 36.53566875532189,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "time": 36.53566875532189,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "time": 36.64060917781673,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "79270856-c410-5f77-9940-36c98957252e",
+      "time": 36.75,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "79270856-c410-5f77-9940-36c98957252e",
+      "time": 36.75,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "79270856-c410-5f77-9940-36c98957252e",
+      "time": 36.75,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "79270856-c410-5f77-9940-36c98957252e",
+      "time": 36.81184066588379,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "79270856-c410-5f77-9940-36c98957252e",
+      "time": 36.81184066588379,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "79270856-c410-5f77-9940-36c98957252e",
+      "time": 36.81184066588379,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "79270856-c410-5f77-9940-36c98957252e",
+      "time": 36.971002581419064,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "2190a55b-0379-50b4-b8e9-b1c5b0b83cbd",
+      "time": 37.0,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "2190a55b-0379-50b4-b8e9-b1c5b0b83cbd",
+      "time": 37.0,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "2190a55b-0379-50b4-b8e9-b1c5b0b83cbd",
+      "time": 37.0,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "79270856-c410-5f77-9940-36c98957252e",
+      "time": 37.02100258141906,
+      "stage": "review",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "79270856-c410-5f77-9940-36c98957252e",
+      "time": 37.02100258141906,
+      "stage": "review",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "2190a55b-0379-50b4-b8e9-b1c5b0b83cbd",
+      "time": 37.04442963902061,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "2190a55b-0379-50b4-b8e9-b1c5b0b83cbd",
+      "time": 37.04442963902061,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "2190a55b-0379-50b4-b8e9-b1c5b0b83cbd",
+      "time": 37.04442963902061,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "79270856-c410-5f77-9940-36c98957252e",
+      "time": 37.05474785925721,
+      "stage": "review",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "2190a55b-0379-50b4-b8e9-b1c5b0b83cbd",
+      "time": 37.10510429289266,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "2190a55b-0379-50b4-b8e9-b1c5b0b83cbd",
+      "time": 37.10510429289266,
+      "stage": "pathway",
+      "event": "safety_net_monitoring"
+    },
+    {
+      "patient_id": "2190a55b-0379-50b4-b8e9-b1c5b0b83cbd",
+      "time": 37.10510429289266,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "ea6665d3-7edc-5629-9e08-1c99b8552d12",
+      "time": 37.25,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "ea6665d3-7edc-5629-9e08-1c99b8552d12",
+      "time": 37.25,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "ea6665d3-7edc-5629-9e08-1c99b8552d12",
+      "time": 37.25,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "ea6665d3-7edc-5629-9e08-1c99b8552d12",
+      "time": 37.28794515482111,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "ea6665d3-7edc-5629-9e08-1c99b8552d12",
+      "time": 37.28794515482111,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "ea6665d3-7edc-5629-9e08-1c99b8552d12",
+      "time": 37.28794515482111,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "ea6665d3-7edc-5629-9e08-1c99b8552d12",
+      "time": 37.445766058094264,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "ea6665d3-7edc-5629-9e08-1c99b8552d12",
+      "time": 37.49576605809426,
+      "stage": "review",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "ea6665d3-7edc-5629-9e08-1c99b8552d12",
+      "time": 37.49576605809426,
+      "stage": "review",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "2d116684-b29f-5f68-8af6-51ead419ae7e",
+      "time": 37.5,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "2d116684-b29f-5f68-8af6-51ead419ae7e",
+      "time": 37.5,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "2d116684-b29f-5f68-8af6-51ead419ae7e",
+      "time": 37.5,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "ea6665d3-7edc-5629-9e08-1c99b8552d12",
+      "time": 37.52755305415431,
+      "stage": "review",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "ea6665d3-7edc-5629-9e08-1c99b8552d12",
+      "time": 37.52755305415431,
+      "stage": "pathway",
+      "event": "safety_net_monitoring"
+    },
+    {
+      "patient_id": "ea6665d3-7edc-5629-9e08-1c99b8552d12",
+      "time": 37.52755305415431,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "2d116684-b29f-5f68-8af6-51ead419ae7e",
+      "time": 37.54493098721409,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "2d116684-b29f-5f68-8af6-51ead419ae7e",
+      "time": 37.54493098721409,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "2d116684-b29f-5f68-8af6-51ead419ae7e",
+      "time": 37.54493098721409,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "2d116684-b29f-5f68-8af6-51ead419ae7e",
+      "time": 37.63527075262949,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "2d116684-b29f-5f68-8af6-51ead419ae7e",
+      "time": 37.685270752629485,
+      "stage": "review",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "2d116684-b29f-5f68-8af6-51ead419ae7e",
+      "time": 37.685270752629485,
+      "stage": "review",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "2d116684-b29f-5f68-8af6-51ead419ae7e",
+      "time": 37.70928291071395,
+      "stage": "review",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "5d3159a1-9555-510b-adb7-f9d2161ea6a9",
+      "time": 37.75,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "5d3159a1-9555-510b-adb7-f9d2161ea6a9",
+      "time": 37.75,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "5d3159a1-9555-510b-adb7-f9d2161ea6a9",
+      "time": 37.75,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "5d3159a1-9555-510b-adb7-f9d2161ea6a9",
+      "time": 37.821312388000706,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "5d3159a1-9555-510b-adb7-f9d2161ea6a9",
+      "time": 37.821312388000706,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "5d3159a1-9555-510b-adb7-f9d2161ea6a9",
+      "time": 37.821312388000706,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "5d3159a1-9555-510b-adb7-f9d2161ea6a9",
+      "time": 37.93545403223495,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "5d3159a1-9555-510b-adb7-f9d2161ea6a9",
+      "time": 37.93545403223495,
+      "stage": "pathway",
+      "event": "safety_net_monitoring"
+    },
+    {
+      "patient_id": "5d3159a1-9555-510b-adb7-f9d2161ea6a9",
+      "time": 37.93545403223495,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "36fb0bf9-656e-5d05-91d9-6424630ffbea",
+      "time": 38.0,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "36fb0bf9-656e-5d05-91d9-6424630ffbea",
+      "time": 38.0,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "36fb0bf9-656e-5d05-91d9-6424630ffbea",
+      "time": 38.0,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "36fb0bf9-656e-5d05-91d9-6424630ffbea",
+      "time": 38.033636033078764,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "36fb0bf9-656e-5d05-91d9-6424630ffbea",
+      "time": 38.033636033078764,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "36fb0bf9-656e-5d05-91d9-6424630ffbea",
+      "time": 38.033636033078764,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "36fb0bf9-656e-5d05-91d9-6424630ffbea",
+      "time": 38.09825915437244,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "ceef762a-5715-5eb5-a135-14f10b781d52",
+      "time": 38.5,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "ceef762a-5715-5eb5-a135-14f10b781d52",
+      "time": 38.5,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "ceef762a-5715-5eb5-a135-14f10b781d52",
+      "time": 38.5,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "ceef762a-5715-5eb5-a135-14f10b781d52",
+      "time": 38.52886201879881,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "ceef762a-5715-5eb5-a135-14f10b781d52",
+      "time": 38.52886201879881,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "ceef762a-5715-5eb5-a135-14f10b781d52",
+      "time": 38.52886201879881,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "ceef762a-5715-5eb5-a135-14f10b781d52",
+      "time": 38.64780723510021,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "ceef762a-5715-5eb5-a135-14f10b781d52",
+      "time": 38.69780723510021,
+      "stage": "review",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "ceef762a-5715-5eb5-a135-14f10b781d52",
+      "time": 38.69780723510021,
+      "stage": "review",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "time": 38.75,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "time": 38.75,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "time": 38.75,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "ceef762a-5715-5eb5-a135-14f10b781d52",
+      "time": 38.75842278232748,
+      "stage": "review",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "time": 38.77667407472149,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "time": 38.77667407472149,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "time": 38.77667407472149,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "time": 38.87914885784549,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "02530e6b-5856-5737-8c0a-d2a881c51fc7",
+      "time": 39.0,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "02530e6b-5856-5737-8c0a-d2a881c51fc7",
+      "time": 39.0,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "02530e6b-5856-5737-8c0a-d2a881c51fc7",
+      "time": 39.0,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "02530e6b-5856-5737-8c0a-d2a881c51fc7",
+      "time": 39.04211957608399,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "02530e6b-5856-5737-8c0a-d2a881c51fc7",
+      "time": 39.04211957608399,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "02530e6b-5856-5737-8c0a-d2a881c51fc7",
+      "time": 39.04211957608399,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "02530e6b-5856-5737-8c0a-d2a881c51fc7",
+      "time": 39.173925841814246,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "8e8e372f-de68-5f68-afe4-6f3073d9d234",
+      "time": 39.25,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "8e8e372f-de68-5f68-afe4-6f3073d9d234",
+      "time": 39.25,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "8e8e372f-de68-5f68-afe4-6f3073d9d234",
+      "time": 39.25,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "8e8e372f-de68-5f68-afe4-6f3073d9d234",
+      "time": 39.297085043306026,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "8e8e372f-de68-5f68-afe4-6f3073d9d234",
+      "time": 39.297085043306026,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "8e8e372f-de68-5f68-afe4-6f3073d9d234",
+      "time": 39.297085043306026,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "7745beca-a82e-557d-978b-2827bde88f6b",
+      "time": 39.5,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "7745beca-a82e-557d-978b-2827bde88f6b",
+      "time": 39.5,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "7745beca-a82e-557d-978b-2827bde88f6b",
+      "time": 39.5,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "8e8e372f-de68-5f68-afe4-6f3073d9d234",
+      "time": 39.51237386694142,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "8e8e372f-de68-5f68-afe4-6f3073d9d234",
+      "time": 39.51237386694142,
+      "stage": "pathway",
+      "event": "safety_net_monitoring"
+    },
+    {
+      "patient_id": "8e8e372f-de68-5f68-afe4-6f3073d9d234",
+      "time": 39.51237386694142,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "7745beca-a82e-557d-978b-2827bde88f6b",
+      "time": 39.539809502306596,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "7745beca-a82e-557d-978b-2827bde88f6b",
+      "time": 39.539809502306596,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "7745beca-a82e-557d-978b-2827bde88f6b",
+      "time": 39.539809502306596,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "7745beca-a82e-557d-978b-2827bde88f6b",
+      "time": 39.65357836368303,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "9a0130ab-757b-5ff6-9e71-0226cb9c29b6",
+      "time": 39.75,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "9a0130ab-757b-5ff6-9e71-0226cb9c29b6",
+      "time": 39.75,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "9a0130ab-757b-5ff6-9e71-0226cb9c29b6",
+      "time": 39.75,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "9a0130ab-757b-5ff6-9e71-0226cb9c29b6",
+      "time": 39.8299139532076,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "9a0130ab-757b-5ff6-9e71-0226cb9c29b6",
+      "time": 39.8299139532076,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "9a0130ab-757b-5ff6-9e71-0226cb9c29b6",
+      "time": 39.8299139532076,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "9a0130ab-757b-5ff6-9e71-0226cb9c29b6",
+      "time": 39.93083872142464,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "9a0130ab-757b-5ff6-9e71-0226cb9c29b6",
+      "time": 39.93083872142464,
+      "stage": "pathway",
+      "event": "safety_net_monitoring"
+    },
+    {
+      "patient_id": "9a0130ab-757b-5ff6-9e71-0226cb9c29b6",
+      "time": 39.93083872142464,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "c6a5602d-3d96-5118-b653-3b8125828ea4",
+      "time": 40.0,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "c6a5602d-3d96-5118-b653-3b8125828ea4",
+      "time": 40.0,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "c6a5602d-3d96-5118-b653-3b8125828ea4",
+      "time": 40.0,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "c6a5602d-3d96-5118-b653-3b8125828ea4",
+      "time": 40.03870347752129,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "c6a5602d-3d96-5118-b653-3b8125828ea4",
+      "time": 40.03870347752129,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "c6a5602d-3d96-5118-b653-3b8125828ea4",
+      "time": 40.03870347752129,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "c6a5602d-3d96-5118-b653-3b8125828ea4",
+      "time": 40.13589762855728,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "b194c212-83e9-5751-a60d-76bb7166d46e",
+      "time": 40.25,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "b194c212-83e9-5751-a60d-76bb7166d46e",
+      "time": 40.25,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "b194c212-83e9-5751-a60d-76bb7166d46e",
+      "time": 40.25,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "b194c212-83e9-5751-a60d-76bb7166d46e",
+      "time": 40.325890638216364,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "b194c212-83e9-5751-a60d-76bb7166d46e",
+      "time": 40.325890638216364,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "b194c212-83e9-5751-a60d-76bb7166d46e",
+      "time": 40.325890638216364,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "b194c212-83e9-5751-a60d-76bb7166d46e",
+      "time": 40.450824879614466,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "07e5af50-65bf-5957-a93b-642aea94b24d",
+      "time": 40.5,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "07e5af50-65bf-5957-a93b-642aea94b24d",
+      "time": 40.5,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "07e5af50-65bf-5957-a93b-642aea94b24d",
+      "time": 40.5,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "07e5af50-65bf-5957-a93b-642aea94b24d",
+      "time": 40.53854541879273,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "07e5af50-65bf-5957-a93b-642aea94b24d",
+      "time": 40.53854541879273,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "07e5af50-65bf-5957-a93b-642aea94b24d",
+      "time": 40.53854541879273,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "07e5af50-65bf-5957-a93b-642aea94b24d",
+      "time": 40.6286055041683,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "7f2bc1b4-d951-5090-b9e7-77c05c9b0051",
+      "time": 40.75,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "7f2bc1b4-d951-5090-b9e7-77c05c9b0051",
+      "time": 40.75,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "7f2bc1b4-d951-5090-b9e7-77c05c9b0051",
+      "time": 40.75,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "7f2bc1b4-d951-5090-b9e7-77c05c9b0051",
+      "time": 40.80157844090004,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "7f2bc1b4-d951-5090-b9e7-77c05c9b0051",
+      "time": 40.80157844090004,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "7f2bc1b4-d951-5090-b9e7-77c05c9b0051",
+      "time": 40.80157844090004,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "7f2bc1b4-d951-5090-b9e7-77c05c9b0051",
+      "time": 40.959608671809775,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "248b40d9-1e51-5c0b-ac12-5a29a2f2aa2e",
+      "time": 41.0,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "248b40d9-1e51-5c0b-ac12-5a29a2f2aa2e",
+      "time": 41.0,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "248b40d9-1e51-5c0b-ac12-5a29a2f2aa2e",
+      "time": 41.0,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "248b40d9-1e51-5c0b-ac12-5a29a2f2aa2e",
+      "time": 41.0231591015557,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "248b40d9-1e51-5c0b-ac12-5a29a2f2aa2e",
+      "time": 41.0231591015557,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "248b40d9-1e51-5c0b-ac12-5a29a2f2aa2e",
+      "time": 41.0231591015557,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "248b40d9-1e51-5c0b-ac12-5a29a2f2aa2e",
+      "time": 41.1418491126918,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "dd26d162-a045-5819-92e9-92b0773ff641",
+      "time": 41.25,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "dd26d162-a045-5819-92e9-92b0773ff641",
+      "time": 41.25,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "dd26d162-a045-5819-92e9-92b0773ff641",
+      "time": 41.25,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "dd26d162-a045-5819-92e9-92b0773ff641",
+      "time": 41.30623134925044,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "dd26d162-a045-5819-92e9-92b0773ff641",
+      "time": 41.30623134925044,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "dd26d162-a045-5819-92e9-92b0773ff641",
+      "time": 41.30623134925044,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "dd26d162-a045-5819-92e9-92b0773ff641",
+      "time": 41.40561378551018,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "29c348cb-a6eb-592e-9853-081c0f6ef7ff",
+      "time": 41.5,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "29c348cb-a6eb-592e-9853-081c0f6ef7ff",
+      "time": 41.5,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "29c348cb-a6eb-592e-9853-081c0f6ef7ff",
+      "time": 41.5,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "29c348cb-a6eb-592e-9853-081c0f6ef7ff",
+      "time": 41.5423028750539,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "29c348cb-a6eb-592e-9853-081c0f6ef7ff",
+      "time": 41.5423028750539,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "29c348cb-a6eb-592e-9853-081c0f6ef7ff",
+      "time": 41.5423028750539,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "29c348cb-a6eb-592e-9853-081c0f6ef7ff",
+      "time": 41.62853221393653,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "f260096a-08f4-5dce-88e3-ef03bac7d8ff",
+      "time": 41.75,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "f260096a-08f4-5dce-88e3-ef03bac7d8ff",
+      "time": 41.75,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "f260096a-08f4-5dce-88e3-ef03bac7d8ff",
+      "time": 41.75,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "f260096a-08f4-5dce-88e3-ef03bac7d8ff",
+      "time": 41.77616520778626,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "f260096a-08f4-5dce-88e3-ef03bac7d8ff",
+      "time": 41.77616520778626,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "f260096a-08f4-5dce-88e3-ef03bac7d8ff",
+      "time": 41.77616520778626,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "f260096a-08f4-5dce-88e3-ef03bac7d8ff",
+      "time": 41.996360144732904,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "f260096a-08f4-5dce-88e3-ef03bac7d8ff",
+      "time": 41.996360144732904,
+      "stage": "pathway",
+      "event": "safety_net_monitoring"
+    },
+    {
+      "patient_id": "f260096a-08f4-5dce-88e3-ef03bac7d8ff",
+      "time": 41.996360144732904,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "67aaa974-5a2c-5405-9e6c-ac2cf926b389",
+      "time": 42.0,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "67aaa974-5a2c-5405-9e6c-ac2cf926b389",
+      "time": 42.0,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "67aaa974-5a2c-5405-9e6c-ac2cf926b389",
+      "time": 42.0,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "67aaa974-5a2c-5405-9e6c-ac2cf926b389",
+      "time": 42.03300530693047,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "67aaa974-5a2c-5405-9e6c-ac2cf926b389",
+      "time": 42.03300530693047,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "67aaa974-5a2c-5405-9e6c-ac2cf926b389",
+      "time": 42.03300530693047,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "67aaa974-5a2c-5405-9e6c-ac2cf926b389",
+      "time": 42.1458213125254,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "67aaa974-5a2c-5405-9e6c-ac2cf926b389",
+      "time": 42.1458213125254,
+      "stage": "pathway",
+      "event": "safety_net_monitoring"
+    },
+    {
+      "patient_id": "67aaa974-5a2c-5405-9e6c-ac2cf926b389",
+      "time": 42.1458213125254,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "time": 42.25,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "time": 42.25,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "time": 42.25,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "time": 42.28959022384569,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "time": 42.28959022384569,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "time": 42.28959022384569,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "time": 42.413179613911495,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "2c18e705-3a9c-538f-814a-23728bccc0f9",
+      "time": 42.45956606584495,
+      "stage": "diagnostic",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "2c18e705-3a9c-538f-814a-23728bccc0f9",
+      "time": 42.45956606584495,
+      "stage": "diagnostic",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "e886dd20-4560-50fb-86d0-00fddc0b8d04",
+      "time": 42.628735994809105,
+      "stage": "diagnostic",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "e886dd20-4560-50fb-86d0-00fddc0b8d04",
+      "time": 42.628735994809105,
+      "stage": "diagnostic",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "e886dd20-4560-50fb-86d0-00fddc0b8d04",
+      "time": 42.73610087102498,
+      "stage": "diagnostic",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "e886dd20-4560-50fb-86d0-00fddc0b8d04",
+      "time": 42.73610087102498,
+      "stage": "specialist",
+      "event": "referral"
+    },
+    {
+      "patient_id": "2c18e705-3a9c-538f-814a-23728bccc0f9",
+      "time": 42.744729161439764,
+      "stage": "diagnostic",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "2c18e705-3a9c-538f-814a-23728bccc0f9",
+      "time": 42.744729161439764,
+      "stage": "specialist",
+      "event": "referral"
+    },
+    {
+      "patient_id": "8ce2d507-00ac-585d-8bb4-0139e5f95416",
+      "time": 42.75,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "8ce2d507-00ac-585d-8bb4-0139e5f95416",
+      "time": 42.75,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "8ce2d507-00ac-585d-8bb4-0139e5f95416",
+      "time": 42.75,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "8ce2d507-00ac-585d-8bb4-0139e5f95416",
+      "time": 42.773514276896826,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "8ce2d507-00ac-585d-8bb4-0139e5f95416",
+      "time": 42.773514276896826,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "8ce2d507-00ac-585d-8bb4-0139e5f95416",
+      "time": 42.773514276896826,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "8ce2d507-00ac-585d-8bb4-0139e5f95416",
+      "time": 42.97316080171917,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "297afd32-5667-5b20-a6af-70f23a843d0e",
+      "time": 43.0,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "297afd32-5667-5b20-a6af-70f23a843d0e",
+      "time": 43.0,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "297afd32-5667-5b20-a6af-70f23a843d0e",
+      "time": 43.0,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "297afd32-5667-5b20-a6af-70f23a843d0e",
+      "time": 43.04965175293441,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "297afd32-5667-5b20-a6af-70f23a843d0e",
+      "time": 43.04965175293441,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "297afd32-5667-5b20-a6af-70f23a843d0e",
+      "time": 43.04965175293441,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "time": 43.152564345849974,
+      "stage": "diagnostic",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "time": 43.152564345849974,
+      "stage": "diagnostic",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "297afd32-5667-5b20-a6af-70f23a843d0e",
+      "time": 43.22568784645624,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "time": 43.25,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "time": 43.25,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "time": 43.25,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "time": 43.294776469869994,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "time": 43.294776469869994,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "time": 43.294776469869994,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "time": 43.321157921745,
+      "stage": "diagnostic",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "time": 43.321157921745,
+      "stage": "specialist",
+      "event": "referral"
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "time": 43.379703338541866,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "time": 43.64060917781673,
+      "stage": "diagnostic",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "time": 43.64060917781673,
+      "stage": "diagnostic",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "time": 43.75,
+      "stage": "pathway",
+      "event": "arrival"
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "time": 43.75,
+      "stage": "nurse",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "time": 43.75,
+      "stage": "nurse",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "time": 43.75687816255353,
+      "stage": "diagnostic",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "time": 43.75687816255353,
+      "stage": "specialist",
+      "event": "referral"
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "time": 43.78699290466197,
+      "stage": "nurse",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "time": 43.78699290466197,
+      "stage": "gp",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "time": 43.78699290466197,
+      "stage": "gp",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "time": 44.03193150614114,
+      "stage": "gp",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "2d116684-b29f-5f68-8af6-51ead419ae7e",
+      "time": 44.70928291071395,
+      "stage": "diagnostic",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "2d116684-b29f-5f68-8af6-51ead419ae7e",
+      "time": 44.70928291071395,
+      "stage": "diagnostic",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "2d116684-b29f-5f68-8af6-51ead419ae7e",
+      "time": 44.8232704105968,
+      "stage": "diagnostic",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "2d116684-b29f-5f68-8af6-51ead419ae7e",
+      "time": 44.8232704105968,
+      "stage": "specialist",
+      "event": "referral"
+    },
+    {
+      "patient_id": "ceef762a-5715-5eb5-a135-14f10b781d52",
+      "time": 45.75842278232748,
+      "stage": "diagnostic",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "ceef762a-5715-5eb5-a135-14f10b781d52",
+      "time": 45.75842278232748,
+      "stage": "diagnostic",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "ceef762a-5715-5eb5-a135-14f10b781d52",
+      "time": 45.86626120555529,
+      "stage": "diagnostic",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "ceef762a-5715-5eb5-a135-14f10b781d52",
+      "time": 45.86626120555529,
+      "stage": "specialist",
+      "event": "referral"
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "time": 45.87914885784549,
+      "stage": "diagnostic",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "time": 45.87914885784549,
+      "stage": "diagnostic",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "time": 45.95080605404336,
+      "stage": "diagnostic",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "time": 45.95080605404336,
+      "stage": "specialist",
+      "event": "referral"
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "time": 49.413179613911495,
+      "stage": "diagnostic",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "time": 49.413179613911495,
+      "stage": "diagnostic",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "time": 49.61196762910319,
+      "stage": "diagnostic",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "time": 49.61196762910319,
+      "stage": "specialist",
+      "event": "referral"
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "time": 50.379703338541866,
+      "stage": "diagnostic",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "time": 50.379703338541866,
+      "stage": "diagnostic",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "time": 50.52983576693302,
+      "stage": "diagnostic",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "time": 50.52983576693302,
+      "stage": "specialist",
+      "event": "referral"
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "time": 51.03193150614114,
+      "stage": "diagnostic",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "time": 51.03193150614114,
+      "stage": "diagnostic",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "79270856-c410-5f77-9940-36c98957252e",
+      "time": 51.05474785925721,
+      "stage": "gp_followup",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "79270856-c410-5f77-9940-36c98957252e",
+      "time": 51.05474785925721,
+      "stage": "gp_followup",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "79270856-c410-5f77-9940-36c98957252e",
+      "time": 51.14481130871262,
+      "stage": "gp_followup",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "79270856-c410-5f77-9940-36c98957252e",
+      "time": 51.14481130871262,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "time": 51.221282594064036,
+      "stage": "diagnostic",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "time": 51.221282594064036,
+      "stage": "specialist",
+      "event": "referral"
+    },
+    {
+      "patient_id": "36fb0bf9-656e-5d05-91d9-6424630ffbea",
+      "time": 52.09825915437244,
+      "stage": "gp_followup",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "36fb0bf9-656e-5d05-91d9-6424630ffbea",
+      "time": 52.09825915437244,
+      "stage": "gp_followup",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "36fb0bf9-656e-5d05-91d9-6424630ffbea",
+      "time": 52.24997225451055,
+      "stage": "gp_followup",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "02530e6b-5856-5737-8c0a-d2a881c51fc7",
+      "time": 53.173925841814246,
+      "stage": "gp_followup",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "02530e6b-5856-5737-8c0a-d2a881c51fc7",
+      "time": 53.173925841814246,
+      "stage": "gp_followup",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "02530e6b-5856-5737-8c0a-d2a881c51fc7",
+      "time": 53.289283069434916,
+      "stage": "gp_followup",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "02530e6b-5856-5737-8c0a-d2a881c51fc7",
+      "time": 53.289283069434916,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "7745beca-a82e-557d-978b-2827bde88f6b",
+      "time": 53.65357836368303,
+      "stage": "gp_followup",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "7745beca-a82e-557d-978b-2827bde88f6b",
+      "time": 53.65357836368303,
+      "stage": "gp_followup",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "7745beca-a82e-557d-978b-2827bde88f6b",
+      "time": 53.78560057724529,
+      "stage": "gp_followup",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "7745beca-a82e-557d-978b-2827bde88f6b",
+      "time": 53.78560057724529,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "c6a5602d-3d96-5118-b653-3b8125828ea4",
+      "time": 54.13589762855728,
+      "stage": "gp_followup",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "c6a5602d-3d96-5118-b653-3b8125828ea4",
+      "time": 54.13589762855728,
+      "stage": "gp_followup",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "c6a5602d-3d96-5118-b653-3b8125828ea4",
+      "time": 54.219771834799474,
+      "stage": "gp_followup",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "c6a5602d-3d96-5118-b653-3b8125828ea4",
+      "time": 54.219771834799474,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "b194c212-83e9-5751-a60d-76bb7166d46e",
+      "time": 54.450824879614466,
+      "stage": "gp_followup",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "b194c212-83e9-5751-a60d-76bb7166d46e",
+      "time": 54.450824879614466,
+      "stage": "gp_followup",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "b194c212-83e9-5751-a60d-76bb7166d46e",
+      "time": 54.57465375063178,
+      "stage": "gp_followup",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "b194c212-83e9-5751-a60d-76bb7166d46e",
+      "time": 54.57465375063178,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "07e5af50-65bf-5957-a93b-642aea94b24d",
+      "time": 54.6286055041683,
+      "stage": "gp_followup",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "07e5af50-65bf-5957-a93b-642aea94b24d",
+      "time": 54.6286055041683,
+      "stage": "gp_followup",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "07e5af50-65bf-5957-a93b-642aea94b24d",
+      "time": 54.75793056003965,
+      "stage": "gp_followup",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "7f2bc1b4-d951-5090-b9e7-77c05c9b0051",
+      "time": 54.959608671809775,
+      "stage": "gp_followup",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "7f2bc1b4-d951-5090-b9e7-77c05c9b0051",
+      "time": 54.959608671809775,
+      "stage": "gp_followup",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "7f2bc1b4-d951-5090-b9e7-77c05c9b0051",
+      "time": 55.084964204272126,
+      "stage": "gp_followup",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "7f2bc1b4-d951-5090-b9e7-77c05c9b0051",
+      "time": 55.084964204272126,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "248b40d9-1e51-5c0b-ac12-5a29a2f2aa2e",
+      "time": 55.1418491126918,
+      "stage": "gp_followup",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "248b40d9-1e51-5c0b-ac12-5a29a2f2aa2e",
+      "time": 55.1418491126918,
+      "stage": "gp_followup",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "248b40d9-1e51-5c0b-ac12-5a29a2f2aa2e",
+      "time": 55.20350692951184,
+      "stage": "gp_followup",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "248b40d9-1e51-5c0b-ac12-5a29a2f2aa2e",
+      "time": 55.20350692951184,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "dd26d162-a045-5819-92e9-92b0773ff641",
+      "time": 55.40561378551018,
+      "stage": "gp_followup",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "dd26d162-a045-5819-92e9-92b0773ff641",
+      "time": 55.40561378551018,
+      "stage": "gp_followup",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "dd26d162-a045-5819-92e9-92b0773ff641",
+      "time": 55.48808251985508,
+      "stage": "gp_followup",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "dd26d162-a045-5819-92e9-92b0773ff641",
+      "time": 55.48808251985508,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "29c348cb-a6eb-592e-9853-081c0f6ef7ff",
+      "time": 55.62853221393653,
+      "stage": "gp_followup",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "29c348cb-a6eb-592e-9853-081c0f6ef7ff",
+      "time": 55.62853221393653,
+      "stage": "gp_followup",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "29c348cb-a6eb-592e-9853-081c0f6ef7ff",
+      "time": 55.73474656963592,
+      "stage": "gp_followup",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "29c348cb-a6eb-592e-9853-081c0f6ef7ff",
+      "time": 55.73474656963592,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "e886dd20-4560-50fb-86d0-00fddc0b8d04",
+      "time": 56.73610087102498,
+      "stage": "specialist",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "e886dd20-4560-50fb-86d0-00fddc0b8d04",
+      "time": 56.73610087102498,
+      "stage": "specialist",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "2c18e705-3a9c-538f-814a-23728bccc0f9",
+      "time": 56.744729161439764,
+      "stage": "specialist",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "e886dd20-4560-50fb-86d0-00fddc0b8d04",
+      "time": 56.82118165356819,
+      "stage": "specialist",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "2c18e705-3a9c-538f-814a-23728bccc0f9",
+      "time": 56.82118165356819,
+      "stage": "specialist",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "2c18e705-3a9c-538f-814a-23728bccc0f9",
+      "time": 56.935499310188675,
+      "stage": "specialist",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "8ce2d507-00ac-585d-8bb4-0139e5f95416",
+      "time": 56.97316080171917,
+      "stage": "gp_followup",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "8ce2d507-00ac-585d-8bb4-0139e5f95416",
+      "time": 56.97316080171917,
+      "stage": "gp_followup",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "8ce2d507-00ac-585d-8bb4-0139e5f95416",
+      "time": 57.03898439539881,
+      "stage": "gp_followup",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "8ce2d507-00ac-585d-8bb4-0139e5f95416",
+      "time": 57.03898439539881,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "297afd32-5667-5b20-a6af-70f23a843d0e",
+      "time": 57.22568784645624,
+      "stage": "gp_followup",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "297afd32-5667-5b20-a6af-70f23a843d0e",
+      "time": 57.22568784645624,
+      "stage": "gp_followup",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "time": 57.321157921745,
+      "stage": "specialist",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "time": 57.321157921745,
+      "stage": "specialist",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "297afd32-5667-5b20-a6af-70f23a843d0e",
+      "time": 57.337573535711805,
+      "stage": "gp_followup",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "time": 57.53338655340598,
+      "stage": "specialist",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "time": 57.75687816255353,
+      "stage": "specialist",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "time": 57.75687816255353,
+      "stage": "specialist",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "time": 57.95427101856262,
+      "stage": "specialist",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "2d116684-b29f-5f68-8af6-51ead419ae7e",
+      "time": 58.8232704105968,
+      "stage": "specialist",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "2d116684-b29f-5f68-8af6-51ead419ae7e",
+      "time": 58.8232704105968,
+      "stage": "specialist",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "2d116684-b29f-5f68-8af6-51ead419ae7e",
+      "time": 59.01866370665609,
+      "stage": "specialist",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "36fb0bf9-656e-5d05-91d9-6424630ffbea",
+      "time": 59.24997225451055,
+      "stage": "diagnostic",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "36fb0bf9-656e-5d05-91d9-6424630ffbea",
+      "time": 59.24997225451055,
+      "stage": "diagnostic",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "36fb0bf9-656e-5d05-91d9-6424630ffbea",
+      "time": 59.382471018531604,
+      "stage": "diagnostic",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "36fb0bf9-656e-5d05-91d9-6424630ffbea",
+      "time": 59.382471018531604,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "ceef762a-5715-5eb5-a135-14f10b781d52",
+      "time": 59.86626120555529,
+      "stage": "specialist",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "ceef762a-5715-5eb5-a135-14f10b781d52",
+      "time": 59.86626120555529,
+      "stage": "specialist",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "ceef762a-5715-5eb5-a135-14f10b781d52",
+      "time": 59.92649486942892,
+      "stage": "specialist",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "time": 59.95080605404336,
+      "stage": "specialist",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "time": 59.95080605404336,
+      "stage": "specialist",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "time": 60.02906345212693,
+      "stage": "specialist",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "07e5af50-65bf-5957-a93b-642aea94b24d",
+      "time": 61.75793056003965,
+      "stage": "diagnostic",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "07e5af50-65bf-5957-a93b-642aea94b24d",
+      "time": 61.75793056003965,
+      "stage": "diagnostic",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "e886dd20-4560-50fb-86d0-00fddc0b8d04",
+      "time": 61.82118165356819,
+      "stage": "pathway",
+      "event": "diagnosis"
+    },
+    {
+      "patient_id": "07e5af50-65bf-5957-a93b-642aea94b24d",
+      "time": 61.92061858436553,
+      "stage": "diagnostic",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "07e5af50-65bf-5957-a93b-642aea94b24d",
+      "time": 61.92061858436553,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "2c18e705-3a9c-538f-814a-23728bccc0f9",
+      "time": 61.935499310188675,
+      "stage": "pathway",
+      "event": "diagnosis"
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "time": 62.53338655340598,
+      "stage": "pathway",
+      "event": "diagnosis"
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "time": 62.95427101856262,
+      "stage": "pathway",
+      "event": "diagnosis"
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "time": 63.61196762910319,
+      "stage": "specialist",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "time": 63.61196762910319,
+      "stage": "specialist",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "time": 63.826096989270674,
+      "stage": "specialist",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "2d116684-b29f-5f68-8af6-51ead419ae7e",
+      "time": 64.0186637066561,
+      "stage": "pathway",
+      "event": "diagnosis"
+    },
+    {
+      "patient_id": "297afd32-5667-5b20-a6af-70f23a843d0e",
+      "time": 64.33757353571181,
+      "stage": "diagnostic",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "297afd32-5667-5b20-a6af-70f23a843d0e",
+      "time": 64.33757353571181,
+      "stage": "diagnostic",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "time": 64.52983576693302,
+      "stage": "specialist",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "time": 64.52983576693302,
+      "stage": "specialist",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "297afd32-5667-5b20-a6af-70f23a843d0e",
+      "time": 64.5748506697377,
+      "stage": "diagnostic",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "297afd32-5667-5b20-a6af-70f23a843d0e",
+      "time": 64.5748506697377,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "time": 64.72018424110306,
+      "stage": "specialist",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "ceef762a-5715-5eb5-a135-14f10b781d52",
+      "time": 64.92649486942892,
+      "stage": "pathway",
+      "event": "diagnosis"
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "time": 65.02906345212693,
+      "stage": "pathway",
+      "event": "diagnosis"
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "time": 65.22128259406404,
+      "stage": "specialist",
+      "event": "queue_enter"
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "time": 65.22128259406404,
+      "stage": "specialist",
+      "event": "service_start"
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "time": 65.43904960343527,
+      "stage": "specialist",
+      "event": "service_end"
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "time": 68.82609698927067,
+      "stage": "pathway",
+      "event": "diagnosis"
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "time": 69.72018424110306,
+      "stage": "pathway",
+      "event": "diagnosis"
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "time": 70.43904960343527,
+      "stage": "pathway",
+      "event": "diagnosis"
+    },
+    {
+      "patient_id": "e886dd20-4560-50fb-86d0-00fddc0b8d04",
+      "time": 82.82118165356819,
+      "stage": "pathway",
+      "event": "treatment"
+    },
+    {
+      "patient_id": "e886dd20-4560-50fb-86d0-00fddc0b8d04",
+      "time": 82.82118165356819,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "2c18e705-3a9c-538f-814a-23728bccc0f9",
+      "time": 82.93549931018867,
+      "stage": "pathway",
+      "event": "treatment"
+    },
+    {
+      "patient_id": "2c18e705-3a9c-538f-814a-23728bccc0f9",
+      "time": 82.93549931018867,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "time": 83.53338655340599,
+      "stage": "pathway",
+      "event": "treatment"
+    },
+    {
+      "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+      "time": 83.53338655340599,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "time": 83.95427101856262,
+      "stage": "pathway",
+      "event": "treatment"
+    },
+    {
+      "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+      "time": 83.95427101856262,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "2d116684-b29f-5f68-8af6-51ead419ae7e",
+      "time": 85.0186637066561,
+      "stage": "pathway",
+      "event": "treatment"
+    },
+    {
+      "patient_id": "2d116684-b29f-5f68-8af6-51ead419ae7e",
+      "time": 85.0186637066561,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "ceef762a-5715-5eb5-a135-14f10b781d52",
+      "time": 85.92649486942892,
+      "stage": "pathway",
+      "event": "treatment"
+    },
+    {
+      "patient_id": "ceef762a-5715-5eb5-a135-14f10b781d52",
+      "time": 85.92649486942892,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "time": 86.02906345212693,
+      "stage": "pathway",
+      "event": "treatment"
+    },
+    {
+      "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+      "time": 86.02906345212693,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "time": 89.82609698927067,
+      "stage": "pathway",
+      "event": "treatment"
+    },
+    {
+      "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+      "time": 89.82609698927067,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "time": 90.72018424110306,
+      "stage": "pathway",
+      "event": "treatment"
+    },
+    {
+      "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+      "time": 90.72018424110306,
+      "stage": "pathway",
+      "event": "exit"
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "time": 91.43904960343527,
+      "stage": "pathway",
+      "event": "treatment"
+    },
+    {
+      "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "time": 91.43904960343527,
+      "stage": "pathway",
+      "event": "exit"
+    }
+  ],
+  "resource_states": [
+    {
+      "time": 0,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 0,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 0,
+      "resource": "diagnostic",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 0,
+      "resource": "specialist",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 35.0,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 35.0,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 35.040741752289726,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 35.040741752289726,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 35.040741752289726,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 35.102291434510946,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 35.25,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 35.25,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 35.28850098133189,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 35.28850098133189,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 35.28850098133189,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 35.45956606584495,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 35.5,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 35.5,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 35.53169684796293,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 35.53169684796293,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 35.53169684796293,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 35.628735994809105,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 35.75,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 35.75,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 35.78877171394221,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 35.78877171394221,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 35.78877171394221,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 35.907624480938864,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 36.0,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 36.0,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 36.03632624897639,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 36.03632624897639,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 36.03632624897639,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 36.152564345849974,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 36.25,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 36.25,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 36.28976639524902,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 36.28976639524902,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 36.28976639524902,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 36.39693706632435,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 36.5,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 36.5,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 36.53566875532189,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 36.53566875532189,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 36.53566875532189,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 36.64060917781673,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 36.75,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 36.75,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 36.81184066588379,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 36.81184066588379,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 36.81184066588379,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 36.971002581419064,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 37.0,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 37.0,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 37.02100258141906,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 37.02100258141906,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 37.04442963902061,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 37.04442963902061,
+      "resource": "gp",
+      "busy": 2,
+      "queue": 0
+    },
+    {
+      "time": 37.04442963902061,
+      "resource": "gp",
+      "busy": 2,
+      "queue": 0
+    },
+    {
+      "time": 37.05474785925721,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 37.10510429289266,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 37.25,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 37.25,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 37.28794515482111,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 37.28794515482111,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 37.28794515482111,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 37.445766058094264,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 37.49576605809426,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 37.49576605809426,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 37.5,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 37.5,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 37.52755305415431,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 37.54493098721409,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 37.54493098721409,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 37.54493098721409,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 37.63527075262949,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 37.685270752629485,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 37.685270752629485,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 37.70928291071395,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 37.75,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 37.75,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 37.821312388000706,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 37.821312388000706,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 37.821312388000706,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 37.93545403223495,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 38.0,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 38.0,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 38.033636033078764,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 38.033636033078764,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 38.033636033078764,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 38.09825915437244,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 38.5,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 38.5,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 38.52886201879881,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 38.52886201879881,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 38.52886201879881,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 38.64780723510021,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 38.69780723510021,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 38.69780723510021,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 38.75,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 38.75,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 38.75842278232748,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 38.77667407472149,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 38.77667407472149,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 38.77667407472149,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 38.87914885784549,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 39.0,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 39.0,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 39.04211957608399,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 39.04211957608399,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 39.04211957608399,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 39.173925841814246,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 39.25,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 39.25,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 39.297085043306026,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 39.297085043306026,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 39.297085043306026,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 39.5,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 39.5,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 39.51237386694142,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 39.539809502306596,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 39.539809502306596,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 39.539809502306596,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 39.65357836368303,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 39.75,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 39.75,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 39.8299139532076,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 39.8299139532076,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 39.8299139532076,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 39.93083872142464,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 40.0,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 40.0,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 40.03870347752129,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 40.03870347752129,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 40.03870347752129,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 40.13589762855728,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 40.25,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 40.25,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 40.325890638216364,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 40.325890638216364,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 40.325890638216364,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 40.450824879614466,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 40.5,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 40.5,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 40.53854541879273,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 40.53854541879273,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 40.53854541879273,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 40.6286055041683,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 40.75,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 40.75,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 40.80157844090004,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 40.80157844090004,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 40.80157844090004,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 40.959608671809775,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 41.0,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 41.0,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 41.0231591015557,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 41.0231591015557,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 41.0231591015557,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 41.1418491126918,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 41.25,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 41.25,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 41.30623134925044,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 41.30623134925044,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 41.30623134925044,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 41.40561378551018,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 41.5,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 41.5,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 41.5423028750539,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 41.5423028750539,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 41.5423028750539,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 41.62853221393653,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 41.75,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 41.75,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 41.77616520778626,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 41.77616520778626,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 41.77616520778626,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 41.996360144732904,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 42.0,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 42.0,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 42.03300530693047,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 42.03300530693047,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 42.03300530693047,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 42.1458213125254,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 42.25,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 42.25,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 42.28959022384569,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 42.28959022384569,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 42.28959022384569,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 42.413179613911495,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 42.45956606584495,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 42.45956606584495,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 42.628735994809105,
+      "resource": "diagnostic",
+      "busy": 2,
+      "queue": 0
+    },
+    {
+      "time": 42.628735994809105,
+      "resource": "diagnostic",
+      "busy": 2,
+      "queue": 0
+    },
+    {
+      "time": 42.73610087102498,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 42.744729161439764,
+      "resource": "diagnostic",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 42.75,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 42.75,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 42.773514276896826,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 42.773514276896826,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 42.773514276896826,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 42.97316080171917,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 43.0,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 43.0,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 43.04965175293441,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 43.04965175293441,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 43.04965175293441,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 43.152564345849974,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 43.152564345849974,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 43.22568784645624,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 43.25,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 43.25,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 43.294776469869994,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 43.294776469869994,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 43.294776469869994,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 43.321157921745,
+      "resource": "diagnostic",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 43.379703338541866,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 43.64060917781673,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 43.64060917781673,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 43.75,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 43.75,
+      "resource": "nurse",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 43.75687816255353,
+      "resource": "diagnostic",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 43.78699290466197,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 43.78699290466197,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 43.78699290466197,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 44.03193150614114,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 44.70928291071395,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 44.70928291071395,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 44.8232704105968,
+      "resource": "diagnostic",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 45.75842278232748,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 45.75842278232748,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 45.86626120555529,
+      "resource": "diagnostic",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 45.87914885784549,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 45.87914885784549,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 45.95080605404336,
+      "resource": "diagnostic",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 49.413179613911495,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 49.413179613911495,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 49.61196762910319,
+      "resource": "diagnostic",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 50.379703338541866,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 50.379703338541866,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 50.52983576693302,
+      "resource": "diagnostic",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 51.03193150614114,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 51.03193150614114,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 51.05474785925721,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 51.05474785925721,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 51.14481130871262,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 51.221282594064036,
+      "resource": "diagnostic",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 52.09825915437244,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 52.09825915437244,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 52.24997225451055,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 53.173925841814246,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 53.173925841814246,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 53.289283069434916,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 53.65357836368303,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 53.65357836368303,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 53.78560057724529,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 54.13589762855728,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 54.13589762855728,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 54.219771834799474,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 54.450824879614466,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 54.450824879614466,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 54.57465375063178,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 54.6286055041683,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 54.6286055041683,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 54.75793056003965,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 54.959608671809775,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 54.959608671809775,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 55.084964204272126,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 55.1418491126918,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 55.1418491126918,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 55.20350692951184,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 55.40561378551018,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 55.40561378551018,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 55.48808251985508,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 55.62853221393653,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 55.62853221393653,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 55.73474656963592,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 56.73610087102498,
+      "resource": "specialist",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 56.73610087102498,
+      "resource": "specialist",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 56.744729161439764,
+      "resource": "specialist",
+      "busy": 1,
+      "queue": 1
+    },
+    {
+      "time": 56.82118165356819,
+      "resource": "specialist",
+      "busy": 0,
+      "queue": 1
+    },
+    {
+      "time": 56.82118165356819,
+      "resource": "specialist",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 56.935499310188675,
+      "resource": "specialist",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 56.97316080171917,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 56.97316080171917,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 57.03898439539881,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 57.22568784645624,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 57.22568784645624,
+      "resource": "gp",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 57.321157921745,
+      "resource": "specialist",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 57.321157921745,
+      "resource": "specialist",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 57.337573535711805,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 57.53338655340598,
+      "resource": "specialist",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 57.75687816255353,
+      "resource": "specialist",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 57.75687816255353,
+      "resource": "specialist",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 57.95427101856262,
+      "resource": "specialist",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 58.8232704105968,
+      "resource": "specialist",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 58.8232704105968,
+      "resource": "specialist",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 59.01866370665609,
+      "resource": "specialist",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 59.24997225451055,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 59.24997225451055,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 59.382471018531604,
+      "resource": "diagnostic",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 59.86626120555529,
+      "resource": "specialist",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 59.86626120555529,
+      "resource": "specialist",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 59.92649486942892,
+      "resource": "specialist",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 59.95080605404336,
+      "resource": "specialist",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 59.95080605404336,
+      "resource": "specialist",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 60.02906345212693,
+      "resource": "specialist",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 61.75793056003965,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 61.75793056003965,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 61.92061858436553,
+      "resource": "diagnostic",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 63.61196762910319,
+      "resource": "specialist",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 63.61196762910319,
+      "resource": "specialist",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 63.826096989270674,
+      "resource": "specialist",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 64.33757353571181,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 64.33757353571181,
+      "resource": "diagnostic",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 64.52983576693302,
+      "resource": "specialist",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 64.52983576693302,
+      "resource": "specialist",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 64.5748506697377,
+      "resource": "diagnostic",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 64.72018424110306,
+      "resource": "specialist",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 65.22128259406404,
+      "resource": "specialist",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 65.22128259406404,
+      "resource": "specialist",
+      "busy": 1,
+      "queue": 0
+    },
+    {
+      "time": 65.43904960343527,
+      "resource": "specialist",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 180,
+      "resource": "nurse",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 180,
+      "resource": "gp",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 180,
+      "resource": "diagnostic",
+      "busy": 0,
+      "queue": 0
+    },
+    {
+      "time": 180,
+      "resource": "specialist",
+      "busy": 0,
+      "queue": 0
+    }
+  ],
+  "excluded_arrivals": 0
+}

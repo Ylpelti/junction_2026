@@ -1,0 +1,69 @@
+{
+  "parameter_status": "All numeric parameters are hypothetical demonstration assumptions, not Finnish estimates.",
+  "duration": 180,
+  "warmup": 30,
+  "arrival_rate": 12,
+  "prevalence": 0.15,
+  "seeds": [
+    101,
+    202,
+    303,
+    404,
+    505
+  ],
+  "capacities": {
+    "nurse": 2,
+    "gp": 2,
+    "diagnostic": 2,
+    "specialist": 1
+  },
+  "service": {
+    "nurse": {
+      "mean": 0.04,
+      "cv": 0.3
+    },
+    "gp": {
+      "mean": 0.12,
+      "cv": 0.4
+    },
+    "review": {
+      "mean": 0.05,
+      "cv": 0.4
+    },
+    "diagnostic": {
+      "mean": 0.2,
+      "cv": 0.4
+    },
+    "specialist": {
+      "mean": 0.16,
+      "cv": 0.4
+    }
+  },
+  "signal": {
+    "tpr": 0.8,
+    "fpr": 0.12,
+    "processing_delay": 0.05,
+    "review_probability": 0.9,
+    "escalation_probability": 0.65,
+    "gp_time_saved": 0.01
+  },
+  "routing": {
+    "initial_relevant": 0.55,
+    "initial_other": 0.12,
+    "followup_relevant": 0.8,
+    "followup_other": 0.08,
+    "referral_relevant": 0.9,
+    "referral_other": 0.08,
+    "treatment_relevant": 0.8,
+    "initial_unknown": 0.2,
+    "followup_unknown": 0.2,
+    "referral_unknown": 0.2
+  },
+  "delays": {
+    "followup": 14,
+    "investigation": 7,
+    "specialist": 14,
+    "diagnosis": 5,
+    "treatment": 21
+  }
+}

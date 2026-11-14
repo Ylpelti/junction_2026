@@ -1,0 +1,21 @@
+{
+  "base_commit": "9718db3d448d6ff9aac7dd1b33ff360f81afc49b",
+  "simulation_tests": {
+    "passed": 51,
+    "failed": 0
+  },
+  "historical_backend_handoff": {
+    "passed": 1,
+    "failed": 0
+  },
+  "main_backend_handoff": {
+    "passed": 0,
+    "failed": 1,
+    "error": "NameError: validate_evidence is not defined",
+    "file": "cancersignal/backend/app/extraction/service.py:59"
+  },
+  "existing_result_output_files_preserved": 368,
+  "pinned_replay_scenario_runs": 180,
+  "pinned_replay_matches_preserved_priority_results": true,
+  "new_live_inference_calls": 0
+}

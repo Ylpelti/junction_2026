@@ -1,0 +1,401 @@
+{
+  "evaluation_scope": "Separately authored, rulebook-aligned synthetic labels; not independent clinical diagnostic validation. No labels/coded extraction answers entered inference.",
+  "positive_endpoint": "Rule-based physician review recommendation, not a diagnosis or numerical risk threshold.",
+  "denominators": "Model evaluation counts fixed patients once; 30 simulation replications do not enlarge this evaluation sample.",
+  "splits": {
+    "all": {
+      "n": 17,
+      "labeled_n": 16,
+      "unlabeled_n": 0,
+      "unavailable": [
+        {
+          "patient_id": "f2ef8909-189e-55dc-896f-95f2b8cf9cd8",
+          "case_id": "EVAL-014",
+          "reference_relevant": true
+        }
+      ],
+      "prediction_coverage": 0.9411764705882353,
+      "end_to_end_positive_review_yield": 0.8,
+      "confusion_matrix": {
+        "tp": 8,
+        "fp": 1,
+        "tn": 6,
+        "fn": 1
+      },
+      "true_positive_rate": 0.8888888888888888,
+      "false_positive_rate": 0.14285714285714285,
+      "precision": 0.8888888888888888,
+      "recall": 0.8888888888888888,
+      "missed_relevant_patient_ids": [
+        "b366535c-0d36-50b4-a5a5-63fb940ef3c9"
+      ],
+      "review_recommendations_by_urgency": {
+        "review": 6,
+        "none": 7,
+        "urgent": 3
+      },
+      "recommended_action_counts": {
+        "Physician review: consider FIT": 7,
+        "Urgent physician review: consider suspected cancer referral without FIT": 1,
+        "Urgent physician review: suspected cancer pathway referral": 2
+      },
+      "patients": [
+        {
+          "patient_id": "db41f561-4115-5032-a3f9-e0a82279b0db",
+          "case_id": "EVAL-004",
+          "reference_relevant": true,
+          "predicted_review": true,
+          "urgency": "review",
+          "recommended_actions": [
+            "Physician review: consider FIT"
+          ]
+        },
+        {
+          "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+          "case_id": "EVAL-005",
+          "reference_relevant": true,
+          "predicted_review": true,
+          "urgency": "review",
+          "recommended_actions": [
+            "Physician review: consider FIT"
+          ]
+        },
+        {
+          "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+          "case_id": "EVAL-007",
+          "reference_relevant": true,
+          "predicted_review": false,
+          "urgency": "none",
+          "recommended_actions": []
+        },
+        {
+          "patient_id": "ea6665d3-7edc-5629-9e08-1c99b8552d12",
+          "case_id": "EVAL-010",
+          "reference_relevant": true,
+          "predicted_review": true,
+          "urgency": "review",
+          "recommended_actions": [
+            "Physician review: consider FIT"
+          ]
+        },
+        {
+          "patient_id": "5d3159a1-9555-510b-adb7-f9d2161ea6a9",
+          "case_id": "EVAL-012",
+          "reference_relevant": true,
+          "predicted_review": true,
+          "urgency": "urgent",
+          "recommended_actions": [
+            "Urgent physician review: consider suspected cancer referral without FIT"
+          ]
+        },
+        {
+          "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+          "case_id": "EVAL-016",
+          "reference_relevant": true,
+          "predicted_review": true,
+          "urgency": "urgent",
+          "recommended_actions": [
+            "Urgent physician review: suspected cancer pathway referral"
+          ]
+        },
+        {
+          "patient_id": "8e8e372f-de68-5f68-afe4-6f3073d9d234",
+          "case_id": "EVAL-018",
+          "reference_relevant": false,
+          "predicted_review": false,
+          "urgency": "none",
+          "recommended_actions": []
+        },
+        {
+          "patient_id": "9a0130ab-757b-5ff6-9e71-0226cb9c29b6",
+          "case_id": "EVAL-020",
+          "reference_relevant": false,
+          "predicted_review": false,
+          "urgency": "none",
+          "recommended_actions": []
+        },
+        {
+          "patient_id": "b194c212-83e9-5751-a60d-76bb7166d46e",
+          "case_id": "EVAL-022",
+          "reference_relevant": false,
+          "predicted_review": false,
+          "urgency": "none",
+          "recommended_actions": []
+        },
+        {
+          "patient_id": "7f2bc1b4-d951-5090-b9e7-77c05c9b0051",
+          "case_id": "EVAL-024",
+          "reference_relevant": false,
+          "predicted_review": false,
+          "urgency": "none",
+          "recommended_actions": []
+        },
+        {
+          "patient_id": "dd26d162-a045-5819-92e9-92b0773ff641",
+          "case_id": "EVAL-026",
+          "reference_relevant": false,
+          "predicted_review": false,
+          "urgency": "none",
+          "recommended_actions": []
+        },
+        {
+          "patient_id": "f260096a-08f4-5dce-88e3-ef03bac7d8ff",
+          "case_id": "EVAL-028",
+          "reference_relevant": false,
+          "predicted_review": true,
+          "urgency": "review",
+          "recommended_actions": [
+            "Physician review: consider FIT",
+            "Physician review: consider FIT"
+          ]
+        },
+        {
+          "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+          "case_id": "EVAL-030",
+          "reference_relevant": true,
+          "predicted_review": true,
+          "urgency": "review",
+          "recommended_actions": [
+            "Physician review: consider FIT"
+          ]
+        },
+        {
+          "patient_id": "8ce2d507-00ac-585d-8bb4-0139e5f95416",
+          "case_id": "EVAL-032",
+          "reference_relevant": false,
+          "predicted_review": false,
+          "urgency": "none",
+          "recommended_actions": []
+        },
+        {
+          "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+          "case_id": "EVAL-034",
+          "reference_relevant": true,
+          "predicted_review": true,
+          "urgency": "review",
+          "recommended_actions": [
+            "Physician review: consider FIT"
+          ]
+        },
+        {
+          "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+          "case_id": "EVAL-036",
+          "reference_relevant": true,
+          "predicted_review": true,
+          "urgency": "urgent",
+          "recommended_actions": [
+            "Urgent physician review: suspected cancer pathway referral"
+          ]
+        }
+      ]
+    },
+    "dev": {
+      "n": 0,
+      "labeled_n": 0,
+      "unlabeled_n": 0,
+      "unavailable": [],
+      "prediction_coverage": null,
+      "end_to_end_positive_review_yield": null,
+      "confusion_matrix": {
+        "tp": 0,
+        "fp": 0,
+        "tn": 0,
+        "fn": 0
+      },
+      "true_positive_rate": null,
+      "false_positive_rate": null,
+      "precision": null,
+      "recall": null,
+      "missed_relevant_patient_ids": [],
+      "review_recommendations_by_urgency": {},
+      "recommended_action_counts": {},
+      "patients": []
+    },
+    "test": {
+      "n": 17,
+      "labeled_n": 16,
+      "unlabeled_n": 0,
+      "unavailable": [
+        {
+          "patient_id": "f2ef8909-189e-55dc-896f-95f2b8cf9cd8",
+          "case_id": "EVAL-014",
+          "reference_relevant": true
+        }
+      ],
+      "prediction_coverage": 0.9411764705882353,
+      "end_to_end_positive_review_yield": 0.8,
+      "confusion_matrix": {
+        "tp": 8,
+        "fp": 1,
+        "tn": 6,
+        "fn": 1
+      },
+      "true_positive_rate": 0.8888888888888888,
+      "false_positive_rate": 0.14285714285714285,
+      "precision": 0.8888888888888888,
+      "recall": 0.8888888888888888,
+      "missed_relevant_patient_ids": [
+        "b366535c-0d36-50b4-a5a5-63fb940ef3c9"
+      ],
+      "review_recommendations_by_urgency": {
+        "review": 6,
+        "none": 7,
+        "urgent": 3
+      },
+      "recommended_action_counts": {
+        "Physician review: consider FIT": 7,
+        "Urgent physician review: consider suspected cancer referral without FIT": 1,
+        "Urgent physician review: suspected cancer pathway referral": 2
+      },
+      "patients": [
+        {
+          "patient_id": "db41f561-4115-5032-a3f9-e0a82279b0db",
+          "case_id": "EVAL-004",
+          "reference_relevant": true,
+          "predicted_review": true,
+          "urgency": "review",
+          "recommended_actions": [
+            "Physician review: consider FIT"
+          ]
+        },
+        {
+          "patient_id": "30f792d4-162a-56bf-8a8b-833b4f1cea78",
+          "case_id": "EVAL-005",
+          "reference_relevant": true,
+          "predicted_review": true,
+          "urgency": "review",
+          "recommended_actions": [
+            "Physician review: consider FIT"
+          ]
+        },
+        {
+          "patient_id": "b366535c-0d36-50b4-a5a5-63fb940ef3c9",
+          "case_id": "EVAL-007",
+          "reference_relevant": true,
+          "predicted_review": false,
+          "urgency": "none",
+          "recommended_actions": []
+        },
+        {
+          "patient_id": "ea6665d3-7edc-5629-9e08-1c99b8552d12",
+          "case_id": "EVAL-010",
+          "reference_relevant": true,
+          "predicted_review": true,
+          "urgency": "review",
+          "recommended_actions": [
+            "Physician review: consider FIT"
+          ]
+        },
+        {
+          "patient_id": "5d3159a1-9555-510b-adb7-f9d2161ea6a9",
+          "case_id": "EVAL-012",
+          "reference_relevant": true,
+          "predicted_review": true,
+          "urgency": "urgent",
+          "recommended_actions": [
+            "Urgent physician review: consider suspected cancer referral without FIT"
+          ]
+        },
+        {
+          "patient_id": "e4853f75-df92-5424-b050-7330b7804eb4",
+          "case_id": "EVAL-016",
+          "reference_relevant": true,
+          "predicted_review": true,
+          "urgency": "urgent",
+          "recommended_actions": [
+            "Urgent physician review: suspected cancer pathway referral"
+          ]
+        },
+        {
+          "patient_id": "8e8e372f-de68-5f68-afe4-6f3073d9d234",
+          "case_id": "EVAL-018",
+          "reference_relevant": false,
+          "predicted_review": false,
+          "urgency": "none",
+          "recommended_actions": []
+        },
+        {
+          "patient_id": "9a0130ab-757b-5ff6-9e71-0226cb9c29b6",
+          "case_id": "EVAL-020",
+          "reference_relevant": false,
+          "predicted_review": false,
+          "urgency": "none",
+          "recommended_actions": []
+        },
+        {
+          "patient_id": "b194c212-83e9-5751-a60d-76bb7166d46e",
+          "case_id": "EVAL-022",
+          "reference_relevant": false,
+          "predicted_review": false,
+          "urgency": "none",
+          "recommended_actions": []
+        },
+        {
+          "patient_id": "7f2bc1b4-d951-5090-b9e7-77c05c9b0051",
+          "case_id": "EVAL-024",
+          "reference_relevant": false,
+          "predicted_review": false,
+          "urgency": "none",
+          "recommended_actions": []
+        },
+        {
+          "patient_id": "dd26d162-a045-5819-92e9-92b0773ff641",
+          "case_id": "EVAL-026",
+          "reference_relevant": false,
+          "predicted_review": false,
+          "urgency": "none",
+          "recommended_actions": []
+        },
+        {
+          "patient_id": "f260096a-08f4-5dce-88e3-ef03bac7d8ff",
+          "case_id": "EVAL-028",
+          "reference_relevant": false,
+          "predicted_review": true,
+          "urgency": "review",
+          "recommended_actions": [
+            "Physician review: consider FIT",
+            "Physician review: consider FIT"
+          ]
+        },
+        {
+          "patient_id": "0f0a5929-9cd1-5b48-b586-9681d3b46098",
+          "case_id": "EVAL-030",
+          "reference_relevant": true,
+          "predicted_review": true,
+          "urgency": "review",
+          "recommended_actions": [
+            "Physician review: consider FIT"
+          ]
+        },
+        {
+          "patient_id": "8ce2d507-00ac-585d-8bb4-0139e5f95416",
+          "case_id": "EVAL-032",
+          "reference_relevant": false,
+          "predicted_review": false,
+          "urgency": "none",
+          "recommended_actions": []
+        },
+        {
+          "patient_id": "764ea990-465b-5fe1-9b86-e8334b249dd4",
+          "case_id": "EVAL-034",
+          "reference_relevant": true,
+          "predicted_review": true,
+          "urgency": "review",
+          "recommended_actions": [
+            "Physician review: consider FIT"
+          ]
+        },
+        {
+          "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+          "case_id": "EVAL-036",
+          "reference_relevant": true,
+          "predicted_review": true,
+          "urgency": "urgent",
+          "recommended_actions": [
+            "Urgent physician review: suspected cancer pathway referral"
+          ]
+        }
+      ]
+    }
+  }
+}

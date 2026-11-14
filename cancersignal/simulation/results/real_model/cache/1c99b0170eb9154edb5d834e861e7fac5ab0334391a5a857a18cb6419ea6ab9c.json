@@ -1,0 +1,1034 @@
+{
+  "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+  "decision_id": "initial",
+  "input_sha256": "18b7af715249ade1b3ca5a481163fb2ffde7ec64244a33c67e30bef654b5c7ee",
+  "pipeline_sha256": "d93db13173a7c74323ceea84ac77fe891064232082cbb5e576404ae490bf6d0b",
+  "producer": {
+    "kind": "cancersignal.create_analysis",
+    "extraction": {
+      "name": "clinical-extraction",
+      "version": "1.0",
+      "method": "llm",
+      "provider": "verda",
+      "model": "kimi-k3-1-pro",
+      "prompt_version": "clinical-extraction-2",
+      "configuration_digest": "46997158cbbe17e2c10cce7535eb0be3c683affa8f929b53f8c46bbfaf6108d9"
+    },
+    "inference_settings": {
+      "provider": "verda",
+      "model": "kimi-k3-1-pro",
+      "base_url": null,
+      "response_format": "json_object",
+      "reasoning_effort": "low",
+      "max_output_tokens": 8192,
+      "context_window_tokens": null,
+      "max_input_bytes": 60000,
+      "timeout_seconds": 55.0,
+      "max_response_bytes": 1000000
+    },
+    "retrieval": "app.rag.retrieval.retrieve_context: complete eligible history with lexical ranking; not hybrid RAG",
+    "explanation": "existing deterministic ExplanationEngine (no separate explanation LLM call)",
+    "mapping": "triggered AND requires_clinician_review; QCancer does not control routing"
+  },
+  "clinical_input": {
+    "patient": {
+      "id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+      "synthetic_name": "SYNTHETIC EVAL-036",
+      "sex": "female",
+      "birth_date": "1960-02-02"
+    },
+    "as_of": "2026-11-14T09:00:00Z",
+    "input_note_id": "4e7f13ca-e7e9-5dda-b2d5-fc9418a5b499",
+    "observations": [
+      {
+        "id": "4e7f13ca-e7e9-5dda-b2d5-fc9418a5b499",
+        "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+        "observation_type": "clinical_note",
+        "text": "Ei oireita, tullut kuulemaan tuloksia.",
+        "observed_at": "2026-11-14T09:00:00Z",
+        "recorded_at": "2026-11-14T09:00:00Z"
+      },
+      {
+        "id": "778e3c70-8f83-5769-b37e-6ddc753254c5",
+        "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+        "observation_type": "laboratory",
+        "code": "F-HB-FIT",
+        "text": null,
+        "numeric_value": 10,
+        "unit": "ug/g",
+        "status": "completed",
+        "observed_at": "2026-11-10T08:00:00Z",
+        "recorded_at": "2026-11-10T08:00:00Z"
+      }
+    ]
+  },
+  "response": {
+    "id": "5953a489-fcad-4c84-b6ed-f162024df7ed",
+    "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+    "created_at": "2026-11-14T16:10:12.672476Z",
+    "status": "completed",
+    "findings": [
+      {
+        "id": "31dbe295-7699-40d6-8802-b0380d160714",
+        "analysis_run_id": "5953a489-fcad-4c84-b6ed-f162024df7ed",
+        "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+        "finding_type": "F-HB-FIT",
+        "description": "Source measurement F-HB-FIT: 10.000000 ug/g",
+        "status": "historical",
+        "uncertainty": null,
+        "evidence": [
+          {
+            "observation_id": "778e3c70-8f83-5769-b37e-6ddc753254c5",
+            "source_excerpt": null,
+            "start_offset": null,
+            "end_offset": null
+          }
+        ]
+      },
+      {
+        "id": "66a6cd4b-7790-44f2-aa59-17a594ee1a82",
+        "analysis_run_id": "5953a489-fcad-4c84-b6ed-f162024df7ed",
+        "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+        "finding_type": "fit_result",
+        "description": "Latest FIT 10 ug/g on 2026-11-10.",
+        "status": "current",
+        "uncertainty": null,
+        "evidence": [
+          {
+            "observation_id": "778e3c70-8f83-5769-b37e-6ddc753254c5",
+            "source_excerpt": null,
+            "start_offset": null,
+            "end_offset": null
+          }
+        ]
+      },
+      {
+        "id": "6e2377c1-39d8-4e6b-95e6-55444136db5f",
+        "analysis_run_id": "5953a489-fcad-4c84-b6ed-f162024df7ed",
+        "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+        "finding_type": "documented_observation",
+        "description": "The current note states that the patient has no symptoms and has come to hear results.",
+        "status": "negated",
+        "uncertainty": null,
+        "evidence": [
+          {
+            "observation_id": "4e7f13ca-e7e9-5dda-b2d5-fc9418a5b499",
+            "source_excerpt": "Ei oireita, tullut kuulemaan tuloksia.",
+            "start_offset": null,
+            "end_offset": null
+          }
+        ]
+      },
+      {
+        "id": "e6f922de-95ab-4839-aaf2-7e003238e2e3",
+        "analysis_run_id": "5953a489-fcad-4c84-b6ed-f162024df7ed",
+        "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+        "finding_type": "investigation_completed",
+        "description": "A completed faecal immunochemical test (F-HB-FIT) is documented with a result of 10.000000 ug/g; no interpretation of the result is provided.",
+        "status": "historical",
+        "uncertainty": null,
+        "evidence": [
+          {
+            "observation_id": "778e3c70-8f83-5769-b37e-6ddc753254c5",
+            "source_excerpt": null,
+            "start_offset": null,
+            "end_offset": null
+          }
+        ]
+      }
+    ],
+    "trigger_results": [
+      {
+        "id": "01fe138d-4537-4c13-b9d7-0a7d06899113",
+        "trigger_rule_id": "efb5f89f-5734-5ba5-971a-46ec6eb464a9",
+        "rule_name": "SUO-07: Age 60+ with anaemia",
+        "rule_version": "nice-2023-demo-1",
+        "demonstration_only": true,
+        "rule_source": "NICE DG56/HTG690",
+        "rule_source_section": "1.1",
+        "priority": "review",
+        "triggered": false,
+        "explanation": "No signals identified by this demonstration rule. Missing or uncertain facts may remain.",
+        "recommended_action": null,
+        "requires_clinician_review": false,
+        "evidence_observation_ids": []
+      },
+      {
+        "id": "0a942afd-c3e0-4d11-bc87-9ef673bf82bb",
+        "trigger_rule_id": "436373e3-bf13-5f8d-a925-a9338a2f3a03",
+        "rule_name": "SUO-03: Iron-deficiency anaemia",
+        "rule_version": "nice-2023-demo-1",
+        "demonstration_only": true,
+        "rule_source": "NICE DG56/HTG690",
+        "rule_source_section": "1.1",
+        "priority": "review",
+        "triggered": false,
+        "explanation": "No signals identified by this demonstration rule. Missing or uncertain facts may remain.",
+        "recommended_action": null,
+        "requires_clinician_review": false,
+        "evidence_observation_ids": []
+      },
+      {
+        "id": "357e062d-b482-416b-a98a-55e415512922",
+        "trigger_rule_id": "970f8ff0-8a8d-5b9e-b31c-08424b6b1ddf",
+        "rule_name": "SUO-01: Abdominal mass",
+        "rule_version": "nice-2023-demo-1",
+        "demonstration_only": true,
+        "rule_source": "NICE DG56/HTG690",
+        "rule_source_section": "1.1",
+        "priority": "review",
+        "triggered": false,
+        "explanation": "No signals identified by this demonstration rule. Missing or uncertain facts may remain.",
+        "recommended_action": null,
+        "requires_clinician_review": false,
+        "evidence_observation_ids": []
+      },
+      {
+        "id": "54a95f74-7807-4f58-a0c4-25bd8d487ddb",
+        "trigger_rule_id": "44004b66-43fe-5bca-89ab-7fcd1fe48daa",
+        "rule_name": "SUO-05: Age under 50 with rectal bleeding and abdominal pain or weight loss",
+        "rule_version": "nice-2023-demo-1",
+        "demonstration_only": true,
+        "rule_source": "NICE DG56/HTG690",
+        "rule_source_section": "1.1",
+        "priority": "review",
+        "triggered": false,
+        "explanation": "No signals identified by this demonstration rule. Missing or uncertain facts may remain.",
+        "recommended_action": null,
+        "requires_clinician_review": false,
+        "evidence_observation_ids": []
+      },
+      {
+        "id": "6f0f119c-0d3d-411e-a676-1b53e448c558",
+        "trigger_rule_id": "1ada9a2a-58b2-5528-8da5-c7c0693df684",
+        "rule_name": "SUO-08: Positive FIT (10 ug/g or more)",
+        "rule_version": "nice-2023-demo-1",
+        "demonstration_only": true,
+        "rule_source": "NICE DG56/HTG690",
+        "rule_source_section": "1.2",
+        "priority": "urgent",
+        "triggered": true,
+        "explanation": "Demonstration rule matched; physician review suggested.",
+        "recommended_action": "Urgent physician review: suspected cancer pathway referral",
+        "requires_clinician_review": true,
+        "evidence_observation_ids": [
+          "778e3c70-8f83-5769-b37e-6ddc753254c5"
+        ]
+      },
+      {
+        "id": "78656694-9517-40f8-8740-20a33d7591cc",
+        "trigger_rule_id": "84c263a8-461d-5bfb-8074-6e87ece0e1dc",
+        "rule_name": "SUO-06: Age 50+ with rectal bleeding, abdominal pain or weight loss",
+        "rule_version": "nice-2023-demo-1",
+        "demonstration_only": true,
+        "rule_source": "NICE DG56/HTG690",
+        "rule_source_section": "1.1",
+        "priority": "review",
+        "triggered": false,
+        "explanation": "No signals identified by this demonstration rule. Missing or uncertain facts may remain.",
+        "recommended_action": null,
+        "requires_clinician_review": false,
+        "evidence_observation_ids": []
+      },
+      {
+        "id": "81c75a43-5771-4b53-ad8c-ef6ef3f4fd6d",
+        "trigger_rule_id": "f1cb0638-f71f-5bdc-88ca-5a72ed93918b",
+        "rule_name": "SUO-10: Negative FIT with ongoing symptoms",
+        "rule_version": "nice-2023-demo-1",
+        "demonstration_only": true,
+        "rule_source": "NICE DG56/HTG690",
+        "rule_source_section": "1.3–1.4",
+        "priority": "review",
+        "triggered": false,
+        "explanation": "No signals identified by this demonstration rule. Missing or uncertain facts may remain.",
+        "recommended_action": null,
+        "requires_clinician_review": false,
+        "evidence_observation_ids": []
+      },
+      {
+        "id": "9682423a-0189-4b1c-ab5e-31bd1f14cbe0",
+        "trigger_rule_id": "e2d1e461-ef77-551c-90f3-793a1f32320e",
+        "rule_name": "SUO-04: Age 40+ with weight loss and abdominal pain",
+        "rule_version": "nice-2023-demo-1",
+        "demonstration_only": true,
+        "rule_source": "NICE DG56/HTG690",
+        "rule_source_section": "1.1",
+        "priority": "review",
+        "triggered": false,
+        "explanation": "No signals identified by this demonstration rule. Missing or uncertain facts may remain.",
+        "recommended_action": null,
+        "requires_clinician_review": false,
+        "evidence_observation_ids": []
+      },
+      {
+        "id": "c3a6185f-e936-4ad2-8ba3-8c58f7aee60a",
+        "trigger_rule_id": "b1549098-b0be-50e2-8322-cf5c336694d7",
+        "rule_name": "SUO-09: Rectal mass",
+        "rule_version": "nice-2023-demo-1",
+        "demonstration_only": true,
+        "rule_source": "NICE NG12",
+        "rule_source_section": "1.3",
+        "priority": "urgent",
+        "triggered": false,
+        "explanation": "No signals identified by this demonstration rule. Missing or uncertain facts may remain.",
+        "recommended_action": null,
+        "requires_clinician_review": false,
+        "evidence_observation_ids": []
+      },
+      {
+        "id": "ec69bc55-cb9f-4fd1-88a4-f2d28a700972",
+        "trigger_rule_id": "b66bf4c1-c9d1-597d-a595-3d01a173b297",
+        "rule_name": "SUO-02: Change in bowel habit",
+        "rule_version": "nice-2023-demo-1",
+        "demonstration_only": true,
+        "rule_source": "NICE DG56/HTG690",
+        "rule_source_section": "1.1",
+        "priority": "review",
+        "triggered": false,
+        "explanation": "No signals identified by this demonstration rule. Missing or uncertain facts may remain.",
+        "recommended_action": null,
+        "requires_clinician_review": false,
+        "evidence_observation_ids": []
+      }
+    ],
+    "predictions": [
+      {
+        "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+        "model_name": "QCancer-2013",
+        "model_version": "QCancer-2013-open-source",
+        "as_of": "2026-11-14T09:00:00Z",
+        "prediction_type": "current_undiagnosed_cancer_risk",
+        "value": {
+          "status": "insufficient_data",
+          "population": "UK primary care; model ages 25–89",
+          "limitations": [
+            "QCancer-2013 was developed for UK primary care; it has not been calibrated or clinically validated for Finland.",
+            "The Junction synthetic demo uses Townsend score 0 as a placeholder, not a Finnish deprivation score.",
+            "This is a prototype estimate, not a diagnosis, referral decision, or Finnish clinical recommendation."
+          ],
+          "horizon_years": 2,
+          "source_notice": "The initial version of this file, to be found at http://svn.clinrisk.co.uk/opensource/qcancer, faithfully implements QCancer-2013. We have released this code under the GNU Affero General Public License to enable others to implement the algorithm faithfully. However, the nature of the GNU Affero Public License is such that we cannot prevent, for example, someone accidentally altering the coefficients, getting the inputs wrong, or just poor programming. We stress, therefore, that it is the responsibility of the end user to check that the source that they receive produces the same results as the original code posted at http://svn.clinrisk.co.uk/opensource/qcancer. Inaccurate implementations of risk scores can lead to wrong patients being given the wrong treatment.",
+          "invalid_inputs": [],
+          "missing_inputs": [
+            "bmi",
+            "alcohol_cat4",
+            "smoke_cat",
+            "binary_factors.b_chronicpan",
+            "binary_factors.b_copd",
+            "binary_factors.b_endometrial",
+            "binary_factors.b_type2",
+            "binary_factors.c_hb",
+            "binary_factors.fh_breastcancer",
+            "binary_factors.fh_gicancer",
+            "binary_factors.fh_ovariancancer",
+            "binary_factors.new_abdodist",
+            "binary_factors.new_abdopain",
+            "binary_factors.new_appetiteloss",
+            "binary_factors.new_breastlump",
+            "binary_factors.new_breastpain",
+            "binary_factors.new_breastskin",
+            "binary_factors.new_dysphagia",
+            "binary_factors.new_gibleed",
+            "binary_factors.new_haematuria",
+            "binary_factors.new_haemoptysis",
+            "binary_factors.new_heartburn",
+            "binary_factors.new_imb",
+            "binary_factors.new_indigestion",
+            "binary_factors.new_necklump",
+            "binary_factors.new_nightsweats",
+            "binary_factors.new_pmb",
+            "binary_factors.new_postcoital",
+            "binary_factors.new_rectalbleed",
+            "binary_factors.new_vte",
+            "binary_factors.new_weightloss",
+            "binary_factors.s1_bowelchange",
+            "binary_factors.s1_bruising",
+            "binary_factors.s1_constipation",
+            "binary_factors.s1_cough"
+          ],
+          "any_cancer_risk_percent": null,
+          "cancer_site_risks_percent": null,
+          "colorectal_cancer_risk_percent": null
+        },
+        "evidence_observation_ids": [],
+        "uncertainty": "QCancer-2013 did not calculate a risk because required inputs are missing: bmi, alcohol_cat4, smoke_cat, binary_factors.b_chronicpan, binary_factors.b_copd, binary_factors.b_endometrial, binary_factors.b_type2, binary_factors.c_hb, binary_factors.fh_breastcancer, binary_factors.fh_gicancer, binary_factors.fh_ovariancancer, binary_factors.new_abdodist, binary_factors.new_abdopain, binary_factors.new_appetiteloss, binary_factors.new_breastlump, binary_factors.new_breastpain, binary_factors.new_breastskin, binary_factors.new_dysphagia, binary_factors.new_gibleed, binary_factors.new_haematuria, binary_factors.new_haemoptysis, binary_factors.new_heartburn, binary_factors.new_imb, binary_factors.new_indigestion, binary_factors.new_necklump, binary_factors.new_nightsweats, binary_factors.new_pmb, binary_factors.new_postcoital, binary_factors.new_rectalbleed, binary_factors.new_vte, binary_factors.new_weightloss, binary_factors.s1_bowelchange, binary_factors.s1_bruising, binary_factors.s1_constipation, binary_factors.s1_cough"
+      }
+    ],
+    "source_observations": [
+      {
+        "id": "778e3c70-8f83-5769-b37e-6ddc753254c5",
+        "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+        "encounter_id": null,
+        "observation_type": "laboratory",
+        "code": "F-HB-FIT",
+        "text": null,
+        "numeric_value": "10.000000",
+        "unit": "ug/g",
+        "status": "completed",
+        "observed_at": "2026-11-10T08:00:00Z",
+        "recorded_at": "2026-11-10T08:00:00Z"
+      },
+      {
+        "id": "4e7f13ca-e7e9-5dda-b2d5-fc9418a5b499",
+        "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+        "encounter_id": null,
+        "observation_type": "clinical_note",
+        "code": null,
+        "text": "Ei oireita, tullut kuulemaan tuloksia.",
+        "numeric_value": null,
+        "unit": null,
+        "status": null,
+        "observed_at": "2026-11-14T09:00:00Z",
+        "recorded_at": "2026-11-14T09:00:00Z"
+      }
+    ],
+    "explanation": "Demonstration rules suggest physician review. This is not a diagnosis or referral decision.",
+    "provenance": {
+      "input_observation_id": "4e7f13ca-e7e9-5dda-b2d5-fc9418a5b499",
+      "cutoff": "2026-11-14T09:00:00Z",
+      "context_observation_ids": [
+        "778e3c70-8f83-5769-b37e-6ddc753254c5"
+      ],
+      "retrieval_method": "patient-history-lexical-v1",
+      "extraction_method": "structured-source-demo-v1+clinical-extraction-2",
+      "rule_snapshots": {
+        "1ada9a2a-58b2-5528-8da5-c7c0693df684": {
+          "name": "SUO-08: Positive FIT (10 ug/g or more)",
+          "version": "nice-2023-demo-1",
+          "source": "NICE DG56/HTG690",
+          "source_section": "1.2",
+          "recommended_action": "Urgent physician review: suspected cancer pathway referral",
+          "demonstration_only": true,
+          "priority": "urgent"
+        },
+        "436373e3-bf13-5f8d-a925-a9338a2f3a03": {
+          "name": "SUO-03: Iron-deficiency anaemia",
+          "version": "nice-2023-demo-1",
+          "source": "NICE DG56/HTG690",
+          "source_section": "1.1",
+          "recommended_action": "Physician review: consider FIT",
+          "demonstration_only": true,
+          "priority": "review"
+        },
+        "44004b66-43fe-5bca-89ab-7fcd1fe48daa": {
+          "name": "SUO-05: Age under 50 with rectal bleeding and abdominal pain or weight loss",
+          "version": "nice-2023-demo-1",
+          "source": "NICE DG56/HTG690",
+          "source_section": "1.1",
+          "recommended_action": "Physician review: consider FIT",
+          "demonstration_only": true,
+          "priority": "review"
+        },
+        "84c263a8-461d-5bfb-8074-6e87ece0e1dc": {
+          "name": "SUO-06: Age 50+ with rectal bleeding, abdominal pain or weight loss",
+          "version": "nice-2023-demo-1",
+          "source": "NICE DG56/HTG690",
+          "source_section": "1.1",
+          "recommended_action": "Physician review: consider FIT",
+          "demonstration_only": true,
+          "priority": "review"
+        },
+        "970f8ff0-8a8d-5b9e-b31c-08424b6b1ddf": {
+          "name": "SUO-01: Abdominal mass",
+          "version": "nice-2023-demo-1",
+          "source": "NICE DG56/HTG690",
+          "source_section": "1.1",
+          "recommended_action": "Physician review: consider FIT",
+          "demonstration_only": true,
+          "priority": "review"
+        },
+        "b1549098-b0be-50e2-8322-cf5c336694d7": {
+          "name": "SUO-09: Rectal mass",
+          "version": "nice-2023-demo-1",
+          "source": "NICE NG12",
+          "source_section": "1.3",
+          "recommended_action": "Urgent physician review: consider suspected cancer referral without FIT",
+          "demonstration_only": true,
+          "priority": "urgent"
+        },
+        "b66bf4c1-c9d1-597d-a595-3d01a173b297": {
+          "name": "SUO-02: Change in bowel habit",
+          "version": "nice-2023-demo-1",
+          "source": "NICE DG56/HTG690",
+          "source_section": "1.1",
+          "recommended_action": "Physician review: consider FIT",
+          "demonstration_only": true,
+          "priority": "review"
+        },
+        "e2d1e461-ef77-551c-90f3-793a1f32320e": {
+          "name": "SUO-04: Age 40+ with weight loss and abdominal pain",
+          "version": "nice-2023-demo-1",
+          "source": "NICE DG56/HTG690",
+          "source_section": "1.1",
+          "recommended_action": "Physician review: consider FIT",
+          "demonstration_only": true,
+          "priority": "review"
+        },
+        "efb5f89f-5734-5ba5-971a-46ec6eb464a9": {
+          "name": "SUO-07: Age 60+ with anaemia",
+          "version": "nice-2023-demo-1",
+          "source": "NICE DG56/HTG690",
+          "source_section": "1.1",
+          "recommended_action": "Physician review: consider FIT",
+          "demonstration_only": true,
+          "priority": "review"
+        },
+        "f1cb0638-f71f-5bdc-88ca-5a72ed93918b": {
+          "name": "SUO-10: Negative FIT with ongoing symptoms",
+          "version": "nice-2023-demo-1",
+          "source": "NICE DG56/HTG690",
+          "source_section": "1.3–1.4",
+          "recommended_action": "Physician review: safety netting, consider further investigation",
+          "demonstration_only": true,
+          "priority": "review"
+        }
+      },
+      "missing_information": [
+        "Demonstration output is not a diagnosis or clinically validated risk assessment.",
+        "Individual bowel, rectal bleeding, abdominal pain, weight loss, and mass symptoms are not separately documented; only a general statement of no symptoms is available.",
+        "Source IDs, quotes, offsets and patient/time scope validated; clinical interpretation and completeness require review. (clinical_interpretation_not_verified)",
+        "No haemoglobin result before this note."
+      ],
+      "patient_facts": {
+        "age_years": 66
+      },
+      "predictions": [
+        {
+          "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+          "model_name": "QCancer-2013",
+          "model_version": "QCancer-2013-open-source",
+          "as_of": "2026-11-14T09:00:00Z",
+          "prediction_type": "current_undiagnosed_cancer_risk",
+          "value": {
+            "status": "insufficient_data",
+            "population": "UK primary care; model ages 25–89",
+            "limitations": [
+              "QCancer-2013 was developed for UK primary care; it has not been calibrated or clinically validated for Finland.",
+              "The Junction synthetic demo uses Townsend score 0 as a placeholder, not a Finnish deprivation score.",
+              "This is a prototype estimate, not a diagnosis, referral decision, or Finnish clinical recommendation."
+            ],
+            "horizon_years": 2,
+            "source_notice": "The initial version of this file, to be found at http://svn.clinrisk.co.uk/opensource/qcancer, faithfully implements QCancer-2013. We have released this code under the GNU Affero General Public License to enable others to implement the algorithm faithfully. However, the nature of the GNU Affero Public License is such that we cannot prevent, for example, someone accidentally altering the coefficients, getting the inputs wrong, or just poor programming. We stress, therefore, that it is the responsibility of the end user to check that the source that they receive produces the same results as the original code posted at http://svn.clinrisk.co.uk/opensource/qcancer. Inaccurate implementations of risk scores can lead to wrong patients being given the wrong treatment.",
+            "invalid_inputs": [],
+            "missing_inputs": [
+              "bmi",
+              "alcohol_cat4",
+              "smoke_cat",
+              "binary_factors.b_chronicpan",
+              "binary_factors.b_copd",
+              "binary_factors.b_endometrial",
+              "binary_factors.b_type2",
+              "binary_factors.c_hb",
+              "binary_factors.fh_breastcancer",
+              "binary_factors.fh_gicancer",
+              "binary_factors.fh_ovariancancer",
+              "binary_factors.new_abdodist",
+              "binary_factors.new_abdopain",
+              "binary_factors.new_appetiteloss",
+              "binary_factors.new_breastlump",
+              "binary_factors.new_breastpain",
+              "binary_factors.new_breastskin",
+              "binary_factors.new_dysphagia",
+              "binary_factors.new_gibleed",
+              "binary_factors.new_haematuria",
+              "binary_factors.new_haemoptysis",
+              "binary_factors.new_heartburn",
+              "binary_factors.new_imb",
+              "binary_factors.new_indigestion",
+              "binary_factors.new_necklump",
+              "binary_factors.new_nightsweats",
+              "binary_factors.new_pmb",
+              "binary_factors.new_postcoital",
+              "binary_factors.new_rectalbleed",
+              "binary_factors.new_vte",
+              "binary_factors.new_weightloss",
+              "binary_factors.s1_bowelchange",
+              "binary_factors.s1_bruising",
+              "binary_factors.s1_constipation",
+              "binary_factors.s1_cough"
+            ],
+            "any_cancer_risk_percent": null,
+            "cancer_site_risks_percent": null,
+            "colorectal_cancer_risk_percent": null
+          },
+          "evidence_observation_ids": [],
+          "uncertainty": "QCancer-2013 did not calculate a risk because required inputs are missing: bmi, alcohol_cat4, smoke_cat, binary_factors.b_chronicpan, binary_factors.b_copd, binary_factors.b_endometrial, binary_factors.b_type2, binary_factors.c_hb, binary_factors.fh_breastcancer, binary_factors.fh_gicancer, binary_factors.fh_ovariancancer, binary_factors.new_abdodist, binary_factors.new_abdopain, binary_factors.new_appetiteloss, binary_factors.new_breastlump, binary_factors.new_breastpain, binary_factors.new_breastskin, binary_factors.new_dysphagia, binary_factors.new_gibleed, binary_factors.new_haematuria, binary_factors.new_haemoptysis, binary_factors.new_heartburn, binary_factors.new_imb, binary_factors.new_indigestion, binary_factors.new_necklump, binary_factors.new_nightsweats, binary_factors.new_pmb, binary_factors.new_postcoital, binary_factors.new_rectalbleed, binary_factors.new_vte, binary_factors.new_weightloss, binary_factors.s1_bowelchange, binary_factors.s1_bruising, binary_factors.s1_constipation, binary_factors.s1_cough"
+        }
+      ],
+      "error_code": null
+    }
+  },
+  "response_sha256": "034e88e10c2ef1c1e1f53686926e9f50e75f1ce7d9e3dbcf40233c4f6a42993a",
+  "recommendation": {
+    "review_signal": true,
+    "urgency": "urgent",
+    "recommended_actions": [
+      "Urgent physician review: suspected cancer pathway referral"
+    ],
+    "matched_rule_ids": [
+      "1ada9a2a-58b2-5528-8da5-c7c0693df684"
+    ],
+    "model_predictions": [
+      {
+        "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+        "model_name": "QCancer-2013",
+        "model_version": "QCancer-2013-open-source",
+        "as_of": "2026-11-14T09:00:00Z",
+        "prediction_type": "current_undiagnosed_cancer_risk",
+        "value": {
+          "status": "insufficient_data",
+          "population": "UK primary care; model ages 25–89",
+          "limitations": [
+            "QCancer-2013 was developed for UK primary care; it has not been calibrated or clinically validated for Finland.",
+            "The Junction synthetic demo uses Townsend score 0 as a placeholder, not a Finnish deprivation score.",
+            "This is a prototype estimate, not a diagnosis, referral decision, or Finnish clinical recommendation."
+          ],
+          "horizon_years": 2,
+          "source_notice": "The initial version of this file, to be found at http://svn.clinrisk.co.uk/opensource/qcancer, faithfully implements QCancer-2013. We have released this code under the GNU Affero General Public License to enable others to implement the algorithm faithfully. However, the nature of the GNU Affero Public License is such that we cannot prevent, for example, someone accidentally altering the coefficients, getting the inputs wrong, or just poor programming. We stress, therefore, that it is the responsibility of the end user to check that the source that they receive produces the same results as the original code posted at http://svn.clinrisk.co.uk/opensource/qcancer. Inaccurate implementations of risk scores can lead to wrong patients being given the wrong treatment.",
+          "invalid_inputs": [],
+          "missing_inputs": [
+            "bmi",
+            "alcohol_cat4",
+            "smoke_cat",
+            "binary_factors.b_chronicpan",
+            "binary_factors.b_copd",
+            "binary_factors.b_endometrial",
+            "binary_factors.b_type2",
+            "binary_factors.c_hb",
+            "binary_factors.fh_breastcancer",
+            "binary_factors.fh_gicancer",
+            "binary_factors.fh_ovariancancer",
+            "binary_factors.new_abdodist",
+            "binary_factors.new_abdopain",
+            "binary_factors.new_appetiteloss",
+            "binary_factors.new_breastlump",
+            "binary_factors.new_breastpain",
+            "binary_factors.new_breastskin",
+            "binary_factors.new_dysphagia",
+            "binary_factors.new_gibleed",
+            "binary_factors.new_haematuria",
+            "binary_factors.new_haemoptysis",
+            "binary_factors.new_heartburn",
+            "binary_factors.new_imb",
+            "binary_factors.new_indigestion",
+            "binary_factors.new_necklump",
+            "binary_factors.new_nightsweats",
+            "binary_factors.new_pmb",
+            "binary_factors.new_postcoital",
+            "binary_factors.new_rectalbleed",
+            "binary_factors.new_vte",
+            "binary_factors.new_weightloss",
+            "binary_factors.s1_bowelchange",
+            "binary_factors.s1_bruising",
+            "binary_factors.s1_constipation",
+            "binary_factors.s1_cough"
+          ],
+          "any_cancer_risk_percent": null,
+          "cancer_site_risks_percent": null,
+          "colorectal_cancer_risk_percent": null
+        },
+        "evidence_observation_ids": [],
+        "uncertainty": "QCancer-2013 did not calculate a risk because required inputs are missing: bmi, alcohol_cat4, smoke_cat, binary_factors.b_chronicpan, binary_factors.b_copd, binary_factors.b_endometrial, binary_factors.b_type2, binary_factors.c_hb, binary_factors.fh_breastcancer, binary_factors.fh_gicancer, binary_factors.fh_ovariancancer, binary_factors.new_abdodist, binary_factors.new_abdopain, binary_factors.new_appetiteloss, binary_factors.new_breastlump, binary_factors.new_breastpain, binary_factors.new_breastskin, binary_factors.new_dysphagia, binary_factors.new_gibleed, binary_factors.new_haematuria, binary_factors.new_haemoptysis, binary_factors.new_heartburn, binary_factors.new_imb, binary_factors.new_indigestion, binary_factors.new_necklump, binary_factors.new_nightsweats, binary_factors.new_pmb, binary_factors.new_postcoital, binary_factors.new_rectalbleed, binary_factors.new_vte, binary_factors.new_weightloss, binary_factors.s1_bowelchange, binary_factors.s1_bruising, binary_factors.s1_constipation, binary_factors.s1_cough"
+      }
+    ],
+    "missing_information": [
+      "Demonstration output is not a diagnosis or clinically validated risk assessment.",
+      "Individual bowel, rectal bleeding, abdominal pain, weight loss, and mass symptoms are not separately documented; only a general statement of no symptoms is available.",
+      "Source IDs, quotes, offsets and patient/time scope validated; clinical interpretation and completeness require review. (clinical_interpretation_not_verified)",
+      "No haemoglobin result before this note."
+    ]
+  },
+  "explanation": {
+    "contract_version": "1.0",
+    "language": "fi",
+    "input_format": "api_v1",
+    "analysis_id": "5953a489-fcad-4c84-b6ed-f162024df7ed",
+    "patient_id": "a6c0f65e-7aaf-586f-95b4-fe5fb4918898",
+    "as_of": "2026-11-14T09:00:00Z",
+    "input_digest": "c315e90800470986b89e84332cf08e92df2ff19bcb302d4db1f549773281f4e6",
+    "mode": "fallback",
+    "summary_fi": "Tallennetuissa sääntötuloksissa on ammattilaisen arvioitavaksi merkittyjä signaaleja.",
+    "findings": [
+      {
+        "key": "finding:31dbe295-7699-40d6-8802-b0380d160714",
+        "kind": "finding",
+        "text_fi": "Muu rakenteiseen analyysiin kirjattu havainto: kirjattu esiintyväksi, aiempi.",
+        "observation_ids": [
+          "778e3c70-8f83-5769-b37e-6ddc753254c5"
+        ],
+        "quantities": [],
+        "finding_ids": [
+          "31dbe295-7699-40d6-8802-b0380d160714"
+        ],
+        "feature_ids": [],
+        "prediction_index": null,
+        "rule_reference": null,
+        "requires_clinician_review": null,
+        "source_notice": null
+      },
+      {
+        "key": "finding:66a6cd4b-7790-44f2-aa59-17a594ee1a82",
+        "kind": "finding",
+        "text_fi": "FIT-mittaustulos: kirjattu esiintyväksi, tämänhetkinen.",
+        "observation_ids": [
+          "778e3c70-8f83-5769-b37e-6ddc753254c5"
+        ],
+        "quantities": [],
+        "finding_ids": [
+          "66a6cd4b-7790-44f2-aa59-17a594ee1a82"
+        ],
+        "feature_ids": [],
+        "prediction_index": null,
+        "rule_reference": null,
+        "requires_clinician_review": null,
+        "source_notice": null
+      },
+      {
+        "key": "finding:6e2377c1-39d8-4e6b-95e6-55444136db5f",
+        "kind": "finding",
+        "text_fi": "Kirjattu havainto: kirjattu puuttuvaksi, tämänhetkinen.",
+        "observation_ids": [
+          "4e7f13ca-e7e9-5dda-b2d5-fc9418a5b499"
+        ],
+        "quantities": [],
+        "finding_ids": [
+          "6e2377c1-39d8-4e6b-95e6-55444136db5f"
+        ],
+        "feature_ids": [],
+        "prediction_index": null,
+        "rule_reference": null,
+        "requires_clinician_review": null,
+        "source_notice": null
+      },
+      {
+        "key": "finding:e6f922de-95ab-4839-aaf2-7e003238e2e3",
+        "kind": "finding",
+        "text_fi": "Tehty tutkimus: kirjattu esiintyväksi, aiempi.",
+        "observation_ids": [
+          "778e3c70-8f83-5769-b37e-6ddc753254c5"
+        ],
+        "quantities": [],
+        "finding_ids": [
+          "e6f922de-95ab-4839-aaf2-7e003238e2e3"
+        ],
+        "feature_ids": [],
+        "prediction_index": null,
+        "rule_reference": null,
+        "requires_clinician_review": null,
+        "source_notice": null
+      }
+    ],
+    "mathematical_outputs": [
+      {
+        "key": "measurement:778e3c70-8f83-5769-b37e-6ddc753254c5",
+        "kind": "measurement",
+        "text_fi": "FIT-mittaustulos: 10,000000 ug/g.",
+        "observation_ids": [
+          "778e3c70-8f83-5769-b37e-6ddc753254c5"
+        ],
+        "quantities": [
+          {
+            "slot": "numeric_value",
+            "value": "10.000000",
+            "unit": "ug/g"
+          }
+        ],
+        "finding_ids": [],
+        "feature_ids": [],
+        "prediction_index": null,
+        "rule_reference": null,
+        "requires_clinician_review": null,
+        "source_notice": null
+      },
+      {
+        "key": "prediction:0",
+        "kind": "prediction",
+        "text_fi": "QCancer-2013-malliarviota ei ole laskettu: tarvittavia lähtötietoja puuttuu. Puuttuvia tietoja ei tulkita kielteisiksi löydöksiksi.",
+        "observation_ids": [],
+        "quantities": [],
+        "finding_ids": [],
+        "feature_ids": [],
+        "prediction_index": 0,
+        "rule_reference": null,
+        "requires_clinician_review": null,
+        "source_notice": "The initial version of this file, to be found at http://svn.clinrisk.co.uk/opensource/qcancer, faithfully implements QCancer-2013. We have released this code under the GNU Affero General Public License to enable others to implement the algorithm faithfully. However, the nature of the GNU Affero Public License is such that we cannot prevent, for example, someone accidentally altering the coefficients, getting the inputs wrong, or just poor programming. We stress, therefore, that it is the responsibility of the end user to check that the source that they receive produces the same results as the original code posted at http://svn.clinrisk.co.uk/opensource/qcancer. Inaccurate implementations of risk scores can lead to wrong patients being given the wrong treatment."
+      }
+    ],
+    "rule_results": [
+      {
+        "key": "rule:efb5f89f-5734-5ba5-971a-46ec6eb464a9",
+        "kind": "rule",
+        "text_fi": "Tallennettu sääntö ei täyty annetuilla tiedoilla.",
+        "observation_ids": [],
+        "quantities": [],
+        "finding_ids": [],
+        "feature_ids": [],
+        "prediction_index": null,
+        "rule_reference": {
+          "trigger_rule_id": "efb5f89f-5734-5ba5-971a-46ec6eb464a9",
+          "version": "nice-2023-demo-1",
+          "source": "NICE DG56/HTG690",
+          "source_section": "1.1"
+        },
+        "requires_clinician_review": false,
+        "source_notice": null
+      },
+      {
+        "key": "rule:436373e3-bf13-5f8d-a925-a9338a2f3a03",
+        "kind": "rule",
+        "text_fi": "Tallennettu sääntö ei täyty annetuilla tiedoilla.",
+        "observation_ids": [],
+        "quantities": [],
+        "finding_ids": [],
+        "feature_ids": [],
+        "prediction_index": null,
+        "rule_reference": {
+          "trigger_rule_id": "436373e3-bf13-5f8d-a925-a9338a2f3a03",
+          "version": "nice-2023-demo-1",
+          "source": "NICE DG56/HTG690",
+          "source_section": "1.1"
+        },
+        "requires_clinician_review": false,
+        "source_notice": null
+      },
+      {
+        "key": "rule:970f8ff0-8a8d-5b9e-b31c-08424b6b1ddf",
+        "kind": "rule",
+        "text_fi": "Tallennettu sääntö ei täyty annetuilla tiedoilla.",
+        "observation_ids": [],
+        "quantities": [],
+        "finding_ids": [],
+        "feature_ids": [],
+        "prediction_index": null,
+        "rule_reference": {
+          "trigger_rule_id": "970f8ff0-8a8d-5b9e-b31c-08424b6b1ddf",
+          "version": "nice-2023-demo-1",
+          "source": "NICE DG56/HTG690",
+          "source_section": "1.1"
+        },
+        "requires_clinician_review": false,
+        "source_notice": null
+      },
+      {
+        "key": "rule:44004b66-43fe-5bca-89ab-7fcd1fe48daa",
+        "kind": "rule",
+        "text_fi": "Tallennettu sääntö ei täyty annetuilla tiedoilla.",
+        "observation_ids": [],
+        "quantities": [],
+        "finding_ids": [],
+        "feature_ids": [],
+        "prediction_index": null,
+        "rule_reference": {
+          "trigger_rule_id": "44004b66-43fe-5bca-89ab-7fcd1fe48daa",
+          "version": "nice-2023-demo-1",
+          "source": "NICE DG56/HTG690",
+          "source_section": "1.1"
+        },
+        "requires_clinician_review": false,
+        "source_notice": null
+      },
+      {
+        "key": "rule:1ada9a2a-58b2-5528-8da5-c7c0693df684",
+        "kind": "rule",
+        "text_fi": "Tallennettu sääntö täyttyy; tulos on merkitty ammattilaisen arvioitavaksi.",
+        "observation_ids": [
+          "778e3c70-8f83-5769-b37e-6ddc753254c5"
+        ],
+        "quantities": [],
+        "finding_ids": [],
+        "feature_ids": [],
+        "prediction_index": null,
+        "rule_reference": {
+          "trigger_rule_id": "1ada9a2a-58b2-5528-8da5-c7c0693df684",
+          "version": "nice-2023-demo-1",
+          "source": "NICE DG56/HTG690",
+          "source_section": "1.2"
+        },
+        "requires_clinician_review": true,
+        "source_notice": null
+      },
+      {
+        "key": "rule:84c263a8-461d-5bfb-8074-6e87ece0e1dc",
+        "kind": "rule",
+        "text_fi": "Tallennettu sääntö ei täyty annetuilla tiedoilla.",
+        "observation_ids": [],
+        "quantities": [],
+        "finding_ids": [],
+        "feature_ids": [],
+        "prediction_index": null,
+        "rule_reference": {
+          "trigger_rule_id": "84c263a8-461d-5bfb-8074-6e87ece0e1dc",
+          "version": "nice-2023-demo-1",
+          "source": "NICE DG56/HTG690",
+          "source_section": "1.1"
+        },
+        "requires_clinician_review": false,
+        "source_notice": null
+      },
+      {
+        "key": "rule:f1cb0638-f71f-5bdc-88ca-5a72ed93918b",
+        "kind": "rule",
+        "text_fi": "Tallennettu sääntö ei täyty annetuilla tiedoilla.",
+        "observation_ids": [],
+        "quantities": [],
+        "finding_ids": [],
+        "feature_ids": [],
+        "prediction_index": null,
+        "rule_reference": {
+          "trigger_rule_id": "f1cb0638-f71f-5bdc-88ca-5a72ed93918b",
+          "version": "nice-2023-demo-1",
+          "source": "NICE DG56/HTG690",
+          "source_section": "1.3–1.4"
+        },
+        "requires_clinician_review": false,
+        "source_notice": null
+      },
+      {
+        "key": "rule:e2d1e461-ef77-551c-90f3-793a1f32320e",
+        "kind": "rule",
+        "text_fi": "Tallennettu sääntö ei täyty annetuilla tiedoilla.",
+        "observation_ids": [],
+        "quantities": [],
+        "finding_ids": [],
+        "feature_ids": [],
+        "prediction_index": null,
+        "rule_reference": {
+          "trigger_rule_id": "e2d1e461-ef77-551c-90f3-793a1f32320e",
+          "version": "nice-2023-demo-1",
+          "source": "NICE DG56/HTG690",
+          "source_section": "1.1"
+        },
+        "requires_clinician_review": false,
+        "source_notice": null
+      },
+      {
+        "key": "rule:b1549098-b0be-50e2-8322-cf5c336694d7",
+        "kind": "rule",
+        "text_fi": "Tallennettu sääntö ei täyty annetuilla tiedoilla.",
+        "observation_ids": [],
+        "quantities": [],
+        "finding_ids": [],
+        "feature_ids": [],
+        "prediction_index": null,
+        "rule_reference": {
+          "trigger_rule_id": "b1549098-b0be-50e2-8322-cf5c336694d7",
+          "version": "nice-2023-demo-1",
+          "source": "NICE NG12",
+          "source_section": "1.3"
+        },
+        "requires_clinician_review": false,
+        "source_notice": null
+      },
+      {
+        "key": "rule:b66bf4c1-c9d1-597d-a595-3d01a173b297",
+        "kind": "rule",
+        "text_fi": "Tallennettu sääntö ei täyty annetuilla tiedoilla.",
+        "observation_ids": [],
+        "quantities": [],
+        "finding_ids": [],
+        "feature_ids": [],
+        "prediction_index": null,
+        "rule_reference": {
+          "trigger_rule_id": "b66bf4c1-c9d1-597d-a595-3d01a173b297",
+          "version": "nice-2023-demo-1",
+          "source": "NICE DG56/HTG690",
+          "source_section": "1.1"
+        },
+        "requires_clinician_review": false,
+        "source_notice": null
+      }
+    ],
+    "limitations": [
+      {
+        "code": "prototype",
+        "text_fi": "Selitys on prototyypin yhteenveto, ei diagnoosi eikä lähetepäätös.",
+        "observation_ids": [],
+        "related_keys": []
+      },
+      {
+        "code": "validation_scope",
+        "text_fi": "Lähdeviitteiden eheys tarkistettiin. Laskentamenetelmien tai kliinisen tulkinnan oikeellisuutta ei arvioida tässä selityskerroksessa.",
+        "observation_ids": [],
+        "related_keys": []
+      },
+      {
+        "code": "unmapped_finding",
+        "text_fi": "Havainnon yksityiskohtaista suomenkielistä nimikettä ei ole määritelty; tarkista alkuperäinen analyysi.",
+        "observation_ids": [
+          "778e3c70-8f83-5769-b37e-6ddc753254c5"
+        ],
+        "related_keys": [
+          "finding:31dbe295-7699-40d6-8802-b0380d160714"
+        ]
+      },
+      {
+        "code": "qcancer_finland_limitation",
+        "text_fi": "QCancer-2013 perustuu Ison-Britannian aineistoon. Mallia ei ole tässä prototyypissä kalibroitu tai kliinisesti validoitu Suomeen. Tarkista myös lähtömallin paikkamerkkisyötteet ja alkuperäinen vastuunrajaus.",
+        "observation_ids": [],
+        "related_keys": [
+          "prediction:0"
+        ]
+      },
+      {
+        "code": "qcancer_estimate_unavailable",
+        "text_fi": "QCancer ei ilmoita kelvollista laskettua arviota. Tarkista alkuperäiset puuttuvat tai virheelliset syötteet.",
+        "observation_ids": [],
+        "related_keys": [
+          "prediction:0"
+        ]
+      },
+      {
+        "code": "missing_information",
+        "text_fi": "Lähtöanalyysissä on puuttuvia tietoja; tarkista alkuperäinen analyysi ennen kliinistä tulkintaa.",
+        "observation_ids": [],
+        "related_keys": []
+      },
+      {
+        "code": "api_v1_features_not_exposed",
+        "text_fi": "API-vastaus ei sisällä erillisiä laskennallisia piirretietueita. Niitä ei päätellä kuvaustekstistä.",
+        "observation_ids": [],
+        "related_keys": []
+      },
+      {
+        "code": "api_v1_provenance_limited",
+        "text_fi": "API-vastaus ei yksilöi jokaisen löydöksen alkuperäistä tuottajaa tai malliversiota; sovitin ei päättele niitä.",
+        "observation_ids": [],
+        "related_keys": []
+      },
+      {
+        "code": "api_v1_trigger_links_limited",
+        "text_fi": "API ilmoittaa sääntötulosten lähteet, mutta ei suoria löydös- tai piirretunnisteita. Näitä yhteyksiä ei päätellä.",
+        "observation_ids": [],
+        "related_keys": []
+      },
+      {
+        "code": "api_v1_boolean_rule_outcomes",
+        "text_fi": "API kuvaa sääntötulokset totuusarvoina; erillistä epävarmaa sääntötilaa ei ole saatavilla.",
+        "observation_ids": [],
+        "related_keys": []
+      }
+    ],
+    "provenance": {
+      "name": "clinical-explanation-fi",
+      "version": "1.0",
+      "method": "deterministic",
+      "provider": null,
+      "model": null,
+      "prompt_version": "fi-explanation-plan-1",
+      "configuration_digest": null
+    },
+    "attempted_provider": null,
+    "issues": [
+      {
+        "code": "offline_fallback",
+        "message": "Selitys muodostettiin ilman LLM-kutsua.",
+        "component": "clinical-explanation",
+        "severity": "warning"
+      }
+    ],
+    "reference_integrity": "validated",
+    "numerical_consistency": "exact_input_copy",
+    "calculation_correctness": "not_assessed",
+    "clinical_validity": "not_assessed"
+  }
+}

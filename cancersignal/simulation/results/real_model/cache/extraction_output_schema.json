@@ -1,0 +1,436 @@
+{
+  "$defs": {
+    "ExtractedFinding": {
+      "additionalProperties": false,
+      "properties": {
+        "finding_type": {
+          "enum": [
+            "abdominal_mass",
+            "abdominal_pain",
+            "change_in_bowel_habit",
+            "documented_observation",
+            "follow_up",
+            "investigation_completed",
+            "investigation_planned",
+            "investigation_status_unknown",
+            "rectal_bleeding",
+            "rectal_mass",
+            "weight_loss"
+          ],
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Finding Type",
+          "type": "string"
+        },
+        "description": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Description",
+          "type": "string"
+        },
+        "polarity": {
+          "enum": [
+            "present",
+            "absent",
+            "uncertain"
+          ],
+          "title": "Polarity",
+          "type": "string"
+        },
+        "temporal_status": {
+          "enum": [
+            "current",
+            "historical",
+            "resolved",
+            "unknown"
+          ],
+          "title": "Temporal Status",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/SourceReference"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Evidence",
+          "type": "array"
+        },
+        "uncertainty": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Uncertainty"
+        },
+        "missing_information": {
+          "items": {
+            "$ref": "#/$defs/MissingInformation"
+          },
+          "title": "Missing Information",
+          "type": "array"
+        }
+      },
+      "required": [
+        "finding_type",
+        "description",
+        "polarity",
+        "temporal_status",
+        "evidence",
+        "uncertainty",
+        "missing_information"
+      ],
+      "title": "ExtractedFinding",
+      "type": "object"
+    },
+    "MissingInformation": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Code",
+          "type": "string"
+        },
+        "description": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Description",
+          "type": "string"
+        },
+        "observation_ids": {
+          "items": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "title": "Observation Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "code",
+        "description",
+        "observation_ids"
+      ],
+      "title": "MissingInformation",
+      "type": "object"
+    },
+    "QCancerBinaryInput": {
+      "additionalProperties": false,
+      "properties": {
+        "factor": {
+          "$ref": "#/$defs/QCancerFactorName"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/SourceReference"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "uncertainty": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Uncertainty"
+        }
+      },
+      "required": [
+        "factor",
+        "value",
+        "evidence",
+        "uncertainty"
+      ],
+      "title": "QCancerBinaryInput",
+      "type": "object"
+    },
+    "QCancerFactorName": {
+      "enum": [
+        "b_chronicpan",
+        "b_copd",
+        "b_endometrial",
+        "b_type2",
+        "fh_breastcancer",
+        "fh_gicancer",
+        "fh_ovariancancer",
+        "fh_prostatecancer",
+        "new_abdodist",
+        "new_abdopain",
+        "new_appetiteloss",
+        "new_breastlump",
+        "new_breastpain",
+        "new_breastskin",
+        "new_dysphagia",
+        "new_gibleed",
+        "new_haematuria",
+        "new_haemoptysis",
+        "new_heartburn",
+        "new_imb",
+        "new_indigestion",
+        "new_necklump",
+        "new_nightsweats",
+        "new_pmb",
+        "new_postcoital",
+        "new_rectalbleed",
+        "new_testespain",
+        "new_testicularlump",
+        "new_vte",
+        "new_weightloss",
+        "s1_bowelchange",
+        "s1_bruising",
+        "s1_constipation",
+        "s1_cough",
+        "s1_impotence",
+        "s1_nocturia",
+        "s1_urinaryfreq",
+        "s1_urinaryretention"
+      ],
+      "title": "QCancerFactorName",
+      "type": "string"
+    },
+    "QCancerNumber": {
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/SourceReference"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "uncertainty": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Uncertainty"
+        }
+      },
+      "title": "QCancerNumber",
+      "type": "object",
+      "required": [
+        "value",
+        "evidence",
+        "uncertainty"
+      ]
+    },
+    "QCancerPredictors": {
+      "additionalProperties": false,
+      "description": "LLM-extracted values; absent keys or null values remain unknown.",
+      "properties": {
+        "bmi": {
+          "$ref": "#/$defs/QCancerNumber"
+        },
+        "height_cm": {
+          "$ref": "#/$defs/QCancerNumber"
+        },
+        "weight_kg": {
+          "$ref": "#/$defs/QCancerNumber"
+        },
+        "smoking": {
+          "$ref": "#/$defs/QCancerSmokingInput"
+        },
+        "alcohol_uk_units_per_day": {
+          "$ref": "#/$defs/QCancerNumber"
+        },
+        "binary_factors": {
+          "items": {
+            "$ref": "#/$defs/QCancerBinaryInput"
+          },
+          "title": "Binary Factors",
+          "type": "array"
+        }
+      },
+      "title": "QCancerPredictors",
+      "type": "object",
+      "required": [
+        "bmi",
+        "height_cm",
+        "weight_kg",
+        "smoking",
+        "alcohol_uk_units_per_day",
+        "binary_factors"
+      ]
+    },
+    "QCancerSmokingInput": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "anyOf": [
+            {
+              "enum": [
+                "never",
+                "former",
+                "current"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Status"
+        },
+        "cigarettes_per_day": {
+          "$ref": "#/$defs/QCancerNumber"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/SourceReference"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "uncertainty": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Uncertainty"
+        }
+      },
+      "title": "QCancerSmokingInput",
+      "type": "object",
+      "required": [
+        "status",
+        "cigarettes_per_day",
+        "evidence",
+        "uncertainty"
+      ]
+    },
+    "SourceReference": {
+      "additionalProperties": false,
+      "description": "Immutable internal reference with the same fields as public evidence.",
+      "properties": {
+        "observation_id": {
+          "format": "uuid",
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "source_excerpt": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Source Excerpt"
+        },
+        "start_offset": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Start Offset"
+        },
+        "end_offset": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "End Offset"
+        }
+      },
+      "required": [
+        "observation_id",
+        "source_excerpt",
+        "start_offset",
+        "end_offset"
+      ],
+      "title": "SourceReference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "findings": {
+      "items": {
+        "$ref": "#/$defs/ExtractedFinding"
+      },
+      "maxItems": 64,
+      "title": "Findings",
+      "type": "array"
+    },
+    "missing_information": {
+      "items": {
+        "$ref": "#/$defs/MissingInformation"
+      },
+      "title": "Missing Information",
+      "type": "array"
+    },
+    "qcancer_predictors": {
+      "$ref": "#/$defs/QCancerPredictors"
+    }
+  },
+  "required": [
+    "findings",
+    "missing_information",
+    "qcancer_predictors"
+  ],
+  "title": "ExtractionOutput",
+  "type": "object"
+}

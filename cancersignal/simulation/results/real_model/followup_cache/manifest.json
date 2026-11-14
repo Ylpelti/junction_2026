@@ -1,0 +1,36 @@
+{
+  "schema_version": "real-model-cache-1",
+  "pipeline_sha256": "d93db13173a7c74323ceea84ac77fe891064232082cbb5e576404ae490bf6d0b",
+  "producer": {
+    "kind": "cancersignal.create_analysis",
+    "extraction": {
+      "name": "clinical-extraction",
+      "version": "1.0",
+      "method": "llm",
+      "provider": "verda",
+      "model": "kimi-k3-1-pro",
+      "prompt_version": "clinical-extraction-2",
+      "configuration_digest": "46997158cbbe17e2c10cce7535eb0be3c683affa8f929b53f8c46bbfaf6108d9"
+    },
+    "inference_settings": {
+      "provider": "verda",
+      "model": "kimi-k3-1-pro",
+      "base_url": null,
+      "response_format": "json_object",
+      "reasoning_effort": "low",
+      "max_output_tokens": 8192,
+      "context_window_tokens": null,
+      "max_input_bytes": 60000,
+      "timeout_seconds": 55.0,
+      "max_response_bytes": 1000000
+    },
+    "retrieval": "app.rag.retrieval.retrieve_context: complete eligible history with lexical ranking; not hybrid RAG",
+    "explanation": "existing deterministic ExplanationEngine (no separate explanation LLM call)",
+    "mapping": "triggered AND requires_clinician_review; QCancer does not control routing"
+  },
+  "entries": {
+    "e886dd20-4560-50fb-86d0-00fddc0b8d04:initial": "489b3f3b0bf7e94e97d25907cf817281a6f63de0d1ff6a9aea976052b903f914.json",
+    "e886dd20-4560-50fb-86d0-00fddc0b8d04:followup": "99413d598447b778bca2aabdef0946fa69e402bba158fb8075bbecb6287cd0b1.json"
+  },
+  "failures": []
+}
