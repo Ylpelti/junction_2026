@@ -1,74 +1,61 @@
-# CancerSignal
+# CancerSignal — application guide
 
-AstraZeneca Cancer Care Challenge · Junction 2026
+CancerSignal helps nurses identify overlooked colorectal cancer signals in synthetic patient histories and submit evidence-backed findings for physician review. Built for **Junction 2026 · AstraZeneca’s Equitable and Effective Cancer Care in Finland challenge**.
 
-CancerSignal is a planned AI-assisted tool for nurses and healthcare professionals.
-It will combine new clinical notes with relevant patient history through
-patient-specific retrieval-augmented generation (RAG), highlighting possible
-cancer-related risk signals with references to original records for physician review.
-
-This repository currently contains a Next.js nurse dashboard and physician queue,
-a FastAPI API, a PostgreSQL/pgvector backend foundation, relational patient/evidence
-models, a small synthetic seed dataset, and database-backed patient and analysis
-APIs. Analysis uses the existing [RAG engine](backend/app/rag/README.md) with
-configurable complete/lexical/hybrid retrieval, an independent complete laboratory
-history branch, a structured-source demo extractor or optional LLM extraction,
-and sourced demonstration rules. QCancer-2013 predictions remain separate from
-rule-based alerts and preserve unknown inputs. These are synthetic prototype
-outputs, not a Finnish-validated risk assessment. See the
-[retrieval configuration and execution commands](docs/rag-analysis-integration.md),
-[the API contract](docs/contracts.md)
-and [the data model](docs/data-model.md).
-
-Independent RAG, extraction and mathematical components can use the
-[shared pipeline contracts](backend/app/contracts/README.md), including pure
-evidence validation and synthetic JSON examples. These handoffs do not change API v1.
-
-## Structure
-
-```text
-cancersignal/
-├── AGENTS.md       # Project context and development principles
-├── README.md
-├── .gitignore
-├── .env.example    # Local database settings (copy to .env)
-├── docker-compose.yml # PostgreSQL 16 with pgvector
-├── frontend/       # Next.js App Router + TypeScript
-├── backend/
-│   ├── app/
-│   │   ├── api/    # HTTP routes (health only)
-│   │   ├── core/   # Environment-based settings
-│   │   ├── db/     # SQLAlchemy sessions, connectivity check, extension init
-│   │   ├── models/ # Relational records and enums
-│   │   ├── schemas/ # Pydantic create/read contracts
-│   │   ├── services/ # Database-backed use cases and analysis orchestration
-│   │   ├── rag/    # Internal retrieval and replaceable extraction
-│   │   ├── reasoning/ # Demonstration rule engine and Python interfaces
-│   │   ├── risk_models/ # Standalone QCancer-2013 prototype and demo
-│   │   └── main.py
-│   ├── alembic/    # Versioned schema migrations
-│   ├── tests/      # API, schema, and opt-in PostgreSQL tests
-│   ├── pyproject.toml
-│   └── requirements.txt # Compatibility entry point for runtime installation
-├── simulation/     # Reserved for future work; no implementation
-├── data/           # Reserved for synthetic data
-└── docs/           # Reserved for shared documentation
-```
-
-The frontend and backend run independently in two terminals. PostgreSQL runs in
-Docker; Python runs locally. No external service or API key is required.
-No external LLM provider is configured. Existing fixtures contain no enabled rules;
-analysis responses explicitly report unavailable extraction and missing rules.
+See the [project overview](../README.md) for the workflow, architecture, and repository map.
 
 ## Prerequisites
 
-- Node.js 22 LTS or newer and npm.
-- Python 3.11 or newer with `venv` and pip.
-- Docker with the Compose plugin, with the Docker daemon running (for the database).
+- Node.js 22+ and npm.
+- Python 3.11+ with pip and `venv`.
+- Docker with the Compose plugin and a running Docker daemon.
 
-Run the commands below from `cancersignal/` inside the repository.
+The frontend and backend run locally in separate terminals. Docker Compose runs PostgreSQL 16 with pgvector. The default structured-data demo needs no external AI service or API key.
 
-## Frontend
+## 1. Start PostgreSQL
+
+From `cancersignal/`:
+
+```sh
+[ -f .env ] || cp .env.example .env
+# Edit .env and choose a local POSTGRES_PASSWORD.
+docker compose up -d --wait db
+```
+
+Both Compose and the backend use the `POSTGRES_*` settings in this file. The backend loads it regardless of its working directory; exported environment variables take precedence. Keep `.env` private and out of version control.
+
+## 2. Start the backend
+
+From `cancersignal/`:
+
+```sh
+cd backend
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -e '.[dev]'
+python -m app.db.check
+python -m alembic upgrade head
+python -m app.db.seed
+python -m uvicorn app.main:app --reload
+```
+
+On Windows, create the environment with `py -m venv .venv` and activate it with `.venv\Scripts\Activate.ps1` in PowerShell.
+
+The seed loads reproducible synthetic patients and enabled colorectal rules. Schema creation happens through Alembic, not API startup.
+
+- API documentation: http://localhost:8000/docs
+- Patient API: http://localhost:8000/api/v1/patients
+- Liveness: http://localhost:8000/health
+
+```sh
+curl --fail http://localhost:8000/health
+```
+
+Expected response: `{"status":"ok"}`. This endpoint checks process liveness only; `python -m app.db.check` checks database connectivity and the vector extension. The API root `/` has no route.
+
+## 3. Start the frontend
+
+In a separate terminal, from `cancersignal/`:
 
 ```sh
 cd frontend
@@ -76,116 +63,88 @@ npm ci
 npm run dev
 ```
 
-Open <http://localhost:3000>. Edit `frontend/app/page.tsx` to begin development.
+Open http://localhost:3000. Select a synthetic patient, inspect the history, save a note for analysis, and review findings and source evidence before sending a physician-review request.
 
-The frontend calls `http://localhost:8000` by default. To use a different backend,
-set `NEXT_PUBLIC_API_URL` in `frontend/.env.local` to its origin (without `/api/v1`),
-then restart/rebuild Next.js. Appointments and physician workflow currently use
-documented local/demo fallbacks; see [backend-todo.md](docs/backend-todo.md).
+**Default extraction is structured-only.** It evaluates existing structured observations and derived laboratory findings; it does not understand arbitrary clinical prose. Enable optional LLM extraction to demonstrate that path.
 
-Checks and production build (from `frontend/`):
+## Configuration
 
-```sh
-npm run typecheck
-npm run build
-npm start
-```
+Backend settings belong in `cancersignal/.env`. Restart the API after changes.
 
-If a restricted environment prevents Turbopack from opening its build-worker port,
-use `npm run build -- --webpack` to produce the production build.
+| Setting | Default | Purpose |
+| --- | --- | --- |
+| `POSTGRES_HOST` | `localhost` | Database host for the local Python process |
+| `POSTGRES_PORT` | `5432` | Database port; also used by Compose |
+| `POSTGRES_DB` / `POSTGRES_USER` | `cancersignal` | Database name and user |
+| `POSTGRES_PASSWORD` | Required | Set your local database password |
+| `CORS_ORIGINS` | Localhost and 127.0.0.1 on port 3000 | Allowed frontend origins, as a JSON array |
+| `CANCERSIGNAL_RETRIEVAL` | `auto` | Complete history while it fits, otherwise lexical retrieval |
+| `CANCERSIGNAL_EXTRACTION` | `off` | Structured-only extraction; `llm` enables clinical-text extraction |
+| `CANCERSIGNAL_EXPLANATION` | `deterministic` | Finnish summaries; `llm` enables optional provider wording |
+| `CANCERSIGNAL_EXTRACTION_ALLOW_LIVE` | `false` | Explicit opt-in to live extraction calls |
+| `CANCERSIGNAL_EXPLANATION_ALLOW_LIVE` | `false` | Explicit opt-in to live explanation calls |
 
-`npm start` serves the completed production build on port 3000. Stop the development
-server before starting it on the same port. No frontend tests are configured yet.
-
-## Backend
-
-From `cancersignal/`, initialize the local database configuration:
-
-```sh
-cp .env.example .env
-# Edit .env and choose a local POSTGRES_PASSWORD before starting PostgreSQL.
-docker compose up -d --wait db
-```
-
-Keep `.env` private; it is ignored by Git. The example password is a development
-placeholder. Settings automatically read `cancersignal/.env` regardless of the
-Python process's working directory; exported environment variables take precedence.
-Python and Compose use the same `POSTGRES_*` settings. `POSTGRES_HOST=localhost`
-is for the locally running backend, and the database port binds only to localhost.
-If port 5432 is already occupied, change `POSTGRES_PORT` in `.env` before startup.
-
-Install the backend and development tools:
-
-```sh
-cd backend
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install -e ".[dev]"
-python -m app.db.check
-python -m alembic upgrade head
-# Optional: load the small, reproducible SYNTHETIC dataset.
-python -m app.db.seed
-python -m uvicorn app.main:app --reload
-```
-
-On Windows, use `py -m venv .venv` and activate with
-`.venv\Scripts\Activate.ps1` in PowerShell instead.
-
-### Frontend origins / CORS
-
-FastAPI allows `http://localhost:3000` and `http://127.0.0.1:3000` by default.
-To use another frontend port or hosted URL, set `CORS_ORIGINS` as a JSON array in
-`cancersignal/.env` (or an exported environment variable), then restart FastAPI:
+For a different backend origin, create `frontend/.env.local`:
 
 ```dotenv
-CORS_ORIGINS=["http://localhost:3000","http://127.0.0.1:3000","http://localhost:3001","https://your-frontend.example"]
+NEXT_PUBLIC_API_URL=http://localhost:8000
 ```
 
-Use exact origins: scheme, hostname and optional port, with no path or wildcard.
-An empty array disables cross-origin access. GET and POST are enabled, including
-JSON POST preflight requests; cookies/credentials are disabled. CORS configuration
-does not require database credentials, so `/health` remains independently runnable.
-`NEXT_PUBLIC_API_URL` identifies the backend; `CORS_ORIGINS` lists allowed frontend
-origins. Neither setting adds `/api/v1` or changes the existing endpoint contracts.
+Use the origin without `/api/v1`. Restart or rebuild the frontend after changing it. For a different frontend port, add its exact origin to the backend configuration, for example:
 
-- API: <http://localhost:8000>
-- Interactive API documentation: <http://localhost:8000/docs>
-- Health check: <http://localhost:8000/health>
-
-Verify the running backend:
-
-```sh
-curl --fail http://localhost:8000/health
+```dotenv
+CORS_ORIGINS=["http://localhost:3000","http://127.0.0.1:3000","http://localhost:3001"]
 ```
 
-Expected response: `{"status":"ok"}`. This is a liveness endpoint; it does not
-check database readiness. The API and its test can run without PostgreSQL or `.env`.
-The API root has no route; use `/docs`, `/health`, or `/api/v1/patients`. Public
-patient, observation, timeline, and analysis endpoints use the `/api/v1` prefix.
-Analysis accepts either an existing note UUID or a new `ObservationCreate` note;
-see [docs/contracts.md](docs/contracts.md) for payloads, filtering, and adapter interfaces.
-The frontend has not been changed in this task.
+### Optional AI and retrieval features
 
-Checks (from `backend/`, with the virtual environment activated):
+- **LLM extraction:** Configure the provider, model, credentials, and cache using the [extraction guide](backend/app/extraction/README.md). Cached responses can run without live calls; new live requests require explicit opt-in.
+- **Hybrid retrieval:** Install the optional local embedding dependencies and prepare the model cache using the [retrieval integration guide](docs/rag-analysis-integration.md). The API does not download model weights during requests.
+- **LLM explanations:** Follow the [explanation guide](backend/app/explanation/README.md) for separate provider settings. Deterministic Finnish explanations remain the default.
+
+Retrieval always isolates patient history and enforces observation and recording cutoffs. Laboratory history is retrieved separately from narrative top-k results. Evidence is validated before persistence; Python rules determine alerts, and QCancer predictions remain separate.
+
+## Development checks
+
+From `backend/`, with the virtual environment activated:
 
 ```sh
 python -m pytest
 python -m pip check
+```
+
+With PostgreSQL running and migrations applied:
+
+```sh
 python -m app.db.check
 python -m alembic check
-# Optional PostgreSQL integrity suite; creates and removes its own test database.
+# Opt-in integration tests create and remove their own test databases.
 RUN_DATABASE_TESTS=1 python -m pytest
 ```
 
-The database check executes `SELECT 1` through SQLAlchemy and confirms that the
-`vector` extension is enabled. It requires the Compose database and `.env` and
-exits nonzero on failure. API/schema tests require neither; database tests skip
-unless opted in and need the Compose database role's CREATEDB permission. There is
-no Python build step. To run without automatic reload, use `python -m uvicorn app.main:app`.
-The existing `python -m pip install -r requirements.txt` command still installs
-runtime dependencies; development tools require the `[dev]` extra above.
+The integration suite needs a database role with `CREATEDB` permission. Database tests and external inference tests skip unless explicitly enabled; ordinary tests do not opt in to live provider calls.
 
-Database lifecycle commands (from `cancersignal/`):
+From `frontend/`:
+
+```sh
+npm run typecheck
+npm run build
+```
+
+If a restricted environment prevents Turbopack from opening its build-worker port, use `npm run build -- --webpack`. Run `npm start` to serve the completed production build; stop the development server first if it occupies port 3000. Run `npx playwright install chromium` once, then `npm test` for API/mapping and mocked browser workflow tests. See the [frontend integration guide](docs/final-frontend-integration.md) for real end-to-end testing.
+
+## Troubleshooting
+
+| Symptom | What to check |
+| --- | --- |
+| Database port is occupied | Change `POSTGRES_PORT` in `.env`, then restart Compose and the backend. |
+| Database authentication fails | `.env` must match the credentials used when the database volume was initialized. Editing the file does not change an existing database password. |
+| Patient list is empty | Apply migrations and run `python -m app.db.seed` against the same database as the API. |
+| Frontend cannot reach the API | Check `NEXT_PUBLIC_API_URL`, the running backend, and exact `CORS_ORIGINS`. |
+| New prose does not yield findings | Default extraction is structured-only; consult the optional LLM setup. |
+| QCancer returns `insufficient_data` | Required predictors are unknown. Missing inputs are deliberately not filled with invented values. |
+
+Manage the database from `cancersignal/`:
 
 ```sh
 docker compose ps
@@ -193,42 +152,24 @@ docker compose stop db
 docker compose up -d --wait db
 ```
 
-Database files persist in the named `postgres_data` volume. Initialization enables
-pgvector only when a new database volume is created. For an existing database
-that lacks the extension, enable it without deleting data:
+Data persists in the `postgres_data` volume. Do not remove it as a routine troubleshooting step. If an existing database lacks pgvector, enable it without deleting data:
 
 ```sh
 docker compose exec db sh -c 'psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "CREATE EXTENSION IF NOT EXISTS vector;"'
 ```
 
-Changing database credentials in `.env` does not change credentials already stored
-in an existing volume. Keep those settings consistent with the initialized database.
-Avoid removing the volume unless you intend to delete its contents.
+## Further reading
 
-`app/api/` owns HTTP routes, `app/core/` owns settings, and `app/db/` owns database
-connections. `get_session` provides a request-scoped SQLAlchemy session for future
-routes; callers explicitly commit writes. Apply Alembic migrations to create tables;
-API startup never creates them. See [docs/data-model.md](docs/data-model.md) for
-schema conventions, evidence integrity, seed contents, and integration-test behavior.
+- [Public API contracts](docs/contracts.md) and [data model](docs/data-model.md)
+- [Shared pipeline contracts and evidence validation](backend/app/contracts/README.md)
+- [Colorectal rulebook](docs/rulebook-colorectal.md)
+- [QCancer model, assumptions, and licensing](docs/risk-models.md)
+- [Physician-review API](docs/physician-review-api.md)
+- [End-to-end integration notes](docs/end-to-end-integration.md)
+- [Engineering guidance](AGENTS.md)
 
-## Planned work and ownership
+## Prototype limitations
 
-1. **Frontend:** nurse dashboard, clinical notes, patient history, user experience.
-2. **Backend & AI:** retrieval, LLM analysis, structured clinical data, risk signals.
-3. **Data & Simulation:** synthetic datasets, optional scikit-learn/PyTorch
-   experiments, evaluation, and before-and-after waiting-time simulations.
+Use **synthetic patient data only**. Authentication, EHR integration, and Finnish clinical validation are not implemented. Review requests, dismissal reasons, and physician decisions persist through the API. Actions use demo actors and simulate clinical workflow decisions; they do not book investigations or issue real referrals.
 
-Agree shared API contracts and data schemas before implementing integrations.
-Keep runtime dependencies local to each component; no monorepo task runner is needed.
-
-## Prototype boundaries
-
-Use **synthetic patient data only**. This is a hackathon prototype, not a production
-clinical application. AI supports healthcare professionals and does not autonomously
-diagnose cancer or make referral decisions. A physician reviews findings and any
-referral. Simulated outcomes must not be presented as clinically validated results.
-
-See [AGENTS.md](AGENTS.md) for the full project context and development principles.
-
-Framework references: [Next.js setup](https://nextjs.org/docs/app/getting-started/installation)
-and [FastAPI first steps](https://fastapi.tiangolo.com/tutorial/first-steps/).
+QCancer uses a synthetic Townsend placeholder of zero and is not calibrated for Finland. Numerical predictions do not control review alerts. “No signals identified” is not a negative cancer diagnosis. Failed or incomplete analysis provides no clinical conclusion. Clinicians retain responsibility for investigations and referrals.
