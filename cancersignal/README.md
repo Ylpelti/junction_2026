@@ -56,9 +56,9 @@ cancersignal/
 ```
 
 The frontend and backend run independently in two terminals. PostgreSQL runs in
-Docker; Python runs locally. No external service or API key is required.
-No external LLM provider is configured. Existing fixtures contain no enabled rules;
-analysis responses explicitly report unavailable extraction and missing rules.
+Docker; Python runs locally. No external LLM service or API key is required for
+the structured-source demo extractor and deterministic rules. The deployment
+Blueprint seeds synthetic patients and enabled demo rules at startup.
 
 ## Prerequisites
 
@@ -82,6 +82,23 @@ The frontend calls `http://localhost:8000` by default. To use a different backen
 set `NEXT_PUBLIC_API_URL` in `frontend/.env.local` to its origin (without `/api/v1`),
 then restart/rebuild Next.js. Appointments and physician workflow currently use
 documented local/demo fallbacks; see [backend-todo.md](docs/backend-todo.md).
+
+### Public dynamic demo
+
+The repository-root `render.yaml` provisions the Next.js frontend, FastAPI backend
+and PostgreSQL database as one Render Blueprint. The frontend proxies same-origin
+API calls to FastAPI over Render's private network. Database migrations and the
+synthetic patient/rule seeds run when the API service starts. To publish, connect
+the GitHub repository to Render, create a Blueprint from `render.yaml`, review
+the three resources and deploy. No LLM provider key is required; structured demo
+extraction is used by default. The service accepts only the project's synthetic
+fixture patients, but public demo use can create notes, analyses and physician
+review requests in its database.
+
+Render's free web services can spin down when idle, and free Postgres databases
+expire after 30 days. This setup is for a time-limited hackathon demo, not a
+durable public service. See [public demo deployment](docs/public-demo-deployment.md)
+for setup and operational limits.
 
 Checks and production build (from `frontend/`):
 

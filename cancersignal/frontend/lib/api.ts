@@ -8,9 +8,11 @@ import type {
   ApiReviewRequest,
 } from "./mappers";
 
-const BASE = `${(process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000").replace(/\/$/, "")}/api/v1`;
+// Calls stay same-origin; Next.js rewrites proxy them to FastAPI in production
+// and to localhost:8000 during local development.
+const BASE = "/api/v1";
 
-export const API_ORIGIN = BASE.replace(/\/api\/v1$/, "");
+export const API_ORIGIN = typeof window === "undefined" ? "the configured API" : window.location.origin;
 
 export class ApiError extends Error {
   /** HTTP status, or undefined when the backend could not be reached at all. */
@@ -35,7 +37,7 @@ async function request<T>(path: string, init?: RequestInit, check?: (body: unkno
       cache: "no-store",
     });
   } catch {
-    throw new ApiError(`Cannot reach the backend at ${API_ORIGIN}. Is it running, and does it allow this origin (CORS)?`);
+    throw new ApiError(`Cannot reach the CancerSignal API via ${API_ORIGIN}. Is the demo service running?`);
   }
   let body: unknown = null;
   try {

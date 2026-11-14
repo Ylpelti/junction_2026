@@ -43,7 +43,8 @@ If the environment blocks Turbopack's build-worker port, use
 changed interactions in the browser when available, especially note saving,
 alerts/evidence, physician submission and failures; report checks actually run.
 
-The default backend origin is `http://localhost:8000`. Set `NEXT_PUBLIC_API_URL`
-in `.env.local` to another origin without `/api/v1`, then restart/rebuild Next.js.
-Configure backend `CORS_ORIGINS` for the frontend origin. Do not put secrets in
-`NEXT_PUBLIC_*` variables.
+Next.js rewrites same-origin `/api/v1/*` requests to the backend. Local
+development defaults to `http://localhost:8000`; set `NEXT_PUBLIC_API_URL` in
+`.env.local` to another backend origin when needed. Production hosting may set
+`CANCERSIGNAL_API_INTERNAL_HOSTPORT` so the Next.js server proxies over a private
+network. Do not put secrets in `NEXT_PUBLIC_*` variables.
