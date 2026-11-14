@@ -131,7 +131,7 @@ python -m uvicorn app.main:app --reload
 On Windows, use `py -m venv .venv` and activate with
 `.venv\Scripts\Activate.ps1` in PowerShell instead.
 
-**Demon nollaus:** `python -m app.db.reset_demo --yes`, lataa sitten selain uudelleen.
+Demon nollaus: aja kansiossa backend `python -m app.db.reset_demo --yes`, lataa sitten selain uudelleen.
 
 What the reset does:
 - **What it deletes:** all analyses, findings, trigger results and review requests, plus every observation and encounter that the seed did not create. Then it re-runs the seeds.
