@@ -1,13 +1,114 @@
-body {
-  margin: 0;
-  background: #f8fafc;
-  color: #172033;
-  font-family: system-ui, sans-serif;
-  line-height: 1.6;
+@import "tailwindcss";
+
+/* Palette from docs/design/Main.dc.html. */
+@theme {
+  --font-sans: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --color-page: #e9ecf0;
+  --color-ink: #111827;
+  --color-ink-2: #1f2937;
+  --color-mute: #374151;
+  --color-mute-2: #4b5563;
+  --color-mute-3: #6b7280;
+  --color-line: #d9dde3;
+  --color-line-2: #e3e6eb;
+  --color-line-3: #d5d9e0;
+  --color-field: #c9ced6;
+  --color-chip: #eef0f3;
+  --color-side: #f7f8fa;
+
+  --color-brand: #0b5cad;
+  --color-brand-dark: #0b3a6b;
+  --color-brand-soft: #e3ecf7;
+  --color-brand-tint: #f3f8fd;
+  --color-brand-line: #b7d3f0;
+
+  --color-bar: #1f2430;
+  --color-bar-line: #4b5263;
+  --color-header: #2f3b4c;
+
+  --color-badge-fg: #7c2d12;
+  --color-badge-bg: #fde7c8;
+  --color-hot-bg: #fff8eb;
+  --color-hot-line: #f2b35b;
+
+  --color-amber-ink: #451a03;
+  --color-amber-dark: #78350f;
+  --color-amber-banner: #fcd34d;
+  --color-amber-edge: #d97706;
+  --color-amber-soft: #fef3c7;
+
+  --color-red-ink: #7f1d1d;
+  --color-red-main: #b91c1c;
+  --color-red-soft: #fde2e1;
+  --color-red-line: #f5a3a0;
+
+  --color-ok: #166534;
 }
 
-main {
-  max-width: 48rem;
-  margin: 4rem auto;
-  padding: 0 1.5rem;
+body {
+  margin: 0;
+  background: var(--color-page);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+a {
+  color: var(--color-brand);
+}
+
+textarea:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
+@keyframes cs-drop {
+  from {
+    transform: translateY(-16px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@keyframes cs-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(185, 28, 28, 0.55);
+  }
+  50% {
+    box-shadow: 0 0 0 14px rgba(185, 28, 28, 0);
+  }
+}
+
+@keyframes cs-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(217, 119, 6, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(217, 119, 6, 0);
+  }
+}
+
+.cs-modal {
+  animation:
+    cs-drop 0.25s ease-out,
+    cs-pulse 1.6s ease-in-out 0.25s infinite;
+}
+
+.cs-banner {
+  animation:
+    cs-drop 0.25s ease-out,
+    cs-glow 1.8s ease-in-out 0.25s 3;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-modal,
+  .cs-banner {
+    animation: none;
+  }
 }
