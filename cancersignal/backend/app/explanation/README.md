@@ -231,3 +231,9 @@ catalog and nonsecret provider configuration. Every read revalidates references
 and numbers. Tampering produces an explicit fallback, not a network retry.
 Cache files are atomically written with owner-only access. Use an ignored local
 directory and synthetic data only; no patient response cache is committed.
+
+INFO logger `app.explanation.service` reports cache hit/miss/disabled with a digest.
+A new analysis/finding ID intentionally changes plan identity. For an exact demo
+replay, GET the persisted analysis and its saved explanation. See the
+[LLM demo runbook](../../../docs/llm-demo-readiness.md) for extraction versus
+explanation cache behavior and actual verification coverage.

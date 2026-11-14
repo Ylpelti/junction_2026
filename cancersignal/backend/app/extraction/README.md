@@ -224,3 +224,11 @@ The separate Kimi/DeepSeek/OpenAI benchmark checkout was not present in this
 working tree, so its provider settings could not be inspected. No benchmark
 dataset, prompt, score or report was changed. Align the exact deployed model ID
 and supported parameters with that checkout before comparing results.
+
+## Four-patient demo readiness
+
+See [the verified demo runbook](../../../docs/llm-demo-readiness.md) for stable
+saved-note replay, bounded opt-in paid verification, actual coverage and limitations.
+Extraction cache keys exclude retrieval's processing-only `generated_at`; original
+source timestamps and all clinical context remain included. INFO logger
+`app.extraction.service` reports cache hit/miss/disabled with a digest, not note text.

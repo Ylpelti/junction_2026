@@ -1,6 +1,7 @@
 """FindingExtractor protocol implementation; no retrieval, persistence or decisions."""
 from hashlib import sha256
 import json
+import logging
 from pathlib import Path
 import tempfile
 
@@ -10,7 +11,7 @@ from app.contracts.clinical_context import RetrievedContext, SourceObservation, 
 from app.contracts.common import MissingInformation, PipelineIssue
 from app.contracts.findings import ClinicalFinding
 from app.contracts.stages import FindingBatch
-from app.contracts.validation import EvidenceValidationError, merge_source_contexts, validate_finding
+from app.contracts.validation import EvidenceValidationError, merge_source_contexts, validate_evidence, validate_finding
 from app.extraction.prompt import messages
 from app.extraction.providers import CompletionProvider, ProviderError
 from app.extraction.schema import ExtractionOutput, output_schema
@@ -40,13 +41,17 @@ class ClinicalExtractor:
             raise EvidenceValidationError("source_outside_scope", "All supplied sources must satisfy the retrieval patient/time scope.")
         provenance = self.provider.provenance
         prompt = messages(context, input_note, structured if structured_context is not None else None)
+        # Retrieval execution time is not clinical input. Keep all original
+        # source timestamps, scope, coverage and retrieval provenance in identity.
         cache_key = sha256(json.dumps({"messages": prompt, "schema": output_schema(),
-                                      "context": context.model_dump(mode="json"),
+                                      "context": context.model_dump(mode="json", exclude={"generated_at"}),
                                       "provenance": provenance.model_dump(mode="json")},
                                      sort_keys=True, ensure_ascii=False).encode()).hexdigest()
         cache_file = self.cache_dir / (cache_key + ".json") if self.cache_dir is not None else None
         try:
             cached = cache_file is not None and cache_file.exists()
+            logging.getLogger(__name__).info("extraction_cache %s key=%s",
+                                             "hit" if cached else "miss" if cache_file else "disabled", cache_key)
             raw = cache_file.read_text(encoding="utf-8") if cached else self.provider.complete(prompt, output_schema())
             # Strict JSON: no markdown stripping, quote repair, defaults or retries.
             output = ExtractionOutput.model_validate_json(raw)

@@ -1,5 +1,6 @@
 from hashlib import sha256
 import json
+import logging
 from pathlib import Path
 import tempfile
 
@@ -109,6 +110,8 @@ class ExplanationEngine:
             path = self.cache_dir / (key + ".json") if self.cache_dir is not None else None
             try:
                 cached = path is not None and path.exists()
+                logging.getLogger(__name__).info("explanation_cache %s key=%s",
+                                                 "hit" if cached else "miss" if path else "disabled", key)
                 raw = path.read_text(encoding="utf-8") if cached else self.provider.complete(prompt, plan_schema())
                 plan = ExplanationPlan.model_validate_json(raw)
                 selected = validate_plan(plan, catalog)

@@ -1,0 +1,369 @@
+{
+  "mode": "mocked extraction; actual PostgreSQL and FastAPI TestClient; complete-history retrieval",
+  "live_provider_calls": 0,
+  "mock_calls": 4,
+  "passed": true,
+  "cache_events": [
+    {
+      "state": "miss",
+      "key": "5c6e0591c9a13ed1374c15efa32d04514dd9a20870a2b53022f7650297904059"
+    },
+    {
+      "state": "hit",
+      "key": "5c6e0591c9a13ed1374c15efa32d04514dd9a20870a2b53022f7650297904059"
+    },
+    {
+      "state": "miss",
+      "key": "4eb7cb22793eb8eb4f10a354e0138bbf811440e0d3b182311ac799ae42945b4c"
+    },
+    {
+      "state": "hit",
+      "key": "4eb7cb22793eb8eb4f10a354e0138bbf811440e0d3b182311ac799ae42945b4c"
+    },
+    {
+      "state": "miss",
+      "key": "dca6e5ce3960f5e735af81f31b9c9cd2456faa1db9a63561c6cd237b93d7b789"
+    },
+    {
+      "state": "hit",
+      "key": "dca6e5ce3960f5e735af81f31b9c9cd2456faa1db9a63561c6cd237b93d7b789"
+    },
+    {
+      "state": "miss",
+      "key": "b499850d978dbca858882c9191b756981b2b9c5dacbc7817db5edf33341b37a3"
+    },
+    {
+      "state": "hit",
+      "key": "b499850d978dbca858882c9191b756981b2b9c5dacbc7817db5edf33341b37a3"
+    }
+  ],
+  "patients": [
+    {
+      "patient": "SYNTHETIC Laine",
+      "extracted_findings": [
+        {
+          "finding_type": "change_in_bowel_habit",
+          "description": "Manually authored scenario interpretation",
+          "evidence": [
+            {
+              "observation_id": "ea88ab6b-2227-528f-b202-97b364052c53",
+              "source_excerpt": "SYNTHETIC — Väsymys jatkunut. Ulostaminen vaihtelee, vatsaa nipistelee toisinaan. Syö tavalliseen tapaan. Ei hengenahdistusta levossa. Pyytää aikaa lääkärille oireiden ja aiempien verikokeiden läpikäyntiin.",
+              "start_offset": null,
+              "end_offset": null
+            }
+          ],
+          "uncertainty": null,
+          "id": "02a3cb4b-a81d-4920-994a-a41d07fabe16",
+          "patient_id": "138fff92-bea8-5f85-a95a-5fb502fd9e57",
+          "polarity": "present",
+          "temporal_status": "current",
+          "missing_information": [],
+          "provenance": {
+            "name": "clinical-extraction",
+            "version": "1.0",
+            "method": "llm",
+            "provider": "openai",
+            "model": "synthetic-mock",
+            "prompt_version": "clinical-extraction-2",
+            "configuration_digest": "95e5d2dd6068fe2d9f4827fe60a0f9fccaf0c775f7f593733a5451f7ce3661d7"
+          }
+        },
+        {
+          "finding_type": "abdominal_pain",
+          "description": "Manually authored scenario interpretation",
+          "evidence": [
+            {
+              "observation_id": "d10f1711-9682-5de0-98ca-b208e6d4ff85",
+              "source_excerpt": "SYNTHETIC — Kävelymatkat jääneet lyhyemmiksi väsymyksen vuoksi. Ummetusjaksoja ja ajoittaista alavatsan jomotusta keväästä. Ei kuumetta, ei huomannut verta ulosteessa. Paino 69 kg. Tilataan verenkuva; tulosten jälkeen lääkärin arvio jatkotutkimuksista.",
+              "start_offset": null,
+              "end_offset": null
+            }
+          ],
+          "uncertainty": null,
+          "id": "75649117-519d-4a47-b8d5-28e0e7ee403a",
+          "patient_id": "138fff92-bea8-5f85-a95a-5fb502fd9e57",
+          "polarity": "present",
+          "temporal_status": "historical",
+          "missing_information": [],
+          "provenance": {
+            "name": "clinical-extraction",
+            "version": "1.0",
+            "method": "llm",
+            "provider": "openai",
+            "model": "synthetic-mock",
+            "prompt_version": "clinical-extraction-2",
+            "configuration_digest": "95e5d2dd6068fe2d9f4827fe60a0f9fccaf0c775f7f593733a5451f7ce3661d7"
+          }
+        }
+      ],
+      "triggered_rules": [
+        "SUO-02: Change in bowel habit",
+        "SUO-07: Age 60+ with anaemia"
+      ],
+      "latency_seconds": [
+        0.08,
+        0.052
+      ],
+      "qcancer_status": "insufficient_data",
+      "explanation_mode": "fallback",
+      "clinical_accuracy": "not assessed: hand-authored responses"
+    },
+    {
+      "patient": "SYNTHETIC Nieminen",
+      "extracted_findings": [
+        {
+          "finding_type": "investigation_planned",
+          "description": "Manually authored scenario interpretation",
+          "evidence": [
+            {
+              "observation_id": "f5a4a3a6-85bf-5b23-ba9c-9db62efc82ac",
+              "source_excerpt": "SYNTHETIC — Lähete kolonoskopiaan tehty. Ajanvaraus tutkimusyksiköstä.",
+              "start_offset": null,
+              "end_offset": null
+            }
+          ],
+          "uncertainty": null,
+          "id": "bb4a4ea3-2722-4be5-8957-7c20cbf61074",
+          "patient_id": "9f1864d7-0a2b-55d2-a007-7f886ab65b2e",
+          "polarity": "present",
+          "temporal_status": "historical",
+          "missing_information": [],
+          "provenance": {
+            "name": "clinical-extraction",
+            "version": "1.0",
+            "method": "llm",
+            "provider": "openai",
+            "model": "synthetic-mock",
+            "prompt_version": "clinical-extraction-2",
+            "configuration_digest": "95e5d2dd6068fe2d9f4827fe60a0f9fccaf0c775f7f593733a5451f7ce3661d7"
+          }
+        },
+        {
+          "finding_type": "investigation_status_unknown",
+          "description": "Manually authored scenario interpretation",
+          "evidence": [
+            {
+              "observation_id": "152ddfa6-eb86-5dba-ac95-49e158c0c929",
+              "source_excerpt": "SYNTHETIC — Aiemman kolonoskopialähetteen toteutuminen epäselvä, vastausta ei käytettävissä.",
+              "start_offset": null,
+              "end_offset": null
+            }
+          ],
+          "uncertainty": "Toteutuminen epäselvä",
+          "id": "bfc399c2-3b0e-43c7-bd50-0616eec64369",
+          "patient_id": "9f1864d7-0a2b-55d2-a007-7f886ab65b2e",
+          "polarity": "uncertain",
+          "temporal_status": "unknown",
+          "missing_information": [],
+          "provenance": {
+            "name": "clinical-extraction",
+            "version": "1.0",
+            "method": "llm",
+            "provider": "openai",
+            "model": "synthetic-mock",
+            "prompt_version": "clinical-extraction-2",
+            "configuration_digest": "95e5d2dd6068fe2d9f4827fe60a0f9fccaf0c775f7f593733a5451f7ce3661d7"
+          }
+        },
+        {
+          "finding_type": "rectal_bleeding",
+          "description": "Manually authored scenario interpretation",
+          "evidence": [
+            {
+              "observation_id": "746652ed-8a9d-5b9e-854f-e7986707dd1b",
+              "source_excerpt": "SYNTHETIC — Vatsavaivat jatkuvat aaltoillen. Tällä viikolla ei näkyvää verta. Pyytää selvittämään, miten aiemmin suunniteltu tutkimus etenee.",
+              "start_offset": null,
+              "end_offset": null
+            }
+          ],
+          "uncertainty": null,
+          "id": "5b1a18ef-ff2b-4ccd-8037-531cdfd69c94",
+          "patient_id": "9f1864d7-0a2b-55d2-a007-7f886ab65b2e",
+          "polarity": "absent",
+          "temporal_status": "current",
+          "missing_information": [],
+          "provenance": {
+            "name": "clinical-extraction",
+            "version": "1.0",
+            "method": "llm",
+            "provider": "openai",
+            "model": "synthetic-mock",
+            "prompt_version": "clinical-extraction-2",
+            "configuration_digest": "95e5d2dd6068fe2d9f4827fe60a0f9fccaf0c775f7f593733a5451f7ce3661d7"
+          }
+        }
+      ],
+      "triggered_rules": [
+        "SUO-07: Age 60+ with anaemia"
+      ],
+      "latency_seconds": [
+        0.062,
+        0.047
+      ],
+      "qcancer_status": "insufficient_data",
+      "explanation_mode": "fallback",
+      "clinical_accuracy": "not assessed: hand-authored responses"
+    },
+    {
+      "patient": "SYNTHETIC Heikkinen",
+      "extracted_findings": [
+        {
+          "finding_type": "rectal_bleeding",
+          "description": "Manually authored scenario interpretation",
+          "evidence": [
+            {
+              "observation_id": "49d14d43-134f-5e32-8e17-c47e9c370240",
+              "source_excerpt": "SYNTHETIC — Kuukauden ajan ajoittaista vatsakipua ja suolen toiminnan vaihtelua. Kerran kirkasta verta ulostamisen yhteydessä. Ei laihtumista. Tehdään lähete kolonoskopiaan oireiden selvittämiseksi.",
+              "start_offset": null,
+              "end_offset": null
+            }
+          ],
+          "uncertainty": null,
+          "id": "61018351-f18a-48bd-86e3-ee605fec20e6",
+          "patient_id": "53bcac07-8145-5a0a-bcf9-a64720ceecac",
+          "polarity": "present",
+          "temporal_status": "historical",
+          "missing_information": [],
+          "provenance": {
+            "name": "clinical-extraction",
+            "version": "1.0",
+            "method": "llm",
+            "provider": "openai",
+            "model": "synthetic-mock",
+            "prompt_version": "clinical-extraction-2",
+            "configuration_digest": "95e5d2dd6068fe2d9f4827fe60a0f9fccaf0c775f7f593733a5451f7ce3661d7"
+          }
+        },
+        {
+          "finding_type": "investigation_completed",
+          "description": "Manually authored scenario interpretation",
+          "evidence": [
+            {
+              "observation_id": "3f1c9dbf-99dd-56a6-9043-d4782b38a047",
+              "source_excerpt": "SYNTHETIC — Kolonoskopia valmis: näkyvyys hyvä, tutkimus umpisuoleen. Ei kasvainta eikä tulehdusta. Pienet sisäiset peräpukamat.",
+              "start_offset": null,
+              "end_offset": null
+            }
+          ],
+          "uncertainty": null,
+          "id": "ccddc2aa-2225-4810-8627-6e17e48def50",
+          "patient_id": "53bcac07-8145-5a0a-bcf9-a64720ceecac",
+          "polarity": "present",
+          "temporal_status": "historical",
+          "missing_information": [],
+          "provenance": {
+            "name": "clinical-extraction",
+            "version": "1.0",
+            "method": "llm",
+            "provider": "openai",
+            "model": "synthetic-mock",
+            "prompt_version": "clinical-extraction-2",
+            "configuration_digest": "95e5d2dd6068fe2d9f4827fe60a0f9fccaf0c775f7f593733a5451f7ce3661d7"
+          }
+        },
+        {
+          "finding_type": "abdominal_pain",
+          "description": "Manually authored scenario interpretation",
+          "evidence": [
+            {
+              "observation_id": "386dafd9-96a2-5d49-8fb6-49f65005104b",
+              "source_excerpt": "SYNTHETIC — Aiempi vatsakipu ja näkyvä veri ulosteessa loppuneet.",
+              "start_offset": null,
+              "end_offset": null
+            }
+          ],
+          "uncertainty": null,
+          "id": "bd8c42af-395c-480e-a36b-ac3b440c1676",
+          "patient_id": "53bcac07-8145-5a0a-bcf9-a64720ceecac",
+          "polarity": "present",
+          "temporal_status": "resolved",
+          "missing_information": [],
+          "provenance": {
+            "name": "clinical-extraction",
+            "version": "1.0",
+            "method": "llm",
+            "provider": "openai",
+            "model": "synthetic-mock",
+            "prompt_version": "clinical-extraction-2",
+            "configuration_digest": "95e5d2dd6068fe2d9f4827fe60a0f9fccaf0c775f7f593733a5451f7ce3661d7"
+          }
+        },
+        {
+          "finding_type": "abdominal_pain",
+          "description": "Manually authored scenario interpretation",
+          "evidence": [
+            {
+              "observation_id": "b10a229f-71b8-5892-b9a9-c6247e310446",
+              "source_excerpt": "SYNTHETIC — Oikea olkapää kipeytynyt ikkunoiden pesun jälkeen. Liikekipu loitonnuksessa, ei tapaturmaa. Ei vatsavaivoja eikä verenvuotoa. Ohjataan liikeharjoitteet ja sovitaan tarvittaessa fysioterapeutin arvio.",
+              "start_offset": null,
+              "end_offset": null
+            }
+          ],
+          "uncertainty": null,
+          "id": "b838e065-133a-43b6-9e89-a23dd20d08cc",
+          "patient_id": "53bcac07-8145-5a0a-bcf9-a64720ceecac",
+          "polarity": "absent",
+          "temporal_status": "current",
+          "missing_information": [],
+          "provenance": {
+            "name": "clinical-extraction",
+            "version": "1.0",
+            "method": "llm",
+            "provider": "openai",
+            "model": "synthetic-mock",
+            "prompt_version": "clinical-extraction-2",
+            "configuration_digest": "95e5d2dd6068fe2d9f4827fe60a0f9fccaf0c775f7f593733a5451f7ce3661d7"
+          }
+        }
+      ],
+      "triggered_rules": [],
+      "latency_seconds": [
+        0.055,
+        0.05
+      ],
+      "qcancer_status": "insufficient_data",
+      "explanation_mode": "fallback",
+      "clinical_accuracy": "not assessed: hand-authored responses"
+    },
+    {
+      "patient": "SYNTHETIC Korhonen",
+      "extracted_findings": [
+        {
+          "finding_type": "rectal_bleeding",
+          "description": "Manually authored scenario interpretation",
+          "evidence": [
+            {
+              "observation_id": "a35d3525-c325-5ffa-a545-e4843006541b",
+              "source_excerpt": "SYNTHETIC — Kotiverenpaineet katsottu, ei lääkitysmuutosta. Ulostaminen säännöllistä, ei verta ulosteessa. Ei laihtumista, ruokahalu hyvä. Seuraava vuosikontrolli sovitusti.",
+              "start_offset": null,
+              "end_offset": null
+            }
+          ],
+          "uncertainty": null,
+          "id": "7003c1dd-f748-4233-a239-e2e80cded682",
+          "patient_id": "6fa564bb-9001-5226-b01e-2fbb61cc4526",
+          "polarity": "absent",
+          "temporal_status": "historical",
+          "missing_information": [],
+          "provenance": {
+            "name": "clinical-extraction",
+            "version": "1.0",
+            "method": "llm",
+            "provider": "openai",
+            "model": "synthetic-mock",
+            "prompt_version": "clinical-extraction-2",
+            "configuration_digest": "95e5d2dd6068fe2d9f4827fe60a0f9fccaf0c775f7f593733a5451f7ce3661d7"
+          }
+        }
+      ],
+      "triggered_rules": [],
+      "latency_seconds": [
+        0.047,
+        0.046
+      ],
+      "qcancer_status": "insufficient_data",
+      "explanation_mode": "fallback",
+      "clinical_accuracy": "not assessed: hand-authored responses"
+    }
+  ]
+}

@@ -417,3 +417,14 @@ raise SystemExit(main())
 def test_cli_does_not_authorize_live_calls_implicitly():
     result = subprocess.run([sys.executable, "-m", "app.explanation", "--example", str(EXAMPLES / "mock_analysis.json"), "--live"], cwd=ROOT, text=True, capture_output=True)
     assert result.returncode == 2 and "explicit authorization" in result.stderr
+
+
+def test_cache_diagnostics_do_not_change_explanation(example, tmp_path, caplog):
+    provider = MockProvider()
+    with caplog.at_level('INFO', logger='app.explanation.service'):
+        first = generated(example, provider, cache_dir=tmp_path)
+        second = generated(example, provider, cache_dir=tmp_path)
+    assert first == second and len(provider.calls) == 1
+    assert 'explanation_cache miss' in caplog.text
+    assert 'explanation_cache hit' in caplog.text
+    assert first.summary_fi not in caplog.text
