@@ -83,10 +83,6 @@ export function FindingsPanel({ s, on }: { s: NurseState; on: NurseHandlers }) {
         </div>
       )}
 
-      {res.qcancer && (
-        <QCancerEstimateCard estimate={res.qcancer} />
-      )}
-
       <div className="flex flex-col gap-2.5">
         {res.findings.map((f) => (
           <div key={f.id} className="flex flex-col gap-1.5 rounded-[10px] border border-line-2 px-3.5 py-3">
