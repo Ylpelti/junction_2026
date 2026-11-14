@@ -1,0 +1,255 @@
+{
+  "version": "eval-cases-v1",
+  "time_t": "2026-11-14T09:00:00Z",
+  "rulebook": "nice-2023-demo-1",
+  "note": "Synthetic, fictional patients only. Expected labels written by hand from docs/rulebook-colorectal.md, not produced by the engine.",
+  "cases": [
+    {
+      "id": "EVAL-001",
+      "split": "dev",
+      "category": "history_decides",
+      "description": "Demo patient Laine: iron-deficiency anaemia and bowel change in history, vague note today.",
+      "patient": {
+        "sex": "female",
+        "birth_date": "1962-03-10",
+        "age_at_t": 64
+      },
+      "note": {
+        "ref": "NOTE-T",
+        "observed_at": "2026-11-14T09:00:00Z",
+        "text": "Väsymystä ja ajoittaista turvotuksen tunnetta. Ei verta ulosteessa.",
+        "coded": [
+          {
+            "type": "symptom",
+            "code": "rectal_bleeding",
+            "text": "Ei verta ulosteessa",
+            "status": "negated"
+          }
+        ]
+      },
+      "history": [
+        {
+          "ref": "LAB-0814A",
+          "type": "laboratory",
+          "code": "B-HB",
+          "numeric_value": 108,
+          "unit": "g/l",
+          "status": "completed",
+          "observed_at": "2026-08-14T08:00:00Z"
+        },
+        {
+          "ref": "LAB-0814B",
+          "type": "laboratory",
+          "code": "P-FERRITIN",
+          "numeric_value": 9,
+          "unit": "ug/l",
+          "status": "completed",
+          "observed_at": "2026-08-14T08:00:00Z"
+        },
+        {
+          "ref": "NOTE-0902",
+          "type": "clinical_note",
+          "text": "Ulostamistottumukset muuttuneet noin 3 viikkoa, ajoittaista alavatsakipua.",
+          "observed_at": "2026-09-02T10:00:00Z",
+          "coded": [
+            {
+              "type": "symptom",
+              "code": "change_in_bowel_habit",
+              "text": "Ulostamistottumukset muuttuneet noin 3 viikkoa",
+              "status": "current"
+            },
+            {
+              "type": "symptom",
+              "code": "abdominal_pain",
+              "text": "ajoittaista alavatsakipua",
+              "status": "current"
+            }
+          ]
+        },
+        {
+          "ref": "NOTE-0905",
+          "type": "clinical_note",
+          "text": "Lääkäri: rautavalmiste aloitettu, jatkotutkimuksia harkitaan kontrollissa.",
+          "observed_at": "2026-09-05T10:00:00Z",
+          "coded": []
+        }
+      ],
+      "expected": {
+        "level": "review",
+        "rules": [
+          "SUO-02",
+          "SUO-03",
+          "SUO-06",
+          "SUO-07"
+        ],
+        "key_sources": [
+          "LAB-0814A",
+          "LAB-0814B",
+          "NOTE-0902"
+        ]
+      }
+    },
+    {
+      "id": "EVAL-002",
+      "split": "dev",
+      "category": "history_decides",
+      "description": "Demo patient Nieminen: positive FIT not acted on; today's note alone gives only review.",
+      "patient": {
+        "sex": "male",
+        "birth_date": "1955-01-20",
+        "age_at_t": 71
+      },
+      "note": {
+        "ref": "NOTE-T",
+        "observed_at": "2026-11-14T09:00:00Z",
+        "text": "Verta ulosteessa useana päivänä viime viikolla. Paino laskenut noin 5 kg parissa kuukaudessa, ei laihduttanut tarkoituksella.",
+        "coded": [
+          {
+            "type": "symptom",
+            "code": "rectal_bleeding",
+            "text": "Verta ulosteessa useana päivänä",
+            "status": "current"
+          },
+          {
+            "type": "symptom",
+            "code": "weight_loss",
+            "text": "Paino laskenut noin 5 kg",
+            "status": "current"
+          }
+        ]
+      },
+      "history": [
+        {
+          "ref": "NOTE-1022",
+          "type": "clinical_note",
+          "text": "Alavatsakipua noin kuukauden ajan. Ulosteen veritesti annettu.",
+          "observed_at": "2026-10-22T10:00:00Z",
+          "coded": [
+            {
+              "type": "symptom",
+              "code": "abdominal_pain",
+              "text": "Alavatsakipua noin kuukauden ajan",
+              "status": "current"
+            }
+          ]
+        },
+        {
+          "ref": "LAB-1030",
+          "type": "laboratory",
+          "code": "F-HB-FIT",
+          "numeric_value": 48,
+          "unit": "ug/g",
+          "status": "completed",
+          "observed_at": "2026-10-30T08:00:00Z"
+        }
+      ],
+      "expected": {
+        "level": "urgent",
+        "rules": [
+          "SUO-04",
+          "SUO-06",
+          "SUO-08"
+        ],
+        "key_sources": [
+          "LAB-1030"
+        ]
+      }
+    },
+    {
+      "id": "EVAL-017",
+      "split": "dev",
+      "category": "harmless",
+      "description": "Demo patient Korhonen: short gastroenteritis (not coded as change in bowel habit).",
+      "patient": {
+        "sex": "male",
+        "birth_date": "1997-05-15",
+        "age_at_t": 29
+      },
+      "note": {
+        "ref": "NOTE-T",
+        "observed_at": "2026-11-14T09:00:00Z",
+        "text": "Vatsatauti alkanut 2 vrk sitten, ripulia ja kuumetta 38,2. Perheessä sama tauti.",
+        "coded": []
+      },
+      "history": [
+        {
+          "ref": "NOTE-0611",
+          "type": "clinical_note",
+          "text": "Nilkan nyrjähdys, kylmähoito.",
+          "observed_at": "2026-06-11T10:00:00Z",
+          "coded": []
+        }
+      ],
+      "expected": {
+        "level": "none",
+        "rules": []
+      }
+    },
+    {
+      "id": "EVAL-023",
+      "split": "dev",
+      "category": "hard_negative",
+      "description": "Demo patient Heikkinen: anaemia investigated and resolved; latest Hb normal.",
+      "patient": {
+        "sex": "female",
+        "birth_date": "1968-03-20",
+        "age_at_t": 58
+      },
+      "note": {
+        "ref": "NOTE-T",
+        "observed_at": "2026-11-14T09:00:00Z",
+        "text": "Väsymystä viime viikkoina, ei muita oireita. Ei vatsavaivoja.",
+        "coded": [
+          {
+            "type": "symptom",
+            "code": "abdominal_pain",
+            "text": "Ei vatsavaivoja",
+            "status": "negated"
+          }
+        ]
+      },
+      "history": [
+        {
+          "ref": "LAB-0512A",
+          "type": "laboratory",
+          "code": "B-HB",
+          "numeric_value": 112,
+          "unit": "g/l",
+          "status": "completed",
+          "observed_at": "2026-05-12T08:00:00Z"
+        },
+        {
+          "ref": "LAB-0512B",
+          "type": "laboratory",
+          "code": "P-FERRITIN",
+          "numeric_value": 11,
+          "unit": "ug/l",
+          "status": "completed",
+          "observed_at": "2026-05-12T08:00:00Z"
+        },
+        {
+          "ref": "INV-0618",
+          "type": "investigation",
+          "text": "Kolonoskopia ja gastroskopia: normaali löydös. Anemian syy selvitetty (runsaat kuukautiset).",
+          "status": "completed",
+          "observed_at": "2026-06-18T10:00:00Z"
+        },
+        {
+          "ref": "LAB-0702",
+          "type": "laboratory",
+          "code": "B-HB",
+          "numeric_value": 128,
+          "unit": "g/l",
+          "status": "completed",
+          "observed_at": "2026-07-02T08:00:00Z"
+        }
+      ],
+      "expected": {
+        "level": "none",
+        "rules": [],
+        "explained_by": "INV-0618"
+      }
+    }
+  ],
+  "source_commit": "12200d79ee0be94b9875a78c9ecc52e4eb9ac371"
+}

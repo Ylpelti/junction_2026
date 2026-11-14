@@ -231,3 +231,20 @@ See [AGENTS.md](AGENTS.md) for the full project context and development principl
 
 Framework references: [Next.js setup](https://nextjs.org/docs/app/getting-started/installation)
 and [FastAPI first steps](https://fastapi.tiangolo.com/tutorial/first-steps/).
+
+### Colorectal demo patients
+
+`python -m app.db.seed` (from `backend/`) also inserts **SYNTHETIC Laine,
+Nieminen, Korhonen and Heikkinen**, with their histories and today's notes.
+`backend/data/patients/demo_cases.json` preserves EVAL-001/002/017/023 from
+`feat/eval-cases`; its `source_commit` pins the source revision. Original B-HB,
+P-FERRITIN and F-HB-FIT codes, units, dates, text and coded facts are retained.
+IDs use the `demo-eval/v1/<case-id>/...` namespace through `synthetic_id()`.
+Seeding again inserts missing rows only; it never updates existing records.
+
+The expected variant-C rule sets are tested through the database analysis service
+using fixed extraction responses from today's coded facts (no live LLM calls).
+The default structured-only extractor does not interpret today's free text;
+Nieminen's complete expected rule set requires note extraction. Today's coded
+facts stay at the original cutoff and are not backdated into retrieved history.
+The cases and results are synthetic prototype examples, not clinical validation.

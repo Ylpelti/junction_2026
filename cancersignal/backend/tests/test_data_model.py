@@ -59,8 +59,8 @@ def test_seed_is_reproducible_and_history_is_patient_and_time_scoped(db_session)
     before = set(db_session.scalars(select(Observation.id)))
     seed(db_session)
     assert set(db_session.scalars(select(Observation.id))) == before
-    assert len(before) == 98
-    assert db_session.scalar(select(func.count()).select_from(Patient)) == 8
+    assert len(before) == 120
+    assert db_session.scalar(select(func.count()).select_from(Patient)) == 12
     assert db_session.scalar(select(func.count()).select_from(Encounter)) == 32
     assert db_session.scalar(select(func.count()).select_from(ObservationEmbedding)) == 8
     patient = db_session.get(Patient, synthetic_id("patient/0"))

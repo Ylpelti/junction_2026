@@ -2,6 +2,8 @@
 
 from datetime import date, datetime, timedelta, timezone
 from decimal import Decimal
+import json
+from pathlib import Path
 from uuid import NAMESPACE_URL, uuid5
 
 from sqlalchemy.dialects.postgresql import insert
@@ -42,6 +44,46 @@ HISTORIES = [
 
 def synthetic_id(key: str):
     return uuid5(NAMESPACE_URL, f"https://cancersignal.invalid/synthetic/v1/{key}")
+
+
+DEMO_CASES_FILE = Path(__file__).resolve().parents[2] / "data/patients/demo_cases.json"
+DEMO_NAMES = {"EVAL-001": "Laine", "EVAL-002": "Nieminen", "EVAL-017": "Korhonen", "EVAL-023": "Heikkinen"}
+
+
+def demo_rows():
+    """Preserve the evaluation source records, including today's note at its real cutoff.
+
+    Coded symptoms are explicit source facts, not inferred labels. Today's coded
+    facts remain at t and are deliberately excluded from historical retrieval.
+    Expected evaluation labels are never used to construct database rows.
+    """
+    data = json.loads(DEMO_CASES_FILE.read_text(encoding="utf-8"))
+    patients, observations = [], []
+    for case in data["cases"]:
+        prefix = f"demo-eval/v1/{case['id']}"
+        patient_id = synthetic_id(f"{prefix}/patient")
+        patients.append(dict(
+            id=patient_id, synthetic_name=f"SYNTHETIC {DEMO_NAMES[case['id']]}",
+            birth_date=date.fromisoformat(case["patient"]["birth_date"]), sex=Sex(case["patient"]["sex"]),
+            created_at=datetime(2020, 1, 1, tzinfo=timezone.utc),
+        ))
+        for record in [*case["history"], dict(case["note"], type="clinical_note")]:
+            at = datetime.fromisoformat(record["observed_at"].replace("Z", "+00:00"))
+            shared = dict(patient_id=patient_id, encounter_id=None, observed_at=at, recorded_at=at)
+            value = record.get("numeric_value")
+            observations.append(dict(
+                **shared, id=synthetic_id(f"{prefix}/{record['ref']}"),
+                observation_type=ObservationType(record["type"]), text=record.get("text"),
+                code=record.get("code"), numeric_value=Decimal(str(value)) if value is not None else None,
+                unit=record.get("unit"), status=record.get("status"),
+            ))
+            for index, fact in enumerate(record.get("coded", [])):
+                observations.append(dict(
+                    **shared, id=synthetic_id(f"{prefix}/{record['ref']}/coded/{index}/{fact['code']}"),
+                    observation_type=ObservationType.SYMPTOM, code=fact["code"], text=fact["text"],
+                    status=fact["status"], numeric_value=None, unit=None,
+                ))
+    return patients, observations
 
 
 def seed(session: Session) -> dict[str, int]:
@@ -94,6 +136,10 @@ def seed(session: Session) -> dict[str, int]:
                     embedding=None, embedding_model="pending-1536",
                     created_at=occurred_at + timedelta(hours=2),
                 ))
+
+    demo_patients, demo_observations = demo_rows()
+    patients.extend(demo_patients)
+    observations.extend(demo_observations)
 
     counts = {}
     for model, rows in ((Patient, patients), (Encounter, encounters),
