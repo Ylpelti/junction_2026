@@ -55,6 +55,9 @@ class ClinicalExtractor:
             for finding in findings:
                 validate_finding(finding, sources, scope=context,
                                  input_note_id=input_note.id if input_note else None)
+            for reference in output.qcancer_predictors.evidence_references():
+                validate_evidence(context.patient_id, (reference,), sources, scope=context,
+                                  input_note_id=input_note.id if input_note else None)
             missing = [*context.coverage.missing_information, *structured.coverage.missing_information,
                        *output.missing_information]
             for coverage, label in ((context.coverage, "retrieved history"),
@@ -70,7 +73,8 @@ class ClinicalExtractor:
                                   severity="warning", message="Source IDs, quotes, offsets and patient/time scope validated; clinical interpretation and completeness require review.")
             batch = FindingBatch(**self._scope(context), provenance=provenance,
                                  status="partial" if missing or any(row.uncertainty or row.missing_information for row in findings) else "complete",
-                                 findings=findings, missing_information=tuple(missing), issues=(issue,))
+                                 findings=findings, qcancer_predictors=output.qcancer_predictors,
+                                 missing_information=tuple(missing), issues=(issue,))
             if cache_file is not None and not cached:
                 cache_file.parent.mkdir(parents=True, exist_ok=True)
                 # Only validated responses enter the cache; every read revalidates.

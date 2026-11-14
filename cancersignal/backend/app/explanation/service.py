@@ -1,0 +1,156 @@
+from hashlib import sha256
+import json
+from pathlib import Path
+import tempfile
+
+from pydantic import ValidationError
+
+from app.contracts.analysis import AnalysisResult
+from app.contracts.common import ComponentProvenance, PipelineIssue
+from app.contracts.validation import EvidenceValidationError
+from app.explanation.facts import build_catalog
+from app.explanation.providers import ExplanationProvider, PROMPT_VERSION, ProviderError, SYSTEM_PROMPT
+from app.explanation.schemas import ExplanationPlan, ExplanationResult, Limitation, PredictionDisplaySpec, plan_schema
+
+SUMMARY = {
+    "review_signals": ("Tallennetuissa sääntötuloksissa on ammattilaisen arvioitavaksi merkittyjä signaaleja.",
+                       "Rakenteisessa analyysissä on täyttyneitä sääntöjä, joiden tulokset on merkitty ammattilaisen arvioitavaksi."),
+    "indeterminate": ("Sääntötuloksiin jää epävarmuutta tai puuttuvia tietoja.",
+                      "Tallennettujen sääntöjen täyttymistä ei voida kaikilta osin ratkaista saatavilla olevilla tiedoilla."),
+    "no_signals": ("Tallennetuissa sääntötuloksissa ei ole täyttyneitä signaaleja. Tarkista rajoitukset.",
+                   "Annetuissa sääntötuloksissa ei ole täyttyneitä signaaleja. Tulos ei poista puuttuvien tai epävarmojen tietojen merkitystä."),
+    "observations_only": ("Rakenteiset havainnot ja laskennalliset tulokset on koottu alle. Sääntöarviota ei ole saatavilla.",
+                          "Yhteenveto perustuu annettuihin havaintoihin ja laskentatuloksiin. Sääntöarviota ei ole saatavilla."),
+}
+FALLBACK = ComponentProvenance(name="clinical-explanation-fi", version="1.0", method="deterministic", prompt_version=PROMPT_VERSION)
+
+
+class ExplanationInputError(ValueError):
+    """Unsafe/inconsistent input cannot be explained, even by a fallback."""
+
+
+class PlanError(ValueError):
+    def __init__(self, code):
+        super().__init__(code)
+        self.code = code
+
+
+def validate_plan(plan, catalog):
+    index = {statement.key: statement for statement in catalog.statements}
+    keys = [entry.fact_key for entry in plan.entries]
+    if plan.summary_kind != catalog.summary_kind:
+        raise PlanError("altered_summary")
+    if len(set(keys)) != len(keys) or any(key not in index for key in keys):
+        raise PlanError("invalid_fact_reference")
+    selected = set(keys)
+    if not catalog.required.issubset(selected) or (index and not selected):
+        raise PlanError("missing_required_fact")
+    if any(selected.intersection(group) and not group.issubset(selected) for group in catalog.finding_groups):
+        raise PlanError("incomplete_finding_group")
+    for entry in plan.entries:
+        fact = index[entry.fact_key]
+        if len(set(entry.observation_ids)) != len(entry.observation_ids) or set(entry.observation_ids) != set(fact.observation_ids):
+            raise PlanError("invalid_evidence_reference")
+        expected = {number.slot: (number.value, number.unit) for number in fact.quantities}
+        actual = {number.slot: (number.value, number.unit) for number in entry.quantities}
+        if len(actual) != len(entry.quantities) or actual != expected:
+            raise PlanError("invalid_numeric_claim")
+    return tuple(index[key] for key in keys)
+
+
+class ExplanationEngine:
+    def __init__(self, provider: ExplanationProvider | None = None, *,
+                 prediction_specs: tuple[PredictionDisplaySpec, ...] = (), cache_dir: Path | None = None):
+        self.provider, self.prediction_specs, self.cache_dir = provider, prediction_specs, cache_dir
+
+    def __call__(self, analysis: AnalysisResult) -> ExplanationResult:
+        try:
+            # ModelPrediction is a mutable legacy record: rebuild the entire graph.
+            result = AnalysisResult.model_validate(analysis.model_dump(mode="python"))
+            if any(len(set(row.evidence_observation_ids)) != len(row.evidence_observation_ids) for row in result.predictions):
+                raise ValueError("Duplicate prediction evidence")
+            canonical = json.dumps(result.model_dump(mode="json"), sort_keys=True, ensure_ascii=False,
+                                   allow_nan=False, separators=(",", ":"))
+            catalog = build_catalog(result, self.prediction_specs)
+        except (ValidationError, EvidenceValidationError, ValueError, TypeError, AttributeError):
+            raise ExplanationInputError("Selityksen lähtöanalyysi tai esityssopimus on virheellinen; tarkista viitteet, potilas, aikarajat ja lukuarvot.") from None
+        return self._explain(result, catalog, canonical)
+
+    def explain_api(self, response, *, input_note=None) -> ExplanationResult:
+        """Explain the existing API DTO without changing it or querying a database."""
+        from app.explanation.adapters import prepare_api_response
+        try:
+            prepared = prepare_api_response(response, input_note=input_note, prediction_specs=self.prediction_specs)
+        except (ValidationError, EvidenceValidationError, ValueError, TypeError, AttributeError, KeyError):
+            raise ExplanationInputError("API-vastauksen potilas, aikaraja, alkuperäiset lähteet tai sääntöviitteet ovat puutteelliset tai ristiriitaiset.") from None
+        return self._explain(prepared.identity, prepared.catalog, prepared.canonical_input, input_format="api_v1")
+
+    def _explain(self, result, catalog, canonical, *, input_format="analysis_result"):
+        digest = sha256(canonical.encode()).hexdigest()
+        base = dict(analysis_id=result.analysis_id, patient_id=result.patient_id, as_of=result.as_of,
+                    input_digest=digest, input_format=input_format)
+        if result.status != "completed":
+            return ExplanationResult(**base, mode="unavailable", summary_fi="Analyysi ei ole valmistunut luotettavasti. Kliinistä yhteenvetoa ei muodostettu.",
+                limitations=(Limitation(code="analysis_not_completed", text_fi="Keskeneräistä tai epäonnistunutta analyysiä ei tulkita valmiiksi kliiniseksi tulokseksi."),),
+                provenance=FALLBACK, issues=(self._issue("analysis_not_completed", "Valmista lähtöanalyysiä ei ole saatavilla."),))
+        if not catalog.statements:
+            return ExplanationResult(**base, mode="unavailable", summary_fi="Lähtöanalyysi ei sisällä selitettäviä rakenteisia tuloksia. Tietojen puuttumisesta ei tehdä kliinistä johtopäätöstä.",
+                limitations=(*catalog.limitations, Limitation(code="no_explainable_data", text_fi="Lähtötuloksesta puuttuvat rakenteiset havainnot, mittaukset, malliennusteet ja sääntöarviot.")),
+                provenance=FALLBACK, issues=(self._issue("no_explainable_data", "Selitettäviä rakenteisia tuloksia ei ole saatavilla."),))
+        selected, style, mode, issues, attempted = catalog.statements, "compact", "fallback", (), None
+        if self.provider is not None:
+            attempted = self.provider.provenance
+            payload = {"summary_kind": catalog.summary_kind, "required_keys": sorted(catalog.required),
+                       "finding_groups": [sorted(group) for group in catalog.finding_groups],
+                       "facts": [row.model_dump(mode="json", exclude={"source_notice"}) for row in catalog.statements]}
+            prompt = [{"role": "system", "content": SYSTEM_PROMPT + json.dumps(plan_schema())},
+                      {"role": "user", "content": json.dumps(payload, ensure_ascii=False)}]
+            key = sha256(json.dumps({"input": digest, "prompt": prompt, "producer": attempted.model_dump(mode="json")}, sort_keys=True).encode()).hexdigest()
+            path = self.cache_dir / (key + ".json") if self.cache_dir is not None else None
+            try:
+                cached = path is not None and path.exists()
+                raw = path.read_text(encoding="utf-8") if cached else self.provider.complete(prompt, plan_schema())
+                plan = ExplanationPlan.model_validate_json(raw)
+                selected = validate_plan(plan, catalog)
+                style, mode = plan.style, "llm"
+                if path is not None and not cached:
+                    self._cache(path, plan.model_dump_json())
+            except PlanError as error:
+                issues = (self._issue(error.code, "LLM-suunnitelma hylättiin; käytetään tarkistetuista lähtötiedoista muodostettua vakiotekstiä."),)
+                selected, style, mode = catalog.statements, "compact", "fallback"
+            except ValidationError:
+                issues = (self._issue("invalid_structured_response", "LLM-vastaus ei noudata sovittua rakennetta; käytetään vakiotekstiä."),)
+            except ProviderError as error:
+                issues = (self._issue(error.code, str(error)),)
+            except (OSError, UnicodeError):
+                issues = (self._issue("cache_error", "Selityksen välimuistia ei voitu käsitellä; käytetään vakiotekstiä."),)
+            except Exception:
+                # A provider implementation may fail unexpectedly. Never expose
+                # its exception (it may contain clinical text or credentials).
+                issues = (self._issue("explanation_generation_failed", "LLM-selityksen muodostaminen epäonnistui; käytetään vakiotekstiä."),)
+            if issues:
+                # A write failure after validation must also take the explicit fallback path.
+                selected, style, mode = catalog.statements, "compact", "fallback"
+        else:
+            issues = (self._issue("offline_fallback", "Selitys muodostettiin ilman LLM-kutsua."),)
+        return ExplanationResult(**base, mode=mode, summary_fi=SUMMARY[catalog.summary_kind][style == "standard"],
+            findings=tuple(row for row in selected if row.kind == "finding"),
+            mathematical_outputs=tuple(row for row in selected if row.kind in ("measurement", "feature", "prediction")),
+            rule_results=tuple(row for row in selected if row.kind == "rule"), limitations=catalog.limitations,
+            provenance=attempted if mode == "llm" else FALLBACK, attempted_provider=attempted, issues=issues)
+
+    @staticmethod
+    def _issue(code, message):
+        return PipelineIssue(code=code, message=message, component="clinical-explanation", severity="warning")
+
+    @staticmethod
+    def _cache(path, text):
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=path.parent, delete=False) as handle:
+            temporary = Path(handle.name)
+            try:
+                handle.write(text)
+                handle.close()
+                temporary.replace(path)
+            finally:
+                temporary.unlink(missing_ok=True)

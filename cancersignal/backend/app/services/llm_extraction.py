@@ -35,7 +35,9 @@ FREE_TEXT_NOT_CONFIGURED = "Free-text clinical-note extraction is not configured
 
 
 def to_contract_context(context: RetrievedContext, query: str) -> ContractContext:
-    """The baseline retriever returns ALL eligible history before the cutoff, so coverage is complete."""
+    """Keep the advanced engine's exact coverage/provenance; legacy history is complete."""
+    if context.source_context is not None:
+        return context.source_context
     sources = [SourceObservation.model_validate(item.observation.model_dump()) for item in context.observations]
     return ContractContext(
         patient_id=context.patient_id,
@@ -50,7 +52,7 @@ def to_contract_context(context: RetrievedContext, query: str) -> ContractContex
 class LlmNoteExtractor:
     """FindingExtractor for the analysis pipeline: structured facts + LLM note extraction."""
 
-    name = "structured-source-demo-v1+clinical-extraction-1"
+    name = "structured-source-demo-v1+clinical-extraction-2"
 
     def __init__(self, base, *, clinical: ClinicalExtractor | None = None,
                  build_clinical: Callable[[], ClinicalExtractor] | None = None):
@@ -86,7 +88,8 @@ class LlmNoteExtractor:
         missing = [m for m in base.missing_information if not m.startswith(FREE_TEXT_NOT_CONFIGURED)]
         missing += [gap.description for gap in batch.missing_information]
         missing += [f"{issue.message} ({issue.code})" for issue in batch.issues]
-        return ExtractionResult(findings=[*base.findings, *legacy_findings(batch)], missing_information=missing)
+        return ExtractionResult(findings=[*base.findings, *legacy_findings(batch)], missing_information=missing,
+                                qcancer_predictors=batch.qcancer_predictors)
 
 
 def build_from_settings(env_file: Path | None, allow_live: bool, cache_dir: Path | None) -> Callable[[], ClinicalExtractor]:

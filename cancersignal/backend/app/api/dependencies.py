@@ -8,7 +8,7 @@ from pydantic import AwareDatetime
 from app.core.config import get_pipeline_settings
 from app.models.enums import ObservationType
 from app.rag.extraction import StructuredSourceExtractor
-from app.rag.retrieval import retrieve_context
+from app.services.history_retrieval import build_retriever
 from app.reasoning.interfaces import AnalysisPipeline
 from app.reasoning.trigger_engine import evaluate_triggers
 
@@ -28,7 +28,7 @@ def get_analysis_pipeline() -> AnalysisPipeline:
     settings = get_pipeline_settings()
     extractor = build_extractor(settings.extraction, settings.extraction_env_file,
                                 settings.extraction_allow_live, settings.extraction_cache_dir)
-    return AnalysisPipeline(retrieve=retrieve_context, extractor=extractor, evaluate=evaluate_triggers)
+    return AnalysisPipeline(retrieve=build_retriever(settings), extractor=extractor, evaluate=evaluate_triggers)
 
 
 def observation_filters(observation_type: ObservationType | None = None,

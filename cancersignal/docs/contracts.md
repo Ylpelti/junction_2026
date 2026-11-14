@@ -96,7 +96,7 @@ supporting UUIDs, recommended action and clinician-review flag. The overall aler
 level is the highest priority among triggered results; the frontend derives it.
 `source_observations` resolves every evidence reference to the original record.
 
-Provenance stores input-note UUID, cutoff, selected history UUIDs, retrieval/extraction
+Provenance stores input-note UUID, cutoff, retrieved plus structured history UUIDs, retrieval/extraction
 versions, rule metadata snapshots (including `priority`), `patient_facts` (e.g.
 `{"age_years": 67}`, computed at the cutoff), `missing_information`, and optional `error_code`.
 **201 means a run was saved; check its status.** Controlled pipeline failures persist
@@ -125,12 +125,24 @@ before the cutoff into `anaemia`, `iron_deficiency_anaemia` and `fit_result`
 findings. These cite their lab observations and pass the same evidence checks.
 Demo reference ranges live in that module until labs store their own.
 
-The baseline retriever filters patient ID and both `observed_at < before` and
-`recorded_at < before` before lexical-overlap/recency ranking. It includes original
-observations, timestamps, excerpts, structured labs and ranked IDs. The current note
-is explicit input, never its own historical context. All eligible history is kept
-for the small prototype, so ranking cannot hide a later negation. There is no vector
-search or external retrieval service yet.
+The API uses the existing RAG engine through `services/history_retrieval.py`.
+`CANCERSIGNAL_RETRIEVAL=auto` (default) keeps complete history when it fits, otherwise
+uses PostgreSQL lexical retrieval; `lexical` and local `hybrid` are explicit modes.
+`baseline` retains the original all-history overlap/recency retriever. Every mode
+filters patient ID, `observed_at < before` and `recorded_at < before`. Original
+IDs, snapshots and excerpts survive timeline expansion, including later negative
+or resolved evidence. The current note is explicit input, never history. The
+internal legacy context optionally retains the engine's unchanged shared context
+so LLM extraction receives accurate coverage/provenance. No public DTO changes.
+
+Separately, the orchestrator fetches all eligible structured laboratory/vital/numeric
+history without top-k or narrative budget limits, validates its originals and
+passes it to the existing deterministic lab logic. QCancer receives the validated
+source union; unknown predictors are not filled. `context_observation_ids` records
+both branches and retrieval warnings enter `missing_information`. Hybrid mode
+refreshes eligible new/changed embeddings in a savepoint and falls back to lexical
+retrieval if embedding infrastructure is unavailable. See
+[exact configuration, indexing and API commands](rag-analysis-integration.md).
 
 `StructuredFinding` has type, status, description, nonempty `EvidenceReference[]`,
 optional uncertainty and source numeric value/unit. `ExtractionResult` adds missing

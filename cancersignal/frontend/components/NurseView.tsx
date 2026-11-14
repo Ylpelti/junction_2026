@@ -255,6 +255,7 @@ export function NurseView({ s, on }: { s: NurseState; on: NurseHandlers }) {
                 </section>
               )}
 
+              {/* No risk -> nothing CancerSignal-related for the nurse (QCancer kept for a later physician view). */}
               <RecordSection s={s} findingFor={findingFor} />
             </>
           )}

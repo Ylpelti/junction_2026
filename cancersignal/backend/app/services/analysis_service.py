@@ -6,17 +6,22 @@ from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session, selectinload
 from app.contracts.clinical_context import SourceObservation
+from app.contracts.common import PatientScope
 from app.contracts.validation import EvidenceValidationError, validate_evidence
+from app.contracts.qcancer import QCancerPredictors
 
 from app.models import (
     AnalysisRun, ClinicalFinding, FindingEvidence, Observation,
     TriggerResult, TriggerResultEvidence, TriggerRule,
 )
 from app.models.enums import AnalysisStatus, ObservationType
-from app.rag.context import ExtractionResult, RetrievedContext
+from app.rag.context import ContextObservation, ExtractionResult, RetrievedContext
+from app.rag.repository import PatientRepository
 from app.reasoning.derived_findings import derive_lab_findings
 from app.reasoning.interfaces import AnalysisPipeline, TriggerEvaluation
 from app.reasoning.vocabulary import AGE_YEARS
+from app.risk_models.adapter import build_qcancer_input
+from app.risk_models.qcancer_2013 import qcancer_prediction
 from app.schemas.analysis import (
     AnalysisProvenance, AnalysisRequest, AnalysisResponse, EvidenceReference,
     FindingResponse, RuleSnapshot, TriggerResponse,
@@ -79,6 +84,7 @@ def get_analysis(session: Session, analysis_id: UUID) -> AnalysisResponse:
             evidence_observation_ids=sorted((ref.observation_id for ref in result.evidence), key=str)))
     source_ids = {ref.observation_id for finding in findings for ref in finding.evidence}
     source_ids.update(identifier for result in results for identifier in result.evidence_observation_ids)
+    source_ids.update(identifier for prediction in provenance.predictions for identifier in prediction.evidence_observation_ids)
     sources = session.scalars(select(Observation).where(Observation.id.in_(source_ids))
         .order_by(Observation.observed_at, Observation.id)).all() if source_ids else []
     if run.status == AnalysisStatus.FAILED:
@@ -90,7 +96,7 @@ def get_analysis(session: Session, analysis_id: UUID) -> AnalysisResponse:
     else:
         explanation = "No signals identified by configured demonstration rules. Review missing information; this is not a diagnosis."
     return AnalysisResponse(id=run.id, patient_id=run.patient_id, status=run.status,
-        created_at=run.created_at, findings=findings, trigger_results=results,
+        created_at=run.created_at, findings=findings, trigger_results=results, predictions=provenance.predictions,
         source_observations=[ObservationRead.model_validate(row) for row in sources],
         explanation=explanation, provenance=provenance)
 
@@ -104,6 +110,13 @@ def list_analyses(session: Session, patient_id: UUID, limit=100, offset=0):
 
 def validate_context(session: Session, context: RetrievedContext, note: ObservationRead):
     if context.patient_id != note.patient_id or context.cutoff != note.observed_at:
+        raise PipelineError("invalid_retrieval_scope")
+    source_context = context.source_context
+    if source_context is not None and (
+            source_context.patient_id != note.patient_id or source_context.as_of != note.observed_at
+            or source_context.recorded_before != note.observed_at
+            or [hit.source.model_dump() for hit in source_context.retrieved_observations]
+            != [item.observation.model_dump() for item in context.observations]):
         raise PipelineError("invalid_retrieval_scope")
     identifiers = [item.observation.id for item in context.observations]
     if len(set(identifiers)) != len(identifiers) or set(context.ranked_observation_ids) != set(identifiers):
@@ -138,6 +151,20 @@ def verify_findings(findings, allowed):
             raise PipelineError("invalid_numeric_evidence")
 
 
+def verify_qcancer_predictors(predictors: QCancerPredictors | None, allowed):
+    if predictors is None:
+        return
+    references = predictors.evidence_references()
+    if references and not allowed:
+        raise PipelineError("invalid_qcancer_evidence")
+    sources = tuple(SourceObservation.model_validate(row) for row in allowed.values())
+    for reference in references:
+        try:
+            validate_evidence(sources[0].patient_id, (reference,), sources)
+        except EvidenceValidationError:
+            raise PipelineError("invalid_qcancer_evidence") from None
+
+
 def create_analysis(session: Session, patient_id: UUID, payload: AnalysisRequest, pipeline: AnalysisPipeline):
     patient = get_patient(session, patient_id)
     if payload.note is not None:
@@ -164,14 +191,37 @@ def create_analysis(session: Session, patient_id: UUID, payload: AnalysisRequest
             metadata.context_observation_ids = [item.observation.id for item in context.observations]
             metadata.retrieval_method = context.retrieval_method
             extraction = ExtractionResult.model_validate(pipeline.extractor.extract(context, note))
+            # Extractors may cite only the snapshots they received (plus the input note).
+            verify_findings(extraction.findings, allowed)
+            verify_qcancer_predictors(extraction.qcancer_predictors, allowed)
+            # Numerical history is a separate, complete SQL branch. Semantic top-k,
+            # lexical matching and prompt budgets must never select model inputs.
+            numerical = PatientRepository(session).structured(
+                scope=PatientScope(patient_id=patient_id, as_of=note.observed_at))
+            numerical_context = RetrievedContext(patient_id=patient_id, cutoff=note.observed_at,
+                observations=[ContextObservation(observation=ObservationRead.model_validate(row.model_dump()),
+                                                source_excerpt=row.text) for row in numerical.observations],
+                ranked_observation_ids=[row.id for row in numerical.observations])
+            allowed.update(validate_context(session, numerical_context, note))
+            metadata.context_observation_ids = list(dict.fromkeys(
+                [*metadata.context_observation_ids, *numerical_context.ranked_observation_ids]))
             # Lab-derived findings (anaemia, iron deficiency anaemia, FIT) are computed in Python
             # and go through the same evidence checks as extracted findings.
             derived, derived_missing = derive_lab_findings(
-                [item.observation for item in context.observations], sex=patient.sex)
+                list(numerical.observations), sex=patient.sex)
             extraction.findings.extend(derived)
             extraction.missing_information.extend(derived_missing)
             verify_findings(extraction.findings, allowed)
-            metadata.missing_information = extraction.missing_information
+            retrieval_missing = ([f"{gap.code}: {gap.description}" for gap in context.source_context.coverage.missing_information]
+                                 if context.source_context is not None else [])
+            metadata.missing_information = list(dict.fromkeys([*extraction.missing_information, *retrieval_missing]))
+            qcancer_inputs = build_qcancer_input(
+                patient_id=patient_id, as_of=note.observed_at, sex=patient.sex,
+                age_years=patient_facts[AGE_YEARS], predictors=extraction.qcancer_predictors,
+                observations=[ObservationRead.model_validate(row) for row in allowed.values()],
+            )
+            qcancer_result = qcancer_prediction(qcancer_inputs)
+            metadata.predictions = [qcancer_result]
             rules = session.scalars(select(TriggerRule).where(TriggerRule.enabled.is_(True)).order_by(TriggerRule.id)).all()
             metadata.rule_snapshots = {str(rule.id): rule_snapshot(rule) for rule in rules}
             if not rules:
@@ -208,6 +258,7 @@ def create_analysis(session: Session, patient_id: UUID, payload: AnalysisRequest
     except Exception as error:
         run.status = AnalysisStatus.FAILED
         metadata.error_code = error.code if isinstance(error, PipelineError) else "pipeline_execution_failed"
+        metadata.predictions = []
         metadata.missing_information.append("Analysis did not complete; no clinical conclusion is available.")
     else:
         run.status = AnalysisStatus.COMPLETED

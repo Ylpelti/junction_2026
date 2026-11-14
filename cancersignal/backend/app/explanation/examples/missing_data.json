@@ -1,0 +1,246 @@
+{
+  "synthetic": true,
+  "description": "Synthetic missing-data/uncertain finding fixture.",
+  "analysis_result": {
+    "patient_id": "de2926dc-9bc7-5602-a66a-5cb4b175cd54",
+    "as_of": "2026-01-01T00:00:00Z",
+    "observed_since": null,
+    "recorded_before": "2026-01-01T00:00:00Z",
+    "contract_version": "1.0",
+    "validation_scope": "reference_integrity_only",
+    "analysis_id": "4801bc1f-0247-572a-9fb5-5cedfa6122e7",
+    "created_at": "2026-01-02T00:00:00Z",
+    "status": "completed",
+    "input_note_id": null,
+    "findings": [
+      {
+        "finding_type": "fatigue",
+        "description": "SYNTHETIC: Fatigue status cannot be reconciled.",
+        "evidence": [
+          {
+            "observation_id": "fe909cd0-d507-5fa3-bf22-081ef86017d4",
+            "source_excerpt": "SYNTHETIC: Fatigue reported.",
+            "start_offset": 0,
+            "end_offset": 28
+          },
+          {
+            "observation_id": "25f62318-965d-50b5-860d-17850b92f8a3",
+            "source_excerpt": "SYNTHETIC: Denies ongoing fatigue.",
+            "start_offset": 0,
+            "end_offset": 34
+          }
+        ],
+        "uncertainty": "Source disagreement is unresolved.",
+        "id": "1fca459e-af9d-573c-afdc-ccd98632567b",
+        "patient_id": "de2926dc-9bc7-5602-a66a-5cb4b175cd54",
+        "polarity": "uncertain",
+        "temporal_status": "unknown",
+        "missing_information": [
+          {
+            "code": "contradictory_evidence",
+            "description": "SYNTHETIC source statements disagree; timing unresolved.",
+            "observation_ids": [
+              "fe909cd0-d507-5fa3-bf22-081ef86017d4",
+              "25f62318-965d-50b5-860d-17850b92f8a3"
+            ]
+          }
+        ],
+        "provenance": {
+          "name": "synthetic-manual-finding-fixture",
+          "version": "1.0",
+          "method": "manual",
+          "provider": null,
+          "model": null,
+          "prompt_version": null,
+          "configuration_digest": null
+        }
+      }
+    ],
+    "computed_features": [
+      {
+        "id": "88a4fd64-67c4-5d7c-811c-3d363117912e",
+        "patient_id": "de2926dc-9bc7-5602-a66a-5cb4b175cd54",
+        "feature_type": "hemoglobin_change",
+        "status": "insufficient_data",
+        "value": null,
+        "unit": null,
+        "input_units": [],
+        "unit_handling": "preserved",
+        "conversion_method": null,
+        "calculation_method": "latest_minus_baseline",
+        "provenance": {
+          "name": "synthetic-arithmetic-fixture",
+          "version": "1.0",
+          "method": "deterministic",
+          "provider": null,
+          "model": null,
+          "prompt_version": null,
+          "configuration_digest": null
+        },
+        "evidence_observation_ids": [
+          "475158da-b763-5113-8241-0e31146aa592"
+        ],
+        "reference_window": null,
+        "missing_information": [
+          {
+            "code": "missing_measurement",
+            "description": "SYNTHETIC laboratory value is unavailable.",
+            "observation_ids": [
+              "475158da-b763-5113-8241-0e31146aa592"
+            ]
+          }
+        ],
+        "input_coverage": {
+          "status": "complete",
+          "eligible_count": 1,
+          "missing_information": []
+        }
+      }
+    ],
+    "trigger_evaluations": [
+      {
+        "trigger_rule_id": "189e6146-cd28-5307-863b-55cb08acbe0e",
+        "trigger_rule_version": "demo-v1",
+        "patient_id": "de2926dc-9bc7-5602-a66a-5cb4b175cd54",
+        "evaluation_status": "indeterminate",
+        "explanation": "SYNTHETIC demonstration outcome only; not a clinical interpretation.",
+        "supporting_finding_ids": [
+          "1fca459e-af9d-573c-afdc-ccd98632567b"
+        ],
+        "supporting_feature_ids": [
+          "88a4fd64-67c4-5d7c-811c-3d363117912e"
+        ],
+        "supporting_observation_ids": [
+          "25f62318-965d-50b5-860d-17850b92f8a3",
+          "475158da-b763-5113-8241-0e31146aa592",
+          "fe909cd0-d507-5fa3-bf22-081ef86017d4"
+        ],
+        "missing_information": [
+          {
+            "code": "contradictory_evidence",
+            "description": "SYNTHETIC source statements disagree; timing unresolved.",
+            "observation_ids": [
+              "fe909cd0-d507-5fa3-bf22-081ef86017d4",
+              "25f62318-965d-50b5-860d-17850b92f8a3"
+            ]
+          },
+          {
+            "code": "missing_measurement",
+            "description": "SYNTHETIC laboratory value is unavailable.",
+            "observation_ids": [
+              "475158da-b763-5113-8241-0e31146aa592"
+            ]
+          }
+        ],
+        "requires_clinician_review": false
+      }
+    ],
+    "predictions": [],
+    "source_observations": [
+      {
+        "id": "fe909cd0-d507-5fa3-bf22-081ef86017d4",
+        "patient_id": "de2926dc-9bc7-5602-a66a-5cb4b175cd54",
+        "encounter_id": null,
+        "observation_type": "symptom",
+        "code": null,
+        "text": "SYNTHETIC: Fatigue reported.",
+        "numeric_value": null,
+        "unit": null,
+        "status": "current",
+        "observed_at": "2024-05-01T10:00:00Z",
+        "recorded_at": "2024-05-01T11:00:00Z"
+      },
+      {
+        "id": "25f62318-965d-50b5-860d-17850b92f8a3",
+        "patient_id": "de2926dc-9bc7-5602-a66a-5cb4b175cd54",
+        "encounter_id": null,
+        "observation_type": "symptom",
+        "code": null,
+        "text": "SYNTHETIC: Denies ongoing fatigue.",
+        "numeric_value": null,
+        "unit": null,
+        "status": "negated",
+        "observed_at": "2025-05-01T10:00:00Z",
+        "recorded_at": "2025-05-01T11:00:00Z"
+      },
+      {
+        "id": "475158da-b763-5113-8241-0e31146aa592",
+        "patient_id": "de2926dc-9bc7-5602-a66a-5cb4b175cd54",
+        "encounter_id": null,
+        "observation_type": "laboratory",
+        "code": "SYNTHETIC-HB",
+        "text": "SYNTHETIC: Blood test requested; result unavailable.",
+        "numeric_value": null,
+        "unit": null,
+        "status": "planned",
+        "observed_at": "2025-05-01T10:00:00Z",
+        "recorded_at": "2025-05-01T11:00:00Z"
+      }
+    ],
+    "metadata": {
+      "pipeline_version": "synthetic-contract-fixture-v1",
+      "components": [
+        {
+          "name": "synthetic-keyword-fixture",
+          "version": "1.0",
+          "method": "keyword",
+          "provider": null,
+          "model": null,
+          "prompt_version": null,
+          "configuration_digest": null
+        },
+        {
+          "name": "synthetic-manual-finding-fixture",
+          "version": "1.0",
+          "method": "manual",
+          "provider": null,
+          "model": null,
+          "prompt_version": null,
+          "configuration_digest": null
+        },
+        {
+          "name": "synthetic-arithmetic-fixture",
+          "version": "1.0",
+          "method": "deterministic",
+          "provider": null,
+          "model": null,
+          "prompt_version": null,
+          "configuration_digest": null
+        }
+      ],
+      "rules": [
+        {
+          "trigger_rule_id": "189e6146-cd28-5307-863b-55cb08acbe0e",
+          "version": "demo-v1",
+          "source": "SYNTHETIC_CONTRACT_FIXTURE_NOT_CLINICAL_GUIDANCE",
+          "source_section": "contradictory_incomplete"
+        }
+      ],
+      "source_snapshot_digest": "ac37dfe802e98d506cc52de540fdf2347a4ad5ab879666c02d3bf29ce47822d3",
+      "evaluation": {
+        "dataset_id": "synthetic-contract-examples",
+        "dataset_version": "1.0",
+        "split": "demo",
+        "input_mode": "C"
+      }
+    },
+    "missing_information": [
+      {
+        "code": "contradictory_evidence",
+        "description": "SYNTHETIC source statements disagree; timing unresolved.",
+        "observation_ids": [
+          "fe909cd0-d507-5fa3-bf22-081ef86017d4",
+          "25f62318-965d-50b5-860d-17850b92f8a3"
+        ]
+      },
+      {
+        "code": "missing_measurement",
+        "description": "SYNTHETIC laboratory value is unavailable.",
+        "observation_ids": [
+          "475158da-b763-5113-8241-0e31146aa592"
+        ]
+      }
+    ],
+    "issues": []
+  }
+}

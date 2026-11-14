@@ -92,6 +92,14 @@ class PipelineSettings(BaseSettings):
     extraction_allow_live: bool = False
     extraction_cache_dir: Path | None = None
 
+    # Auto uses complete history while it fits, then PostgreSQL lexical retrieval.
+    # Hybrid explicitly opts into local embeddings; requests never download weights.
+    retrieval: Literal["auto", "baseline", "lexical", "hybrid"] = "auto"
+    retrieval_top_k: int = Field(default=5, ge=1)
+    retrieval_max_source_chars: int = Field(default=32000, ge=1)
+    retrieval_model_cache: Path | None = None
+    retrieval_auto_index: bool = True
+
 
 @lru_cache
 def get_pipeline_settings() -> PipelineSettings:

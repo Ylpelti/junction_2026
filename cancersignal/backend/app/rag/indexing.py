@@ -4,17 +4,19 @@ from sqlalchemy import delete, select
 from app.contracts.clinical_context import SourceObservation
 from app.models import Observation, Patient
 from app.rag.embeddings import EmbeddingError, checked_vector, chunk_source, source_digest
-from app.rag.repository import PatientNotFound
+from app.rag.repository import PatientNotFound, scoped_observations
 from app.rag.storage import EmbeddingChunk
 
 
-def index_patient(session, patient_id, embedder, *, force=False):
+def index_patient(session, patient_id, embedder, *, force=False, scope=None):
+    if scope is not None and scope.patient_id != patient_id:
+        raise ValueError("Indexing scope must belong to the requested patient.")
     if session.get(Patient, patient_id) is None:
         raise PatientNotFound("Synthetic patient does not exist.")
     counts = {"indexed_observations": 0, "reused_observations": 0, "chunks_written": 0}
     # Lock source rows in UUID order: concurrent indexers serialize per source.
-    records = session.scalars(select(Observation).where(Observation.patient_id == patient_id)
-        .order_by(Observation.id).with_for_update()).all()
+    query = scoped_observations(scope) if scope is not None else select(Observation).where(Observation.patient_id == patient_id)
+    records = session.scalars(query.order_by(Observation.id).with_for_update()).all()
     with session.begin_nested():
         for record in records:
             source = SourceObservation.model_validate(record)
