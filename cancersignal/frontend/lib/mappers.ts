@@ -1,7 +1,17 @@
 // The ONLY place that knows backend field names. A backend change should only
 // touch this file. Raw types mirror backend/app/schemas/{records,analysis}.py.
 
-import type { AnalysisResult, Finding, HistoryEntry, LabResult, Medication, Patient, PatientRecord, Referral } from "./types";
+import type {
+  AnalysisResult,
+  Finding,
+  FindingPriority,
+  HistoryEntry,
+  LabResult,
+  Medication,
+  Patient,
+  PatientRecord,
+  Referral,
+} from "./types";
 
 // ---- Raw API types -------------------------------------------------------
 
@@ -55,6 +65,8 @@ type ApiTrigger = {
   demonstration_only: boolean;
   rule_source: string;
   rule_source_section: string;
+  /** Set by the backend rule. Missing or unknown values count as "review". */
+  priority?: "urgent" | "review";
   triggered: boolean;
   explanation: string;
   recommended_action: string | null;
@@ -219,9 +231,14 @@ export function toAnalysis(r: ApiAnalysisResponse): AnalysisResult {
     return o ? observationRef(o) : null;
   };
 
+  // The rule decides urgency; anything other than "urgent" is review (backwards compatible).
+  const priorityOf = (t: ApiTrigger): FindingPriority => (t.priority === "urgent" ? "urgent" : "review");
+
   let hidden = 0;
   const findings: Finding[] = r.trigger_results
     .filter((t) => t.triggered)
+    // Urgent first, otherwise keep the backend's rule order (sort is stable).
+    .sort((a, b) => Number(priorityOf(b) === "urgent") - Number(priorityOf(a) === "urgent"))
     .map((t, index) => {
       const ids = new Set(t.evidence_observation_ids);
       const support = r.findings.filter((f) => f.evidence.some((e) => ids.has(e.observation_id)));
@@ -240,14 +257,14 @@ export function toAnalysis(r: ApiAnalysisResponse): AnalysisResult {
         sources: chips,
         rule: `${t.rule_name} v${t.rule_version}${t.demonstration_only ? " (demonstration rule)" : ""}`,
         ruleSrc: [t.rule_source, t.rule_source_section].filter(Boolean).join(" "),
+        priority: priorityOf(t),
       };
     });
 
   if (hidden > 0) missing.push(`${hidden} evidence reference(s) could not be resolved to a source record and are not shown.`);
 
   return {
-    // TODO(backend): TriggerResponse has no priority/severity, so "urgent" cannot come from the backend yet.
-    status: findings.length > 0 ? "review" : "none",
+    status: findings.some((f) => f.priority === "urgent") ? "urgent" : findings.length > 0 ? "review" : "none",
     summary: r.explanation,
     findings,
     missing,
