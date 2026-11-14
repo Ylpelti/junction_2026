@@ -1,0 +1,136 @@
+{
+  "synthetic": true,
+  "description": "Independent synthetic API-v1 fixture; not a lossless conversion of the richer model example.",
+  "analysis_response": {
+    "id": "d75bd2ad-b19d-5989-9d29-d1823f829c5c",
+    "patient_id": "9ecf2e55-f8f0-52ed-92eb-95d8776e5162",
+    "created_at": "2026-01-02T00:00:00Z",
+    "status": "completed",
+    "findings": [
+      {
+        "id": "cf5537e1-595c-5ca2-9cb8-af9641543eed",
+        "analysis_run_id": "d75bd2ad-b19d-5989-9d29-d1823f829c5c",
+        "patient_id": "9ecf2e55-f8f0-52ed-92eb-95d8776e5162",
+        "finding_type": "fatigue",
+        "description": "SYNTHETIC: Repeated documented fatigue.",
+        "status": "historical",
+        "uncertainty": null,
+        "evidence": [
+          {
+            "observation_id": "be68c96e-31f2-5fba-8933-957d5db9acf6",
+            "source_excerpt": "SYNTHETIC: Fatigue documented.",
+            "start_offset": 0,
+            "end_offset": 30
+          },
+          {
+            "observation_id": "ac3c1491-dcc3-5f99-a12a-8a9cf545b96b",
+            "source_excerpt": "SYNTHETIC: Fatigue documented again.",
+            "start_offset": 0,
+            "end_offset": 36
+          }
+        ]
+      }
+    ],
+    "trigger_results": [
+      {
+        "id": "05c4f23f-63ee-5f87-bbe6-4f6605ebc04e",
+        "trigger_rule_id": "6c121af0-17d4-5072-840e-bdc25dfb3be0",
+        "rule_name": "SYNTHETIC API fixture rule",
+        "rule_version": "demo-v1",
+        "demonstration_only": true,
+        "rule_source": "SYNTHETIC_CONTRACT_FIXTURE_NOT_CLINICAL_GUIDANCE",
+        "rule_source_section": "longitudinal",
+        "priority": "review",
+        "triggered": true,
+        "explanation": "SYNTHETIC stored outcome, no clinical inference.",
+        "recommended_action": null,
+        "requires_clinician_review": true,
+        "evidence_observation_ids": [
+          "be68c96e-31f2-5fba-8933-957d5db9acf6",
+          "ac3c1491-dcc3-5f99-a12a-8a9cf545b96b"
+        ]
+      }
+    ],
+    "source_observations": [
+      {
+        "id": "be68c96e-31f2-5fba-8933-957d5db9acf6",
+        "patient_id": "9ecf2e55-f8f0-52ed-92eb-95d8776e5162",
+        "encounter_id": null,
+        "observation_type": "symptom",
+        "code": null,
+        "text": "SYNTHETIC: Fatigue documented.",
+        "numeric_value": null,
+        "unit": null,
+        "status": "current",
+        "observed_at": "2020-05-01T10:00:00Z",
+        "recorded_at": "2020-05-01T11:00:00Z"
+      },
+      {
+        "id": "ac3c1491-dcc3-5f99-a12a-8a9cf545b96b",
+        "patient_id": "9ecf2e55-f8f0-52ed-92eb-95d8776e5162",
+        "encounter_id": null,
+        "observation_type": "symptom",
+        "code": null,
+        "text": "SYNTHETIC: Fatigue documented again.",
+        "numeric_value": null,
+        "unit": null,
+        "status": "current",
+        "observed_at": "2025-05-01T10:00:00Z",
+        "recorded_at": "2025-05-01T11:00:00Z"
+      },
+      {
+        "id": "3de03882-8787-51ab-9934-abe13cd5e816",
+        "patient_id": "9ecf2e55-f8f0-52ed-92eb-95d8776e5162",
+        "encounter_id": null,
+        "observation_type": "laboratory",
+        "code": "SYNTHETIC-HB",
+        "text": "SYNTHETIC: Hb laboratory report.",
+        "numeric_value": "145",
+        "unit": "g/L",
+        "status": "completed",
+        "observed_at": "2020-05-01T10:00:00Z",
+        "recorded_at": "2020-05-01T11:00:00Z"
+      },
+      {
+        "id": "5fb925d1-fd4b-52ea-ae70-fc895023b04b",
+        "patient_id": "9ecf2e55-f8f0-52ed-92eb-95d8776e5162",
+        "encounter_id": null,
+        "observation_type": "laboratory",
+        "code": "SYNTHETIC-HB",
+        "text": "SYNTHETIC: Hb laboratory report.",
+        "numeric_value": "123",
+        "unit": "g/L",
+        "status": "completed",
+        "observed_at": "2025-05-01T10:00:00Z",
+        "recorded_at": "2025-05-01T11:00:00Z"
+      }
+    ],
+    "explanation": "SYNTHETIC existing API explanation.",
+    "provenance": {
+      "input_observation_id": "753780b7-87bf-553f-b357-813a82085d56",
+      "cutoff": "2026-01-01T00:00:00Z",
+      "context_observation_ids": [],
+      "retrieval_method": null,
+      "extraction_method": null,
+      "rule_snapshots": {},
+      "missing_information": [
+        "SYNTHETIC: public API has no separate mathematical feature records."
+      ],
+      "patient_facts": {},
+      "error_code": null
+    }
+  },
+  "input_note": {
+    "id": "753780b7-87bf-553f-b357-813a82085d56",
+    "patient_id": "9ecf2e55-f8f0-52ed-92eb-95d8776e5162",
+    "encounter_id": null,
+    "observation_type": "clinical_note",
+    "code": null,
+    "text": "SYNTHETIC hoitokirjaus sovittimen testaamiseen.",
+    "numeric_value": null,
+    "unit": null,
+    "status": null,
+    "observed_at": "2026-01-01T00:00:00Z",
+    "recorded_at": "2026-01-01T00:00:00Z"
+  }
+}
