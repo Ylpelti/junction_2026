@@ -42,7 +42,10 @@ encounter belonging to that patient. IDs, text, timestamps, codes and values are
 preserved; Decimal values serialize as strings. There are no update/delete or
 encounter-creation endpoints. No authentication is implemented. Patient-path
 operations enforce ownership; global observation/analysis UUID routes resolve
-records directly. CORS permits local frontend origins on localhost/127.0.0.1:3000.
+records directly. CORS defaults to local frontend origins on localhost/127.0.0.1:3000;
+configure exact origins through the JSON-array `CORS_ORIGINS` setting in the root
+`.env` and restart FastAPI. GET/POST and JSON content-type preflights are allowed;
+cookie credentials are disabled. Frontend API origin is `NEXT_PUBLIC_API_URL`.
 
 Reads return 200, creates 201, missing resources 404, invalid input/ownership 422,
 ID/constraint conflicts 409, and database failures 503. Errors have `detail`;

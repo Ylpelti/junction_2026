@@ -7,12 +7,14 @@ It will combine new clinical notes with relevant patient history through
 patient-specific retrieval-augmented generation (RAG), highlighting possible
 cancer-related risk signals with references to original records for physician review.
 
-This repository currently contains a Next.js placeholder page, a FastAPI health
-endpoint, a PostgreSQL/pgvector backend foundation, relational patient/evidence
+This repository currently contains a Next.js nurse dashboard and physician queue,
+a FastAPI API, a PostgreSQL/pgvector backend foundation, relational patient/evidence
 models, a small synthetic seed dataset, and database-backed patient and analysis
 APIs. The internal pipeline has baseline history retrieval, a structured-source
-demo extractor, and sourced demonstration rules. LLM/free-text extraction, vector
-search, ML, and simulations are not implemented. See [the API contract](docs/contracts.md)
+demo extractor, and sourced demonstration rules. LLM/free-text extraction,
+ML and simulations are not implemented. The independent [RAG engine](backend/app/rag/README.md)
+also supports optional local dense/hybrid retrieval; the API still uses its demo
+retriever until downstream integration. See [the API contract](docs/contracts.md)
 and [the data model](docs/data-model.md).
 
 Independent RAG, extraction and mathematical components can use the
@@ -72,6 +74,11 @@ npm run dev
 
 Open <http://localhost:3000>. Edit `frontend/app/page.tsx` to begin development.
 
+The frontend calls `http://localhost:8000` by default. To use a different backend,
+set `NEXT_PUBLIC_API_URL` in `frontend/.env.local` to its origin (without `/api/v1`),
+then restart/rebuild Next.js. Appointments and physician workflow currently use
+documented local/demo fallbacks; see [backend-todo.md](docs/backend-todo.md).
+
 Checks and production build (from `frontend/`):
 
 ```sh
@@ -79,6 +86,9 @@ npm run typecheck
 npm run build
 npm start
 ```
+
+If a restricted environment prevents Turbopack from opening its build-worker port,
+use `npm run build -- --webpack` to produce the production build.
 
 `npm start` serves the completed production build on port 3000. Stop the development
 server before starting it on the same port. No frontend tests are configured yet.
@@ -116,6 +126,23 @@ python -m uvicorn app.main:app --reload
 
 On Windows, use `py -m venv .venv` and activate with
 `.venv\Scripts\Activate.ps1` in PowerShell instead.
+
+### Frontend origins / CORS
+
+FastAPI allows `http://localhost:3000` and `http://127.0.0.1:3000` by default.
+To use another frontend port or hosted URL, set `CORS_ORIGINS` as a JSON array in
+`cancersignal/.env` (or an exported environment variable), then restart FastAPI:
+
+```dotenv
+CORS_ORIGINS=["http://localhost:3000","http://127.0.0.1:3000","http://localhost:3001","https://your-frontend.example"]
+```
+
+Use exact origins: scheme, hostname and optional port, with no path or wildcard.
+An empty array disables cross-origin access. GET and POST are enabled, including
+JSON POST preflight requests; cookies/credentials are disabled. CORS configuration
+does not require database credentials, so `/health` remains independently runnable.
+`NEXT_PUBLIC_API_URL` identifies the backend; `CORS_ORIGINS` lists allowed frontend
+origins. Neither setting adds `/api/v1` or changes the existing endpoint contracts.
 
 - API: <http://localhost:8000>
 - Interactive API documentation: <http://localhost:8000/docs>

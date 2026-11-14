@@ -6,7 +6,11 @@ from the backend. Owners are from the Pipeline and Ownership table in `AGENTS.md
 
 **Status:** the frontend passes typecheck and build, and was tested in a browser
 with prototype data and with mocked responses that follow the backend schemas.
-**It has not been run against a running backend yet.**
+The actual frontend API client and mappers have now been verified against running
+FastAPI/PostgreSQL for patient/history reads, note saves, analysis responses and
+CORS JSON POST preflights. A full browser walkthrough against the live backend
+remains to be completed. Production build was verified with `npm run build -- --webpack`;
+Turbopack's worker port was blocked in the verification environment.
 
 ## Where the frontend touches the backend
 
@@ -61,6 +65,6 @@ These run only in browser state (`USE_LOCAL_WORKFLOW`) and are lost on reload.
 
 ## Other notes
 
-- **CORS** allows only `http://localhost:3000` and `http://127.0.0.1:3000`. Run the frontend on port 3000, or add the other origin.
+- **CORS** defaults to `http://localhost:3000` and `http://127.0.0.1:3000`. Configure the JSON-array `CORS_ORIGINS` in `cancersignal/.env` for other frontend ports/URLs, then restart FastAPI. The frontend's backend URL is `NEXT_PUBLIC_API_URL`; see README for both settings.
 - **Demo reset:** each Save creates a new note in the database, and the seed is insert-only. A way to reset demo data before a presentation would help.
 - **Offline demo:** `AGENTS.md` asks for cached LLM responses for the demo patients, so the demo works without network.
