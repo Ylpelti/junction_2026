@@ -94,5 +94,8 @@ export type QueueItem = {
   level: QueueLevel;
   cs: boolean;
   summary: string;
-  findings: Pick<Finding, "id" | "title" | "rule" | "ruleSrc">[];
+  /** Full findings so the physician sees why the alert was raised (detail, sources, rule, priority). */
+  findings: Finding[];
+  /** "Not found in records" items from the analysis. */
+  missing: string[];
 };

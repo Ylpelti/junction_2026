@@ -190,7 +190,8 @@ export function CancerSignalApp() {
         level: res.status === "urgent" ? "urgent" : "review",
         cs: true,
         summary: res.summary,
-        findings: res.findings.map(({ id, title, rule, ruleSrc }) => ({ id, title, rule, ruleSrc })),
+        findings: res.findings,
+        missing: res.missing,
       },
     }));
     setVisit((v) => ({ ...v, blocked: false }));
