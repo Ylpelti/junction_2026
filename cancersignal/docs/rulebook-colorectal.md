@@ -11,7 +11,7 @@ sääntökirja (NICE)". This page is the version implemented in the backend.
 ## How the rules run
 
 - **The rules decide; the LLM does not.** Rules are deterministic Python (`app/reasoning/trigger_engine.py`). The LLM only extracts facts into the vocabulary below and writes explanations.
-- **Where the rules live:** seeded as enabled `trigger_rules` by `python -m app.db.seed` (`seed_rules()` in `app/db/seed.py`), version `nice-2023-demo-1`, with stable IDs.
+- **Where the rules live:** seeded as enabled `trigger_rules` by `python -m app.db.seed` (`seed_rules()` in `app/db/seed_rules.py`, kept out of `seed.py` so RAG stays independent of `app.reasoning`), version `nice-2023-demo-1`, with stable IDs.
 - **Statuses:** a finding leaf matches only `current` findings. `negated`, `resolved` and `uncertain` findings never trigger. Whether an anaemia is "unexplained" or a FIT is "not acted on" is decided upstream by extraction and reconciliation (an investigated anaemia is `resolved`), not by the rules.
 - **Age** is a patient-level condition (`{"kind": "patient", "field": "age_years", ...}`), not a finding. It is computed in whole years from `birth_date` at the note time (time *t*). If age is missing, the condition is false.
 - **Priority** comes from the rule: `urgent` or `review`. The overall alert level is the highest priority among the triggered rules.

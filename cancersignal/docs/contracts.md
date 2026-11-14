@@ -170,7 +170,7 @@ Unsupported formats fail explicitly. Rule metadata is snapshotted for stable GET
 
 The colorectal rulebook SUO-01…SUO-10 ([rulebook-colorectal.md](rulebook-colorectal.md))
 is seeded as enabled demonstration rules by `python -m app.db.seed` through
-`seed_rules()` (insert-only, stable IDs, version `nice-2023-demo-1`). The test
+`seed_rules()` in `app/db/seed_rules.py` (insert-only, stable IDs, version `nice-2023-demo-1`). The test
 fixture `seed()` still creates no rules, so tests that need an empty rule set keep it.
 
 ## Future ML and additive storage migration

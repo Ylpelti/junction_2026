@@ -96,7 +96,7 @@ def test_unsupported_rule_formats_fail_explicitly(conditions):
 
 # ---- Colorectal rulebook (docs/rulebook-colorectal.md) ----------------------
 
-from app.db.seed import COLORECTAL_RULES, colorectal_rule_rows
+from app.db.seed_rules import COLORECTAL_RULES, colorectal_rule_rows
 from app.reasoning import vocabulary as v
 from app.reasoning.trigger_engine import DemonstrationRule
 
