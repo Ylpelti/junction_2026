@@ -62,10 +62,10 @@ function StatusPill({ s }: { s: NurseState }) {
   if (s.saving) {
     dot = "bg-mute-3 ring-chip";
     text = "checking…";
-  } else if (res?.status === "unavailable") {
+  } else if (res?.status === "unavailable" || s.patients.status === "error") {
     dot = "bg-mute-3 ring-chip";
     title = "CancerSignal unavailable";
-    text = "this note was not checked";
+    text = s.patients.status === "error" ? "backend not reachable" : "this note was not checked";
   } else if (s.pending) {
     dot = res?.status === "urgent" ? "bg-[#DC2626] ring-[#FEE2E2]" : "bg-amber-edge ring-amber-soft";
     text = "1 unread alert";
