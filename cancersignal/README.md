@@ -7,10 +7,11 @@ It will combine new clinical notes with relevant patient history through
 patient-specific retrieval-augmented generation (RAG), highlighting possible
 cancer-related risk signals with references to original records for physician review.
 
-This repository currently contains **only a framework scaffold**: a Next.js
-placeholder page, a FastAPI health endpoint, and a PostgreSQL/pgvector backend
-foundation. Patient workflows, AI/RAG, datasets, ML, and simulations are not
-implemented. There are no patient tables or domain schemas yet.
+This repository currently contains a Next.js placeholder page, a FastAPI health
+endpoint, a PostgreSQL/pgvector backend foundation, relational patient/evidence
+models, and a small synthetic seed dataset.
+Patient API workflows, AI/RAG, ML, rule evaluation, and simulations are not
+implemented. See [the data model](docs/data-model.md) for the shared storage contract.
 
 ## Structure
 
@@ -27,8 +28,11 @@ cancersignal/
 │   │   ├── api/    # HTTP routes (health only)
 │   │   ├── core/   # Environment-based settings
 │   │   ├── db/     # SQLAlchemy sessions, connectivity check, extension init
+│   │   ├── models/ # Relational records and enums
+│   │   ├── schemas/ # Pydantic create/read contracts
 │   │   └── main.py
-│   ├── tests/      # API smoke test, no database required
+│   ├── alembic/    # Versioned schema migrations
+│   ├── tests/      # API, schema, and opt-in PostgreSQL tests
 │   ├── pyproject.toml
 │   └── requirements.txt # Compatibility entry point for runtime installation
 ├── simulation/     # Reserved for future work; no implementation
@@ -38,8 +42,7 @@ cancersignal/
 
 The frontend and backend run independently in two terminals. PostgreSQL runs in
 Docker; Python runs locally. No external service or API key is required.
-Models, domain schemas, and AI packages will be added only when their first
-feature is implemented.
+AI packages and patient API routes are not implemented.
 
 ## Prerequisites
 
@@ -95,6 +98,9 @@ python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -e ".[dev]"
 python -m app.db.check
+python -m alembic upgrade head
+# Optional: load the small, reproducible SYNTHETIC dataset.
+python -m app.db.seed
 python -m uvicorn app.main:app --reload
 ```
 
@@ -122,12 +128,16 @@ Checks (from `backend/`, with the virtual environment activated):
 python -m pytest
 python -m pip check
 python -m app.db.check
+python -m alembic check
+# Optional PostgreSQL integrity suite; creates and removes its own test database.
+RUN_DATABASE_TESTS=1 python -m pytest
 ```
 
 The database check executes `SELECT 1` through SQLAlchemy and confirms that the
 `vector` extension is enabled. It requires the Compose database and `.env` and
-exits nonzero on failure. The pytest API test requires neither. There is no Python
-build step. To run without automatic reload, use `python -m uvicorn app.main:app`.
+exits nonzero on failure. API/schema tests require neither; database tests skip
+unless opted in and need the Compose database role's CREATEDB permission. There is
+no Python build step. To run without automatic reload, use `python -m uvicorn app.main:app`.
 The existing `python -m pip install -r requirements.txt` command still installs
 runtime dependencies; development tools require the `[dev]` extra above.
 
@@ -153,7 +163,9 @@ Avoid removing the volume unless you intend to delete its contents.
 
 `app/api/` owns HTTP routes, `app/core/` owns settings, and `app/db/` owns database
 connections. `get_session` provides a request-scoped SQLAlchemy session for future
-routes; callers explicitly commit writes. No tables are created automatically.
+routes; callers explicitly commit writes. Apply Alembic migrations to create tables;
+API startup never creates them. See [docs/data-model.md](docs/data-model.md) for
+schema conventions, evidence integrity, seed contents, and integration-test behavior.
 
 ## Planned work and ownership
 
