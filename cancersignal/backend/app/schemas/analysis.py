@@ -39,6 +39,8 @@ class RuleSnapshot(Record):
     source_section: str
     recommended_action: str
     demonstration_only: bool
+    # Snapshots stored before priorities existed default to review.
+    priority: Literal["urgent", "review"] = "review"
 
 
 class AnalysisProvenance(Record):
@@ -49,6 +51,8 @@ class AnalysisProvenance(Record):
     extraction_method: str | None = None
     rule_snapshots: dict[str, RuleSnapshot] = Field(default_factory=dict)
     missing_information: list[str] = Field(default_factory=list)
+    # Patient-level facts computed in Python at the cutoff, e.g. {"age_years": 67}.
+    patient_facts: dict[str, int] = Field(default_factory=dict)
     error_code: str | None = None
 
 
@@ -64,6 +68,8 @@ class TriggerResponse(Record):
     demonstration_only: bool
     rule_source: str
     rule_source_section: str
+    # Alert level set by the rule definition, never by the LLM.
+    priority: Literal["urgent", "review"]
     triggered: bool
     explanation: str
     recommended_action: str | None

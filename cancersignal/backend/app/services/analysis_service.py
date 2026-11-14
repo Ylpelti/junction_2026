@@ -1,3 +1,5 @@
+import inspect
+from datetime import date, datetime
 from uuid import UUID
 
 from sqlalchemy import select
@@ -12,7 +14,9 @@ from app.models import (
 )
 from app.models.enums import AnalysisStatus, ObservationType
 from app.rag.context import ExtractionResult, RetrievedContext
+from app.reasoning.derived_findings import derive_lab_findings
 from app.reasoning.interfaces import AnalysisPipeline, TriggerEvaluation
+from app.reasoning.vocabulary import AGE_YEARS
 from app.schemas.analysis import (
     AnalysisProvenance, AnalysisRequest, AnalysisResponse, EvidenceReference,
     FindingResponse, RuleSnapshot, TriggerResponse,
@@ -27,7 +31,25 @@ def rule_snapshot(rule: TriggerRule) -> RuleSnapshot:
     return RuleSnapshot(name=rule.name, version=rule.version,
         source=str(rule.conditions.get("lahde", "")), source_section=str(rule.conditions.get("lahde_kohta", "")),
         recommended_action=rule.recommended_action,
-        demonstration_only=rule.conditions.get("demonstration") is True)
+        demonstration_only=rule.conditions.get("demonstration") is True,
+        priority="urgent" if rule.conditions.get("priority") == "urgent" else "review")
+
+
+def age_in_years(birth_date: date, at: datetime) -> int:
+    """Whole years at time t, computed in Python (never by the LLM)."""
+    day = at.date()
+    return day.year - birth_date.year - ((day.month, day.day) < (birth_date.month, birth_date.day))
+
+
+def run_evaluator(pipeline: AnalysisPipeline, patient_id, findings, rules, patient_facts):
+    """Pass patient facts only to evaluators that accept them (older ones take three arguments)."""
+    try:
+        parameters = inspect.signature(pipeline.evaluate).parameters.values()
+    except (TypeError, ValueError):
+        parameters = ()
+    if any(p.name == "patient_facts" or p.kind == p.VAR_KEYWORD for p in parameters):
+        return pipeline.evaluate(patient_id, findings, rules, patient_facts=patient_facts)
+    return pipeline.evaluate(patient_id, findings, rules)
 
 
 def get_analysis(session: Session, analysis_id: UUID) -> AnalysisResponse:
@@ -50,7 +72,7 @@ def get_analysis(session: Session, analysis_id: UUID) -> AnalysisResponse:
         results.append(TriggerResponse(id=result.id, trigger_rule_id=result.trigger_rule_id,
             rule_name=snapshot.name, rule_version=snapshot.version,
             demonstration_only=snapshot.demonstration_only, rule_source=snapshot.source,
-            rule_source_section=snapshot.source_section, triggered=result.triggered,
+            rule_source_section=snapshot.source_section, priority=snapshot.priority, triggered=result.triggered,
             explanation=result.explanation or "Stored result has no explanation.",
             recommended_action=snapshot.recommended_action if result.triggered else None,
             requires_clinician_review=result.requires_clinician_review,
@@ -117,7 +139,7 @@ def verify_findings(findings, allowed):
 
 
 def create_analysis(session: Session, patient_id: UUID, payload: AnalysisRequest, pipeline: AnalysisPipeline):
-    get_patient(session, patient_id)
+    patient = get_patient(session, patient_id)
     if payload.note is not None:
         note_row = create_observation(session, patient_id, payload.note, commit=False)
     else:
@@ -127,8 +149,9 @@ def create_analysis(session: Session, patient_id: UUID, payload: AnalysisRequest
     if note_row.observation_type != ObservationType.CLINICAL_NOTE or not note_row.text:
         raise ServiceError(422, "Analysis requires an existing clinical_note with source text.")
     note = ObservationRead.model_validate(note_row)
+    patient_facts = {AGE_YEARS: age_in_years(patient.birth_date, note.observed_at)}
     metadata = AnalysisProvenance(input_observation_id=note.id, cutoff=note.observed_at,
-                                  extraction_method=pipeline.extractor.name)
+                                  extraction_method=pipeline.extractor.name, patient_facts=patient_facts)
     run = AnalysisRun(patient_id=patient_id, status=AnalysisStatus.RUNNING, model_name=pipeline.extractor.name,
                       details=metadata.model_dump(mode="json"))
     session.add(run)
@@ -141,14 +164,21 @@ def create_analysis(session: Session, patient_id: UUID, payload: AnalysisRequest
             metadata.context_observation_ids = [item.observation.id for item in context.observations]
             metadata.retrieval_method = context.retrieval_method
             extraction = ExtractionResult.model_validate(pipeline.extractor.extract(context, note))
+            # Lab-derived findings (anaemia, iron deficiency anaemia, FIT) are computed in Python
+            # and go through the same evidence checks as extracted findings.
+            derived, derived_missing = derive_lab_findings(
+                [item.observation for item in context.observations], sex=patient.sex)
+            extraction.findings.extend(derived)
+            extraction.missing_information.extend(derived_missing)
             verify_findings(extraction.findings, allowed)
             metadata.missing_information = extraction.missing_information
             rules = session.scalars(select(TriggerRule).where(TriggerRule.enabled.is_(True)).order_by(TriggerRule.id)).all()
             metadata.rule_snapshots = {str(rule.id): rule_snapshot(rule) for rule in rules}
             if not rules:
                 metadata.missing_information.append("No enabled demonstration rules are configured.")
-            evaluations = [TriggerEvaluation.model_validate(value) for value in pipeline.evaluate(
-                patient_id, extraction.findings, [TriggerRuleRead.model_validate(rule) for rule in rules])]
+            evaluations = [TriggerEvaluation.model_validate(value) for value in run_evaluator(
+                pipeline, patient_id, extraction.findings, [TriggerRuleRead.model_validate(rule) for rule in rules],
+                patient_facts)]
             if {value.trigger_rule_id for value in evaluations} != {rule.id for rule in rules} or len(evaluations) != len(rules):
                 raise PipelineError("invalid_trigger_rule_references")
             finding_sources = {ref.observation_id for finding in extraction.findings for ref in finding.evidence}

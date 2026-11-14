@@ -37,9 +37,9 @@ How the frontend reads an analysis:
 
 These must be done before the real backend can show any alert.
 
-1. **No enabled rules in the seed** (owner: Mathematician). `app/db/seed.py` creates no `trigger_rules`, so every analysis ends with "no signals identified". The demo needs sourced rules (`lahde`, `lahde_kohta`) for the colorectal criteria.
-2. **Free-text notes are not read** (owner: Coder, `extract.py`). The `structured-source-demo-v1` extractor only copies coded symptom and lab records, so the nurse's note text can never trigger a rule. Needs LLM extraction with a fixed JSON schema, verbatim quotes and explicit negation.
-3. **No urgency level** (owner: Mathematician + Coder, needs a contract change). `TriggerResponse` has no priority or severity, so the frontend can only show yellow (`review`). A red `urgent` alert needs a field such as `priority: "urgent" | "review"` that comes from the rule, not the LLM.
+1. ~~**No enabled rules in the seed**~~ **Done** (`feat/colorectal-rules`). `python -m app.db.seed` now also inserts the enabled colorectal rules SUO-01…SUO-10 ([rulebook-colorectal.md](rulebook-colorectal.md)). Lab-derived `anaemia` / `iron_deficiency_anaemia` / `fit_result` findings are computed in Python, so the seeded patients with low Hb can already trigger SUO-07 at age 60+.
+2. **Free-text notes are not read** (owner: Coder, `extract.py`). The `structured-source-demo-v1` extractor only copies coded symptom and lab records, so the nurse's note text can never trigger a rule. Needs LLM extraction into the shared vocabulary in `app/reasoning/vocabulary.py` (`rectal_bleeding`, `change_in_bowel_habit`, `abdominal_pain`, `weight_loss`, `abdominal_mass`, `rectal_mass`), with verbatim quotes and explicit negation.
+3. ~~**No urgency level**~~ **Done** in the backend. `TriggerResponse.priority` is `"urgent" | "review"`, set by the rule (SUO-08 and SUO-09 are urgent). Remaining: the frontend mapper still maps every triggered result to `review` and should use the highest `priority`.
 4. **Demo patients missing** (owner: Niklas + Mathematician). The prototype patients should be seed data with ground-truth labels, named `SYNTHETIC …` because the API requires that prefix. They are Korhonen (none), Laine (review), Nieminen (urgent) and Heikkinen (none, already investigated).
 
 ## Missing data fields

@@ -79,12 +79,15 @@ Responses include `id`, `patient_id`, `created_at`, `status`, `findings`,
 Findings reuse `current/historical/resolved/negated/uncertain` rather than introducing
 the illustrative `documented` status. They include uncertainty and evidence UUIDs,
 verbatim excerpts and optional `[start,end)` Unicode character offsets. Trigger
-results include rule UUID/name/version/source, demonstration label, boolean outcome,
-explanation, supporting UUIDs, recommended action and clinician-review flag.
+results include rule UUID/name/version/source, demonstration label, `priority`
+(`urgent` or `review`, from the rule definition), boolean outcome, explanation,
+supporting UUIDs, recommended action and clinician-review flag. The overall alert
+level is the highest priority among triggered results; the frontend derives it.
 `source_observations` resolves every evidence reference to the original record.
 
 Provenance stores input-note UUID, cutoff, selected history UUIDs, retrieval/extraction
-versions, rule metadata snapshots, `missing_information`, and optional `error_code`.
+versions, rule metadata snapshots (including `priority`), `patient_facts` (e.g.
+`{"age_years": 67}`, computed at the cutoff), `missing_information`, and optional `error_code`.
 **201 means a run was saved; check its status.** Controlled pipeline failures persist
 as `failed` with no partial findings/results. Unexpected adapter exceptions use
 `pipeline_execution_failed`. Database errors roll back the request and return
@@ -100,8 +103,16 @@ existing models perform all storage. Analysis does not overwrite source records.
 ```python
 retrieve_context(patient_id, query, db_session, *, before) -> RetrievedContext
 extractor.extract(context, note: ObservationRead) -> ExtractionResult
-evaluate_triggers(patient_id, findings, rules: list[TriggerRuleRead]) -> list[TriggerEvaluation]
+evaluate_triggers(patient_id, findings, rules: list[TriggerRuleRead], patient_facts=None) -> list[TriggerEvaluation]
 ```
+
+`patient_facts` is optional; the orchestrator passes it only to evaluators that
+accept it, so older three-argument evaluators keep working. `create_analysis`
+computes `age_years` in whole years from `birth_date` at the note's `observed_at`.
+After extraction, `reasoning/derived_findings.py` turns the latest laboratory values
+before the cutoff into `anaemia`, `iron_deficiency_anaemia` and `fit_result`
+findings. These cite their lab observations and pass the same evidence checks.
+Demo reference ranges live in that module until labs store their own.
 
 The baseline retriever filters patient ID and both `observed_at < before` and
 `recorded_at < before` before lexical-overlap/recency ranking. It includes original
@@ -133,14 +144,21 @@ Enabled `trigger_rules` use this typed JSONB shape:
   "demonstration": true,
   "lahde": "SYNTHETIC_FIXTURE_NOT_CLINICAL_GUIDANCE",
   "lahde_kohta": "demo-v1",
+  "priority": "review",
   "expression": {
     "kind": "group", "operator": "ALL",
     "conditions": [
+      {"kind": "patient", "field": "age_years", "numeric": {"operator": "gte", "value": 50, "unit": "years"}},
       {"kind": "finding", "finding_type": "DEMO-CODE", "statuses": ["current"]}
     ]
   }
 }
 ```
+
+`priority` is `urgent` or `review` and defaults to `review` for older rules. A
+`patient` leaf compares a patient-level fact (only `age_years`, unit `years`); a
+missing fact makes it false, and it adds no evidence IDs. A triggered rule still
+needs evidence from its finding leaves.
 
 Groups support nested ALL/ANY (nonempty; depth capped at 12). Leaves match exact
 finding types. Eligible statuses are `current` (default) or explicitly `historical`;
@@ -150,10 +168,10 @@ Optional `numeric` accepts `operator` (`lt/lte/gt/gte/eq`), Decimal `value`, and
 ALL requires every child; ANY preserves evidence from matching children only.
 Unsupported formats fail explicitly. Rule metadata is snapshotted for stable GETs.
 
-The rule developer deliberately supplies sourced, labeled demo rules. The existing
-seed has none enabled, so default analyses report that rules are missing rather than
-inventing risk results. This task does not create or alter `rules.csv`; a future
-team-authored engine plugs into `evaluate` through an explicit mapping.
+The colorectal rulebook SUO-01…SUO-10 ([rulebook-colorectal.md](rulebook-colorectal.md))
+is seeded as enabled demonstration rules by `python -m app.db.seed` through
+`seed_rules()` (insert-only, stable IDs, version `nice-2023-demo-1`). The test
+fixture `seed()` still creates no rules, so tests that need an empty rule set keep it.
 
 ## Future ML and additive storage migration
 
