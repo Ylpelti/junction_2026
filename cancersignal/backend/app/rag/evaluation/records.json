@@ -1,0 +1,7 @@
+[
+  {"key":"rag-benchmark/old-finnish", "patient_key":"patient/3", "year":2018, "observation_type":"clinical_note", "text":"SYNTHETIC: Vatsakipua jo usean vuoden ajan.", "code":"DEMO-PAIN", "status":"current"},
+  {"key":"rag-benchmark/followup-finnish", "patient_key":"patient/3", "year":2023, "observation_type":"investigation", "text":"SYNTHETIC: Ei enää vatsakipua. Tutkimus tehty, normaali löydös.", "code":"DEMO-PAIN", "status":"completed"},
+  {"key":"rag-benchmark/distractor-1", "patient_key":"patient/3", "year":2019, "observation_type":"clinical_note", "text":"SYNTHETIC: Nilkan nyrjähdyksen kontrolli.", "status":"resolved"},
+  {"key":"rag-benchmark/distractor-2", "patient_key":"patient/3", "year":2021, "observation_type":"clinical_note", "text":"SYNTHETIC: Rokotuskäynti, ei uusia oireita.", "status":"negated"},
+  {"key":"rag-benchmark/distractor-3", "patient_key":"patient/3", "year":2024, "observation_type":"clinical_note", "text":"SYNTHETIC: Kuulokojeen huolto.", "status":"completed"}
+]

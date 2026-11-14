@@ -47,7 +47,11 @@ def test_migrations_create_all_tables_and_foreign_keys(database_engine):
         assert len(inspector.get_foreign_keys(name)) == len(table.foreign_key_constraints)
     with database_engine.connect() as connection:
         assert connection.scalar(text("SELECT extversion FROM pg_extension WHERE extname = 'vector'"))
-        assert connection.scalar(text("SELECT version_num FROM alembic_version")) == "0002"
+        from alembic.script import ScriptDirectory
+        from alembic.config import Config
+        from pathlib import Path
+        config = Config(str(Path(__file__).resolve().parents[1] / "alembic.ini"))
+        assert connection.scalar(text("SELECT version_num FROM alembic_version")) == ScriptDirectory.from_config(config).get_current_head()
 
 
 def test_seed_is_reproducible_and_history_is_patient_and_time_scoped(db_session):

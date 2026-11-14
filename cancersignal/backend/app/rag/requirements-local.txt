@@ -1,0 +1,2 @@
+# Optional local dense embeddings. Lexical/history retrieval does not need this extra.
+sentence-transformers==5.7.0
