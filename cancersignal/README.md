@@ -131,6 +131,14 @@ python -m uvicorn app.main:app --reload
 On Windows, use `py -m venv .venv` and activate with
 `.venv\Scripts\Activate.ps1` in PowerShell instead.
 
+**Demon nollaus:** `python -m app.db.reset_demo --yes`, lataa sitten selain uudelleen.
+
+What the reset does:
+- **What it deletes:** all analyses, findings, trigger results and review requests, plus every observation and encounter that the seed did not create. Then it re-runs the seeds.
+- **Local only:** it refuses any database host other than localhost, 127.0.0.1 or ::1.
+- **Dry run:** without `--yes` it only shows what would be deleted.
+- **Patients outside the seed:** observations of patients created outside the seed scripts are deleted too.
+
 ### Frontend origins / CORS
 
 FastAPI allows `http://localhost:3000` and `http://127.0.0.1:3000` by default.
