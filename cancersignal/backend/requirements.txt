@@ -1,2 +1,2 @@
-fastapi==0.162.7
-uvicorn==0.54.0
+# Compatibility with the existing installation command; pyproject.toml owns dependencies.
+-e .

@@ -29,3 +29,9 @@ dist/
 coverage/
 *.log
 .DS_Store
+
+# Local credentials
+*.pem
+*.key
+credentials.json
+secrets.json
