@@ -19,8 +19,10 @@ from app.schemas.analysis import EvidenceReference, StructuredFinding
 from app.schemas.records import ObservationRead
 
 # Lab codes mapped to an analyte. Compared case-insensitively.
-HB_CODES = frozenset({"SYNTHETIC-HB", "B-HB", "HB", "HGB"})
-FERRITIN_CODES = frozenset({"SYNTHETIC-FERRITIN", "P-FERRITIN", "S-FERRITIN", "FERRITIN"})
+# LOINC 718-7 "Hemoglobin [Mass/volume] in Blood"; 2276-4 "Ferritin [Mass/volume] in Serum or Plasma".
+# FIT has no verified LOINC code in ug Hb/g faeces (58453-2 is Mass/volume), so it stays local.
+HB_CODES = frozenset({"SYNTHETIC-HB", "B-HB", "HB", "HGB", "718-7"})
+FERRITIN_CODES = frozenset({"SYNTHETIC-FERRITIN", "P-FERRITIN", "S-FERRITIN", "FERRITIN", "2276-4"})
 FIT_CODES = frozenset({"SYNTHETIC-FIT", "F-HB-FIT", "FIT"})
 
 # DEMO reference range, not clinically validated. Replace when labs store their own ranges.

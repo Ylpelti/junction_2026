@@ -78,6 +78,13 @@ def test_fit_result_keeps_source_value_and_unit():
     assert [ref.observation_id for ref in fit.evidence] == [source.id]
 
 
+def test_loinc_codes_are_recognised():
+    # LOINC 718-7 haemoglobin and 2276-4 ferritin (demo patients in backend/data/patients).
+    hb, ferritin = lab("718-7", "108", "g/l"), lab("2276-4", "9", "ug/l")
+    found = by_type(derive_lab_findings([hb, ferritin], sex="female")[0])
+    assert set(found) == {v.ANAEMIA, v.IRON_DEFICIENCY_ANAEMIA}
+
+
 def test_unmapped_lab_codes_are_reported():
     _, missing = derive_lab_findings([lab("P-Krea", "82", "umol/l")], sex="male")
     assert any("P-Krea" in m for m in missing)

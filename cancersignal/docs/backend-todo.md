@@ -45,7 +45,9 @@ These must be done before the real backend can show any alert.
 
    The default is still `off`.
 3. ~~**No urgency level**~~ **Done.** `TriggerResponse.priority` is `"urgent" | "review"`, set by the rule (SUO-08 and SUO-09 are urgent). The frontend (`feat/frontend-priority`) shows a red urgent alert when any triggered rule is `urgent`, lists urgent findings first with an "Urgent" label, and treats a missing priority as `review`.
-4. **Demo patients missing** (owner: Niklas + Mathematician). The prototype patients should be seed data with ground-truth labels, named `SYNTHETIC …` because the API requires that prefix. They are Korhonen (none), Laine (review), Nieminen (urgent) and Heikkinen (none, already investigated).
+4. ~~**Demo patients missing**~~ **Done** (`feat/demo-patients-seed`). The demo patients are versioned in `backend/data/patients/demo_patients.json` and loaded with `python -m app.db.seed_demo`:
+   - **Patients and expected alerts without LLM:** Laine (review), Nieminen (urgent), Korhonen (none) and Heikkinen (none). Each matches the eval case with the same history.
+   - **Lab codes:** LOINC for Hb (718-7) and ferritin (2276-4). FIT uses the local code `F-HB-FIT`.
 
 ## Missing data fields
 

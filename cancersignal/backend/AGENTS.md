@@ -33,8 +33,15 @@ python3 -m venv .venv
 .venv/bin/python -m app.db.check
 .venv/bin/python -m alembic upgrade head
 .venv/bin/python -m app.db.seed
+.venv/bin/python -m app.db.seed_demo   # demo patients from data/patients/demo_patients.json
 .venv/bin/python -m uvicorn app.main:app --reload
 ```
+
+Demo patients (Laine, Nieminen, Korhonen, Heikkinen) are versioned in
+`data/patients/demo_patients.json`:
+- **Lab codes:** LOINC 718-7 for haemoglobin and 2276-4 for ferritin. FIT uses the local code `F-HB-FIT`, because no verified LOINC code exists in ug/g.
+- **Loading:** `app/db/seed_demo.py` validates the file (`--check` runs without a database) and inserts it with stable IDs. Existing rows are never changed.
+- **Expected alerts:** each patient's expected alert without LLM extraction is in the file and is checked by `tests/test_seed_demo.py`.
 
 The seed is insert-only, not a database reset. Environment settings read
 `cancersignal/.env`; exported variables take precedence.

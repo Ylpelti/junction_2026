@@ -124,6 +124,8 @@ python -m app.db.check
 python -m alembic upgrade head
 # Optional: load the small, reproducible SYNTHETIC dataset.
 python -m app.db.seed
+# Optional: load the four demo patients from backend/data/patients/demo_patients.json.
+python -m app.db.seed_demo
 python -m uvicorn app.main:app --reload
 ```
 

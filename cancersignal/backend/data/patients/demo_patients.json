@@ -1,0 +1,201 @@
+{
+  "version": "demo-patients-v1",
+  "description": "The four CancerSignal demo patients. Synthetic, fictional data only. Same histories as backend/eval/cases.json (EVAL-001, EVAL-002, EVAL-017, EVAL-023). Load with: python -m app.db.seed_demo",
+  "demo_time": "2026-11-14T09:00:00Z",
+  "code_systems": {
+    "LOINC": "http://loinc.org",
+    "local": "CancerSignal demo code (no verified standard code)"
+  },
+  "lab_codes": [
+    {
+      "display": "B-Hb",
+      "code_system": "LOINC",
+      "code": "718-7",
+      "loinc_long_common_name": "Hemoglobin [Mass/volume] in Blood",
+      "unit": "g/l"
+    },
+    {
+      "display": "P-Ferritin",
+      "code_system": "LOINC",
+      "code": "2276-4",
+      "loinc_long_common_name": "Ferritin [Mass/volume] in Serum or Plasma",
+      "unit": "ug/l"
+    },
+    {
+      "display": "F-Hb-FIT",
+      "code_system": "local",
+      "code": "F-HB-FIT",
+      "loinc_long_common_name": null,
+      "unit": "ug/g",
+      "note": "No verified LOINC code for quantitative faecal haemoglobin in ug Hb per g faeces. 58453-2 is Mass/volume (typically ng/mL) and 57905-2 is a qualitative presence test, so neither matches the rulebook unit (SUO-08: >= 10 ug/g)."
+    }
+  ],
+  "patients": [
+    {
+      "key": "laine",
+      "synthetic_name": "SYNTHETIC Laine Aino",
+      "sex": "female",
+      "birth_date": "1962-03-10",
+      "eval_case": "EVAL-001",
+      "today_note_draft": "Väsymystä ja ajoittaista turvotuksen tunnetta. Ei verta ulosteessa.",
+      "expected_without_llm": {
+        "level": "review",
+        "rules": ["SUO-02", "SUO-03", "SUO-06", "SUO-07"],
+        "note": "History only (iron-deficiency anaemia, bowel change, abdominal pain). Today's note text is not coded without LLM extraction."
+      },
+      "records": [
+        {
+          "ref": "LAB-0814A",
+          "type": "laboratory",
+          "code_system": "LOINC",
+          "code": "718-7",
+          "display": "B-Hb",
+          "numeric_value": 108,
+          "unit": "g/l",
+          "status": "completed",
+          "observed_at": "2026-08-14T08:00:00Z"
+        },
+        {
+          "ref": "LAB-0814B",
+          "type": "laboratory",
+          "code_system": "LOINC",
+          "code": "2276-4",
+          "display": "P-Ferritin",
+          "numeric_value": 9,
+          "unit": "ug/l",
+          "status": "completed",
+          "observed_at": "2026-08-14T08:00:00Z"
+        },
+        {
+          "ref": "NOTE-0902",
+          "type": "clinical_note",
+          "text": "Ulostamistottumukset muuttuneet noin 3 viikkoa, ajoittaista alavatsakipua.",
+          "observed_at": "2026-09-02T10:00:00Z",
+          "coded": [
+            {"code": "change_in_bowel_habit", "quote": "Ulostamistottumukset muuttuneet noin 3 viikkoa", "status": "current"},
+            {"code": "abdominal_pain", "quote": "ajoittaista alavatsakipua", "status": "current"}
+          ]
+        },
+        {
+          "ref": "NOTE-0905",
+          "type": "clinical_note",
+          "text": "Lääkäri: rautavalmiste aloitettu, jatkotutkimuksia harkitaan kontrollissa.",
+          "observed_at": "2026-09-05T10:00:00Z",
+          "coded": []
+        }
+      ]
+    },
+    {
+      "key": "nieminen",
+      "synthetic_name": "SYNTHETIC Nieminen Pertti",
+      "sex": "male",
+      "birth_date": "1955-01-20",
+      "eval_case": "EVAL-002",
+      "today_note_draft": "Verta ulosteessa useana päivänä viime viikolla. Paino laskenut noin 5 kg parissa kuukaudessa, ei laihduttanut tarkoituksella.",
+      "expected_without_llm": {
+        "level": "urgent",
+        "rules": ["SUO-06", "SUO-08"],
+        "note": "Positive FIT 48 ug/g not acted on (SUO-08, urgent) and earlier abdominal pain at 71 (SUO-06). With LLM extraction of today's note, SUO-04 is expected as well."
+      },
+      "records": [
+        {
+          "ref": "NOTE-1022",
+          "type": "clinical_note",
+          "text": "Alavatsakipua noin kuukauden ajan. Ulosteen veritesti annettu.",
+          "observed_at": "2026-10-22T10:00:00Z",
+          "coded": [
+            {"code": "abdominal_pain", "quote": "Alavatsakipua noin kuukauden ajan", "status": "current"}
+          ]
+        },
+        {
+          "ref": "LAB-1030",
+          "type": "laboratory",
+          "code_system": "local",
+          "code": "F-HB-FIT",
+          "display": "F-Hb-FIT",
+          "numeric_value": 48,
+          "unit": "ug/g",
+          "status": "completed",
+          "observed_at": "2026-10-30T08:00:00Z"
+        }
+      ]
+    },
+    {
+      "key": "korhonen",
+      "synthetic_name": "SYNTHETIC Korhonen Mikko",
+      "sex": "male",
+      "birth_date": "1997-05-15",
+      "eval_case": "EVAL-017",
+      "today_note_draft": "Vatsatauti alkanut 2 vrk sitten, ripulia ja kuumetta 38,2. Perheessä sama tauti.",
+      "expected_without_llm": {
+        "level": "none",
+        "rules": [],
+        "note": "Short gastroenteritis in a 29-year-old; nothing should fire."
+      },
+      "records": [
+        {
+          "ref": "NOTE-0611",
+          "type": "clinical_note",
+          "text": "Nilkan nyrjähdys, kylmähoito.",
+          "observed_at": "2026-06-11T10:00:00Z",
+          "coded": []
+        }
+      ]
+    },
+    {
+      "key": "heikkinen",
+      "synthetic_name": "SYNTHETIC Heikkinen Sari",
+      "sex": "female",
+      "birth_date": "1968-03-20",
+      "eval_case": "EVAL-023",
+      "today_note_draft": "Väsymystä viime viikkoina, ei muita oireita. Ei vatsavaivoja.",
+      "expected_without_llm": {
+        "level": "none",
+        "rules": [],
+        "note": "Anaemia investigated in June (normal colonoscopy); latest Hb 128 g/l is within the demo range."
+      },
+      "records": [
+        {
+          "ref": "LAB-0512A",
+          "type": "laboratory",
+          "code_system": "LOINC",
+          "code": "718-7",
+          "display": "B-Hb",
+          "numeric_value": 112,
+          "unit": "g/l",
+          "status": "completed",
+          "observed_at": "2026-05-12T08:00:00Z"
+        },
+        {
+          "ref": "LAB-0512B",
+          "type": "laboratory",
+          "code_system": "LOINC",
+          "code": "2276-4",
+          "display": "P-Ferritin",
+          "numeric_value": 11,
+          "unit": "ug/l",
+          "status": "completed",
+          "observed_at": "2026-05-12T08:00:00Z"
+        },
+        {
+          "ref": "INV-0618",
+          "type": "investigation",
+          "text": "Kolonoskopia ja gastroskopia: normaali löydös. Anemian syy selvitetty (runsaat kuukautiset).",
+          "status": "completed",
+          "observed_at": "2026-06-18T10:00:00Z"
+        },
+        {
+          "ref": "LAB-0702",
+          "type": "laboratory",
+          "code_system": "LOINC",
+          "code": "718-7",
+          "display": "B-Hb",
+          "numeric_value": 128,
+          "unit": "g/l",
+          "status": "completed",
+          "observed_at": "2026-07-02T08:00:00Z"
+        }
+      ]
+    }
+  ]
+}
