@@ -56,11 +56,17 @@ The UI shows these from local fallback data or leaves them empty.
 
 ## Missing endpoints
 
-These run only in browser state (`USE_LOCAL_WORKFLOW`) and are lost on reload.
+The [physician review handoff API](physician-review-api.md) now persists
+submissions and exposes the pending queue. The frontend still uses browser state
+until its developer connects these endpoints; see the exact integration mapping
+in that document. Frontend implementation was not changed in this task.
 
-- Send an alert to the physician, with the evidence and a referral draft.
+- **Backend ready:** send an existing completed analysis with references to its
+  findings/evidence using `POST /patients/{id}/review-requests`. A referral draft
+  is not created by this workflow.
 - Dismiss an alert with one of four reasons, logged with user and time.
-- The physician consultation queue, sorted urgent → review → routine, then by time received.
+- **Backend ready:** `GET /review-requests`, sorted urgent → review → routine
+  (`normal`), then oldest received first; detail is `GET /review-requests/{id}`.
 - The physician's decision: order FIT / refer to specialist care / no action / acknowledge.
 
 ## Other notes
