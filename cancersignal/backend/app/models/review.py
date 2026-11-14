@@ -1,4 +1,4 @@
-"""Human-requested review handoffs; no physician decisions or referral records."""
+"""Human-requested demo workflow records; never medical orders."""
 from datetime import datetime
 from uuid import UUID, uuid4
 
@@ -14,7 +14,7 @@ class PhysicianReviewRequest(Base):
     __table_args__ = (
         ForeignKeyConstraint(["analysis_id", "patient_id"], ["analysis_runs.id", "analysis_runs.patient_id"]),
         UniqueConstraint("analysis_id", name="uq_physician_review_analysis"),
-        CheckConstraint("status = 'pending'", name="review_status"),
+        CheckConstraint("status IN ('pending', 'reviewed')", name="review_status"),
         CheckConstraint("priority IN ('urgent', 'review', 'normal')", name="review_priority"),
         CheckConstraint("submitted_by IS NULL OR length(trim(submitted_by)) > 0", name="review_submitter"),
         Index("ix_physician_review_queue", "status", "created_at", "id"),

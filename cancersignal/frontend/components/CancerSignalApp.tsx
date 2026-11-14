@@ -175,7 +175,7 @@ export function CancerSignalApp() {
   const resetVisit = () => setVisit(FRESH_VISIT);
 
   const pickPatient = (id: string) => {
-    if (id === pid) return;
+    if (id === pid || visit.saving || visit.sending) return;
     if (unresolved) {
       setVisit((v) => ({ ...v, blocked: true, acked: true, closed: false }));
       return;
@@ -194,7 +194,7 @@ export function CancerSignalApp() {
       return;
     }
     const at = new Date();
-    setVisit({ ...FRESH_VISIT, saving: useCS });
+    setVisit({ ...FRESH_VISIT, saving: true });
 
     if (source === "prototype") {
       if (useCS) await wait(700);
@@ -215,10 +215,10 @@ export function CancerSignalApp() {
       setNotes((n) => ({ ...n, [patient.id]: "" }));
       loadRecord(patient.id);
     } catch (e) {
-      // Request failed: the note was not saved. Never hide this behind silence.
+      // A lost response can occur after commit; do not claim the note was not saved.
       setVisit({
         ...FRESH_VISIT,
-        saveError: `Note not saved. ${message(e)}`,
+        saveError: `Save could not be confirmed. Refresh patient history before retrying to avoid a duplicate note. ${message(e)}`,
         result: useCS ? { status: "unavailable", summary: "", findings: [], missing: [], error: message(e), origin: "backend" } : null,
       });
     }
@@ -261,13 +261,7 @@ export function CancerSignalApp() {
       setVisit((v) => ({ ...v, sending: false, blocked: false }));
       refreshQueue();
     } catch (e) {
-      if (e instanceof ApiError && e.unreachable) {
-        // Backend down: keep the demo usable, but say clearly that nothing was saved.
-        sendLocally(`Backend unreachable: sent in this browser only, not saved. ${message(e)}`);
-      } else {
-        // 404/409/422 etc.: never pretend it was sent. The Send button stays for a retry.
-        setVisit((v) => ({ ...v, sending: false, sendError: `Not sent to the physician. ${message(e)}` }));
-      }
+      setVisit((v) => ({ ...v, sending: false, sendError: `Physician submission could not be confirmed. Retrying this analysis is safe. ${message(e)}` }));
     }
   };
 
@@ -278,6 +272,7 @@ export function CancerSignalApp() {
   };
 
   const resetDemo = () => {
+    if (visit.saving || visit.sending) return;
     setView("nurse");
     setUseCS(true);
     setSentItems({});
@@ -326,6 +321,7 @@ export function CancerSignalApp() {
         onView={setView}
         useCS={useCS}
         onToggleCS={() => {
+          if (visit.saving || visit.sending) return;
           setUseCS((v) => !v);
           resetVisit();
         }}
@@ -333,6 +329,7 @@ export function CancerSignalApp() {
         onSource={
           ALLOW_PROTOTYPE_DATASET
             ? (s) => {
+                if (visit.saving || visit.sending) return;
                 if (s !== source) {
                   resetDemo();
                   setSource(s);

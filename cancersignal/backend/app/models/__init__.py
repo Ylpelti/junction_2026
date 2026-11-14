@@ -5,10 +5,11 @@ from app.models.records import (
     ObservationEmbedding, Patient, TriggerResult, TriggerResultEvidence, TriggerRule,
 )
 from app.models.review import PhysicianReviewRequest
+from app.models.workflow import AlertDismissal, PhysicianDecision
 
 __all__ = [
     "Patient", "Encounter", "Observation", "ObservationEmbedding", "TriggerRule",
     "AnalysisRun", "ClinicalFinding", "FindingEvidence", "TriggerResult",
     "TriggerResultEvidence",
-    "PhysicianReviewRequest",
+    "PhysicianReviewRequest", "AlertDismissal", "PhysicianDecision",
 ]

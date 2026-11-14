@@ -71,10 +71,10 @@ to browser state for prototype data or an unreachable backend.
   - 201 and 200 count as sent.
   - 404/409/422 show an error, and the alert stays unsent.
   - No referral draft is created.
-- Dismiss an alert with one of four reasons, logged with user and time. *Still browser state only (`TODO(backend)`).*
+- **Backend ready:** dismiss an exact analysis with one of four reasons and a demo actor/time. Frontend wiring remains; see [workflow API](workflow-persistence-api.md).
 - ~~Physician consultation queue~~ **Done**, frontend connected. `GET /review-requests` loads when the physician view opens and after a send. The backend order is kept.
-- The physician's decision: order FIT / refer to specialist care / no action / acknowledge. *Still browser state only; shown as "not saved" for backend items (`TODO(backend)`).*
-- Sent state is not restored after a page reload (could use `GET /review-requests?patient_id=…`).
+- **Backend ready:** persist simulated FIT / referral / no-action / acknowledgement decisions and retrieve reviewed history. Frontend wiring remains; see [workflow API](workflow-persistence-api.md).
+- Sent state is not restored after a page reload (could use `GET /review-requests?patient_id=…&status=all`).
 
 ## Other notes
 

@@ -1,8 +1,10 @@
 # Physician review handoff API
 
-Persist a nurse's request to review an **existing completed analysis**. This does
-not rerun analysis or create a physician decision, referral, recommendation,
-investigation order or referral draft. Frontend implementation is unchanged.
+Persist a nurse's request to review an **existing completed analysis**. This handoff does
+not rerun analysis or create medical orders. Saved demo physician decisions and
+nurse dismissals are now available separately; see
+[workflow persistence API](workflow-persistence-api.md) for exact contracts and
+Agent B integration instructions. Frontend implementation is unchanged here.
 
 ## Setup
 
@@ -62,8 +64,7 @@ Full nested fields are the existing schemas in `/docs` and
 detail endpoint. Retries preserve the original ID, timestamp, identity and
 priority. Separate analyses of one patient can each have a request.
 
-GET collection returns an array. Parameters: `status=pending` (the only supported
-status), optional `patient_id`, `limit` (default 100, max 200), `offset` (default
+GET collection returns an array. Parameters: `status=pending` (default), `reviewed` or `all`, optional `patient_id`, `limit` (default 100, max 200), `offset` (default
 0). Filtering and ordering precede pagination.
 
 Priority is snapshotted from saved **triggered deterministic rule results**:
@@ -87,7 +88,7 @@ execution. Runs later marked failed/incomplete disappear from the actionable
 list; detail reads return 409. Source IDs, patient/time scope, quotes and offsets
 are rechecked. Corrupt evidence causes a 409 on list/detail reads rather than
 show unverified findings as actionable. `submitted_by` is an unverified demo
-label, not authentication. There are no decision/update/delete endpoints.
+label, not authentication. Decision endpoints are documented in the workflow API; there are no update/delete endpoints.
 
 ## Frontend integration instructions
 
@@ -101,7 +102,7 @@ label, not authentication. There are no decision/update/delete endpoints.
    and 200 as success. Submit only persisted backend analyses, not prototype IDs.
 3. **Persist send state.** Make `sendToPhysician` await POST; mark sent only on
    success. Show errors and allow retry with the same analysis ID. Restore sent
-   state using `/review-requests?patient_id={patientId}` after reload. Track
+   state using `/review-requests?patient_id={patientId}&status=all` after reload. Track
    submissions by analysis, since one patient can have several analyses.
 4. **Load the queue.** Fetch `/review-requests?status=pending` on opening/refreshing
    the physician view and after sending. Replace `sentItems`/fallback entries for
@@ -125,11 +126,9 @@ and original records are in `r.analysis`; use observation UUIDs for evidence
 navigation. Fetch the input note with existing `GET /observations/{id}` using
 `analysis.provenance.input_observation_id` if it is not a cited source.
 
-Only send/list/detail become persistent. Do not disable all `USE_LOCAL_WORKFLOW`
-behavior blindly: dismissal and physician decisions still have no API. Disable
-physician action buttons for backend queue items until their workflow exists;
-browser-only decisions must not be presented as saved. Prototype/fallback
-behavior can remain separate and clearly labelled.
+Dismissal and decision APIs are now implemented. Follow the
+[workflow integration instructions](workflow-persistence-api.md#agent-b-exact-frontend-integration-requirements)
+before enabling saved-action UI. Prototype/fallback behavior must remain clearly labelled.
 
 ## Tests
 

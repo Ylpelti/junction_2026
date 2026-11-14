@@ -85,12 +85,16 @@ export function listPatients() {
 }
 
 /** GET /patients/{id}/observations (all types; split in the mapper). */
-export function listObservations(patientId: string) {
-  return request<ApiObservation[]>(
-    `/patients/${encodeURIComponent(patientId)}/observations?limit=200`,
-    undefined,
-    listOf(isObservation),
-  );
+export async function listObservations(patientId: string) {
+  const rows: ApiObservation[] = [];
+  for (let offset = 0; ; offset += 200) {
+    const page = await request<ApiObservation[]>(
+      `/patients/${encodeURIComponent(patientId)}/observations?limit=200&offset=${offset}`,
+      undefined, listOf(isObservation),
+    );
+    rows.push(...page);
+    if (page.length < 200) return rows;
+  }
 }
 
 type NewNote = { patientId: string; text: string; at: Date };
