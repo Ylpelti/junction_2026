@@ -39,8 +39,9 @@ def run_demo() -> dict:
         sex="male",
         age_years=67,
         bmi=25.7,
-        # Synthetic UK Townsend score. This is not a Finnish deprivation measure.
-        town=-0.3,
+        # Zero-valued UK Townsend placeholder for this synthetic demo only.
+        # It is not a Finnish deprivation estimate or clinically validated input.
+        town=0.0,
         alcohol_cat4=1,
         smoke_cat=0,
         binary_factors=factors,

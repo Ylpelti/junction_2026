@@ -1,7 +1,8 @@
 # Junction's two independent model outputs
 
-Junction has two separate Python outputs. They answer different questions and
-should remain separate until a later explanation step presents them together.
+Junction returns two separate model outputs from one analysis. They answer
+different questions. Only the evidence-table rules set the nurse review alert;
+the QCancer estimate is shown separately and never changes that alert.
 
 ## 1. Evidence-table rules
 
@@ -21,8 +22,8 @@ recommendation. A missing finding does not become evidence of absence.
 `backend/app/risk_models/qcancer_2013.py` implements the published QCancer-2013
 multi-cancer equations. It calculates cancer-site estimates over the model's
 two-year horizon, including colorectal cancer and an overall cancer estimate.
-It returns the existing `ModelPrediction` contract so a future pipeline can place
-it in `AnalysisResult.predictions`.
+The analysis API now returns this as a `ModelPrediction` in
+`AnalysisResponse.predictions`, alongside (and separate from) the rule results.
 
 The equations use fractional-polynomial age and BMI terms, published coefficients,
 and sex-specific symptom and history factors. Site scores are exponentiated and
@@ -48,19 +49,43 @@ the missing field names. It never changes unknown values to `false`. Unsupported
 or out-of-range inputs also return without a risk estimate. Each prediction
 includes the ClinRisk disclaimer required by the published implementation.
 
+### How the current analysis connects the inputs
+
+1. The existing history retriever supplies eligible records and the current note
+   to the extraction stage.
+2. When LLM extraction is enabled, it returns source-linked QCancer fields as
+   structured data. Unknowns stay unknown; quotes and record IDs are validated
+   against the supplied patient history.
+3. `backend/app/risk_models/adapter.py` maps smoking and alcohol to QCancer's
+   categories, calculates BMI from recorded height and weight when needed, and
+   derives the anaemia input from the latest supported haemoglobin result.
+   Townsend is set to the demo placeholder 0.
+4. Python runs QCancer independently. Incomplete or unsupported inputs produce
+   a status and missing-input details, without a numerical estimate.
+5. The API includes cited source records referenced by the estimate. The nurse
+   dashboard displays a separate informational card; only deterministic rule
+   results create the review alert.
+
+LLM extraction is off by default. With the structured-only demo extractor, most
+QCancer predictors remain unknown and the estimate will normally say it could
+not be calculated. Enabling live extraction requires the separately documented
+provider configuration and explicit live-call setting in
+`backend/app/extraction/README.md`.
+
 ### Finland limitation
 
 QCancer-2013 was developed from UK primary-care records and its authors describe
 the tools as intended for the UK. The equations use the UK Townsend deprivation
 score; Junction cannot substitute a Finnish area-deprivation measure without
 validating that change. The shipped example uses a clearly synthetic Townsend
-value so the calculation can be demonstrated. The output is not calibrated or
+value of 0 so the calculation can be demonstrated. This is only a placeholder;
+it is not a Finnish deprivation estimate. The output is not calibrated or
 clinically validated for Finnish patients and must not guide clinical care.
 
-The colorectal rule engine and QCancer estimate should be reviewed side by side:
+The colorectal rule engine and QCancer estimate can be reviewed side by side:
 the rule engine can suggest physician review from documented evidence, while
-QCancer provides a separate numerical estimate. A clinician remains responsible
-for deciding what happens next.
+QCancer provides a separate numerical estimate when all required inputs are
+available. A clinician remains responsible for deciding what happens next.
 
 ## Running the synthetic example
 
@@ -71,20 +96,9 @@ python -m app.risk_models.demo
 ```
 
 The command prints the evidence-table matches and QCancer prediction separately
-for one fully synthetic example. It makes no LLM or network call. It does not
-change the current API or nurse dashboard.
-
-## Future LLM handoff
-
-The future extraction stage should populate `QCancer2013Input` from the patient
-history, including explicit true/false/unknown values and source observation IDs.
-It should not guess a negative from silence. The rule engine and QCancer
-calculator can then run independently. QCancer returns the existing
-`ModelPrediction` shape used by `AnalysisResult.predictions`. The current API's
-legacy rule result still needs an adapter to the richer
-`AnalysisResult.trigger_evaluations` contract. The API response and dashboard
-have not yet been extended with the QCancer result, so that integration still
-needs a coordinated response mapping.
+for one fully synthetic example. It makes no LLM or network call; it is a
+standalone demonstration. The analysis API and dashboard use the connected
+pipeline described above.
 
 ## Source and license
 

@@ -28,6 +28,9 @@ from pydantic import (
 )
 
 from app.contracts.common import Contract
+from app.contracts.qcancer import (
+    ALL_BINARY_INPUTS, FEMALE_BINARY_INPUTS, MALE_BINARY_INPUTS,
+)
 from app.contracts.predictions import ModelPrediction
 
 QCANCER_NOTICE = (
@@ -54,28 +57,6 @@ MALE_CANCER_TYPES = (
     "other_cancer", "pancreatic_cancer", "prostate_cancer", "renal_tract_cancer",
     "testicular_cancer",
 )
-
-FEMALE_BINARY_INPUTS = frozenset({
-    "b_chronicpan", "b_copd", "b_endometrial", "b_type2", "c_hb",
-    "fh_breastcancer", "fh_gicancer", "fh_ovariancancer", "new_abdodist",
-    "new_abdopain", "new_appetiteloss", "new_breastlump", "new_breastpain",
-    "new_breastskin", "new_dysphagia", "new_gibleed", "new_haematuria",
-    "new_haemoptysis", "new_heartburn", "new_imb", "new_indigestion",
-    "new_necklump", "new_nightsweats", "new_pmb", "new_postcoital",
-    "new_rectalbleed", "new_vte", "new_weightloss", "s1_bowelchange",
-    "s1_bruising", "s1_constipation", "s1_cough",
-})
-MALE_BINARY_INPUTS = frozenset({
-    "b_chronicpan", "b_copd", "b_type2", "c_hb", "fh_gicancer",
-    "fh_prostatecancer", "new_abdodist", "new_abdopain", "new_appetiteloss",
-    "new_dysphagia", "new_gibleed", "new_haematuria", "new_haemoptysis",
-    "new_heartburn", "new_indigestion", "new_necklump", "new_nightsweats",
-    "new_rectalbleed", "new_testespain", "new_testicularlump", "new_vte",
-    "new_weightloss", "s1_bowelchange", "s1_constipation", "s1_cough",
-    "s1_impotence", "s1_nocturia", "s1_urinaryfreq", "s1_urinaryretention",
-})
-ALL_BINARY_INPUTS = FEMALE_BINARY_INPUTS | MALE_BINARY_INPUTS
-
 
 class QCancer2013Input(Contract):
     """Structured, time-scoped inputs. Unknown facts stay None; they are never false."""
@@ -120,6 +101,7 @@ class QCancer2013Output(Contract):
     population: str = "UK primary care; model ages 25–89"
     limitations: tuple[str, ...] = (
         "QCancer-2013 was developed for UK primary care; it has not been calibrated or clinically validated for Finland.",
+        "The Junction synthetic demo uses Townsend score 0 as a placeholder, not a Finnish deprivation score.",
         "This is a prototype estimate, not a diagnosis, referral decision, or Finnish clinical recommendation.",
     )
     source_notice: str = QCANCER_NOTICE

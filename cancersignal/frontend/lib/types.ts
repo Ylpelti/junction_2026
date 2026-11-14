@@ -73,10 +73,20 @@ export type Finding = {
 
 export type AnalysisStatus = "none" | "review" | "urgent" | "unavailable";
 
+export type QCancerEstimate = {
+  status: "calculated" | "insufficient_data" | "invalid_input" | "unsupported_input";
+  horizonYears: number;
+  anyCancerRiskPercent: number | null;
+  colorectalCancerRiskPercent: number | null;
+  missingInputs: string[];
+  uncertainty: string | null;
+};
+
 export type AnalysisResult = {
   status: AnalysisStatus;
   summary: string;
   findings: Finding[];
+  qcancer?: QCancerEstimate;
   missing: string[];
   /** Readable reason when status is "unavailable". */
   error?: string;
