@@ -2,9 +2,13 @@
 
 This package consumes an already retrieved, synthetic patient snapshot. It does
 not query PostgreSQL, perform retrieval, call mathematical models, evaluate
-rules, persist findings, or register HTTP routes. It is not wired into the
-existing demo pipeline. Original observations remain separate from model
-interpretations.
+rules, persist findings, or register HTTP routes. Original observations remain
+separate from model interpretations.
+
+The package itself stays independent of the pipeline. The analysis API uses it
+only when `CANCERSIGNAL_EXTRACTION=llm` is set (see "Analysis pipeline" below).
+Then `app/services/llm_extraction.py` adapts it to the pipeline's extractor
+interface.
 
 ## Install and run offline
 
@@ -76,10 +80,27 @@ The adapter reuses `app.contracts.adapters.to_legacy_finding` where lossless. Th
 old enum cannot express historical absence/uncertainty or unknown timing; those
 cases become `uncertain`, retaining original states and gaps in uncertainty text.
 This prevents the existing rules from treating them as positive facts. Failed
-batches raise instead of becoming an empty rule input. No adapter is installed
-into an existing route or pipeline automatically. The interface is synchronous;
-future async route integration should execute blocking provider I/O in a worker
-thread rather than block the event loop.
+batches raise instead of becoming an empty rule input. The interface is
+synchronous; the analysis route is a sync FastAPI handler, so it already runs in
+a worker thread.
+
+## Analysis pipeline
+
+`app/services/llm_extraction.py` (`LlmNoteExtractor`) is the adapter. It is
+enabled through `cancersignal/.env` or the environment:
+
+| Variable | Meaning / default |
+| --- | --- |
+| `CANCERSIGNAL_EXTRACTION` | `off` (default: structured-only demo extractor) or `llm` |
+| `CANCERSIGNAL_EXTRACTION_ENV_FILE` | Optional path to the provider settings file, e.g. `.env.extraction`; otherwise `EXTRACTION_*` come from the environment |
+| `CANCERSIGNAL_EXTRACTION_ALLOW_LIVE` | `false` (default). Only `true` allows paid live calls |
+| `CANCERSIGNAL_EXTRACTION_CACHE_DIR` | Optional validated response cache, e.g. `.venv/extraction-cache` |
+
+How the adapter behaves:
+- **Order:** the structured extractor runs first; LLM note findings are added with `legacy_findings()`.
+- **Failures:** a failed batch or a bad configuration stores the run as `failed`, with error code `clinical_extraction_<code>`. It never turns into "no signals".
+- **Offline demo:** run once with live calls allowed and a cache directory, then turn live calls off. Only cached notes (identical text and history) succeed, and others fail explicitly.
+- **Dependency:** live calls need the `llm` extra (`httpx`).
 
 ## Provider configuration and authorized live use
 
