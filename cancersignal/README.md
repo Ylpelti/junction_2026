@@ -10,13 +10,14 @@ cancer-related risk signals with references to original records for physician re
 This repository currently contains a Next.js nurse dashboard and physician queue,
 a FastAPI API, a PostgreSQL/pgvector backend foundation, relational patient/evidence
 models, a small synthetic seed dataset, and database-backed patient and analysis
-APIs. The internal pipeline has baseline history retrieval, a structured-source
-demo extractor, and sourced demonstration rules. A standalone QCancer-2013
-calculator and synthetic joint-output demo are available, but QCancer is not
-connected to the API or nurse dashboard. LLM/free-text extraction, a Finnish
-validated risk model, and simulations are not implemented. The independent [RAG engine](backend/app/rag/README.md)
-also supports optional local dense/hybrid retrieval; the API still uses its demo
-retriever until downstream integration. See [the API contract](docs/contracts.md)
+APIs. Analysis uses the existing [RAG engine](backend/app/rag/README.md) with
+configurable complete/lexical/hybrid retrieval, an independent complete laboratory
+history branch, a structured-source demo extractor or optional LLM extraction,
+and sourced demonstration rules. QCancer-2013 predictions remain separate from
+rule-based alerts and preserve unknown inputs. These are synthetic prototype
+outputs, not a Finnish-validated risk assessment. See the
+[retrieval configuration and execution commands](docs/rag-analysis-integration.md),
+[the API contract](docs/contracts.md)
 and [the data model](docs/data-model.md).
 
 Independent RAG, extraction and mathematical components can use the

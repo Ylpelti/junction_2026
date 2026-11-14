@@ -35,7 +35,9 @@ FREE_TEXT_NOT_CONFIGURED = "Free-text clinical-note extraction is not configured
 
 
 def to_contract_context(context: RetrievedContext, query: str) -> ContractContext:
-    """The baseline retriever returns ALL eligible history before the cutoff, so coverage is complete."""
+    """Keep the advanced engine's exact coverage/provenance; legacy history is complete."""
+    if context.source_context is not None:
+        return context.source_context
     sources = [SourceObservation.model_validate(item.observation.model_dump()) for item in context.observations]
     return ContractContext(
         patient_id=context.patient_id,

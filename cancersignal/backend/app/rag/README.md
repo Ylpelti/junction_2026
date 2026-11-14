@@ -3,7 +3,8 @@
 This module retrieves original synthetic patient records. It does not extract
 clinical findings, assess risk/urgency, evaluate rules, call an LLM, or make referral
 decisions. The existing API's demo `retrieval.py`, `context.py` and `extraction.py`
-are preserved. The new engine is opt-in for the downstream developer.
+remain selectable for compatibility. The analysis API now uses this engine through
+`services/history_retrieval.py`; see [API configuration, indexing, and execution](../../../docs/rag-analysis-integration.md).
 
 ## Integration boundary
 
@@ -88,8 +89,10 @@ Indexing locks source rows in UUID order, checks content/metadata fingerprints a
 chunk layout, reuses current embeddings, and replaces stale chunks atomically in
 a savepoint. Caller owns commit/rollback. A changed text/value/unit/status/time or
 profile causes reindexing. Profiles coexist; vectors from different models are
-never mixed. Retrieval checks freshness against the current source snapshot and
-never writes cache rows automatically. `--force` explicitly recomputes a profile.
+never mixed. The engine checks freshness and never writes cache rows itself.
+The API adapter optionally calls the same indexer before hybrid retrieval, scoped
+to the patient and both analysis cutoffs; the CLI continues indexing the entire
+specified patient. `--force` explicitly recomputes a profile.
 
 RAG cache metadata is isolated in `rag.storage.RagBase`; central shared-model
 autogeneration is unchanged. The migration is explicit; dedicated tests inspect
@@ -156,9 +159,9 @@ scenarios cannot establish clinical retrieval quality or broad superiority.
 The shared hit has one relevance score and the full original observation. Optional
 matched-span references and multi-branch score metadata would help source highlighting
 and bounded long-document contexts. For now those remain in RAG-local diagnostics;
-no shared fields, downstream extraction, analysis services, rule engines, routes,
-or frontend code are changed. The downstream owner can opt into this engine through
-the existing shared callable protocol and decide persistence/prompt assembly.
+no shared contract fields were changed. The API service bridge now supplies this
+engine through the existing callable protocol and preserves its shared context for
+LLM prompt assembly. Rules, numerical models, routes and frontend are unchanged.
 
 Primary references: [E5 model card](https://huggingface.co/intfloat/multilingual-e5-small),
 [PostgreSQL full-text ranking](https://www.postgresql.org/docs/16/textsearch-controls.html),

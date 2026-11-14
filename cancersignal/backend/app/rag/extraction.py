@@ -26,7 +26,7 @@ class StructuredSourceExtractor:
             "Demonstration output is not a diagnosis or clinically validated risk assessment.",
         ])
         if not context.observations:
-            output.missing_information.append("No eligible patient history exists before the input note.")
+            output.missing_information.append("No historical observations were supplied to extraction. This does not establish absence of findings.")
         statuses = {status.value: status for status in FindingStatus}
         for record in latest.values():
             status = statuses.get(record.status, FindingStatus.UNCERTAIN)

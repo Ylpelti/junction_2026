@@ -6,6 +6,7 @@ from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session, selectinload
 from app.contracts.clinical_context import SourceObservation
+from app.contracts.common import PatientScope
 from app.contracts.validation import EvidenceValidationError, validate_evidence
 from app.contracts.qcancer import QCancerPredictors
 
@@ -14,7 +15,8 @@ from app.models import (
     TriggerResult, TriggerResultEvidence, TriggerRule,
 )
 from app.models.enums import AnalysisStatus, ObservationType
-from app.rag.context import ExtractionResult, RetrievedContext
+from app.rag.context import ContextObservation, ExtractionResult, RetrievedContext
+from app.rag.repository import PatientRepository
 from app.reasoning.derived_findings import derive_lab_findings
 from app.reasoning.interfaces import AnalysisPipeline, TriggerEvaluation
 from app.reasoning.vocabulary import AGE_YEARS
@@ -109,6 +111,13 @@ def list_analyses(session: Session, patient_id: UUID, limit=100, offset=0):
 def validate_context(session: Session, context: RetrievedContext, note: ObservationRead):
     if context.patient_id != note.patient_id or context.cutoff != note.observed_at:
         raise PipelineError("invalid_retrieval_scope")
+    source_context = context.source_context
+    if source_context is not None and (
+            source_context.patient_id != note.patient_id or source_context.as_of != note.observed_at
+            or source_context.recorded_before != note.observed_at
+            or [hit.source.model_dump() for hit in source_context.retrieved_observations]
+            != [item.observation.model_dump() for item in context.observations]):
+        raise PipelineError("invalid_retrieval_scope")
     identifiers = [item.observation.id for item in context.observations]
     if len(set(identifiers)) != len(identifiers) or set(context.ranked_observation_ids) != set(identifiers):
         raise PipelineError("invalid_retrieval_references")
@@ -182,15 +191,30 @@ def create_analysis(session: Session, patient_id: UUID, payload: AnalysisRequest
             metadata.context_observation_ids = [item.observation.id for item in context.observations]
             metadata.retrieval_method = context.retrieval_method
             extraction = ExtractionResult.model_validate(pipeline.extractor.extract(context, note))
+            # Extractors may cite only the snapshots they received (plus the input note).
+            verify_findings(extraction.findings, allowed)
+            verify_qcancer_predictors(extraction.qcancer_predictors, allowed)
+            # Numerical history is a separate, complete SQL branch. Semantic top-k,
+            # lexical matching and prompt budgets must never select model inputs.
+            numerical = PatientRepository(session).structured(
+                scope=PatientScope(patient_id=patient_id, as_of=note.observed_at))
+            numerical_context = RetrievedContext(patient_id=patient_id, cutoff=note.observed_at,
+                observations=[ContextObservation(observation=ObservationRead.model_validate(row.model_dump()),
+                                                source_excerpt=row.text) for row in numerical.observations],
+                ranked_observation_ids=[row.id for row in numerical.observations])
+            allowed.update(validate_context(session, numerical_context, note))
+            metadata.context_observation_ids = list(dict.fromkeys(
+                [*metadata.context_observation_ids, *numerical_context.ranked_observation_ids]))
             # Lab-derived findings (anaemia, iron deficiency anaemia, FIT) are computed in Python
             # and go through the same evidence checks as extracted findings.
             derived, derived_missing = derive_lab_findings(
-                [item.observation for item in context.observations], sex=patient.sex)
+                list(numerical.observations), sex=patient.sex)
             extraction.findings.extend(derived)
             extraction.missing_information.extend(derived_missing)
             verify_findings(extraction.findings, allowed)
-            metadata.missing_information = extraction.missing_information
-            verify_qcancer_predictors(extraction.qcancer_predictors, allowed)
+            retrieval_missing = ([f"{gap.code}: {gap.description}" for gap in context.source_context.coverage.missing_information]
+                                 if context.source_context is not None else [])
+            metadata.missing_information = list(dict.fromkeys([*extraction.missing_information, *retrieval_missing]))
             qcancer_inputs = build_qcancer_input(
                 patient_id=patient_id, as_of=note.observed_at, sex=patient.sex,
                 age_years=patient_facts[AGE_YEARS], predictors=extraction.qcancer_predictors,
