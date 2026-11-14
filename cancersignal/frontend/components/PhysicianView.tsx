@@ -1,3 +1,4 @@
+import { ClinicalExplanationCard } from "./ClinicalExplanationCard";
 import type { QueueItem, QueueLevel } from "../lib/types";
 
 const STYLE: Record<QueueLevel, { chip: string; chipCls: string; stripe: string }> = {
@@ -140,6 +141,7 @@ export function PhysicianView({ queue, decisions, onDecide, loading, notice, onR
                     </span>
                   </div>
                   <span className="text-sm leading-normal text-ink-2">{q.summary}</span>
+                  {q.clinicalExplanation && <ClinicalExplanationCard value={q.clinicalExplanation} />}
                   {q.cs && q.findings.length > 0 && <Reasons item={q} />}
                   {/* TODO(backend): no decision endpoint yet; decisions are browser state only. */}
                   {decision ? (

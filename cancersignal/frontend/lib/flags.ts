@@ -6,8 +6,8 @@ export const USE_FALLBACK_APPOINTMENTS = true;
 
 /**
  * Send to physician and the physician queue use the backend review-request API
- * (docs/physician-review-api.md). Falls back to the local workflow when the
- * backend is unreachable or the prototype dataset is selected.
+ * (docs/physician-review-api.md). Backend errors remain explicit and retryable;
+ * the local workflow is available only when the backend workflow is not selected.
  */
 export const USE_BACKEND_REVIEW_QUEUE = true;
 

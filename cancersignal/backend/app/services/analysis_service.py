@@ -65,7 +65,9 @@ def get_analysis(session: Session, analysis_id: UUID) -> AnalysisResponse:
     ).execution_options(populate_existing=True))
     if run is None:
         raise ServiceError(404, "Analysis not found.")
-    provenance = AnalysisProvenance.model_validate(run.details)
+    details = dict(run.details)
+    clinical_explanation = details.pop("clinical_explanation", None)
+    provenance = AnalysisProvenance.model_validate(details)
     findings = [FindingResponse(**ClinicalFindingRead.model_validate(finding).model_dump(),
         evidence=[EvidenceReference(observation_id=ref.observation_id,
         source_excerpt=ref.source_excerpt, start_offset=ref.start_offset, end_offset=ref.end_offset)
@@ -98,7 +100,8 @@ def get_analysis(session: Session, analysis_id: UUID) -> AnalysisResponse:
     return AnalysisResponse(id=run.id, patient_id=run.patient_id, status=run.status,
         created_at=run.created_at, findings=findings, trigger_results=results, predictions=provenance.predictions,
         source_observations=[ObservationRead.model_validate(row) for row in sources],
-        explanation=explanation, provenance=provenance)
+        clinical_explanation=clinical_explanation,
+        explanation=(clinical_explanation["summary_fi"] if clinical_explanation else explanation), provenance=provenance)
 
 
 def list_analyses(session: Session, patient_id: UUID, limit=100, offset=0):
@@ -263,5 +266,14 @@ def create_analysis(session: Session, patient_id: UUID, payload: AnalysisRequest
     else:
         run.status = AnalysisStatus.COMPLETED
     run.details = metadata.model_dump(mode="json")
+    session.flush()
+    if run.status == AnalysisStatus.COMPLETED:
+        # Explain the validated, persisted graph once. Reads and review submissions
+        # reuse this snapshot and never repeat provider calls.
+        from app.services.clinical_explanation import explain_analysis
+        explanation, issue = explain_analysis(get_analysis(session, run.id), note)
+        if issue:
+            metadata.missing_information.append(issue)
+        run.details = {**metadata.model_dump(mode="json"), "clinical_explanation": explanation}
     session.commit()
     return get_analysis(session, run.id)

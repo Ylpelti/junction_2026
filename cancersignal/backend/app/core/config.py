@@ -92,6 +92,11 @@ class PipelineSettings(BaseSettings):
     extraction_allow_live: bool = False
     extraction_cache_dir: Path | None = None
 
+    explanation: Literal["deterministic", "llm"] = "deterministic"
+    explanation_env_file: Path | None = None
+    explanation_allow_live: bool = False
+    explanation_cache_dir: Path | None = None
+
     # Auto uses complete history while it fits, then PostgreSQL lexical retrieval.
     # Hybrid explicitly opts into local embeddings; requests never download weights.
     retrieval: Literal["auto", "baseline", "lexical", "hybrid"] = "auto"
