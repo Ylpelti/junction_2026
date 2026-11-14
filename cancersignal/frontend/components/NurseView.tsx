@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
 
 import type { AnalysisResult, DataSource, Patient, PatientRecord } from "../lib/types";
-import { FindingsPanel } from "./FindingsPanel";
+import { ClinicalExplanationCard } from "./ClinicalExplanationCard";
+import { FindingsPanel, QCancerEstimateCard } from "./FindingsPanel";
 import { UrgentModal } from "./UrgentModal";
 
 type Load<T> = { status: "loading" } | { status: "ready"; data: T } | { status: "error"; error: string };
@@ -255,7 +256,8 @@ export function NurseView({ s, on }: { s: NurseState; on: NurseHandlers }) {
                 </section>
               )}
 
-              {/* No risk -> nothing CancerSignal-related for the nurse (QCancer kept for a later physician view). */}
+              {s.useCS && res?.clinicalExplanation && <ClinicalExplanationCard value={res.clinicalExplanation} />}
+              {s.useCS && res?.qcancer && <QCancerEstimateCard estimate={res.qcancer} />}
               <RecordSection s={s} findingFor={findingFor} />
             </>
           )}

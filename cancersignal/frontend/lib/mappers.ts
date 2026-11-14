@@ -3,6 +3,7 @@
 
 import type {
   AnalysisResult,
+  ClinicalExplanation,
   Finding,
   FindingPriority,
   HistoryEntry,
@@ -94,6 +95,7 @@ export type ApiAnalysisResponse = {
   predictions?: ApiPrediction[];
   source_observations: ApiObservation[];
   explanation: string;
+  clinical_explanation?: ClinicalExplanation | null;
   provenance: {
     input_observation_id: string | null;
     cutoff: string | null;
@@ -301,6 +303,7 @@ export function toAnalysis(r: ApiAnalysisResponse): AnalysisResult {
   return {
     status: findings.some((f) => f.priority === "urgent") ? "urgent" : findings.length > 0 ? "review" : "none",
     summary: r.explanation,
+    clinicalExplanation: r.clinical_explanation ?? undefined,
     findings,
     qcancer,
     missing,
@@ -344,6 +347,7 @@ export function toQueueItem(r: ApiReviewRequest): QueueItem {
     level,
     cs: level !== "normal",
     summary: r.analysis.explanation,
+    clinicalExplanation: analysis.clinicalExplanation,
     findings: analysis.findings,
     missing: analysis.missing,
     origin: "backend",

@@ -89,6 +89,8 @@ class AnalysisResponse(Record):
     predictions: list[ModelPrediction] = Field(default_factory=list)
     # Original records for resolving every evidence reference in this response.
     source_observations: list[ObservationRead]
+    # Validated by the independent explanation module before persistence.
+    clinical_explanation: dict | None = None
     explanation: str
     provenance: AnalysisProvenance
 

@@ -82,9 +82,19 @@ export type QCancerEstimate = {
   uncertainty: string | null;
 };
 
+export type ClinicalExplanation = {
+  mode: "llm" | "fallback" | "unavailable";
+  summary_fi: string;
+  findings: { key: string; text_fi: string; observation_ids: string[] }[];
+  mathematical_outputs: { key: string; text_fi: string; observation_ids: string[] }[];
+  rule_results: { key: string; text_fi: string; observation_ids: string[] }[];
+  limitations: { code: string; text_fi: string }[];
+};
+
 export type AnalysisResult = {
   status: AnalysisStatus;
   summary: string;
+  clinicalExplanation?: ClinicalExplanation;
   findings: Finding[];
   qcancer?: QCancerEstimate;
   missing: string[];
@@ -106,6 +116,7 @@ export type QueueItem = {
   level: QueueLevel;
   cs: boolean;
   summary: string;
+  clinicalExplanation?: ClinicalExplanation;
   /** Full findings so the physician sees why the alert was raised (detail, sources, rule, priority). */
   findings: Finding[];
   /** "Not found in records" items from the analysis. */
