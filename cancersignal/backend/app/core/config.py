@@ -3,9 +3,10 @@ from pathlib import Path
 from typing import Literal
 from urllib.parse import urlsplit
 
-from pydantic import Field, SecretStr, field_validator
+from pydantic import Field, SecretStr, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy import URL
+from sqlalchemy.engine import make_url
 
 
 class Settings(BaseSettings):
@@ -13,16 +14,39 @@ class Settings(BaseSettings):
         env_file=Path(__file__).resolve().parents[3] / ".env",
         env_file_encoding="utf-8",
         extra="ignore",
+        hide_input_in_errors=True,
     )
+
+    db_pool_size: int = Field(default=3, ge=1, le=20)
+    db_max_overflow: int = Field(default=2, ge=0, le=20)
+    db_pool_timeout: int = Field(default=10, ge=1, le=120)
+    db_pool_recycle: int = Field(default=300, ge=30)
 
     postgres_host: str = "localhost"
     postgres_port: int = Field(default=5432, ge=1, le=65535)
     postgres_db: str = "cancersignal"
     postgres_user: str = "cancersignal"
-    postgres_password: SecretStr
+    postgres_password: SecretStr | None = None
+    database_url_override: SecretStr | None = Field(default=None, validation_alias="DATABASE_URL")
+
+    @model_validator(mode="after")
+    def validate_database(self):
+        if self.database_url_override is not None:
+            try:
+                url = make_url(self.database_url_override.get_secret_value())
+                if url.drivername not in ("postgres", "postgresql", "postgresql+psycopg") or not url.host or not url.database:
+                    raise ValueError()
+                _ = url.port
+            except Exception:
+                raise ValueError("DATABASE_URL must be a PostgreSQL URL with a host and database") from None
+        elif self.postgres_password is None:
+            raise ValueError("Set DATABASE_URL or POSTGRES_PASSWORD")
+        return self
 
     @property
     def database_url(self) -> URL:
+        if self.database_url_override is not None:
+            return make_url(self.database_url_override.get_secret_value()).set(drivername="postgresql+psycopg")
         # URL.create safely handles special characters in credentials.
         return URL.create(
             "postgresql+psycopg",

@@ -1,0 +1,4 @@
+-r requirements.lock
+-r ../app/rag/requirements-local.txt
+# Use the CPU wheel index; never pull CUDA libraries into the demo server.
+torch==2.15.0+cpu

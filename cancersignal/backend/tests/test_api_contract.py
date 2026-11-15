@@ -8,7 +8,7 @@ def test_docs_and_openapi_expose_public_routes_only():
         assert client.get("/docs").status_code == 200
         schema = client.get("/openapi.json").json()
     paths = schema["paths"]
-    assert set(paths) == {"/health", "/api/v1/patients", "/api/v1/patients/{patient_id}",
+    assert set(paths) == {"/health", "/ready", "/api/v1/patients", "/api/v1/patients/{patient_id}",
         "/api/v1/patients/{patient_id}/encounters", "/api/v1/patients/{patient_id}/observations",
         "/api/v1/observations/{observation_id}", "/api/v1/patients/{patient_id}/timeline",
         "/api/v1/patients/{patient_id}/analyses", "/api/v1/analyses/{analysis_id}",

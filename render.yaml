@@ -1,0 +1,38 @@
+# Apply settings to an existing service when one exists; do not create a duplicate.
+# No database resource is provisioned: supply the existing Render DATABASE_URL.
+services:
+  - type: web
+    name: cancersignal-backend
+    runtime: docker
+    plan: free
+    dockerfilePath: ./cancersignal/backend/Dockerfile
+    dockerContext: ./cancersignal/backend
+    healthCheckPath: /ready
+    autoDeployTrigger: "off"
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false
+      - key: CANCERSIGNAL_EXTRACTION
+        value: llm
+      - key: CANCERSIGNAL_EXTRACTION_ALLOW_LIVE
+        value: "true"
+      - key: EXTRACTION_PROVIDER
+        value: verda
+      - key: EXTRACTION_MODEL
+        sync: false
+      - key: EXTRACTION_API_KEY
+        sync: false
+      - key: EXTRACTION_RESPONSE_FORMAT
+        value: json_object
+      - key: EXTRACTION_REASONING_EFFORT
+        value: none
+      - key: EXTRACTION_MAX_OUTPUT_TOKENS
+        value: "8192"
+      - key: CANCERSIGNAL_RETRIEVAL
+        value: auto
+      - key: CANCERSIGNAL_EXPLANATION
+        value: deterministic
+# Run migrations explicitly before first deploy (see docs/render-vercel-deployment.md).
+# Free services do not support pre-deploy commands; never migrate each replica on boot.
