@@ -18,16 +18,16 @@ from app.models import (AlertDismissal, PhysicianDecision, AnalysisRun, Clinical
 from app.rag.storage import EmbeddingChunk
 from app.schemas.records import EncounterRead, ObservationRead, PatientRead, Record
 
-DATA = Path(__file__).with_name('demo_data') / 'patients.json'
-NAMES = {'laine': 'SYNTHETIC Laine', 'nieminen': 'SYNTHETIC Nieminen',
-         'heikkinen': 'SYNTHETIC Heikkinen', 'korhonen': 'SYNTHETIC Korhonen'}
+DATA = Path(__file__).with_name('demo_data') / 'patients.en-v2.json'
+NAMES = {'laine': 'SYNTHETIC Laine EN v2', 'nieminen': 'SYNTHETIC Nieminen EN v2',
+         'heikkinen': 'SYNTHETIC Heikkinen EN v2', 'korhonen': 'SYNTHETIC Korhonen EN v2'}
 # https://loinc.org/718-7 verified 2026-11-14: blood Hb mass/volume; g/L.
 # B-Hb is an existing application alias, not a national numeric code.
 LAB_CODES = {('http://loinc.org', '718-7', 'g/L'): 'B-Hb'}
 
 
 def demo_id(kind, key):
-    return uuid5(NAMESPACE_URL, f'https://cancersignal.invalid/demo/v1/{kind}/{key}')
+    return uuid5(NAMESPACE_URL, f'https://cancersignal.invalid/demo/en-v2/{kind}/{key}')
 
 
 class DemoPatient(PatientRead):
@@ -44,7 +44,7 @@ class DemoObservation(ObservationRead):
 
 
 class Dataset(Record):
-    version: Literal[1]
+    version: Literal[2]
     patients: list[DemoPatient] = Field(min_length=4, max_length=4)
     encounters: list[DemoEncounter] = Field(min_length=1)
     observations: list[DemoObservation] = Field(min_length=1)
@@ -72,7 +72,7 @@ class Dataset(Record):
             if not any(e.patient_id == p.id for e in self.encounters):
                 raise ValueError('Every patient needs encounters')
         for e in self.encounters:
-            if e.organization != 'SYNTHETIC Terveysasema':
+            if e.organization != 'SYNTHETIC Health Centre':
                 raise ValueError('Encounter must be clearly synthetic')
             if e.occurred_at.date() <= patients[e.patient_id].birth_date:
                 raise ValueError('Encounter predates birth')
@@ -143,12 +143,7 @@ def seed_demo(session: Session, dataset=None):
                     session.add(model(**row))
                     counts['inserted'] += 1
                 elif any(getattr(existing, k) != v for k, v in row.items()):
-                    if model is Observation:
-                        for cache in (EmbeddingChunk, ObservationEmbedding):
-                            session.execute(delete(cache).where(cache.observation_id == existing.id))
-                    for key, value in row.items():
-                        setattr(existing, key, value)
-                    counts['updated'] += 1
+                    raise ValueError('Persisted demo evidence differs; create a new dataset version and identities')
                 else:
                     counts['unchanged'] += 1
             session.flush()

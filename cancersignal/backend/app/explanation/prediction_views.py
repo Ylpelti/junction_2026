@@ -30,9 +30,9 @@ def qcancer_statement(prediction, index):
     notice = prediction.value.get("source_notice") if isinstance(prediction.value, dict) else None
     notice = notice if isinstance(notice, str) and notice.strip() else None
     limits = [Limitation(code="qcancer_finland_limitation", related_keys=(key,), observation_ids=ids,
-        text_fi="QCancer-2013 perustuu Ison-Britannian aineistoon. Mallia ei ole tässä prototyypissä kalibroitu tai kliinisesti validoitu Suomeen. Tarkista myös lähtömallin paikkamerkkisyötteet ja alkuperäinen vastuunrajaus.")]
+        text_en="QCancer-2013 uses UK data. This prototype is not calibrated or clinically validated for Finland. Review the model placeholder inputs and original source notice.")]
     if notice is None:
-        limits.append(Limitation(code="qcancer_source_notice_missing", text_fi="Alkuperäinen QCancer-vastuunrajaus puuttuu annetusta tuloksesta; sitä ei korvata keksityllä tekstillä.", related_keys=(key,)))
+        limits.append(Limitation(code="qcancer_source_notice_missing", text_en="The original QCancer source notice is missing; it is not replaced with invented text.", related_keys=(key,)))
     quantities = ()
     try:
         payload = QCancerDisplayPayload.model_validate(prediction.value)
@@ -46,22 +46,22 @@ def qcancer_statement(prediction, index):
             quantities = (
                 Quantity(slot="colorectal_cancer_risk_percent", value=payload.colorectal_cancer_risk_percent, unit="%"),
                 Quantity(slot="any_cancer_risk_percent", value=payload.any_cancer_risk_percent, unit="%"),
-                Quantity(slot="horizon_years", value=Decimal(payload.horizon_years), unit="vuotta"),
+                Quantity(slot="horizon_years", value=Decimal(payload.horizon_years), unit="years"),
             )
             # These source fields ALREADY contain percentages. Do not multiply,
             # round, sum cancer-site values, classify risk or change rule alerts.
-            crc, overall, horizon = (format(row.value, "f").replace(".", ",") for row in quantities)
-            text = (f"QCancer-2013-mallin ilmoittama paksu- ja peräsuolisyövän malliarvio: {crc} %. "
-                    f"Mallin kattamien syöpien yhteisarvio: {overall} %. Mallin ennustejakso: {horizon} vuotta. "
-                    "Kyse on malliennusteesta, ei todetusta sairaudesta.")
+            crc, overall, horizon = (format(row.value, "f") for row in quantities)
+            text = (f"QCancer-2013 colorectal cancer model estimate: {crc} %. "
+                    f"Combined estimate for cancers covered by the model: {overall} %. Model prediction horizon: {horizon} years. "
+                    "This is a model prediction, not an established disease.")
         else:
-            reason = {"insufficient_data": "tarvittavia lähtötietoja puuttuu",
-                      "invalid_input": "lähtömalli ilmoittaa virheellisiä syötetietoja",
-                      "unsupported_input": "lähtötiedot eivät kuulu mallin tukemaan käyttöalueeseen"}[payload.status]
-            text = f"QCancer-2013-malliarviota ei ole laskettu: {reason}. Puuttuvia tietoja ei tulkita kielteisiksi löydöksiksi."
-            limits.append(Limitation(code="qcancer_estimate_unavailable", text_fi="QCancer ei ilmoita kelvollista laskettua arviota. Tarkista alkuperäiset puuttuvat tai virheelliset syötteet.", related_keys=(key,), observation_ids=ids))
+            reason = {"insufficient_data": "required inputs are missing",
+                      "invalid_input": "the source model reports invalid inputs",
+                      "unsupported_input": "the inputs are outside the supported model scope"}[payload.status]
+            text = f"QCancer-2013 estimate not calculated: {reason}. Missing information is not interpreted as negative findings."
+            limits.append(Limitation(code="qcancer_estimate_unavailable", text_en="QCancer has no valid calculated estimate. Review the original missing or invalid inputs.", related_keys=(key,), observation_ids=ids))
     except (ValidationError, ValueError, TypeError):
-        text = "QCancer-tuloksen numeroarvoja ei esitetä, koska niiden rakenne, yksikkömerkitys tai lähdeviitteet ovat puutteelliset tai ristiriitaiset."
-        limits.append(Limitation(code="qcancer_invalid_display_payload", text_fi=text, related_keys=(key,), observation_ids=ids))
-    return ExplanationStatement(key=key, kind="prediction", text_fi=text, observation_ids=ids,
+        text = "QCancer numeric values are omitted because their structure, units or source references are incomplete or inconsistent."
+        limits.append(Limitation(code="qcancer_invalid_display_payload", text_en=text, related_keys=(key,), observation_ids=ids))
+    return ExplanationStatement(key=key, kind="prediction", text_en=text, observation_ids=ids,
                                 quantities=quantities, prediction_index=index, source_notice=notice), tuple(limits)

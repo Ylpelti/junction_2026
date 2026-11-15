@@ -305,7 +305,7 @@ export function toAnalysis(r: ApiAnalysisResponse): AnalysisResult {
   return {
     status: findings.some((f) => f.priority === "urgent") ? "urgent" : findings.length > 0 ? "review" : "none",
     summary: r.explanation,
-    clinicalExplanation: r.clinical_explanation ?? undefined,
+    clinicalExplanation: r.clinical_explanation?.contract_version === "2.0" && r.clinical_explanation.language === "en" ? r.clinical_explanation : undefined,
     findings,
     qcancer,
     missing,
@@ -355,7 +355,7 @@ export function toQueueItem(r: ApiReviewRequest): QueueItem {
     from: r.submitted_by ?? "Not recorded",
     level,
     cs: level !== "normal",
-    summary: r.analysis.clinical_explanation?.summary_fi || r.analysis.explanation,
+    summary: r.analysis.clinical_explanation?.summary_en || r.analysis.explanation,
     clinicalExplanation: analysis.clinicalExplanation,
     findings: analysis.findings,
     missing: analysis.missing,

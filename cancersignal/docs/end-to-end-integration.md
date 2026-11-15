@@ -35,18 +35,19 @@ Additional mathematical modules outside the published pipeline contracts are not
 silently imported. Their owner must expose supported outputs/provenance before
 integration.
 
-## Finnish explanation integration
+## English explanation integration
 
 `services/clinical_explanation.py` calls the existing
 `ExplanationEngine.explain_api(response, input_note=note)` after the validated
 analysis graph is flushed and before committing the transaction. No competing
 renderer or model is introduced. The validated `ExplanationResult` is saved in
 `AnalysisRun.details.clinical_explanation`, exposed in the additive response field
-`clinical_explanation`, and its Finnish summary populates the existing
+`clinical_explanation`, and its English summary populates the existing
 `explanation` string. Existing analyses return null for the new field and retain
-the legacy summary; GET does not backfill or make provider calls.
+the legacy summary; GET does not backfill or make provider calls. Stored explanation-v1 payloads use
+the read-only English adapter described in [contracts](contracts.md).
 
-The structured object includes evidence IDs, exact model quantities, Finnish
+The structured object includes evidence IDs, exact model quantities, English
 statements, limitations, generation mode and issues. The frontend exposes this
 object in nurse and physician views, alongside a separate QCancer card. It never
 uses explanation text to determine urgency. The digest binds the pre-explanation
@@ -62,7 +63,7 @@ Settings (restart the API after changing them):
 | `CANCERSIGNAL_EXPLANATION_CACHE_DIR` | unset |
 
 The existing engine handles provider failures with its validated deterministic
-Finnish output and explicit issue codes. Invalid configuration falls back through
+English output and explicit issue codes. Invalid configuration falls back through
 the same engine and records `clinical_explanation_provider_unavailable`. If both
 paths reject the input, the analysis stays saved with null explanation details and
 `clinical_explanation_unavailable`; clinical results are not changed. Failed
@@ -142,7 +143,7 @@ npm run build -- --webpack
 - Interactive browser clicks were not exercised; frontend verification here is
   type checking/build plus inspection of API mapping and component data flow.
 - Real network HTTP smoke: lexical and real cached multilingual E5 hybrid passed;
-  Finnish explanation persistence, GET equality and duplicate handoff passed.
+  English explanation persistence, GET equality and duplicate handoff passed.
 - Database tests exercise real PostgreSQL full-text/pgvector mechanics. Ordinary
   hybrid tests use a deterministic fake embedder; the HTTP smoke uses real E5.
 - LLM schema, negation, uncertainty, provider errors and grounding are tested with

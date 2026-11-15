@@ -1,0 +1,16 @@
+{
+  "version": "en-v2",
+  "language": "en",
+  "synthetic": true,
+  "patient_histories": "patients.en-v2.json",
+  "extraction_scenario": "../../../examples/extraction/synthetic.json",
+  "coverage": {
+    "active_concerning_symptoms": "laine; extraction current weight loss",
+    "historical_resolved_symptoms": "heikkinen",
+    "completed_investigations": "heikkinen",
+    "planned_unknown_completion": "nieminen",
+    "explicit_negation": "korhonen; extraction absent rectal bleeding",
+    "conflicting_documentation": "extraction disputed colonoscopy completion",
+    "missing_clinical_predictors": "all four patient histories; unknown smoking history"
+  }
+}

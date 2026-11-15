@@ -24,7 +24,7 @@ Inherit `../AGENTS.md`. Paths below are relative to `frontend/`.
   and pending/reviewed queues preserve patient ownership and server ordering.
   Prototype fixtures and browser-only actions require explicit prototype mode.
   Do not silently substitute fixtures when the API fails.
-- Physician summaries use saved Finnish text and only triggered rule explanations;
+- Physician summaries use saved English text and only triggered rule explanations;
   technical warnings remain expandable. Completed tests do not imply repeat orders.
   See `../docs/demo-dataset-isolation.md` for the running-demo investigation.
 - Keep numeric clinical calculations in Python. Do not infer lab reference

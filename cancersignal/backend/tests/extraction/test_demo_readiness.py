@@ -1,4 +1,4 @@
-"""Manually authored Finnish scenario responses: contract tests, NOT LLM accuracy."""
+"""Manually authored English scenario responses: contract tests, NOT LLM accuracy."""
 from datetime import timedelta
 import json
 from uuid import uuid4
@@ -41,7 +41,7 @@ def scenario(key):
         coverage={'status': 'complete', 'eligible_count': len(history)})
     findings = [dict(finding_type=kind, description='Manually authored scenario interpretation',
         polarity=polarity, temporal_status=temporal,
-        uncertainty='Toteutuminen epäselvä' if polarity == 'uncertain' else None,
+        uncertainty='Completion uncertain' if polarity == 'uncertain' else None,
         missing_information=[], evidence=[{'observation_id': str(keyed[source].id),
             'source_excerpt': keyed[source].text, 'start_offset': None, 'end_offset': None}])
         for source, kind, polarity, temporal in SCENARIOS[key]]
@@ -59,7 +59,7 @@ def mocked(response, calls):
 
 
 @pytest.mark.parametrize('key', SCENARIOS)
-def test_finnish_scenarios_preserve_temporality_and_replay(key, tmp_path, caplog):
+def test_english_scenarios_preserve_temporality_and_replay(key, tmp_path, caplog):
     context, note, response = scenario(key)
     calls = []
     provider = mocked(response, calls)
@@ -84,7 +84,7 @@ def test_cache_invalidates_clinical_and_producer_changes(change, tmp_path):
     extractor = ClinicalExtractor(provider, cache_dir=tmp_path)
     assert extractor(context, input_note=note).status != 'failed'
     provider.transport = None
-    if change == 'text': note = note.model_copy(update={'text': note.text + ' Uusi tieto.'})
+    if change == 'text': note = note.model_copy(update={'text': note.text + ' New information.'})
     elif change == 'time': note = note.model_copy(update={'recorded_at': note.recorded_at + timedelta(seconds=1)})
     elif change == 'note_id': note = note.model_copy(update={'id': uuid4()})
     elif change == 'model': provider.settings = provider.settings.model_copy(update={'model': 'another-model'})

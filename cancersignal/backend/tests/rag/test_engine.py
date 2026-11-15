@@ -93,7 +93,7 @@ def test_hybrid_rrf_preserves_branch_scores_and_ignores_changed_source_embedding
 
 
 def test_chunks_cover_long_source_with_exact_original_offsets_and_no_truncation():
-    row = source(uuid4(), 2020, text="SYNTHETIC: vatsakipu. " * 200)
+    row = source(uuid4(), 2020, text="SYNTHETIC: abdominal pain. " * 200)
     encoder = FakeEmbedder()
     chunks = chunk_source(row, encoder)
     assert len(chunks) > 1 and chunks[0].start == 0 and chunks[-1].end == len(row.text)
@@ -101,7 +101,7 @@ def test_chunks_cover_long_source_with_exact_original_offsets_and_no_truncation(
     for chunk in chunks:
         assert chunk.passage.endswith(row.text[chunk.start:chunk.end])
         assert encoder.token_count("passage: " + chunk.passage) <= encoder.max_tokens
-    assert row.text == "SYNTHETIC: vatsakipu. " * 200
+    assert row.text == "SYNTHETIC: abdominal pain. " * 200
 
 
 @pytest.mark.parametrize("value", [[0.0]*384, [1.0]*383, [float('nan')]*384])
@@ -135,7 +135,7 @@ def test_long_query_covers_every_character_instead_of_silent_truncation():
         seen.extend(texts)
         return [checked_vector([1.0]*384) for text in texts]
     encoder._encode = encode
-    query = "SYNTHETIC pitkä kysely. " * 30
+    query = "SYNTHETIC long query. " * 30
     assert len(encoder.query(query)) == 384
     assert len(seen) > 1 and all(len(text) <= encoder.max_tokens for text in seen)
     assert ''.join(text.removeprefix('query: ') for text in seen) == query

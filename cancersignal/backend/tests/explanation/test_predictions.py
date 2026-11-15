@@ -31,9 +31,9 @@ def test_published_qcancer_percentage_fields_are_copied_without_conversion(examp
     statement = prediction_statement(output)
     assert {row.slot: (row.value, row.unit) for row in statement.quantities} == {
         "colorectal_cancer_risk_percent": (Decimal("2.25"), "%"),
-        "any_cancer_risk_percent": (Decimal("7.5"), "%"), "horizon_years": (Decimal("2"), "vuotta")}
-    assert "2,25 %" in statement.text_fi and "7,5 %" in statement.text_fi
-    assert "ei todetusta sairaudesta" in statement.text_fi
+        "any_cancer_risk_percent": (Decimal("7.5"), "%"), "horizon_years": (Decimal("2"), "years")}
+    assert "2.25 %" in statement.text_en and "7.5 %" in statement.text_en
+    assert "not an established disease" in statement.text_en
     assert "qcancer_finland_limitation" in {row.code for row in output.limitations}
     assert "api_v1_model_outputs_not_exposed" not in {row.code for row in output.limitations}
     assert statement.source_notice == example["analysis_response"]["predictions"][0]["value"]["source_notice"]
@@ -71,10 +71,10 @@ def test_uncalculated_model_statuses_never_show_a_numeric_risk(example, status):
             missing_inputs=["bmi"] if status == "insufficient_data" else [], invalid_inputs=[] if status == "insufficient_data" else ["synthetic input problem"])
     output = ExplanationEngine().explain_api(example["analysis_response"])
     statement = prediction_statement(output)
-    assert not statement.quantities and "ei ole laskettu" in statement.text_fi
+    assert not statement.quantities and "not calculated" in statement.text_en
     assert "qcancer_estimate_unavailable" in {row.code for row in output.limitations}
     # Failure to calculate a prediction does not change the independent rule flag.
-    assert "ammattilaisen arvioitavaksi" in output.summary_fi
+    assert "Physician review required" in output.summary_en
 
 
 @pytest.mark.parametrize("field,value", [("colorectal_cancer_risk_percent", "NaN"),
@@ -133,7 +133,7 @@ def test_prediction_numbers_never_change_rule_alerts_or_review_flags(example):
     for prediction in (api["predictions"][0], api["provenance"]["predictions"][0]):
         prediction["value"].update(colorectal_cancer_risk_percent=99, any_cancer_risk_percent=99)
     changed = ExplanationEngine().explain_api(api)
-    assert changed.summary_fi == original.summary_fi and changed.rule_results == original.rule_results
+    assert changed.summary_en == original.summary_en and changed.rule_results == original.rule_results
     assert api["trigger_results"][0]["priority"] == "review"
 
 
@@ -166,4 +166,4 @@ raise SystemExit(main())
 '''
     result = subprocess.run([sys.executable, "-c", code], cwd=ROOT, text=True, capture_output=True)
     assert result.returncode == 0, result.stderr
-    assert "2,25 %" in result.stdout
+    assert "2.25 %" in result.stdout

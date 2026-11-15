@@ -1,4 +1,4 @@
-# Independent Finnish clinical explanation
+# Independent English clinical explanation
 
 Consumes the existing shared `app.contracts.analysis.AnalysisResult`. It does not
 retrieve records, run risk models, calculate features, evaluate rules, write to
@@ -34,7 +34,7 @@ PostgreSQL server or network is needed for offline execution or unit tests.
 from app.explanation import ExplanationEngine
 from app.explanation.providers import ChatProvider, ProviderSettings
 
-# No provider: deterministic Finnish fallback; no network access.
+# No provider: deterministic English fallback; no network access.
 explanation = ExplanationEngine()(validated_analysis_result)
 
 # Configured provider, but live calls remain disabled by default.
@@ -46,7 +46,7 @@ explanation = engine(validated_analysis_result)
 Keep the original analysis alongside `ExplanationResult`: every statement points
 back to its original finding/feature/rule, prediction index, and observation IDs.
 `input_digest` binds the output to the complete input snapshot. Output fields are
-`summary_fi`, `findings`, `mathematical_outputs`, `rule_results`, `limitations`,
+`summary_en`, `findings`, `mathematical_outputs`, `rule_results`, `limitations`,
 provenance and explicit issues. `mode` is `llm`, `fallback` or `unavailable`.
 
 Input is revalidated, including mutable legacy prediction records. Invalid
@@ -55,7 +55,7 @@ not receive a seemingly valid fallback. Pending/running/failed analyses and
 inputs with no explainable structured facts return `unavailable` with no clinical
 statements and no provider call. Provider failures,
 timeouts, malformed JSON, altered numbers or invented references return a valid
-deterministic Finnish fallback with the specific issue code and attempted-provider
+deterministic English fallback with the specific issue code and attempted-provider
 identity. No provider error body or source text is included in error reports.
 
 ## Why the LLM returns a plan
@@ -63,10 +63,10 @@ identity. No provider error body or source text is included in error reports.
 Free prose cannot reliably be checked for changed units, numerical words, implied
 probabilities, diagnoses or referral advice. Instead, the LLM selects/orders
 **approved fact keys**, echoes their exact quantities/evidence IDs, and chooses a
-Finnish summary style. Python renders the clinical statements from the existing
+English summary style. Python renders the clinical statements from the existing
 states and values. The strict Pydantic plan accepts no free-text clinical claims.
 No number from an LLM is rendered: even a valid echo is replaced by the original
-input value. Finnish decimal punctuation is formatting only; no rounding, unit
+input value. English decimal-point punctuation is formatting only; no rounding, unit
 conversion, risk calculation, new threshold or numerical inference occurs.
 
 References must match the selected fact's exact evidence set, not merely exist
@@ -75,7 +75,7 @@ rule metadata. Matched/indeterminate rules, review flags, supporting findings,
 all mathematical outputs, and negative/resolved/uncertain findings cannot be
 omitted. Selecting one finding in a same-type group requires all its states;
 contradictions are preserved rather than reconciled. All limitations are rendered
-independently of the LLM plan. Unknown clinical labels receive a generic Finnish
+independently of the LLM plan. Unknown clinical labels receive a generic English
 description and explicit limitation, not a guessed translation.
 
 Raw notes, finding descriptions, free-text uncertainty and generic model payloads
@@ -131,7 +131,7 @@ are valid. Percentage fields already contain percentages: there is no scaling,
 rounding, site-risk summation, new cutoff, risk category or urgency calculation.
 
 `insufficient_data`, `invalid_input` and `unsupported_input` produce explicit
-Finnish explanations with no risk values. Unknown versions retain the generic
+English explanations with no risk values. Unknown versions retain the generic
 unmapped-prediction behavior. QCancer remains separate from the rule results and
 never changes their outcome, priority or review flags. The explanation preserves
 the limitation that this prototype's QCancer output is not clinically validated
@@ -224,7 +224,7 @@ Only after explicit authorization for a live invocation:
 
 Python live use likewise requires `ChatProvider(settings, allow_live=True)`.
 Tests use deterministic mock plans/`httpx.MockTransport`, never real APIs. No
-live provider compatibility or Finnish model quality is established by those tests.
+live provider compatibility or English model quality is established by those tests.
 
 Optional caching stores only validated plans, keyed by exact input, prompt,
 catalog and nonsecret provider configuration. Every read revalidates references
@@ -232,6 +232,12 @@ and numbers. Tampering produces an explicit fallback, not a network retry.
 Cache files are atomically written with owner-only access. Use an ignored local
 directory and synthetic data only; no patient response cache is committed.
 
+
+English contract v2 uses `language: "en"`, `summary_en` and statement/limitation
+`text_en`. Prompt `en-explanation-plan-2` isolates old plan caches. Stored v1 API
+analyses are supported by the read-only deterministic adapter documented in
+[contracts](../../../docs/contracts.md). The plan schema still selects grounded
+facts; it cannot author clinical claims, decisions or numbers.
 INFO logger `app.explanation.service` reports cache hit/miss/disabled with a digest.
 A new analysis/finding ID intentionally changes plan identity. For an exact demo
 replay, GET the persisted analysis and its saved explanation. See the

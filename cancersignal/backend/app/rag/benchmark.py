@@ -64,7 +64,7 @@ def run_benchmark(session, *, embedder=None, k=3, max_source_chars=32000):
                 source_chars=output.diagnostics.source_chars,
                 estimated_tokens=(output.diagnostics.source_chars + 2) // 3,
                 coverage=output.context.coverage.status))
-    return dict(synthetic_only=True, clinically_validated=False, labels_version="rag-fixture-v1",
+    return dict(synthetic_only=True, clinically_validated=False, labels_version="rag-fixture-en-v2",
         token_estimate="ceil(serialized_source_characters/3), not an actual LLM tokenizer budget",
         baseline_at_k_order="chronological, not query ranked", embedding_profile=embedder.model_key if embedder else None,
         indexing_ms=round(indexed_ms, 3) if indexed_ms is not None else None, results=rows)

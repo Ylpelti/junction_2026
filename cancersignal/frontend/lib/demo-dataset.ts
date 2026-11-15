@@ -1,11 +1,11 @@
-// Dataset membership only. IDs come from backend/app/db/demo_data/patients.json.
+// Dataset membership only. IDs come from backend/app/db/demo_data/patients.en-v2.json.
 // Never put clinical fixture content, expected findings or priorities here.
 // Regression tests verify this registry against the canonical source fixture.
 export const CANONICAL_PATIENT_IDS: readonly string[] = [
-  "138fff92-bea8-5f85-a95a-5fb502fd9e57",
-  "9f1864d7-0a2b-55d2-a007-7f886ab65b2e",
-  "53bcac07-8145-5a0a-bcf9-a64720ceecac",
-  "6fa564bb-9001-5226-b01e-2fbb61cc4526"
+  "890bf4db-36e8-542e-b009-901f2d6a6f41",
+  "46ee7817-ff3e-5a1e-9912-046c5e85e0d4",
+  "3ebb5257-b8be-5e66-8064-3bffc5c800c0",
+  "9704c785-e9fc-5cd0-bdae-4e36e4235a42"
 ];
 export const isCanonicalPatient = (id: string) => CANONICAL_PATIENT_IDS.includes(id);
 export const isUuid = (id: unknown): id is string => typeof id === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);

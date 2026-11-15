@@ -13,7 +13,7 @@ from app.explanation.service import ExplanationEngine, ExplanationInputError
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Synthetic Finnish clinical explanation; offline by default.")
+    parser = argparse.ArgumentParser(description="Synthetic English clinical explanation; offline by default.")
     parser.add_argument("--example", type=Path, required=True)
     parser.add_argument("--api-v1", action="store_true", help="Explain an existing API AnalysisResponse fixture.")
     parser.add_argument("--live", action="store_true")

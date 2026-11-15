@@ -43,7 +43,7 @@ class PatientRepository:
                     + " " + func.coalesce(eligible.c.unit, ""))
         expression = " | ".join(terms)
         scores = []
-        for language in ("finnish", "simple"):
+        for language in ("english", "simple"):
             configuration = literal_column(f"'{language}'::regconfig")
             scores.append(func.ts_rank_cd(func.to_tsvector(configuration, document),
                                          func.to_tsquery(configuration, expression)))

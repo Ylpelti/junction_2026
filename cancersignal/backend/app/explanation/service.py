@@ -14,16 +14,16 @@ from app.explanation.providers import ExplanationProvider, PROMPT_VERSION, Provi
 from app.explanation.schemas import ExplanationPlan, ExplanationResult, Limitation, PredictionDisplaySpec, plan_schema
 
 SUMMARY = {
-    "review_signals": ("Tallennetuissa sääntötuloksissa on ammattilaisen arvioitavaksi merkittyjä signaaleja.",
-                       "Rakenteisessa analyysissä on täyttyneitä sääntöjä, joiden tulokset on merkitty ammattilaisen arvioitavaksi."),
-    "indeterminate": ("Sääntötuloksiin jää epävarmuutta tai puuttuvia tietoja.",
-                      "Tallennettujen sääntöjen täyttymistä ei voida kaikilta osin ratkaista saatavilla olevilla tiedoilla."),
-    "no_signals": ("Tallennetuissa sääntötuloksissa ei ole täyttyneitä signaaleja. Tarkista rajoitukset.",
-                   "Annetuissa sääntötuloksissa ei ole täyttyneitä signaaleja. Tulos ei poista puuttuvien tai epävarmojen tietojen merkitystä."),
-    "observations_only": ("Rakenteiset havainnot ja laskennalliset tulokset on koottu alle. Sääntöarviota ei ole saatavilla.",
-                          "Yhteenveto perustuu annettuihin havaintoihin ja laskentatuloksiin. Sääntöarviota ei ole saatavilla."),
+    "review_signals": ("Signals identified in stored rule results. Physician review required.",
+                       "The structured analysis contains matched rules. Physician review required."),
+    "indeterminate": ("Insufficient information: rule results contain uncertainty or missing data.",
+                      "Available information cannot fully determine whether the stored rules match."),
+    "no_signals": ("No signals identified in stored rule results. Review the limitations.",
+                   "No signals identified in the supplied rule results. Missing or uncertain information remains relevant."),
+    "observations_only": ("Structured findings and calculated results are summarised below. Rule evaluation is unavailable.",
+                          "This summary uses the supplied findings and calculated results. Rule evaluation is unavailable."),
 }
-FALLBACK = ComponentProvenance(name="clinical-explanation-fi", version="1.0", method="deterministic", prompt_version=PROMPT_VERSION)
+FALLBACK = ComponentProvenance(name="clinical-explanation-en", version="2.0", method="deterministic", prompt_version=PROMPT_VERSION)
 
 
 class ExplanationInputError(ValueError):
@@ -74,7 +74,7 @@ class ExplanationEngine:
                                    allow_nan=False, separators=(",", ":"))
             catalog = build_catalog(result, self.prediction_specs)
         except (ValidationError, EvidenceValidationError, ValueError, TypeError, AttributeError):
-            raise ExplanationInputError("Selityksen lähtöanalyysi tai esityssopimus on virheellinen; tarkista viitteet, potilas, aikarajat ja lukuarvot.") from None
+            raise ExplanationInputError("Invalid source analysis or display contract; check references, patient, time boundaries and numeric values.") from None
         return self._explain(result, catalog, canonical)
 
     def explain_api(self, response, *, input_note=None) -> ExplanationResult:
@@ -83,7 +83,7 @@ class ExplanationEngine:
         try:
             prepared = prepare_api_response(response, input_note=input_note, prediction_specs=self.prediction_specs)
         except (ValidationError, EvidenceValidationError, ValueError, TypeError, AttributeError, KeyError):
-            raise ExplanationInputError("API-vastauksen potilas, aikaraja, alkuperäiset lähteet tai sääntöviitteet ovat puutteelliset tai ristiriitaiset.") from None
+            raise ExplanationInputError("The API response has incomplete or inconsistent patient, cutoff, original sources or rule references.") from None
         return self._explain(prepared.identity, prepared.catalog, prepared.canonical_input, input_format="api_v1")
 
     def _explain(self, result, catalog, canonical, *, input_format="analysis_result"):
@@ -91,13 +91,13 @@ class ExplanationEngine:
         base = dict(analysis_id=result.analysis_id, patient_id=result.patient_id, as_of=result.as_of,
                     input_digest=digest, input_format=input_format)
         if result.status != "completed":
-            return ExplanationResult(**base, mode="unavailable", summary_fi="Analyysi ei ole valmistunut luotettavasti. Kliinistä yhteenvetoa ei muodostettu.",
-                limitations=(Limitation(code="analysis_not_completed", text_fi="Keskeneräistä tai epäonnistunutta analyysiä ei tulkita valmiiksi kliiniseksi tulokseksi."),),
-                provenance=FALLBACK, issues=(self._issue("analysis_not_completed", "Valmista lähtöanalyysiä ei ole saatavilla."),))
+            return ExplanationResult(**base, mode="unavailable", summary_en="Analysis has not completed reliably. No clinical summary was generated.",
+                limitations=(Limitation(code="analysis_not_completed", text_en="An incomplete or failed analysis is not interpreted as a completed clinical result."),),
+                provenance=FALLBACK, issues=(self._issue("analysis_not_completed", "No completed source analysis is available."),))
         if not catalog.statements:
-            return ExplanationResult(**base, mode="unavailable", summary_fi="Lähtöanalyysi ei sisällä selitettäviä rakenteisia tuloksia. Tietojen puuttumisesta ei tehdä kliinistä johtopäätöstä.",
-                limitations=(*catalog.limitations, Limitation(code="no_explainable_data", text_fi="Lähtötuloksesta puuttuvat rakenteiset havainnot, mittaukset, malliennusteet ja sääntöarviot.")),
-                provenance=FALLBACK, issues=(self._issue("no_explainable_data", "Selitettäviä rakenteisia tuloksia ei ole saatavilla."),))
+            return ExplanationResult(**base, mode="unavailable", summary_en="The source analysis has no explainable structured results. Missing information does not support a clinical conclusion.",
+                limitations=(*catalog.limitations, Limitation(code="no_explainable_data", text_en="The source result has no structured findings, measurements, model predictions or rule evaluations.")),
+                provenance=FALLBACK, issues=(self._issue("no_explainable_data", "No explainable structured results are available."),))
         selected, style, mode, issues, attempted = catalog.statements, "compact", "fallback", (), None
         if self.provider is not None:
             attempted = self.provider.provenance
@@ -119,24 +119,24 @@ class ExplanationEngine:
                 if path is not None and not cached:
                     self._cache(path, plan.model_dump_json())
             except PlanError as error:
-                issues = (self._issue(error.code, "LLM-suunnitelma hylättiin; käytetään tarkistetuista lähtötiedoista muodostettua vakiotekstiä."),)
+                issues = (self._issue(error.code, "The LLM plan was rejected; deterministic text from validated source data is used."),)
                 selected, style, mode = catalog.statements, "compact", "fallback"
             except ValidationError:
-                issues = (self._issue("invalid_structured_response", "LLM-vastaus ei noudata sovittua rakennetta; käytetään vakiotekstiä."),)
+                issues = (self._issue("invalid_structured_response", "The LLM response does not conform to the schema; deterministic text is used."),)
             except ProviderError as error:
                 issues = (self._issue(error.code, str(error)),)
             except (OSError, UnicodeError):
-                issues = (self._issue("cache_error", "Selityksen välimuistia ei voitu käsitellä; käytetään vakiotekstiä."),)
+                issues = (self._issue("cache_error", "The explanation cache could not be processed; deterministic text is used."),)
             except Exception:
                 # A provider implementation may fail unexpectedly. Never expose
                 # its exception (it may contain clinical text or credentials).
-                issues = (self._issue("explanation_generation_failed", "LLM-selityksen muodostaminen epäonnistui; käytetään vakiotekstiä."),)
+                issues = (self._issue("explanation_generation_failed", "LLM explanation generation failed; deterministic text is used."),)
             if issues:
                 # A write failure after validation must also take the explicit fallback path.
                 selected, style, mode = catalog.statements, "compact", "fallback"
         else:
-            issues = (self._issue("offline_fallback", "Selitys muodostettiin ilman LLM-kutsua."),)
-        return ExplanationResult(**base, mode=mode, summary_fi=SUMMARY[catalog.summary_kind][style == "standard"],
+            issues = (self._issue("offline_fallback", "The explanation was generated without an LLM call."),)
+        return ExplanationResult(**base, mode=mode, summary_en=SUMMARY[catalog.summary_kind][style == "standard"],
             findings=tuple(row for row in selected if row.kind == "finding"),
             mathematical_outputs=tuple(row for row in selected if row.kind in ("measurement", "feature", "prediction")),
             rule_results=tuple(row for row in selected if row.kind == "rule"), limitations=catalog.limitations,

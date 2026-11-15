@@ -40,7 +40,7 @@ def test_current_api_response_can_be_explained_without_database_or_mutation(exam
     output = ExplanationEngine().explain_api(api, input_note=example["input_note"])
     assert output.mode == "fallback" and output.input_format == "api_v1"
     assert output.analysis_id == api.id and output.patient_id == api.patient_id
-    assert "ammattilaisen arvioitavaksi" in output.summary_fi
+    assert "Physician review required" in output.summary_en
     assert output.findings[0].finding_ids == (api.findings[0].id,)
     assert output.rule_results[0].rule_reference.trigger_rule_id == api.trigger_results[0].trigger_rule_id
     assert output.rule_results[0].observation_ids == tuple(api.trigger_results[0].evidence_observation_ids)
@@ -63,12 +63,12 @@ def test_missing_uncited_input_note_is_an_explicit_limitation_not_fake_evidence(
     assert hydrated.input_digest != output.input_digest
 
 
-@pytest.mark.parametrize("status,expected", [("current", "tämänhetkinen"), ("historical", "aiempi"),
-    ("resolved", "päättyneeksi"), ("negated", "puuttuvaksi"), ("uncertain", "ajankohta epäselvä")])
+@pytest.mark.parametrize("status,expected", [("current", "current"), ("historical", "historical"),
+    ("resolved", "resolved"), ("negated", "explicitly absent"), ("uncertain", "timing unknown")])
 def test_api_finding_states_are_conservatively_preserved(example, status, expected):
     example["analysis_response"]["findings"][0].update(status=status, uncertainty=None)
     output = ExplanationEngine().explain_api(example["analysis_response"])
-    assert expected in output.findings[0].text_fi
+    assert expected in output.findings[0].text_en
     if status == "uncertain":
         assert "uncertain_finding" in {row.code for row in output.limitations}
 
@@ -166,12 +166,12 @@ def test_api_does_not_gain_invented_model_outputs_from_descriptions(example):
     assert not any(row.kind in {"feature", "prediction"} for row in output.mathematical_outputs)
 
 
-@pytest.mark.parametrize("code,label", [("anaemia", "anemiaan viittaava"),
-    ("iron_deficiency_anaemia", "raudanpuuteanemiaan viittaava"), ("fit_result", "FIT-mittaustulos")])
-def test_existing_backend_lab_finding_labels_are_readable_in_finnish(example, code, label):
+@pytest.mark.parametrize("code,label", [("anaemia", "Anaemia finding"),
+    ("iron_deficiency_anaemia", "Iron-deficiency anaemia finding"), ("fit_result", "FIT result")])
+def test_existing_backend_lab_finding_labels_are_readable_in_english(example, code, label):
     example["analysis_response"]["findings"][0]["finding_type"] = code
     output = ExplanationEngine().explain_api(example["analysis_response"])
-    assert label in output.findings[0].text_fi
+    assert label in output.findings[0].text_en
     assert "unmapped_finding" not in {row.code for row in output.limitations}
 
 

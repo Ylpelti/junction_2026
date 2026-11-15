@@ -97,11 +97,29 @@ def get_analysis(session: Session, analysis_id: UUID) -> AnalysisResponse:
         explanation = "Demonstration rules suggest physician review. This is not a diagnosis or referral decision."
     else:
         explanation = "No signals identified by configured demonstration rules. Review missing information; this is not a diagnosis."
-    return AnalysisResponse(id=run.id, patient_id=run.patient_id, status=run.status,
+    legacy_explanation = clinical_explanation is not None and clinical_explanation.get("contract_version") != "2.0"
+    if legacy_explanation:
+        clinical_explanation = None
+    response = AnalysisResponse(id=run.id, patient_id=run.patient_id, status=run.status,
         created_at=run.created_at, findings=findings, trigger_results=results, predictions=provenance.predictions,
         source_observations=[ObservationRead.model_validate(row) for row in sources],
         clinical_explanation=clinical_explanation,
-        explanation=(clinical_explanation["summary_fi"] if clinical_explanation else explanation), provenance=provenance)
+        explanation=(clinical_explanation["summary_en"] if clinical_explanation else explanation), provenance=provenance)
+
+    if legacy_explanation:
+        # Read-only v1 adapter: render stored structured outputs, never translate
+        # evidence, rerun extraction, call a model or update persisted JSON.
+        from app.explanation import ExplanationEngine
+        try:
+            adapted = ExplanationEngine().explain_api(response)
+            response.clinical_explanation = adapted.model_dump(mode="json")
+            response.clinical_explanation["legacy_adapter"] = {
+                "source_contract_version": "1.0", "mode": "read_only_deterministic_render"
+            }
+            response.explanation = adapted.summary_en
+        except (ValueError, TypeError):
+            response.explanation = "Legacy explanation unavailable. Review the stored structured results and source evidence."
+    return response
 
 
 def list_analyses(session: Session, patient_id: UUID, limit=100, offset=0):

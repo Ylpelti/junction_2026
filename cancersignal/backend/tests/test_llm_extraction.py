@@ -19,7 +19,7 @@ from app.services.llm_extraction import LlmNoteExtractor, build_from_settings, t
 PATIENT = uuid4()
 CUTOFF = datetime(2026, 11, 14, 8, 45, tzinfo=timezone.utc)
 EARLIER = datetime(2026, 8, 14, 9, tzinfo=timezone.utc)
-NOTE_TEXT = "SYNTHETIC: verta ulosteessa viime viikolla. Ei vatsakipua."
+NOTE_TEXT = "SYNTHETIC — Patient reports rectal bleeding. No abdominal pain."
 
 
 def observation(**fields):
@@ -67,13 +67,13 @@ def test_contract_context_keeps_scope_and_complete_history():
 
 def test_note_findings_are_added_to_structured_findings():
     current, history = note(), lab()
-    raw = response(current.id, finding(current.id, "rectal_bleeding", "verta ulosteessa"),
-                   finding(current.id, "abdominal_pain", "Ei vatsakipua.", polarity="absent"))
+    raw = response(current.id, finding(current.id, "rectal_bleeding", "Patient reports rectal bleeding"),
+                   finding(current.id, "abdominal_pain", "No abdominal pain.", polarity="absent"))
     result = extractor(raw).extract(legacy_context(history), current)
     by_type = {f.finding_type: f for f in result.findings}
     assert by_type["rectal_bleeding"].status == "current"
     assert [ref.observation_id for ref in by_type["rectal_bleeding"].evidence] == [current.id]
-    assert by_type["rectal_bleeding"].evidence[0].source_excerpt == "verta ulosteessa"
+    assert by_type["rectal_bleeding"].evidence[0].source_excerpt == "Patient reports rectal bleeding"
     # Negation stays explicit and cannot trigger a rule.
     assert by_type["abdominal_pain"].status == "negated"
     # Structured lab facts from the existing extractor are kept.

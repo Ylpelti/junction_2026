@@ -2,6 +2,6 @@
   {"name":"old_fatigue_followup", "patient_key":"patient/0", "query":"fatigue follow-up outcome", "as_of":"2026-01-01T00:00:00Z", "required":["note/0/0","note/0/2"], "followup":["note/0/2"]},
   {"name":"resolved_after_normal_investigation", "patient_key":"patient/2", "query":"abdominal discomfort", "as_of":"2026-01-01T00:00:00Z", "required":["note/2/0","investigation/2","note/2/2"], "followup":["investigation/2","note/2/2"]},
   {"name":"exact_laboratory_code_and_number", "patient_key":"patient/0", "query":"SYNTHETIC-HB 112 g/L", "as_of":"2026-01-01T00:00:00Z", "required":["lab/0/2"], "followup":[]},
-  {"name":"finnish_inflection_with_distractors", "patient_key":"patient/3", "query":"vatsakipu", "as_of":"2026-01-01T00:00:00Z", "required":["rag-benchmark/old-finnish","rag-benchmark/followup-finnish"], "followup":["rag-benchmark/followup-finnish"]},
-  {"name":"cross_language_negated_symptom", "patient_key":"patient/1", "query":"verta ulosteessa", "as_of":"2026-01-01T00:00:00Z", "required":["note/1/1"], "followup":[]}
+  {"name":"english_symptoms_with_distractors", "patient_key":"patient/3", "query":"abdominal pain", "as_of":"2026-01-01T00:00:00Z", "required":["rag-benchmark/en-v2/old-english","rag-benchmark/en-v2/followup-english"], "followup":["rag-benchmark/en-v2/followup-english"]},
+  {"name":"english_negated_symptom", "patient_key":"patient/1", "query":"blood in stool", "as_of":"2026-01-01T00:00:00Z", "required":["note/1/1"], "followup":[]}
 ]

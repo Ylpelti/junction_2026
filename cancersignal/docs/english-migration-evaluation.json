@@ -1,0 +1,35 @@
+{
+  "method": "Manually authored fixture response replay through current validation; no model inference.",
+  "clinical_validation": "not_assessed",
+  "live_calls": 0,
+  "original_fi_v1": {
+    "scenario_findings": 6,
+    "schema_valid": true,
+    "evidence_valid_findings": 6,
+    "retained_findings": 6,
+    "factual_state_recall": 1.0,
+    "factual_state_precision": 1.0,
+    "negation_recall": 1.0,
+    "temporal_state_recall": 1.0,
+    "missing_smoking_status_preserved": true,
+    "issues": [
+      "clinical_interpretation_not_verified"
+    ],
+    "semantic_validation": null
+  },
+  "english_v2": {
+    "scenario_findings": 6,
+    "schema_valid": true,
+    "evidence_valid_findings": 6,
+    "retained_findings": 6,
+    "factual_state_recall": 1.0,
+    "factual_state_precision": 1.0,
+    "negation_recall": 1.0,
+    "temporal_state_recall": 1.0,
+    "missing_smoking_status_preserved": true,
+    "issues": [
+      "clinical_interpretation_not_verified"
+    ],
+    "semantic_validation": null
+  }
+}

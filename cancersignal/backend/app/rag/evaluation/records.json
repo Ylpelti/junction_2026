@@ -1,7 +1,44 @@
 [
-  {"key":"rag-benchmark/old-finnish", "patient_key":"patient/3", "year":2018, "observation_type":"clinical_note", "text":"SYNTHETIC: Vatsakipua jo usean vuoden ajan.", "code":"DEMO-PAIN", "status":"current"},
-  {"key":"rag-benchmark/followup-finnish", "patient_key":"patient/3", "year":2023, "observation_type":"investigation", "text":"SYNTHETIC: Ei enää vatsakipua. Tutkimus tehty, normaali löydös.", "code":"DEMO-PAIN", "status":"completed"},
-  {"key":"rag-benchmark/distractor-1", "patient_key":"patient/3", "year":2019, "observation_type":"clinical_note", "text":"SYNTHETIC: Nilkan nyrjähdyksen kontrolli.", "status":"resolved"},
-  {"key":"rag-benchmark/distractor-2", "patient_key":"patient/3", "year":2021, "observation_type":"clinical_note", "text":"SYNTHETIC: Rokotuskäynti, ei uusia oireita.", "status":"negated"},
-  {"key":"rag-benchmark/distractor-3", "patient_key":"patient/3", "year":2024, "observation_type":"clinical_note", "text":"SYNTHETIC: Kuulokojeen huolto.", "status":"completed"}
+  {
+    "key": "rag-benchmark/en-v2/old-english",
+    "patient_key": "patient/3",
+    "year": 2018,
+    "observation_type": "clinical_note",
+    "text": "SYNTHETIC: Abdominal pain for several years.",
+    "code": "DEMO-PAIN",
+    "status": "current"
+  },
+  {
+    "key": "rag-benchmark/en-v2/followup-english",
+    "patient_key": "patient/3",
+    "year": 2023,
+    "observation_type": "investigation",
+    "text": "SYNTHETIC: Abdominal pain has resolved. Investigation completed; normal findings.",
+    "code": "DEMO-PAIN",
+    "status": "completed"
+  },
+  {
+    "key": "rag-benchmark/en-v2/distractor-1",
+    "patient_key": "patient/3",
+    "year": 2019,
+    "observation_type": "clinical_note",
+    "text": "SYNTHETIC: Ankle sprain follow-up.",
+    "status": "resolved"
+  },
+  {
+    "key": "rag-benchmark/en-v2/distractor-2",
+    "patient_key": "patient/3",
+    "year": 2021,
+    "observation_type": "clinical_note",
+    "text": "SYNTHETIC: Vaccination visit, no new symptoms.",
+    "status": "negated"
+  },
+  {
+    "key": "rag-benchmark/en-v2/distractor-3",
+    "patient_key": "patient/3",
+    "year": 2024,
+    "observation_type": "clinical_note",
+    "text": "SYNTHETIC: Hearing aid maintenance.",
+    "status": "completed"
+  }
 ]

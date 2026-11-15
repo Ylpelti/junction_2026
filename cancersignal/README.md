@@ -80,7 +80,7 @@ Backend settings belong in `cancersignal/.env`. Restart the API after changes.
 | `CORS_ORIGINS` | Localhost and 127.0.0.1 on port 3000 | Allowed frontend origins, as a JSON array |
 | `CANCERSIGNAL_RETRIEVAL` | `auto` | Complete history while it fits, otherwise lexical retrieval |
 | `CANCERSIGNAL_EXTRACTION` | `off` | Structured-only extraction; `llm` enables clinical-text extraction |
-| `CANCERSIGNAL_EXPLANATION` | `deterministic` | Finnish summaries; `llm` enables optional provider wording |
+| `CANCERSIGNAL_EXPLANATION` | `deterministic` | English contract-v2 summaries; `llm` enables optional provider wording |
 | `CANCERSIGNAL_EXTRACTION_ALLOW_LIVE` | `false` | Explicit opt-in to live extraction calls |
 | `CANCERSIGNAL_EXPLANATION_ALLOW_LIVE` | `false` | Explicit opt-in to live explanation calls |
 
@@ -100,7 +100,7 @@ CORS_ORIGINS=["http://localhost:3000","http://127.0.0.1:3000","http://localhost:
 
 - **LLM extraction:** Configure the provider, model, credentials, and cache using the [extraction guide](backend/app/extraction/README.md). Cached responses can run without live calls; new live requests require explicit opt-in.
 - **Hybrid retrieval:** Install the optional local embedding dependencies and prepare the model cache using the [retrieval integration guide](docs/rag-analysis-integration.md). The API does not download model weights during requests.
-- **LLM explanations:** Follow the [explanation guide](backend/app/explanation/README.md) for separate provider settings. Deterministic Finnish explanations remain the default.
+- **LLM explanations:** Follow the [explanation guide](backend/app/explanation/README.md) for separate provider settings. Deterministic English explanations remain the default.
 
 Retrieval always isolates patient history and enforces observation and recording cutoffs. Laboratory history is retrieved separately from narrative top-k results. Evidence is validated before persistence; Python rules determine alerts, and QCancer predictions remain separate.
 
@@ -173,3 +173,5 @@ docker compose exec db sh -c 'psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "CRE
 Use **synthetic patient data only**. Authentication, EHR integration, and Finnish clinical validation are not implemented. Review requests, dismissal reasons, and physician decisions persist through the API. Actions use demo actors and simulate clinical workflow decisions; they do not book investigations or issue real referrals.
 
 QCancer uses a synthetic Townsend placeholder of zero and is not calibrated for Finland. Numerical predictions do not control review alerts. “No signals identified” is not a negative cancer diagnosis. Failed or incomplete analysis provides no clinical conclusion. Clinicians retain responsibility for investigations and referrals.
+
+See [English migration](docs/english-migration.md) for contract v2, versioned English sources and read-only legacy compatibility.

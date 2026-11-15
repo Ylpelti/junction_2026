@@ -26,10 +26,10 @@ def records(db_session):
 def test_postgres_lexical_stemming_codes_numbers_and_patient_filter(db_session, records):
     patient, repo, scope = records
     for owner in (patient, synthetic_id("patient/1")):
-        db_session.add(Observation(patient_id=owner, observation_type="clinical_note", text="SYNTHETIC: vatsakipua ulosteessa.",
+        db_session.add(Observation(patient_id=owner, observation_type="clinical_note", text="SYNTHETIC: Investigations planned.",
             observed_at=datetime(2021, 1, 1, tzinfo=timezone.utc), recorded_at=datetime(2021, 1, 1, tzinfo=timezone.utc)))
     db_session.flush()
-    scores = repo.lexical_scores(scope, "vatsakipu")
+    scores = repo.lexical_scores(scope, "investigation")
     assert len(scores) == 1
     source = db_session.get(Observation, next(iter(scores)))
     assert source.patient_id == patient

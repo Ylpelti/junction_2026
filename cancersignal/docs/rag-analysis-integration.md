@@ -20,7 +20,7 @@ the process after changing settings (the existing settings loader is cached).
 | `CANCERSIGNAL_RETRIEVAL_MODEL_CACHE` | `<Python virtualenv>/rag-model-cache` | Cached pinned local E5 weights; no request-time downloads |
 
 `auto` returns complete history when it fits, otherwise lexical retrieval.
-`lexical` uses PostgreSQL Finnish/simple full-text ranking and timeline expansion.
+`lexical` uses PostgreSQL English/simple full-text ranking and timeline expansion.
 These API modes never load embedding dependencies. `hybrid` explicitly loads the
 existing pinned `multilingual-e5-small` adapter and combines lexical/vector ranks.
 `baseline` runs the original all-history lexical-overlap adapter without a budget.

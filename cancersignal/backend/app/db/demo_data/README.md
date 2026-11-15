@@ -1,3 +1,5 @@
+> Archived v1 guide. Use [README.en-v2.md](README.en-v2.md) for active English fixtures and insert-only seed behavior.
+
 # Synthetic Finnish demonstration patients
 
 See the [current integration verification](../../../../docs/demo-seed-integration.md)

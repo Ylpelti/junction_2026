@@ -241,11 +241,11 @@ def test_llm_note_extraction_triggers_a_sourced_rule(client, db_session):
     seed_rules(db_session)
     db_session.flush()
     note_id = str(uuid4())
-    text = "SYNTHETIC: verta ulosteessa viime viikolla."
+    text = "SYNTHETIC — Patient reports rectal bleeding."
     fixture = json.dumps({"missing_information": [], "findings": [{
         "finding_type": "rectal_bleeding", "description": "SYNTHETIC rectal bleeding reported.",
         "polarity": "present", "temporal_status": "current", "uncertainty": None, "missing_information": [],
-        "evidence": [{"observation_id": note_id, "source_excerpt": "verta ulosteessa", "start_offset": None, "end_offset": None}],
+        "evidence": [{"observation_id": note_id, "source_excerpt": "Patient reports rectal bleeding", "start_offset": None, "end_offset": None}],
     }]})
     extractor = LlmNoteExtractor(StructuredSourceExtractor(), clinical=ClinicalExtractor(FixtureProvider(fixture)))
     pipeline = replace(get_analysis_pipeline(), extractor=extractor)

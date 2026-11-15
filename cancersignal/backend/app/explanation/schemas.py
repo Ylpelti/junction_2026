@@ -33,7 +33,7 @@ class ExplanationPlan(Contract):
 class ExplanationStatement(Contract):
     key: NonEmpty
     kind: Literal["finding", "measurement", "feature", "prediction", "rule"]
-    text_fi: NonEmpty
+    text_en: NonEmpty
     observation_ids: tuple[UUID, ...]
     quantities: tuple[Quantity, ...] = ()
     finding_ids: tuple[UUID, ...] = ()
@@ -47,21 +47,21 @@ class ExplanationStatement(Contract):
 
 class Limitation(Contract):
     code: NonEmpty
-    text_fi: NonEmpty
+    text_en: NonEmpty
     observation_ids: tuple[UUID, ...] = ()
     related_keys: tuple[str, ...] = ()
 
 
 class ExplanationResult(Contract):
-    contract_version: Literal["1.0"] = "1.0"
-    language: Literal["fi"] = "fi"
+    contract_version: Literal["2.0"] = "2.0"
+    language: Literal["en"] = "en"
     input_format: Literal["analysis_result", "api_v1"] = "analysis_result"
     analysis_id: UUID
     patient_id: UUID
     as_of: AwareDatetime
     input_digest: str = Field(pattern=r"^[a-f0-9]{64}$")
     mode: Literal["llm", "fallback", "unavailable"]
-    summary_fi: NonEmpty
+    summary_en: NonEmpty
     findings: tuple[ExplanationStatement, ...] = ()
     mathematical_outputs: tuple[ExplanationStatement, ...] = ()
     rule_results: tuple[ExplanationStatement, ...] = ()

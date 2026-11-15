@@ -1,4 +1,4 @@
-"""Real PostgreSQL/FastAPI/rules; mocked Finnish provider, never clinical validation."""
+"""Real PostgreSQL/FastAPI/rules; mocked English provider, never clinical validation."""
 import json
 
 import httpx
@@ -43,7 +43,7 @@ def test_four_saved_notes_full_pipeline_and_offline_replay(db_session, tmp_path,
                 assert analysis['predictions'][0]['value']['any_cancer_risk_percent'] is None
                 sources = {row['id'] for row in analysis['source_observations']}
                 assert all(ref['observation_id'] in sources for f in analysis['findings'] for ref in f['evidence'])
-                if patient['patient'] in ('SYNTHETIC Heikkinen', 'SYNTHETIC Korhonen'):
+                if patient['patient'] in ('SYNTHETIC Heikkinen EN v2', 'SYNTHETIC Korhonen EN v2'):
                     assert not any(r['triggered'] for r in analysis['trigger_results'])
     finally:
         get_pipeline_settings.cache_clear()

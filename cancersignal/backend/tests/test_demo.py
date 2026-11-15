@@ -54,7 +54,7 @@ def test_fixture_mapping_values_chronology_and_labels():
     findings, missing = derive_lab_findings(laine, sex='female')
     assert any('ferritin' in m.lower() for m in missing)
     assert not any(f.finding_type == 'iron_deficiency_anaemia' for f in findings)
-    labels = json.loads((Path(__file__).parent / 'fixtures/demo/labels.json').read_text())
+    labels = json.loads((Path(__file__).parent / 'fixtures/demo/labels.en-v2.json').read_text())
     keys = {o.key for o in data.observations}
     for case in labels['cases']:
         assert set(case['sources']) <= keys
@@ -92,8 +92,9 @@ def test_initial_repeat_update_and_api(db_session):
     row = db_session.get(Observation, demo_id('observation','laine/2020-09-14/hb'))
     row.numeric_value = 999
     db_session.flush()
-    assert seed_demo(db_session)['updated'] == 1
-    assert row.numeric_value == 142
+    with pytest.raises(ValueError, match='new dataset version'):
+        seed_demo(db_session)
+    assert row.numeric_value == 999
     previous = dict(app.dependency_overrides)
     app.dependency_overrides[get_session] = lambda: db_session
     try:
@@ -127,7 +128,7 @@ def test_rag_repeat_changed_source_and_retrieval(db_session):
         scope = PatientScope(patient_id=p.id, as_of='2026-11-13T00:00:00Z')
         for mode in ('complete','lexical','hybrid'):
             output = RetrievalEngine(PatientRepository(db_session), embedder=encoder,
-                options=RetrievalOptions(mode=mode)).search(scope=scope, query='vatsa hemoglobiini tutkimus')
+                options=RetrievalOptions(mode=mode)).search(scope=scope, query='abdominal haemoglobin investigation')
             assert output.context.retrieved_observations
             assert all(hit.source.patient_id == p.id for hit in output.context.retrieved_observations)
         structured = PatientRepository(db_session).structured(scope=scope)
@@ -135,11 +136,12 @@ def test_rag_repeat_changed_source_and_retrieval(db_session):
     source_id = demo_id('observation','laine/2020-09-14/hb')
     db_session.get(Observation, source_id).numeric_value = 999
     db_session.flush()
-    # Create a cache for modified content; restoring the source must invalidate it.
+    # Existing evidence and its cache must not be silently rewritten by seed.
     index_patient(db_session, demo_id('patient','laine'), encoder)
-    seed_demo(db_session)
-    assert not db_session.scalars(select(EmbeddingChunk).where(EmbeddingChunk.observation_id == source_id)).all()
-    assert index_patient(db_session, demo_id('patient','laine'), encoder)['indexed_observations'] == 1
+    with pytest.raises(ValueError, match='new dataset version'):
+        seed_demo(db_session)
+    assert db_session.get(Observation, source_id).numeric_value == 999
+    assert index_patient(db_session, demo_id('patient','laine'), encoder)['indexed_observations'] == 0
 
 
 @pytest.mark.integration

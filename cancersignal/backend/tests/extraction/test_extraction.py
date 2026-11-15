@@ -49,7 +49,7 @@ def test_valid_shared_contracts_negation_history_resolved_and_conflict(example):
     assert batch.status == "partial"  # Unresolved contradiction, not a positive rule match.
     absent, historical, resolved, current, planned, disputed = batch.findings
     assert (absent.finding_type, absent.polarity, absent.temporal_status) == ("rectal_bleeding", "absent", "current")
-    assert absent.evidence[0].source_excerpt == "Ei verta ulosteessa nyt."
+    assert absent.evidence[0].source_excerpt == "No rectal bleeding now."
     assert historical.polarity == "present" and historical.temporal_status == "historical"
     assert resolved.temporal_status == "resolved"
     assert current.finding_type == "weight_loss" and current.temporal_status == "current"
@@ -74,7 +74,7 @@ def test_completed_investigation_is_distinct_from_a_plan(example):
     batch = extract(example, response)
     assert batch.status == "complete"
     assert batch.findings[0].finding_type == "investigation_completed"
-    assert batch.findings[0].evidence[0].source_excerpt == "Kolonoskopia tehty."
+    assert batch.findings[0].evidence[0].source_excerpt == "Colonoscopy completed."
 
 
 def test_empty_success_is_distinct_from_failure(example):
@@ -141,11 +141,12 @@ def test_invalid_evidence_discards_entire_batch(example, mutation, code):
 
 
 def test_optional_offsets_and_exact_unicode_quotes(example):
-    example["input_note"]["text"] = "Väsymystä. Ei verta ulosteessa nyt."
+    example["input_note"]["text"] = "SYNTHETIC — Fatigue. No rectal bleeding now."
     response = example["synthetic_response"]
     response["findings"] = response["findings"][:1]
     reference = response["findings"][0]["evidence"][0]
-    reference.update(start_offset=11, end_offset=35)
+    start = example["input_note"]["text"].index(reference["source_excerpt"])
+    reference.update(start_offset=start, end_offset=start + len(reference["source_excerpt"]))
     # UTF-8 byte offsets would be different; character offsets are checked.
     assert extract(example).status == "complete"
     reference.update(start_offset=None, end_offset=None)

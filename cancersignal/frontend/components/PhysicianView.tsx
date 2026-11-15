@@ -38,7 +38,7 @@ function Reasons({ item }: { item: QueueItem }) {
   const urgentRules = item.findings.filter((f) => f.priority === "urgent").map((f) => f.rule.match(/^[A-Z]+-\d+/)?.[0] ?? f.rule);
   return (
     <section aria-label={`Reasons for the CancerSignal alert for ${item.name}`} className="flex flex-col gap-2.5 border-t border-line-2 pt-2.5">
-      <h3 className="m-0 text-[12.5px] font-semibold tracking-[0.06em] text-mute-2 uppercase">Täyttyneet säännöt</h3>
+      <h3 className="m-0 text-[12.5px] font-semibold tracking-[0.06em] text-mute-2 uppercase">Matched rules</h3>
       {item.level === "urgent" && urgentRules.length > 0 && (
         <p className="m-0 rounded-lg border border-red-line bg-red-soft px-3 py-2 text-[13.5px] leading-[1.45] text-red-ink">
           <strong>Urgent</strong> because {urgentRules.length === 1 ? "this rule is" : "these rules are"} marked urgent in the rulebook:{" "}
@@ -155,10 +155,10 @@ export function PhysicianView({ queue, history = [], busy, decisions, onDecide, 
                       Received {q.time} · {q.from}
                     </span>
                   </div>
-                  <section aria-label="Kliininen yhteenveto" lang="fi" className="text-sm leading-normal text-ink-2">
-                    <p className="m-0 font-semibold">{q.clinicalExplanation?.summary_fi || q.summary || "Tallennettua kliinistä yhteenvetoa ei ole saatavilla."}</p>
-                    {q.clinicalExplanation?.findings.slice(0, 3).map(f => <p key={f.key} className="m-0">{f.text_fi}</p>)}
-                    {!q.clinicalExplanation && q.origin === "backend" && <p className="text-xs text-mute">Rakenteinen suomenkielinen selitys ei ole saatavilla; näytetään tallennettu yhteenveto.</p>}
+                  <section aria-label="Clinical summary" lang="en" className="text-sm leading-normal text-ink-2">
+                    <p className="m-0 font-semibold">{q.clinicalExplanation?.summary_en || q.summary || "No saved clinical summary is available."}</p>
+                    {q.clinicalExplanation?.findings.slice(0, 3).map(f => <p key={f.key} className="m-0">{f.text_en}</p>)}
+                    {!q.clinicalExplanation && q.origin === "backend" && <p className="text-xs text-mute">Structured English explanation unavailable; showing the saved summary.</p>}
                   </section>
                   {q.analysis?.sourceObservations?.filter(o => o.numeric_value !== null).map(o => <p key={o.id} className="m-0 text-sm">{o.code}: {formatMeasurement(o.numeric_value, o.unit)} · {displayDate(o.observed_at)}</p>)}
                   {completed.length > 0 && <section aria-label="Completed tests" className="text-sm">

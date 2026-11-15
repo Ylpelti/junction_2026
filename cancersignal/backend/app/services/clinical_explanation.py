@@ -1,4 +1,4 @@
-"""Presentation boundary; the independent engine owns all Finnish rendering."""
+"""Presentation boundary; the independent engine owns all English rendering."""
 from app.core.config import get_pipeline_settings
 
 

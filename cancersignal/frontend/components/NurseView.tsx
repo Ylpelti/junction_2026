@@ -282,7 +282,7 @@ export function NurseView({ s, on }: { s: NurseState; on: NurseHandlers }) {
                 </section>
               )}
 
-              {s.useCS && res && !res.clinicalExplanation && <p className="text-sm text-mute">{res.summary || "No explanation available."} Structured Finnish explanation unavailable for this analysis.</p>}
+              {s.useCS && res && !res.clinicalExplanation && <p className="text-sm text-mute">{res.summary || "No explanation available."} Structured English explanation unavailable for this analysis.</p>}
               {s.useCS && res?.status === "none" && <p className="text-sm">No signals identified. This does not rule out cancer.</p>}
               {s.useCS && res?.clinicalExplanation && <ClinicalExplanationCard value={res.clinicalExplanation} triggeredRuleIds={res.triggeredRuleIds} />}
               {s.useCS && res?.qcancer && <QCancerEstimateCard estimate={res.qcancer} />}

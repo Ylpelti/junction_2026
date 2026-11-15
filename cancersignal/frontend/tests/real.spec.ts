@@ -6,13 +6,13 @@ test("real PostgreSQL: nurse handoff, physician decision, reload, and separate d
   for (const name of ["Laine", "Nieminen", "Heikkinen", "Korhonen"]) await expect(page.getByRole("button", { name: new RegExp(`SYNTHETIC ${name}`) })).toBeVisible();
   await expect(page.getByRole("button", { name: /SYNTHETIC Patient/ })).toHaveCount(0);
   await page.getByRole("button", { name: /SYNTHETIC Laine/ }).click();
-  await page.getByLabel("Nursing note", { exact: true }).fill("SYNTHETIC — Hoitajan seurantakäynti. Tarkistetaan aiemmat havainnot.");
+  await page.getByLabel("Nursing note", { exact: true }).fill("SYNTHETIC — Nurse follow-up. Review previous findings.");
   await page.getByRole("button", { name: "Save", exact: true }).click();
   await page.getByRole("button", { name: "Open findings", exact: true }).click();
   await expect(page.getByText(/QCancer numerical estimate/)).toBeVisible();
   await expect(page.getByText(/Not calculated because required information/)).toBeVisible();
-  await page.getByText("Kliininen yhteenveto", { exact: false }).click();
-  await expect(page.locator('[lang="fi"] p').first()).not.toBeEmpty();
+  await page.getByText("Clinical summary", { exact: false }).click();
+  await expect(page.locator('[lang="en"] p').first()).not.toBeEmpty();
   await page.getByText("Clinical findings and source observations", { exact: true }).click();
   await expect(page.locator("article").first()).toContainText("g/L");
   await page.getByRole("button", { name: "Send to physician", exact: true }).click();
@@ -29,7 +29,7 @@ test("real PostgreSQL: nurse handoff, physician decision, reload, and separate d
   const api = process.env.E2E_API_URL!;
   const reviews = await (await request.get(`${api}/api/v1/review-requests?status=all`)).json();
   expect(reviews).toHaveLength(2); // Legacy pending request remains stored, never displayed.
-  const canonical = reviews.find((r: { patient_id: string }) => r.patient_id === "138fff92-bea8-5f85-a95a-5fb502fd9e57");
+  const canonical = reviews.find((r: { patient_id: string }) => r.patient_id === "890bf4db-36e8-542e-b009-901f2d6a6f41");
   expect(canonical.status).toBe("reviewed");
   await expect(page.locator("ol > li")).toHaveCount(1);
   await expect(page.getByText("SYNTHETIC legacy dataset test", { exact: false })).toHaveCount(0);
@@ -37,7 +37,7 @@ test("real PostgreSQL: nurse handoff, physician decision, reload, and separate d
   expect(decision.action).toBe("fit_ordered"); expect(decision.created_at).toBeTruthy();
   await page.getByRole("button", { name: "Nurse view", exact: true }).click();
   await page.getByRole("button", { name: /SYNTHETIC Laine/ }).click();
-  await page.getByLabel("Nursing note", { exact: true }).fill("SYNTHETIC — Toinen seuranta. Havaintojen tarkistus.");
+  await page.getByLabel("Nursing note", { exact: true }).fill("SYNTHETIC — Second follow-up. Review of findings.");
   await page.getByRole("button", { name: "Save", exact: true }).click();
   await page.getByRole("button", { name: "Open findings", exact: true }).click();
   await expect(page.getByText("Sent to the physician.", { exact: true })).toHaveCount(0);

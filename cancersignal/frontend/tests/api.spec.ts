@@ -54,10 +54,10 @@ test("mapper uses rule priority, retains explanation, and preserves insufficient
   expect(toAnalysis({ ...run, provenance: { ...run.provenance, error_code: "failure" } }).status).toBe("unavailable");
   expect(toQueueItem({ ...review, status: "reviewed" }).status).toBe("reviewed");
 });
-test("Finnish explanation and missing research inputs render without invented scores", () => {
+test("English explanation and missing research inputs render without invented scores", () => {
   const result = toAnalysis(run);
   const explanation = renderToStaticMarkup(createElement(ClinicalExplanationCard, { value: result.clinicalExplanation! }));
-  expect(explanation).toContain("Suomenkielinen yhteenveto"); expect(explanation).toContain(observation.id);
+  expect(explanation).toContain("English clinical summary"); expect(explanation).toContain(observation.id);
   const model = renderToStaticMarkup(createElement(QCancerEstimateCard, { estimate: result.qcancer! }));
   expect(model).toContain("smoking"); expect(model).not.toContain("0%");
 });

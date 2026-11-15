@@ -1,6 +1,6 @@
 {
   "context": {
-    "patient_id": "10000000-0000-4000-8000-000000000001",
+    "patient_id": "36793836-5099-5d7e-af3e-e09000944ecf",
     "as_of": "2026-11-14T10:00:00Z",
     "observed_since": null,
     "recorded_before": "2026-11-14T10:00:00Z",
@@ -9,12 +9,12 @@
     "retrieved_observations": [
       {
         "source": {
-          "id": "20000000-0000-4000-8000-000000000001",
-          "patient_id": "10000000-0000-4000-8000-000000000001",
+          "id": "d075b9d5-37f7-5acb-b0d0-6899795e9e33",
+          "patient_id": "36793836-5099-5d7e-af3e-e09000944ecf",
           "encounter_id": null,
           "observation_type": "clinical_note",
           "code": null,
-          "text": "Verta ulosteessa. Kolonoskopia suunnitteilla.",
+          "text": "SYNTHETIC — Rectal bleeding. Colonoscopy planned.",
           "numeric_value": null,
           "unit": null,
           "status": null,
@@ -26,12 +26,12 @@
       },
       {
         "source": {
-          "id": "20000000-0000-4000-8000-000000000002",
-          "patient_id": "10000000-0000-4000-8000-000000000001",
+          "id": "da0ff492-a2dc-5a95-90ca-958f9e0e959e",
+          "patient_id": "36793836-5099-5d7e-af3e-e09000944ecf",
           "encounter_id": null,
           "observation_type": "clinical_note",
           "code": null,
-          "text": "Kolonoskopia tehty. Vatsakipu loppunut.",
+          "text": "SYNTHETIC — Colonoscopy completed. Abdominal pain has resolved.",
           "numeric_value": null,
           "unit": null,
           "status": null,
@@ -44,7 +44,7 @@
     ],
     "retrieval": {
       "name": "synthetic-fixture",
-      "version": "1",
+      "version": "en-v2",
       "method": "hybrid",
       "provider": null,
       "model": null,
@@ -59,12 +59,12 @@
     "generated_at": null
   },
   "input_note": {
-    "id": "20000000-0000-4000-8000-000000000003",
-    "patient_id": "10000000-0000-4000-8000-000000000001",
+    "id": "5128dee5-97d1-5405-845d-4b2cb05541fb",
+    "patient_id": "36793836-5099-5d7e-af3e-e09000944ecf",
     "encounter_id": null,
     "observation_type": "clinical_note",
     "code": null,
-    "text": "Ei verta ulosteessa nyt. Potilas kertoo, ettei kolonoskopiaa tehty. Tahaton laihtuminen jatkuu.",
+    "text": "SYNTHETIC — No rectal bleeding now. The patient reports that colonoscopy was not performed. Unintentional weight loss persists.",
     "numeric_value": null,
     "unit": null,
     "status": null,
@@ -80,10 +80,10 @@
         "temporal_status": "current",
         "evidence": [
           {
-            "observation_id": "20000000-0000-4000-8000-000000000003",
-            "source_excerpt": "Ei verta ulosteessa nyt.",
-            "start_offset": 0,
-            "end_offset": 24
+            "observation_id": "5128dee5-97d1-5405-845d-4b2cb05541fb",
+            "source_excerpt": "No rectal bleeding now.",
+            "start_offset": 12,
+            "end_offset": 35
           }
         ],
         "uncertainty": null,
@@ -96,10 +96,10 @@
         "temporal_status": "historical",
         "evidence": [
           {
-            "observation_id": "20000000-0000-4000-8000-000000000001",
-            "source_excerpt": "Verta ulosteessa.",
-            "start_offset": 0,
-            "end_offset": 17
+            "observation_id": "d075b9d5-37f7-5acb-b0d0-6899795e9e33",
+            "source_excerpt": "Rectal bleeding.",
+            "start_offset": 12,
+            "end_offset": 28
           }
         ],
         "uncertainty": null,
@@ -112,10 +112,10 @@
         "temporal_status": "resolved",
         "evidence": [
           {
-            "observation_id": "20000000-0000-4000-8000-000000000002",
-            "source_excerpt": "Vatsakipu loppunut.",
-            "start_offset": 20,
-            "end_offset": 39
+            "observation_id": "da0ff492-a2dc-5a95-90ca-958f9e0e959e",
+            "source_excerpt": "Abdominal pain has resolved.",
+            "start_offset": 35,
+            "end_offset": 63
           }
         ],
         "uncertainty": null,
@@ -128,10 +128,10 @@
         "temporal_status": "current",
         "evidence": [
           {
-            "observation_id": "20000000-0000-4000-8000-000000000003",
-            "source_excerpt": "Tahaton laihtuminen jatkuu.",
-            "start_offset": 68,
-            "end_offset": 95
+            "observation_id": "5128dee5-97d1-5405-845d-4b2cb05541fb",
+            "source_excerpt": "Unintentional weight loss persists.",
+            "start_offset": 92,
+            "end_offset": 127
           }
         ],
         "uncertainty": null,
@@ -144,10 +144,10 @@
         "temporal_status": "historical",
         "evidence": [
           {
-            "observation_id": "20000000-0000-4000-8000-000000000001",
-            "source_excerpt": "Kolonoskopia suunnitteilla.",
-            "start_offset": 18,
-            "end_offset": 45
+            "observation_id": "d075b9d5-37f7-5acb-b0d0-6899795e9e33",
+            "source_excerpt": "Colonoscopy planned.",
+            "start_offset": 29,
+            "end_offset": 49
           }
         ],
         "uncertainty": null,
@@ -160,16 +160,16 @@
         "temporal_status": "historical",
         "evidence": [
           {
-            "observation_id": "20000000-0000-4000-8000-000000000002",
-            "source_excerpt": "Kolonoskopia tehty.",
-            "start_offset": 0,
-            "end_offset": 19
+            "observation_id": "da0ff492-a2dc-5a95-90ca-958f9e0e959e",
+            "source_excerpt": "Colonoscopy completed.",
+            "start_offset": 12,
+            "end_offset": 34
           },
           {
-            "observation_id": "20000000-0000-4000-8000-000000000003",
-            "source_excerpt": "Potilas kertoo, ettei kolonoskopiaa tehty.",
-            "start_offset": 25,
-            "end_offset": 67
+            "observation_id": "5128dee5-97d1-5405-845d-4b2cb05541fb",
+            "source_excerpt": "The patient reports that colonoscopy was not performed.",
+            "start_offset": 36,
+            "end_offset": 91
           }
         ],
         "uncertainty": "Records conflict about completion; the actual investigation status needs review.",
@@ -178,8 +178,8 @@
             "code": "contradictory_records",
             "description": "Colonoscopy completion is disputed; no result is provided in this fixture.",
             "observation_ids": [
-              "20000000-0000-4000-8000-000000000002",
-              "20000000-0000-4000-8000-000000000003"
+              "da0ff492-a2dc-5a95-90ca-958f9e0e959e",
+              "5128dee5-97d1-5405-845d-4b2cb05541fb"
             ]
           }
         ]

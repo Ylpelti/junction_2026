@@ -104,12 +104,12 @@ def prepare_api_response(response: AnalysisResponse | dict, *, input_note: Sourc
         metadata=PipelineMetadata(pipeline_version="api-v1-explanation-projection-1", components=(PROJECTION,)))
     base = build_catalog(projection, prediction_specs)
     limits = [*base.limitations,
-        Limitation(code="api_v1_features_not_exposed", text_fi="API-vastaus ei sisällä erillisiä laskennallisia piirretietueita. Niitä ei päätellä kuvaustekstistä."),
-        Limitation(code="api_v1_provenance_limited", text_fi="API-vastaus ei yksilöi jokaisen löydöksen alkuperäistä tuottajaa tai malliversiota; sovitin ei päättele niitä.")]
+        Limitation(code="api_v1_features_not_exposed", text_en="The API response does not expose separate computed feature records. They are not inferred from descriptions."),
+        Limitation(code="api_v1_provenance_limited", text_en="The API response does not identify the original producer or model version for each finding; the adapter does not infer them.")]
     if not predictions:
-        limits.append(Limitation(code="api_v1_model_outputs_not_exposed", text_fi="Annetussa API-vastauksessa ei ole erillisiä malliennusteita. Niitä ei päätellä kuvaustekstistä."))
+        limits.append(Limitation(code="api_v1_model_outputs_not_exposed", text_en="The supplied API response has no separate model predictions. They are not inferred from descriptions."))
     if note_id is None:
-        limits.append(Limitation(code="api_v1_input_note_not_loaded", text_fi="Alkuperäinen uusi hoitokirjaus ei ole mukana annetussa aineistossa. Selitys koskee vain toimitettuja rakenteisia tuloksia ja lähteitä."))
+        limits.append(Limitation(code="api_v1_input_note_not_loaded", text_en="The original new clinical note is not included. This explanation covers only the supplied structured results and sources."))
     if len({row.id for row in response.trigger_results}) != len(response.trigger_results) or len({row.trigger_rule_id for row in response.trigger_results}) != len(response.trigger_results):
         raise ValueError("Duplicate trigger results or rule IDs.")
     statements, required = list(base.statements), set(base.required)
@@ -133,14 +133,14 @@ def prepare_api_response(response: AnalysisResponse | dict, *, input_note: Sourc
         outcome = "matched" if result.triggered else "not_matched"
         text = RULE_TEXT[outcome]
         if result.requires_clinician_review and not result.triggered:
-            text += " Lähtötulos on merkitty ammattilaisen arvioitavaksi."
+            text += " Physician review required for the source result."
         key = f"rule:{result.trigger_rule_id}"
-        statements.append(ExplanationStatement(key=key, kind="rule", text_fi=text, observation_ids=tuple(ids),
+        statements.append(ExplanationStatement(key=key, kind="rule", text_en=text, observation_ids=tuple(ids),
             rule_reference=reference, requires_clinician_review=result.requires_clinician_review))
         required.add(key)
     if response.trigger_results:
-        limits.append(Limitation(code="api_v1_trigger_links_limited", text_fi="API ilmoittaa sääntötulosten lähteet, mutta ei suoria löydös- tai piirretunnisteita. Näitä yhteyksiä ei päätellä."))
-        limits.append(Limitation(code="api_v1_boolean_rule_outcomes", text_fi="API kuvaa sääntötulokset totuusarvoina; erillistä epävarmaa sääntötilaa ei ole saatavilla."))
+        limits.append(Limitation(code="api_v1_trigger_links_limited", text_en="The API provides rule result sources but no direct finding or feature identifiers. These links are not inferred."))
+        limits.append(Limitation(code="api_v1_boolean_rule_outcomes", text_en="The API represents rule outcomes as booleans; a separate indeterminate rule state is unavailable."))
     summary = "review_signals" if any(row.triggered for row in response.trigger_results) else "no_signals" if response.trigger_results else "observations_only"
     canonical_response = response.model_dump(mode="json")
     if top_present:

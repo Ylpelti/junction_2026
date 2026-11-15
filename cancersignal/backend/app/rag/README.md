@@ -40,16 +40,15 @@ and serialized-source character count. Shared contracts have not been changed.
   `max_source_chars` (default 32,000). Otherwise auto selects lexical, or hybrid
   when an explicit embedder was supplied. Explicit complete mode fails rather than
   silently truncating. This is the preferred baseline for our small histories.
-- **Lexical:** PostgreSQL `ts_rank_cd` across Finnish stemming and the `simple`
+- **Lexical:** PostgreSQL `ts_rank_cd` across English stemming and the `simple`
   dictionary, plus an exact numeric-value match bonus. Bound query values are
   reduced to at most 64 unique alphanumeric terms joined by OR, so long notes do not
   require every word to appear. Codes, values and units are searchable. This is
-  PostgreSQL full-text ranking, **not BM25**. Finnish morphology helps; abbreviations,
+  PostgreSQL full-text ranking, **not BM25**. English morphology helps; abbreviations,
   synonyms and cross-language meaning remain limitations. No search service is added.
 - **Dense:** optional local `intfloat/multilingual-e5-small`, pinned to commit
   `614241f622f53c4eeff9890bdc4f31cfecc418b3`, with normalized 384-dimensional
-  vectors and the required `query:`/`passage:` prefixes. The model is multilingual,
-  including Finnish benchmark coverage, but is not clinically validated. The small
+  vectors and the required `query:`/`passage:` prefixes. The model supports English and other languages, but is not clinically validated. The small
   model is practical on this CPU; no inference API receives patient text.
 - **Hybrid:** reciprocal rank fusion with constant 60 combines lexical and dense
   ranks without pretending their score scales are equivalent. Scores are retrieval
@@ -119,7 +118,7 @@ python -m app.rag.cli structured --patient-id dfbd029a-17bf-5cbf-8a38-2960061dce
 python -m pip install -r app/rag/requirements-local.txt
 python -m app.rag.cli index --patient-id dfbd029a-17bf-5cbf-8a38-2960061dceec --download
 python -m app.rag.cli query --patient-id dfbd029a-17bf-5cbf-8a38-2960061dceec \
-  --as-of 2026-01-01T00:00:00Z --query "väsymys ja aiemmat tutkimukset" --mode hybrid
+  --as-of 2026-01-01T00:00:00Z --query "fatigue and previous investigations" --mode hybrid
 ```
 
 Use `--note-id UUID` instead of `--as-of` to load an existing clinical note owned by
@@ -138,7 +137,7 @@ python -m app.rag.cli benchmark --output /tmp/rag-lexical.json
 python -m app.rag.cli benchmark --dense --output /tmp/rag-all.json
 ```
 
-The benchmark reuses all eight seeded patients, adds five small Finnish/distractor
+The benchmark reuses all eight seeded patients, adds five small English/distractor
 records in its transaction, and rolls back fixtures and benchmark embeddings.
 `evaluation/labels.json` is separate from visible `records.json`; no general dataset
 importer exists or is introduced. Labels are manually authored demonstration cases,
@@ -166,3 +165,5 @@ LLM prompt assembly. Rules, numerical models, routes and frontend are unchanged.
 Primary references: [E5 model card](https://huggingface.co/intfloat/multilingual-e5-small),
 [PostgreSQL full-text ranking](https://www.postgresql.org/docs/16/textsearch-controls.html),
 [pgvector exact search](https://github.com/pgvector/pgvector).
+
+The checked-in `evaluation/example-report.json` is an archived v1 benchmark result; it is not a measurement of the active English en-v2 fixtures.

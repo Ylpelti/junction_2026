@@ -84,19 +84,21 @@ export type QCancerEstimate = {
 };
 
 export type ExplanationStatement = {
-  key: string; text_fi: string; observation_ids: string[];
+  key: string; text_en: string; observation_ids: string[];
   rule_reference?: { trigger_rule_id: string } | null;
   requires_clinician_review?: boolean | null;
 };
 export type ClinicalExplanation = {
+  contract_version: "2.0";
+  language: "en";
   issues?: { code: string; message: string }[];
   provenance?: { name: string; method: string; version: string };
   mode: "llm" | "fallback" | "unavailable";
-  summary_fi: string;
+  summary_en: string;
   findings: ExplanationStatement[];
   mathematical_outputs: ExplanationStatement[];
   rule_results: ExplanationStatement[];
-  limitations: { code: string; text_fi: string }[];
+  limitations: { code: string; text_en: string }[];
 };
 
 export type AnalysisResult = {

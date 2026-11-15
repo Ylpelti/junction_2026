@@ -222,3 +222,23 @@ preserves existing columns/relationships. API startup never migrates automatical
 From `backend/` with `.venv` active: `python -m alembic upgrade head`, then
 `RUN_DATABASE_TESTS=1 python -m pytest`. Tests use disposable PostgreSQL databases
 and no live Verda/OpenAI keys. See README for startup commands.
+
+## English explanation contract migration
+
+New analyses emit `clinical_explanation.contract_version = "2.0"`, `language =
+"en"`, `summary_en`, and `text_en` on statements and limitations. The main REST
+prefix remains `/api/v1`; shared finding/rule contracts, identifiers, statuses,
+QCancer identity and calculations remain unchanged. Producers and frontend
+consumers must be deployed together. Numeric display uses English decimal points.
+
+Stored explanation v1 objects are never renamed in place. GET uses a read-only,
+deterministic adapter to render stored structured findings, rules and predictions
+into v2. The response identifies `legacy_adapter.source_contract_version = "1.0"`.
+It does not translate notes, invoke an LLM, rerun clinical rules or rewrite saved
+analyses. Source records and verbatim evidence remain original. If source validation
+fails, the response preserves the stored clinical data with an explicit English
+explanation-unavailable message. Existing v2 reads return the saved explanation.
+
+See [English migration report](english-migration.md) for fixture/cache migration
+and verification. Historical Finnish source records remain archival, not active
+demo fixtures.

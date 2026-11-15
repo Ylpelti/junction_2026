@@ -31,8 +31,8 @@ def test_explanation_is_persisted_and_duplicate_handoff_is_idempotent(db_session
             explanation = result["clinical_explanation"]
             assert explanation is not None
             assert explanation["mode"] == "fallback"
-            assert explanation["language"] == "fi"
-            assert result["explanation"] == explanation["summary_fi"]
+            assert explanation["language"] == "en"
+            assert result["explanation"] == explanation["summary_en"]
             if provider_failure:
                 assert any(i["code"] == "live_calls_disabled" for i in explanation["issues"])
             sources = {s["id"] for s in result["source_observations"]}
