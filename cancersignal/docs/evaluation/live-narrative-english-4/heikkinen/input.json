@@ -1,0 +1,210 @@
+{
+  "context": {
+    "patient_id": "3ebb5257-b8be-5e66-8064-3bffc5c800c0",
+    "as_of": "2026-11-12T09:00:00Z",
+    "observed_since": null,
+    "recorded_before": "2026-11-12T09:00:00Z",
+    "contract_version": "1.0",
+    "query": "SYNTHETIC \u2014 Right shoulder pain after cleaning windows. Pain on abduction, no injury. No abdominal symptoms or bleeding. Movement exercises advised; physiotherapist review if needed.",
+    "retrieved_observations": [
+      {
+        "source": {
+          "id": "4172904c-eba7-5e78-b9cb-164b314c29c6",
+          "patient_id": "3ebb5257-b8be-5e66-8064-3bffc5c800c0",
+          "encounter_id": "008f0310-aea8-5457-9740-84554571b750",
+          "observation_type": "clinical_note",
+          "code": null,
+          "text": "SYNTHETIC \u2014 Intermittent abdominal pain and change in bowel habits for one month. Bright red blood with defaecation once. No weight loss. Colonoscopy referral made to investigate symptoms.",
+          "numeric_value": null,
+          "unit": null,
+          "status": "current",
+          "observed_at": "2022-04-07T09:00:00Z",
+          "recorded_at": "2022-04-07T09:30:00Z"
+        },
+        "relevance": null,
+        "retrieval_method": "keyword"
+      },
+      {
+        "source": {
+          "id": "6992e640-3645-5e0b-a525-26783fb718a2",
+          "patient_id": "3ebb5257-b8be-5e66-8064-3bffc5c800c0",
+          "encounter_id": "008f0310-aea8-5457-9740-84554571b750",
+          "observation_type": "investigation",
+          "code": null,
+          "text": "SYNTHETIC \u2014 Colonoscopy planned; referral made.",
+          "numeric_value": null,
+          "unit": null,
+          "status": "planned",
+          "observed_at": "2022-04-07T09:00:00Z",
+          "recorded_at": "2022-04-07T09:30:00Z"
+        },
+        "relevance": null,
+        "retrieval_method": "keyword"
+      },
+      {
+        "source": {
+          "id": "ac2b6ff3-5fef-5e7a-80f4-3dfbd902d655",
+          "patient_id": "3ebb5257-b8be-5e66-8064-3bffc5c800c0",
+          "encounter_id": "008f0310-aea8-5457-9740-84554571b750",
+          "observation_type": "laboratory",
+          "code": "B-Hb",
+          "text": "SYNTHETIC \u2014 Blood haemoglobin.",
+          "numeric_value": "132.000000",
+          "unit": "g/L",
+          "status": "completed",
+          "observed_at": "2022-04-07T09:00:00Z",
+          "recorded_at": "2022-04-07T09:30:00Z"
+        },
+        "relevance": null,
+        "retrieval_method": "keyword"
+      },
+      {
+        "source": {
+          "id": "a94c7728-4337-53e4-8c40-6ec98fbecfd2",
+          "patient_id": "3ebb5257-b8be-5e66-8064-3bffc5c800c0",
+          "encounter_id": "6958b308-1daa-57d0-93ab-4e36da5419b4",
+          "observation_type": "clinical_note",
+          "code": null,
+          "text": "SYNTHETIC \u2014 Colonoscopy completed to the caecum with good visibility. No mucosal inflammation or tumour. Small internal haemorrhoids. Findings reviewed with the patient. Advised fibre intake and avoiding constipation.",
+          "numeric_value": null,
+          "unit": null,
+          "status": "current",
+          "observed_at": "2022-06-16T09:00:00Z",
+          "recorded_at": "2022-06-16T09:30:00Z"
+        },
+        "relevance": null,
+        "retrieval_method": "keyword"
+      },
+      {
+        "source": {
+          "id": "ec96d8c2-9e09-5c7c-b1ec-83b6f56e12d2",
+          "patient_id": "3ebb5257-b8be-5e66-8064-3bffc5c800c0",
+          "encounter_id": "6958b308-1daa-57d0-93ab-4e36da5419b4",
+          "observation_type": "investigation",
+          "code": null,
+          "text": "SYNTHETIC \u2014 Colonoscopy completed: good visibility, examination to the caecum. No tumour or inflammation. Small internal haemorrhoids.",
+          "numeric_value": null,
+          "unit": null,
+          "status": "completed",
+          "observed_at": "2022-06-16T09:00:00Z",
+          "recorded_at": "2022-06-16T09:30:00Z"
+        },
+        "relevance": null,
+        "retrieval_method": "keyword"
+      },
+      {
+        "source": {
+          "id": "45294e6d-8476-5b68-b846-b4b8cdb6ca38",
+          "patient_id": "3ebb5257-b8be-5e66-8064-3bffc5c800c0",
+          "encounter_id": "94d551d0-eaa6-5999-bfbf-2b7e35ac665f",
+          "observation_type": "clinical_note",
+          "code": null,
+          "text": "SYNTHETIC \u2014 Abdominal symptoms settled with fibre supplementation. No further abdominal pain or visible blood. Regular bowel movements. Contact the clinic again if symptoms recur.",
+          "numeric_value": null,
+          "unit": null,
+          "status": "current",
+          "observed_at": "2022-09-20T09:00:00Z",
+          "recorded_at": "2022-09-20T09:30:00Z"
+        },
+        "relevance": null,
+        "retrieval_method": "keyword"
+      },
+      {
+        "source": {
+          "id": "a8847a5c-e37a-5481-a04a-779afa202a2e",
+          "patient_id": "3ebb5257-b8be-5e66-8064-3bffc5c800c0",
+          "encounter_id": "94d551d0-eaa6-5999-bfbf-2b7e35ac665f",
+          "observation_type": "symptom",
+          "code": null,
+          "text": "SYNTHETIC \u2014 Previous abdominal pain and visible blood in stool have resolved.",
+          "numeric_value": null,
+          "unit": null,
+          "status": "resolved",
+          "observed_at": "2022-09-20T09:00:00Z",
+          "recorded_at": "2022-09-20T09:30:00Z"
+        },
+        "relevance": null,
+        "retrieval_method": "keyword"
+      },
+      {
+        "source": {
+          "id": "d1227061-0376-5aff-ba5d-e3167011de48",
+          "patient_id": "3ebb5257-b8be-5e66-8064-3bffc5c800c0",
+          "encounter_id": "94d551d0-eaa6-5999-bfbf-2b7e35ac665f",
+          "observation_type": "laboratory",
+          "code": "B-Hb",
+          "text": "SYNTHETIC \u2014 Blood haemoglobin.",
+          "numeric_value": "135.000000",
+          "unit": "g/L",
+          "status": "completed",
+          "observed_at": "2022-09-20T09:00:00Z",
+          "recorded_at": "2022-09-20T09:30:00Z"
+        },
+        "relevance": null,
+        "retrieval_method": "keyword"
+      },
+      {
+        "source": {
+          "id": "27fa2829-d076-5a48-93f0-a39959644c95",
+          "patient_id": "3ebb5257-b8be-5e66-8064-3bffc5c800c0",
+          "encounter_id": "2b3486d2-c729-5e56-a8d8-131ee3186e98",
+          "observation_type": "laboratory",
+          "code": "B-Hb",
+          "text": "SYNTHETIC \u2014 Blood haemoglobin.",
+          "numeric_value": "136.000000",
+          "unit": "g/L",
+          "status": "completed",
+          "observed_at": "2025-03-04T09:00:00Z",
+          "recorded_at": "2025-03-04T09:30:00Z"
+        },
+        "relevance": null,
+        "retrieval_method": "keyword"
+      },
+      {
+        "source": {
+          "id": "c436a576-50f9-5e67-aebe-c47a73e61aab",
+          "patient_id": "3ebb5257-b8be-5e66-8064-3bffc5c800c0",
+          "encounter_id": "2b3486d2-c729-5e56-a8d8-131ee3186e98",
+          "observation_type": "clinical_note",
+          "code": null,
+          "text": "SYNTHETIC \u2014 Blood pressure follow-up. Previous abdominal symptoms have not recurred. Weight stable at 68 kg, height 168 cm. Does not currently smoke.",
+          "numeric_value": null,
+          "unit": null,
+          "status": "current",
+          "observed_at": "2025-03-04T09:00:00Z",
+          "recorded_at": "2025-03-04T09:30:00Z"
+        },
+        "relevance": null,
+        "retrieval_method": "keyword"
+      }
+    ],
+    "retrieval": {
+      "name": "patient-history-lexical-v1",
+      "version": "1",
+      "method": "keyword",
+      "provider": null,
+      "model": null,
+      "prompt_version": null,
+      "configuration_digest": null
+    },
+    "coverage": {
+      "status": "complete",
+      "eligible_count": 10,
+      "missing_information": []
+    },
+    "generated_at": null
+  },
+  "note": {
+    "id": "5b10a90d-e6a4-5025-8141-24570aa66f3c",
+    "patient_id": "3ebb5257-b8be-5e66-8064-3bffc5c800c0",
+    "encounter_id": "33bb9678-6e48-57cc-b355-5ebd4edc891f",
+    "observation_type": "clinical_note",
+    "code": null,
+    "text": "SYNTHETIC \u2014 Right shoulder pain after cleaning windows. Pain on abduction, no injury. No abdominal symptoms or bleeding. Movement exercises advised; physiotherapist review if needed.",
+    "numeric_value": null,
+    "unit": null,
+    "status": "current",
+    "observed_at": "2026-11-12T09:00:00Z",
+    "recorded_at": "2026-11-12T09:30:00Z"
+  }
+}

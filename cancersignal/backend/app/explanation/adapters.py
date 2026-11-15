@@ -141,7 +141,8 @@ def prepare_api_response(response: AnalysisResponse | dict, *, input_note: Sourc
     if response.trigger_results:
         limits.append(Limitation(code="api_v1_trigger_links_limited", text_en="The API provides rule result sources but no direct finding or feature identifiers. These links are not inferred."))
         limits.append(Limitation(code="api_v1_boolean_rule_outcomes", text_en="The API represents rule outcomes as booleans; a separate indeterminate rule state is unavailable."))
-    summary = "review_signals" if any(row.triggered for row in response.trigger_results) else "no_signals" if response.trigger_results else "observations_only"
+    incomplete = bool(metadata.semantic_validation.get("rejected")) or metadata.semantic_validation.get("coverage_status") == "incomplete"
+    summary = "review_signals" if any(row.triggered for row in response.trigger_results) else "indeterminate" if incomplete else "no_signals" if response.trigger_results else "observations_only"
     canonical_response = response.model_dump(mode="json")
     if top_present:
         canonical_response["predictions"] = [row.model_dump(mode="json") for row in supplied]

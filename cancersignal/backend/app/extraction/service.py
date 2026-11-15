@@ -11,8 +11,9 @@ from app.contracts.clinical_context import RetrievedContext, SourceObservation, 
 from app.contracts.common import MissingInformation, PipelineIssue
 from app.contracts.findings import ClinicalFinding
 from app.contracts.stages import FindingBatch
-from app.contracts.validation import EvidenceValidationError, merge_source_contexts, validate_evidence, validate_finding
+from app.contracts.validation import EvidenceValidationError, merge_source_contexts, validate_finding, validate_evidence
 from app.extraction.prompt import messages
+from app.extraction.semantics import validate_semantics, VERSION
 from app.extraction.providers import CompletionProvider, ProviderError
 from app.extraction.schema import ExtractionOutput, output_schema
 
@@ -41,9 +42,7 @@ class ClinicalExtractor:
             raise EvidenceValidationError("source_outside_scope", "All supplied sources must satisfy the retrieval patient/time scope.")
         provenance = self.provider.provenance
         prompt = messages(context, input_note, structured if structured_context is not None else None)
-        # Retrieval execution time is not clinical input. Keep all original
-        # source timestamps, scope, coverage and retrieval provenance in identity.
-        cache_key = sha256(json.dumps({"messages": prompt, "schema": output_schema(),
+        cache_key = sha256(json.dumps({"messages": prompt, "schema": output_schema(), "semantic_version": VERSION,
                                       "context": context.model_dump(mode="json", exclude={"generated_at"}),
                                       "provenance": provenance.model_dump(mode="json")},
                                      sort_keys=True, ensure_ascii=False).encode()).hexdigest()
@@ -73,13 +72,21 @@ class ClinicalExtractor:
             for gap in (*missing, *(gap for finding in findings for gap in finding.missing_information)):
                 if any(identifier not in source_ids for identifier in gap.observation_ids):
                     raise EvidenceValidationError("invalid_missing_information_reference", "Missing-information reference is outside the supplied context.")
+            findings, predictors, semantic_issues, diagnostics = validate_semantics(
+                findings, output.qcancer_predictors, sources, input_note.id if input_note else None)
+            compact_rejections = [gap for gap in output.missing_information
+                                  if gap.code in ("compact_evidence_rejected", "compact_fact_rejected")]
+            diagnostics["rejected"].extend({"path": "compact", "reason": gap.description} for gap in compact_rejections)
+            diagnostics["extraction_prompt"] = provenance.prompt_version
+            semantic_issues += tuple(PipelineIssue(code="semantic_rejection", component=VERSION,
+                severity="warning", message=gap.description) for gap in compact_rejections)
             # Never promote an LLM's interpretation to a verified clinical fact.
             issue = PipelineIssue(code="clinical_interpretation_not_verified", component="clinical-extraction",
                                   severity="warning", message="Source IDs, quotes, offsets and patient/time scope validated; clinical interpretation and completeness require review.")
             batch = FindingBatch(**self._scope(context), provenance=provenance,
-                                 status="partial" if missing or any(row.uncertainty or row.missing_information for row in findings) else "complete",
-                                 findings=findings, qcancer_predictors=output.qcancer_predictors,
-                                 missing_information=tuple(missing), issues=(issue,))
+                                 status="partial" if semantic_issues or missing or any(row.uncertainty or row.missing_information for row in findings) else "complete",
+                                 findings=findings, qcancer_predictors=predictors, semantic_validation=diagnostics,
+                                 missing_information=tuple(missing), issues=(issue, *semantic_issues))
             if cache_file is not None and not cached:
                 cache_file.parent.mkdir(parents=True, exist_ok=True)
                 # Only validated responses enter the cache; every read revalidates.

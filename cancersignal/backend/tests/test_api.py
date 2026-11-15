@@ -258,3 +258,44 @@ def test_llm_note_extraction_triggers_a_sourced_rule(client, db_session):
     assert note_id in triggered["SUO-06"]["evidence_observation_ids"]
     assert triggered["SUO-06"]["priority"] == "review"
     assert any(row["id"] == note_id for row in result["source_observations"])
+
+@pytest.mark.parametrize('bleeding', [True, False])
+def test_semantic_quarantine_persists_diagnostics_without_negative_conclusion(client, db_session, bleeding):
+    import json
+    from app.db.seed_rules import seed_rules
+    from app.extraction.providers import FixtureProvider
+    from app.extraction.service import ClinicalExtractor
+    from app.rag.extraction import StructuredSourceExtractor
+    from app.services.llm_extraction import LlmNoteExtractor
+    from sqlalchemy import delete
+    from app.models import Observation
+    # Isolate note semantics from independently valid laboratory escalation.
+    db_session.execute(delete(Observation).where(Observation.patient_id == PATIENT,
+        Observation.observation_type == 'laboratory'))
+    seed_rules(db_session)
+    db_session.flush()
+    note_id = str(uuid4())
+    text = 'Patient reports rectal bleeding.' if bleeding else 'Patient denies rectal bleeding.'
+    findings = [{
+        'finding_type': 'rectal_bleeding', 'description': 'Provider assertion',
+        'polarity': 'present', 'temporal_status': 'current', 'uncertainty': None, 'missing_information': [],
+        'evidence': [{'observation_id': note_id, 'source_excerpt': text, 'start_offset': None, 'end_offset': None}],
+    }, {
+        'finding_type': 'abdominal_mass', 'description': 'Unsupported mass',
+        'polarity': 'present', 'temporal_status': 'current', 'uncertainty': None, 'missing_information': [],
+        'evidence': [{'observation_id': note_id, 'source_excerpt': text, 'start_offset': None, 'end_offset': None}],
+    }]
+    extractor = LlmNoteExtractor(StructuredSourceExtractor(), clinical=ClinicalExtractor(FixtureProvider(
+        json.dumps({'findings': findings, 'missing_information': []}))))
+    pipeline = replace(get_analysis_pipeline(), extractor=extractor)
+    app.dependency_overrides[get_analysis_pipeline] = lambda: pipeline
+    result = client.post(f'{PREFIX}/patients/{PATIENT}/analyses', json={'note': note_payload(id=note_id, text=text)}).json()
+    assert result['status'] == 'completed'
+    assert result['provenance']['semantic_validation']['rejected']
+    assert not any(f['finding_type'] == 'abdominal_mass' for f in result['findings'])
+    assert any(t['triggered'] for t in result['trigger_results']) == bleeding
+    if not bleeding:
+        assert 'incomplete' in result['explanation'].lower()
+        assert 'No signals identified' not in result['clinical_explanation']['summary_en']
+    stored = client.get(f'{PREFIX}/analyses/{result["id"]}').json()
+    assert stored == result

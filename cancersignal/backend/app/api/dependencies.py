@@ -14,20 +14,23 @@ from app.reasoning.trigger_engine import evaluate_triggers
 
 
 @lru_cache
-def build_extractor(extraction: str, env_file: Path | None, allow_live: bool, cache_dir: Path | None):
+def build_extractor(extraction: str, env_file: Path | None, allow_live: bool, cache_dir: Path | None, architecture: str = "v1"):
     """One extractor per configuration, reused across requests."""
     if extraction == "off":
         return StructuredSourceExtractor()
     # Imported only when enabled, so the default API never loads the LLM provider code.
     from app.services.llm_extraction import LlmNoteExtractor, build_from_settings
-    return LlmNoteExtractor(StructuredSourceExtractor(),
-                            build_clinical=build_from_settings(env_file, allow_live, cache_dir))
+    extractor = LlmNoteExtractor(StructuredSourceExtractor(),
+                            build_clinical=build_from_settings(env_file, allow_live, cache_dir, architecture))
+    if architecture == "v2":
+        extractor.name = "structured-source-demo-v1+clinical-extraction-compact-en-3"
+    return extractor
 
 
 def get_analysis_pipeline() -> AnalysisPipeline:
     settings = get_pipeline_settings()
     extractor = build_extractor(settings.extraction, settings.extraction_env_file,
-                                settings.extraction_allow_live, settings.extraction_cache_dir)
+                                settings.extraction_allow_live, settings.extraction_cache_dir, settings.extraction_architecture)
     return AnalysisPipeline(retrieve=build_retriever(settings), extractor=extractor, evaluate=evaluate_triggers)
 
 

@@ -50,5 +50,5 @@ def test_latest_explicit_state_supersedes_old_positive_code(db_session, latest_s
     result = StructuredSourceExtractor().extract(context, note)
     selected = [finding for finding in result.findings if finding.finding_type == "SYNTHETIC-EXACT-CODE"]
     assert len(selected) == 1
-    assert selected[0].status == latest_status
+    assert selected[0].status == ("uncertain" if latest_status == "negated" else latest_status)
     assert selected[0].evidence[0].source_excerpt == f"SYNTHETIC source explicitly records {latest_status}."

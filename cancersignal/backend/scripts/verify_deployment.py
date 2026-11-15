@@ -18,8 +18,9 @@ def main():
     parser.add_argument('--frontend-origin', required=True)
     parser.add_argument('--patient-id', type=UUID)
     parser.add_argument('--require-llm', action='store_true')
+    parser.add_argument('--require-v2', action='store_true')
     args = parser.parse_args()
-    if args.require_llm and not args.patient_id:
+    if (args.require_llm or args.require_v2) and not args.patient_id:
         parser.error('--require-llm needs --patient-id')
     report = {}
     try:
@@ -47,7 +48,7 @@ def main():
                 now = datetime.now(timezone.utc).isoformat()
                 response = client.post(f'/api/v1/patients/{pid}/analyses', json={'note': {
                     'patient_id': pid, 'observation_type': 'clinical_note',
-                    'text': f'SYNTHETIC deployment check {uuid4()}. Patient reports visible blood in stool for three weeks. No weight loss.',
+                    'text': f'SYNTHETIC deployment check {uuid4()}. Patient reports rectal bleeding.',
                     'observed_at': now, 'recorded_at': now,
                 }})
                 response.raise_for_status()
@@ -59,6 +60,15 @@ def main():
                 method = result['provenance']['extraction_method'] or ''
                 if args.require_llm:
                     assert 'clinical-extraction' in method, 'llm_not_enabled'
+                if args.require_v2:
+                    assert 'clinical-extraction-compact-en' in method, 'compact_v2_not_enabled'
+                    semantics = result['provenance']['semantic_validation']
+                    assert semantics.get('coverage_status') == 'incomplete', 'missing_coverage_guard'
+                    assert semantics.get('extraction_prompt', '').startswith('clinical-extraction-compact-en'), 'wrong_extraction_prompt'
+                    assert result['clinical_explanation']['language'] == 'en', 'english_explanation_required'
+                    report['semantic_version'] = semantics.get('version')
+                    report['extraction_prompt'] = semantics.get('extraction_prompt')
+                    report['coverage_status'] = semantics.get('coverage_status')
                 saved = client.get(f"/api/v1/analyses/{result['id']}")
                 saved.raise_for_status()
                 assert saved.json() == result, 'persistence_mismatch'

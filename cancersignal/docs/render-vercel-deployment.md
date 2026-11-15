@@ -64,9 +64,10 @@ Select this deployment branch only once it is available in the connected repo.
 - Set `DATABASE_URL`, `CORS_ORIGINS`, `EXTRACTION_MODEL`, `EXTRACTION_API_KEY`.
   `CORS_ORIGINS` is a JSON array of exact Vercel HTTPS origins, without paths.
 - For the tested Verda configuration: `CANCERSIGNAL_EXTRACTION=llm`,
-  `CANCERSIGNAL_EXTRACTION_ALLOW_LIVE=true`, `EXTRACTION_PROVIDER=verda`,
+  `CANCERSIGNAL_EXTRACTION_ALLOW_LIVE=true`, `CANCERSIGNAL_EXTRACTION_ARCHITECTURE=v2`,
+  `EXTRACTION_PROVIDER=verda`, `EXTRACTION_MODEL=kimi-k3-1-pro`,
   `EXTRACTION_RESPONSE_FORMAT=json_object`, `EXTRACTION_REASONING_EFFORT=none`,
-  `EXTRACTION_MAX_OUTPUT_TOKENS=8192`. These are included in the Blueprint.
+  `EXTRACTION_MAX_OUTPUT_TOKENS=4096`. These are included in the Blueprint.
   Other providers/models may need different settings; optional
   `EXTRACTION_BASE_URL` must be an HTTPS endpoint.
 - `CANCERSIGNAL_RETRIEVAL=auto` uses actual complete/lexical retrieval without
@@ -99,7 +100,7 @@ From `cancersignal/backend` (with the `llm` extra installed):
 ```sh
 python scripts/verify_deployment.py --api-url https://BACKEND --frontend-origin https://FRONTEND
 # Explicitly writes a synthetic note and analysis for a seeded synthetic UUID:
-python scripts/verify_deployment.py --api-url https://BACKEND --frontend-origin https://FRONTEND --patient-id SYNTHETIC_UUID --require-llm
+python scripts/verify_deployment.py --api-url https://BACKEND --frontend-origin https://FRONTEND --patient-id SYNTHETIC_UUID --require-v2
 ```
 
 This checks health/readiness, patient reads, POST CORS preflight, invalid-input

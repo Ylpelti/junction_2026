@@ -112,6 +112,7 @@ class PipelineSettings(BaseSettings):
     )
 
     extraction: Literal["off", "llm"] = "off"
+    extraction_architecture: Literal["v1", "v2"] = "v1"
     extraction_env_file: Path | None = None
     extraction_allow_live: bool = False
     extraction_cache_dir: Path | None = None

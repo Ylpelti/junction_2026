@@ -1,7 +1,7 @@
 """An empty successful output is distinct from an unavailable component."""
 from typing import Literal
 
-from pydantic import model_validator
+from pydantic import Field, model_validator
 
 from app.contracts.common import ComponentProvenance, MissingInformation, PatientScope, PipelineIssue
 from app.contracts.features import ComputedFeature
@@ -29,6 +29,7 @@ class StageReport(PatientScope):
 
 
 class FindingBatch(StageReport):
+    semantic_validation: dict = Field(default_factory=dict)
     findings: tuple[ClinicalFinding, ...] = ()
     qcancer_predictors: QCancerPredictors | None = None
 

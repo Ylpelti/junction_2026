@@ -52,7 +52,7 @@ def to_contract_context(context: RetrievedContext, query: str) -> ContractContex
 class LlmNoteExtractor:
     """FindingExtractor for the analysis pipeline: structured facts + LLM note extraction."""
 
-    name = "structured-source-demo-v1+clinical-extraction-2"
+    name = "structured-source-demo-v1+clinical-extraction-en-3"
 
     def __init__(self, base, *, clinical: ClinicalExtractor | None = None,
                  build_clinical: Callable[[], ClinicalExtractor] | None = None):
@@ -89,15 +89,21 @@ class LlmNoteExtractor:
         missing += [gap.description for gap in batch.missing_information]
         missing += [f"{issue.message} ({issue.code})" for issue in batch.issues]
         return ExtractionResult(findings=[*base.findings, *legacy_findings(batch)], missing_information=missing,
-                                qcancer_predictors=batch.qcancer_predictors)
+                                qcancer_predictors=batch.qcancer_predictors, semantic_validation=batch.semantic_validation)
 
 
-def build_from_settings(env_file: Path | None, allow_live: bool, cache_dir: Path | None) -> Callable[[], ClinicalExtractor]:
+def build_from_settings(env_file: Path | None, allow_live: bool, cache_dir: Path | None, architecture: str = "v1") -> Callable[[], ClinicalExtractor]:
     """Deferred construction so a bad configuration fails the run, not app startup."""
     def build() -> ClinicalExtractor:
         from app.extraction.providers import ChatCompletionsProvider, ProviderSettings
         if env_file is not None and not env_file.is_file():
             raise ValueError("Extraction env file not found.")
         settings = ProviderSettings(_env_file=env_file) if env_file is not None else ProviderSettings()
-        return ClinicalExtractor(ChatCompletionsProvider(settings, allow_live=allow_live), cache_dir=cache_dir)
+        provider = ChatCompletionsProvider(settings, allow_live=allow_live)
+        if architecture == "v2":
+            from app.extraction.compact import CompactProvider
+            provider = CompactProvider(provider)
+        elif architecture != "v1":
+            raise ValueError("Unknown extraction architecture")
+        return ClinicalExtractor(provider, cache_dir=cache_dir)
     return build

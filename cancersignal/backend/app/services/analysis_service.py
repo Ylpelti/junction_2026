@@ -95,6 +95,8 @@ def get_analysis(session: Session, analysis_id: UUID) -> AnalysisResponse:
         explanation = "Analysis has not completed; no conclusion is available."
     elif any(result.triggered for result in results):
         explanation = "Demonstration rules suggest physician review. This is not a diagnosis or referral decision."
+    elif provenance.semantic_validation.get("rejected") or provenance.semantic_validation.get("coverage_status") == "incomplete":
+        explanation = "Analysis incomplete: extraction coverage is unverified or interpretations were rejected. No negative screening conclusion is available."
     else:
         explanation = "No signals identified by configured demonstration rules. Review missing information; this is not a diagnosis."
     legacy_explanation = clinical_explanation is not None and clinical_explanation.get("contract_version") != "2.0"
@@ -104,7 +106,7 @@ def get_analysis(session: Session, analysis_id: UUID) -> AnalysisResponse:
         created_at=run.created_at, findings=findings, trigger_results=results, predictions=provenance.predictions,
         source_observations=[ObservationRead.model_validate(row) for row in sources],
         clinical_explanation=clinical_explanation,
-        explanation=(clinical_explanation["summary_en"] if clinical_explanation else explanation), provenance=provenance)
+        explanation=(clinical_explanation["summary_en"] if clinical_explanation and not provenance.semantic_validation.get("rejected") and provenance.semantic_validation.get("coverage_status") != "incomplete" else explanation), provenance=provenance)
 
     if legacy_explanation:
         # Read-only v1 adapter: render stored structured outputs, never translate
@@ -212,6 +214,7 @@ def create_analysis(session: Session, patient_id: UUID, payload: AnalysisRequest
             metadata.context_observation_ids = [item.observation.id for item in context.observations]
             metadata.retrieval_method = context.retrieval_method
             extraction = ExtractionResult.model_validate(pipeline.extractor.extract(context, note))
+            metadata.semantic_validation = extraction.semantic_validation
             # Extractors may cite only the snapshots they received (plus the input note).
             verify_findings(extraction.findings, allowed)
             verify_qcancer_predictors(extraction.qcancer_predictors, allowed)

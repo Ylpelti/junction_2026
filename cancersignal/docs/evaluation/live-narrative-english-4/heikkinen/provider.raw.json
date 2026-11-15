@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-6af95b5ccb3a1264ed347d3d",
+  "object": "chat.completion",
+  "created": 1794726748,
+  "model": "kimi-k3-1-pro",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\n  \"facts\": [\n    {\n      \"kind\": \"abdominal_pain\",\n      \"polarity\": \"present\",\n      \"timing\": \"historical\",\n      \"evidence\": [\n        {\n          \"source\": \"S1\",\n          \"quote\": \"Intermittent abdominal pain and change in bowel habits for one month.\"\n        }\n      ],\n      \"uncertainty\": null\n    },\n    {\n      \"kind\": \"change_in_bowel_habit\",\n      \"polarity\": \"present\",\n      \"timing\": \"historical\",\n      \"evidence\": [\n        {\n          \"source\": \"S1\",\n          \"quote\": \"Intermittent abdominal pain and change in bowel habits for one month.\"\n        }\n      ],\n      \"uncertainty\": null\n    },\n    {\n      \"kind\": \"rectal_bleeding\",\n      \"polarity\": \"present\",\n      \"timing\": \"historical\",\n      \"evidence\": [\n        {\n          \"source\": \"S1\",\n          \"quote\": \"Bright red blood with defaecation once.\"\n        }\n      ],\n      \"uncertainty\": null\n    },\n    {\n      \"kind\": \"weight_loss\",\n      \"polarity\": \"absent\",\n      \"timing\": \"historical\",\n      \"evidence\": [\n        {\n          \"source\": \"S1\",\n          \"quote\": \"No weight loss.\"\n        }\n      ],\n      \"uncertainty\": null\n    },\n    {\n      \"kind\": \"investigation_referred\",\n      \"polarity\": \"present\",\n      \"timing\": \"historical\",\n      \"evidence\": [\n        {\n          \"source\": \"S1\",\n          \"quote\": \"Colonoscopy referral made to investigate symptoms.\"\n        }\n      ],\n      \"uncertainty\": null\n    },\n    {\n      \"kind\": \"investigation_planned\",\n      \"polarity\": \"present\",\n      \"timing\": \"historical\",\n      \"evidence\": [\n        {\n          \"source\": \"S2\",\n          \"quote\": \"Colonoscopy planned; referral made.\"\n        }\n      ],\n      \"uncertainty\": null\n    },\n    {\n      \"kind\": \"investigation_completed\",\n      \"polarity\": \"present\",\n      \"timing\": \"historical\",\n      \"evidence\": [\n        {\n          \"source\": \"S4\",\n          \"quote\": \"Colonoscopy completed to the caecum with good visibility.\"\n        },\n        {\n          \"source\": \"S5\",\n          \"quote\": \"Colonoscopy completed: good visibility, examination to the caecum.\"\n        }\n      ],\n      \"uncertainty\": null\n    },\n    {\n      \"kind\": \"documented_observation\",\n      \"polarity\": \"present\",\n      \"timing\": \"historical\",\n      \"evidence\": [\n        {\n          \"source\": \"S4\",\n          \"quote\": \"Small internal haemorrhoids.\"\n        },\n        {\n          \"source\": \"S5\",\n          \"quote\": \"Small internal haemorrhoids.\"\n        }\n      ],\n      \"uncertainty\": null\n    },\n    {\n      \"kind\": \"abdominal_pain\",\n      \"polarity\": \"resolved\",\n      \"timing\": \"resolved\",\n      \"evidence\": [\n        {\n          \"source\": \"S6\",\n          \"quote\": \"Abdominal symptoms settled with fibre supplementation.\"\n        },\n        {\n          \"source\": \"S6\",\n          \"quote\": \"No further abdominal pain or visible blood.\"\n        },\n        {\n          \"source\": \"S7\",\n          \"quote\": \"Previous abdominal pain and visible blood in stool have resolved.\"\n        }\n      ],\n      \"uncertainty\": null\n    },\n    {\n      \"kind\": \"rectal_bleeding\",\n      \"polarity\": \"resolved\",\n      \"timing\": \"resolved\",\n      \"evidence\": [\n        {\n          \"source\": \"S6\",\n          \"quote\": \"No further abdominal pain or visible blood.\"\n        },\n        {\n          \"source\": \"S7\",\n          \"quote\": \"Previous abdominal pain and visible blood in stool have resolved.\"\n        }\n      ],\n      \"uncertainty\": null\n    },\n    {\n      \"kind\": \"abdominal_pain\",\n      \"polarity\": \"absent\",\n      \"timing\": \"current\",\n      \"evidence\": [\n        {\n          \"source\": \"S10\",\n          \"quote\": \"Previous abdominal symptoms have not recurred.\"\n        },\n        {\n          \"source\": \"S11\",\n          \"quote\": \"No abdominal symptoms or bleeding.\"\n        }\n      ],\n      \"uncertainty\": null\n    },\n    {\n      \"kind\": \"rectal_bleeding\",\n      \"polarity\": \"absent\",\n      \"timing\": \"current\",\n      \"evidence\": [\n        {\n          \"source\": \"S11\",\n          \"quote\": \"No abdominal symptoms or bleeding.\"\n        }\n      ],\n      \"uncertainty\": null\n    }\n  ],\n  \"missing_information\": []\n}",
+        "reasoning_content": null
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "matched_stop": 163586
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1666,
+    "total_tokens": 2688,
+    "completion_tokens": 1022,
+    "prompt_tokens_details": {
+      "cached_tokens": 640
+    },
+    "reasoning_tokens": 0,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    }
+  },
+  "metadata": {
+    "weight_version": "default",
+    "weight_versions": [
+      {
+        "version": "default",
+        "start": 0,
+        "end": 1022
+      }
+    ]
+  },
+  "service_tier": "standard"
+}

@@ -45,6 +45,7 @@ class RuleSnapshot(Record):
 
 
 class AnalysisProvenance(Record):
+    semantic_validation: dict = Field(default_factory=dict)
     input_observation_id: UUID | None = None
     cutoff: AwareDatetime | None = None
     context_observation_ids: list[UUID] = Field(default_factory=list)

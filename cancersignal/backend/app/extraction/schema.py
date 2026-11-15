@@ -11,6 +11,7 @@ from app.schemas.records import NonEmpty
 
 FINDING_TYPES = NOTE_FINDINGS | {
     "investigation_planned", "investigation_completed", "investigation_status_unknown",
+    "investigation_referred", "investigation_scheduled", "investigation_cancelled",
     "follow_up", "documented_observation",
 }
 

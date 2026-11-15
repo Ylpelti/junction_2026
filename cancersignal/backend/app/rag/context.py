@@ -25,6 +25,7 @@ class RetrievedContext(Record):
 
 
 class ExtractionResult(Record):
+    semantic_validation: dict = Field(default_factory=dict)
     findings: list[StructuredFinding] = Field(default_factory=list)
     missing_information: list[str] = Field(default_factory=list)
     qcancer_predictors: QCancerPredictors | None = None

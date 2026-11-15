@@ -16,12 +16,14 @@ services:
         sync: false
       - key: CANCERSIGNAL_EXTRACTION
         value: llm
+      - key: CANCERSIGNAL_EXTRACTION_ARCHITECTURE
+        value: v2
       - key: CANCERSIGNAL_EXTRACTION_ALLOW_LIVE
         value: "true"
       - key: EXTRACTION_PROVIDER
         value: verda
       - key: EXTRACTION_MODEL
-        sync: false
+        value: kimi-k3-1-pro
       - key: EXTRACTION_API_KEY
         sync: false
       - key: EXTRACTION_RESPONSE_FORMAT
@@ -29,7 +31,7 @@ services:
       - key: EXTRACTION_REASONING_EFFORT
         value: none
       - key: EXTRACTION_MAX_OUTPUT_TOKENS
-        value: "8192"
+        value: "4096"
       - key: CANCERSIGNAL_RETRIEVAL
         value: auto
       - key: CANCERSIGNAL_EXPLANATION

@@ -1,0 +1,33 @@
+import { test, expect } from '@playwright/test';
+
+test.skip(process.env.E2E_LIVE !== '1', 'Explicit live-inference deployment verification only');
+test('synthetic browser note uses compact v2, English explanation and persisted analysis', async ({ page, request }) => {
+  test.setTimeout(180_000);
+  page.on('pageerror', error => console.log('Browser error:', error.message));
+  await page.goto('/');
+  await expect(page.getByRole('button', { name: /SYNTHETIC Laine/ })).toBeVisible({ timeout: 20_000 });
+  await page.getByRole('button', { name: /SYNTHETIC Laine/ }).click();
+  await page.getByLabel('Nursing note', { exact: true }).fill('SYNTHETIC — Patient reports rectal bleeding.');
+  const saved = page.waitForResponse(r => r.request().method() === 'POST' && /\/analyses$/.test(new URL(r.url()).pathname), { timeout: 150_000 });
+  await page.getByRole('button', { name: 'Save', exact: true }).click();
+  const response = await saved;
+  expect(response.status()).toBe(201);
+  const result = await response.json();
+  expect(result.status).toBe('completed');
+  expect(result.provenance.extraction_method).toContain('clinical-extraction-compact-en');
+  expect(result.provenance.semantic_validation.extraction_prompt).toContain('clinical-extraction-compact-en');
+  expect(result.provenance.semantic_validation.coverage_status).toBe('incomplete');
+  expect(result.clinical_explanation.language).toBe('en');
+  expect(result.findings.some((f: { finding_type: string; status: string }) => f.finding_type === 'rectal_bleeding' && f.status === 'current')).toBe(true);
+  const persisted = await request.get(`${process.env.E2E_API_URL}/api/v1/analyses/${result.id}`);
+  expect(persisted.status()).toBe(200);
+  expect(await persisted.json()).toEqual(result);
+  await page.getByRole('button', { name: 'Open findings', exact: true }).click();
+  await page.getByText('Clinical summary', { exact: false }).click();
+  await expect(page.locator('[lang="en"] p').first()).not.toBeEmpty();
+  await page.getByRole('button', { name: 'Send to physician', exact: true }).click();
+  await expect(page.getByText('Sent to the physician.', { exact: true })).toBeVisible();
+  await page.reload();
+  await page.getByRole('button', { name: /SYNTHETIC Laine/ }).click();
+  await expect(page.getByText('Sent to the physician.', { exact: true })).toBeVisible();
+});

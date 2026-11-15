@@ -98,6 +98,7 @@ export type ApiAnalysisResponse = {
   explanation: string;
   clinical_explanation?: ClinicalExplanation | null;
   provenance: {
+    semantic_validation?: { coverage_status?: "incomplete"; rejected?: { path: string; reason: string }[] };
     input_observation_id: string | null;
     cutoff: string | null;
     missing_information: string[];
@@ -303,7 +304,7 @@ export function toAnalysis(r: ApiAnalysisResponse): AnalysisResult {
   if (hidden > 0) missing.push(`${hidden} evidence reference(s) could not be resolved to a source record and are not shown.`);
 
   return {
-    status: findings.some((f) => f.priority === "urgent") ? "urgent" : findings.length > 0 ? "review" : "none",
+    status: findings.some((f) => f.priority === "urgent") ? "urgent" : findings.length > 0 ? "review" : (r.provenance.semantic_validation?.rejected?.length || r.provenance.semantic_validation?.coverage_status === "incomplete") ? "unavailable" : "none",
     summary: r.explanation,
     clinicalExplanation: r.clinical_explanation?.contract_version === "2.0" && r.clinical_explanation.language === "en" ? r.clinical_explanation : undefined,
     findings,

@@ -72,14 +72,16 @@ def test_completed_investigation_is_distinct_from_a_plan(example):
     completed["description"] = "The historical record documents a completed investigation."
     response["findings"] = [completed]
     batch = extract(example, response)
-    assert batch.status == "complete"
+    assert batch.status == "partial"  # The valid fact does not establish exhaustive coverage.
     assert batch.findings[0].finding_type == "investigation_completed"
     assert batch.findings[0].evidence[0].source_excerpt == "Colonoscopy completed."
 
 
 def test_empty_success_is_distinct_from_failure(example):
     batch = extract(example, {"findings": [], "missing_information": []})
-    assert batch.status == "complete" and not batch.findings
+    assert batch.status == "partial" and not batch.findings
+    assert batch.semantic_validation["coverage_status"] == "incomplete"
+    assert any(issue.code == "extraction_coverage_incomplete" for issue in batch.issues)
 
 
 def test_legacy_projection_preserves_actionable_vocabulary_and_blocks_uncertainty(example):
@@ -148,9 +150,9 @@ def test_optional_offsets_and_exact_unicode_quotes(example):
     start = example["input_note"]["text"].index(reference["source_excerpt"])
     reference.update(start_offset=start, end_offset=start + len(reference["source_excerpt"]))
     # UTF-8 byte offsets would be different; character offsets are checked.
-    assert extract(example).status == "complete"
+    assert extract(example).status == "partial"
     reference.update(start_offset=None, end_offset=None)
-    assert extract(example).status == "complete"
+    assert extract(example).status == "partial"
 
 
 @pytest.mark.parametrize("field,value", [("cancer_probability", 0.8), ("priority_score", 10), ("referral_decision", "urgent"), ("numeric_value", 1.2)])

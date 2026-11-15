@@ -71,7 +71,22 @@ def test_english_scenarios_preserve_temporality_and_replay(key, tmp_path, caplog
     assert first.status != 'failed' and second.status == first.status
     assert len(calls) == 1
     assert 'extraction_cache miss' in caplog.text and 'extraction_cache hit' in caplog.text
-    assert [(f.finding_type, f.polarity, f.temporal_status) for f in second.findings] == [tuple(r[1:]) for r in SCENARIOS[key]]
+    # Preserve the authored clinical scenarios above. The bounded validator is
+    # intentionally unable to verify broad denials, and a referral is not a plan.
+    # Assert the exact quarantine instead of silently treating omissions as absence.
+    expected_rejections = {
+        'nieminen': {0: 'investigation_state_not_supported', 2: 'outside_assertion_grammar'},
+        'heikkinen': {3: 'outside_assertion_grammar'},
+    }.get(key, {})
+    assert second.semantic_validation['rejected'] == [
+        {'path': f'findings[{index}]', 'reason': reason}
+        for index, reason in expected_rejections.items()
+    ]
+    assert [(f.finding_type, f.polarity, f.temporal_status) for f in second.findings] == [
+        tuple(row[1:]) for index, row in enumerate(SCENARIOS[key]) if index not in expected_rejections
+    ]
+    assert second.semantic_validation['coverage_status'] == 'incomplete'
+    assert first.semantic_validation == second.semantic_validation
     assert not second.qcancer_predictors.binary_factors
     assert len(list(tmp_path.glob('*.json'))) == 1
     assert not (next(tmp_path.glob('*.json')).stat().st_mode & 0o077)

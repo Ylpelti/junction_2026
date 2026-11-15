@@ -114,7 +114,7 @@ def test_seeded_resolved_history_retains_supporting_followup_and_investigation(a
     assert rows[synthetic_id("symptom/2/2")].status == "resolved"
     assert synthetic_id("investigation/2") in rows
     symptom = next(f for f in result["findings"] if f["finding_type"] == "SYNTHETIC-SYMPTOM")
-    assert symptom["status"] == latest
+    assert symptom["status"] == ("uncertain" if latest == "negated" else latest)
     assert api.capture.context.source_context.retrieval.method in ("full_text", "hybrid")
 
 
@@ -332,8 +332,8 @@ def test_partial_retrieval_works_with_the_real_llm_adapter_and_offline_response(
     assert result["status"] == "completed", result
     assert api.capture.context.source_context.coverage.status == "partial"
     assert any("selective_history" in gap for gap in result["provenance"]["missing_information"])
-    fatigue = next(f for f in result["findings"] if f["finding_type"] == "documented_observation")
-    assert fatigue["evidence"][0]["observation_id"] == str(note_id)
+    assert not any(f["finding_type"] == "documented_observation" for f in result["findings"])
+    assert result["provenance"]["semantic_validation"]["rejected"][0]["reason"] == "outside_assertion_grammar"
 
 
 def test_scope_mismatch_is_rejected_before_any_indexing(api, db_session):

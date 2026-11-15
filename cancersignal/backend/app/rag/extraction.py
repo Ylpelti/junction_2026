@@ -34,6 +34,13 @@ class StructuredSourceExtractor:
             if record.observation_type == ObservationType.LABORATORY and record.status == "completed":
                 status = FindingStatus.HISTORICAL
             uncertainty = None
+            if record.observation_type == ObservationType.SYMPTOM:
+                if status == FindingStatus.CURRENT:
+                    status = FindingStatus.HISTORICAL
+                elif status == FindingStatus.NEGATED:
+                    status = FindingStatus.UNCERTAIN
+                output.missing_information.append(
+                    f"Historical symptom {record.id} does not establish current presence or absence.")
             if status == FindingStatus.UNCERTAIN:
                 uncertainty = "Source is uncertain or has no usable explicit clinical status."
             if record.observation_type == ObservationType.SYMPTOM and record.text is None:
