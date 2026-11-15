@@ -10,9 +10,17 @@ import type {
   ApiReviewRequest,
 } from "./mappers";
 
-const BASE = `${(process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000").replace(/\/$/, "")}/api/v1`;
+// Production deployments without an explicit API URL use the same-origin
+// Next.js rewrite. Local development keeps the FastAPI localhost default.
+const configuredApiOrigin = process.env.NEXT_PUBLIC_API_URL?.trim();
+const apiOrigin = configuredApiOrigin
+  ? configuredApiOrigin.replace(/\/$/, "")
+  : process.env.NODE_ENV === "production"
+    ? ""
+    : "http://localhost:8000";
+const BASE = `${apiOrigin}/api/v1`;
 
-export const API_ORIGIN = BASE.replace(/\/api\/v1$/, "");
+export const API_ORIGIN = apiOrigin || "same origin";
 
 export class ApiError extends Error {
   /** HTTP status, or undefined when the backend could not be reached at all. */
