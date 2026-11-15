@@ -73,7 +73,7 @@ const TABS: [NurseState["tab"], string][] = [
 function StatusPill({ s }: { s: NurseState }) {
   const res = s.result;
   let dot = "bg-[#16A34A] ring-[#DCFCE7]";
-  let text = s.saved ? `checked ${s.checkedAt}` : "monitoring notes";
+  let text = s.saved ? `checked ${s.checkedAt}` : "ready to check on save";
   let title = "CancerSignal active";
   if (s.saving) {
     dot = "bg-mute-3 ring-chip";
@@ -252,6 +252,7 @@ export function NurseView({ s, on }: { s: NurseState; on: NurseHandlers }) {
                   <label htmlFor="note" className="text-[12.5px] text-mute">
                     Nursing note
                   </label>
+                  <p className="text-xs text-mute">Synthetic demo note — edit before saving. With CancerSignal enabled, Save note runs backend analysis. Nothing is submitted automatically.</p>
                   <textarea
                     id="note"
                     disabled={s.locked || s.pendingAttempt}
@@ -268,10 +269,10 @@ export function NurseView({ s, on }: { s: NurseState; on: NurseHandlers }) {
                       disabled={s.locked || s.pendingAttempt}
                       className="min-h-11 cursor-pointer rounded-lg border-0 bg-header px-5.5 py-2.5 text-sm font-semibold text-white disabled:cursor-wait disabled:opacity-70"
                     >
-                      Save
+                      {s.saving ? "Processing…" : "Save note"}
                     </button>
                     <span aria-live="polite" className="flex flex-col gap-0.5">
-                      {s.saving && <span className="text-[13px] text-mute">Checking earlier records…</span>}
+                      {s.saving && <span className="text-[13px] text-mute">Saving note and processing clinical evidence…</span>}
                       {s.saved && <span className="text-[13px] text-ok">Note saved.</span>}
                       {s.saveError && <span className="text-[13px] font-semibold text-red-main">{s.saveError}</span>}
                       {s.useCS && res?.status === "unavailable" && (

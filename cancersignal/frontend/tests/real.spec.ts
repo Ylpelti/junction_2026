@@ -7,7 +7,7 @@ test("real PostgreSQL: nurse handoff, physician decision, reload, and separate d
   await expect(page.getByRole("button", { name: /SYNTHETIC Patient/ })).toHaveCount(0);
   await page.getByRole("button", { name: /SYNTHETIC Laine/ }).click();
   await page.getByLabel("Nursing note", { exact: true }).fill("SYNTHETIC — Nurse follow-up. Review previous findings.");
-  await page.getByRole("button", { name: "Save", exact: true }).click();
+  await page.getByRole("button", { name: "Save note", exact: true }).click();
   await page.getByRole("button", { name: "Open findings", exact: true }).click();
   await expect(page.getByText(/QCancer numerical estimate/)).toBeVisible();
   await expect(page.getByText(/Not calculated because required information/)).toBeVisible();
@@ -38,7 +38,7 @@ test("real PostgreSQL: nurse handoff, physician decision, reload, and separate d
   await page.getByRole("button", { name: "Nurse view", exact: true }).click();
   await page.getByRole("button", { name: /SYNTHETIC Laine/ }).click();
   await page.getByLabel("Nursing note", { exact: true }).fill("SYNTHETIC — Second follow-up. Review of findings.");
-  await page.getByRole("button", { name: "Save", exact: true }).click();
+  await page.getByRole("button", { name: "Save note", exact: true }).click();
   await page.getByRole("button", { name: "Open findings", exact: true }).click();
   await expect(page.getByText("Sent to the physician.", { exact: true })).toHaveCount(0);
   await page.getByRole("button", { name: "Dismiss with reason" }).click();

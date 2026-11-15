@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { test, expect, type Page } from "@playwright/test";
 import { patient, second, observation, run, review } from "./fixtures";
 
@@ -40,7 +41,7 @@ async function mock(page: Page, options: { failedDismissal?: boolean; lostNote?:
 }
 async function save(page: Page) {
   await page.getByLabel("Nursing note", { exact: true }).fill("SYNTHETIC new note");
-  await page.getByRole("button", { name: "Save", exact: true }).click();
+  await page.getByRole("button", { name: "Save note", exact: true }).click();
   await page.getByRole("button", { name: "Open findings", exact: true }).click();
 }
 test("handoff and physician decision persist across reload, reviewed leaves pending", async ({ page }) => {
@@ -72,13 +73,13 @@ test("dismissal restores exact reason and does not cross patient boundaries", as
 test("failed dismissal restoration blocks actions instead of treating it as absent", async ({ page }) => {
   await mock(page, { failedDismissal: true }); await page.goto("/"); await save(page); await page.reload();
   await expect(page.getByText(/Saved patient state could not be loaded/)).toBeVisible();
-  await expect(page.getByRole("button", { name: "Save", exact: true })).toBeDisabled();
+  await expect(page.getByRole("button", { name: "Save note", exact: true })).toBeDisabled();
 });
 test("lost note response reconciles the saved UUID without another note POST", async ({ page }) => {
   const backend = await mock(page, { lostNote: true }); await page.goto("/");
   await page.getByLabel("Nursing note", { exact: true }).fill("SYNTHETIC new note");
-  await page.getByRole("button", { name: "Save", exact: true }).click();
-  await expect(page.getByRole("button", { name: "Save", exact: true })).toBeDisabled();
+  await page.getByRole("button", { name: "Save note", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Save note", exact: true })).toBeDisabled();
   await page.reload(); await page.getByRole("button", { name: "Reconcile saved history" }).click();
   await page.getByRole("button", { name: "Analyse saved note" }).click();
   await expect(page.getByRole("button", { name: "Open findings", exact: true })).toBeVisible();
@@ -105,7 +106,7 @@ test("in-flight note save locks patient selection and suppresses duplicate click
   const gate = new Promise<void>(resolve => { release = resolve; });
   await page.route("**/observations", async route => { if (route.request().method() === "POST") await gate; await route.fallback(); });
   await page.getByLabel("Nursing note", { exact: true }).fill("SYNTHETIC new note");
-  await page.getByRole("button", { name: "Save", exact: true }).evaluate((button: HTMLButtonElement) => { button.click(); button.click(); });
+  await page.getByRole("button", { name: "Save note", exact: true }).evaluate((button: HTMLButtonElement) => { button.click(); button.click(); });
   await expect(page.getByRole("button", { name: /SYNTHETIC Nieminen/ })).toBeDisabled();
   release();
   await expect(page.getByRole("button", { name: "Open findings", exact: true })).toBeVisible();
@@ -119,4 +120,43 @@ test("late patient response cannot replace the next patient's history", async ({
   // Wait for the intentionally delayed first patient response via a route event.
   await page.waitForTimeout(350);
   await expect(page.getByText("SYNTHETIC source record", { exact: true })).toHaveCount(0);
+});
+
+test("four editable examples never auto-submit and drafts survive switching and reload", async ({ page }) => {
+  const examples: Record<string, string> = JSON.parse(readFileSync("data/demo-notes.json", "utf8"));
+  const ids = Object.keys(examples);
+  let posts = 0;
+  await mock(page);
+  await page.route("**/api/v1/patients?**", route => route.fulfill({ json: ids.map((id, i) => ({ ...patient, id, synthetic_name: `SYNTHETIC ${["Laine", "Nieminen", "Heikkinen", "Korhonen"][i]}` })) }));
+  for (const id of ids.slice(2)) await page.route(`**/api/v1/patients/${id}/observations?**`, route => route.fulfill({ json: [] }));
+  page.on("request", req => { if (req.method() === "POST") posts++; });
+  await page.goto("/");
+  const note = page.getByLabel("Nursing note", { exact: true });
+  for (const [i, id] of ids.entries()) {
+    await page.getByRole("button", { name: new RegExp(`SYNTHETIC ${["Laine", "Nieminen", "Heikkinen", "Korhonen"][i]}`) }).click();
+    await expect(note).toBeEnabled();
+    await expect(note).toHaveValue(examples[id as keyof typeof examples]);
+    await note.fill(`SYNTHETIC edited ${i}`);
+  }
+  await page.getByRole("button", { name: /SYNTHETIC Laine/ }).click();
+  await expect(note).toHaveValue("SYNTHETIC edited 0");
+  await page.reload();
+  await expect(note).toHaveValue("SYNTHETIC edited 0");
+  await note.fill("");
+  await page.reload();
+  await expect(note).toHaveValue("");
+  expect(posts).toBe(0);
+});
+
+test("saving an example runs analysis and does not refill the cleared editor", async ({ page }) => {
+  const backend = await mock(page);
+  await page.goto("/");
+  const note = page.getByLabel("Nursing note", { exact: true });
+  await expect(note).toHaveValue(/SYNTHETIC/);
+  await page.getByRole("button", { name: "Save note", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Open findings", exact: true })).toBeVisible();
+  await expect(note).toHaveValue("");
+  await page.reload();
+  await expect(note).toHaveValue("");
+  expect(backend.count()).toBe(1);
 });

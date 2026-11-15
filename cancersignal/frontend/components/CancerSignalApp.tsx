@@ -6,6 +6,7 @@ import { analyseSavedNote, ApiError, createNote, createReviewRequest, listObserv
 import { ALLOW_PROTOTYPE_DATASET } from "../lib/flags";
 import { toAnalysis, toPatient, toQueueItem, toRecord, type ApiAnalysisResponse, type ApiObservation } from "../lib/mappers";
 import type { AnalysisResult, DataSource, Patient, PatientRecord, QueueItem } from "../lib/types";
+import demoNotes from "../data/demo-notes.json";
 import { DemoBar } from "./DemoBar";
 import { NurseView, type NurseState } from "./NurseView";
 import { PhysicianView } from "./PhysicianView";
@@ -22,6 +23,7 @@ const stamp = (iso: string) => new Date(iso).toLocaleString();
 // Retain the original attempt identity in this browser tab across refreshes. It
 // prevents a lost POST response from causing a second note to be submitted.
 type Attempt = { patientId: string; text: string; at: string; noteId?: string; analyse: boolean };
+const DRAFTS_KEY = "cancersignal.nurse-drafts.v1";
 const ATTEMPT_KEY = "cancersignal.pending-note.v1";
 function readAttempt(): Attempt | null {
   try { return JSON.parse(sessionStorage.getItem(ATTEMPT_KEY) ?? "null"); } catch { return null; }
@@ -60,7 +62,24 @@ export function CancerSignalApp() {
     setAttempt(value);
   };
 
-  useEffect(() => { setAttempt(readAttempt()); }, []);
+  useEffect(() => {
+    const pending = readAttempt();
+    setAttempt(pending);
+    try {
+      const stored: unknown = JSON.parse(sessionStorage.getItem(DRAFTS_KEY) ?? "{}");
+      const drafts = stored && typeof stored === "object" && !Array.isArray(stored)
+        ? Object.fromEntries(Object.entries(stored).filter(([, text]) => typeof text === "string")) : {};
+      if (pending) drafts[pending.patientId] = pending.text;
+      setNotes(drafts);
+    } catch { if (pending) setNotes({ [pending.patientId]: pending.text }); }
+  }, []);
+  const updateNote = (id: string, text: string) => {
+    setNotes(previous => {
+      const next = { ...previous, [id]: text };
+      try { sessionStorage.setItem(DRAFTS_KEY, JSON.stringify(next)); } catch { /* In-memory draft remains editable. */ }
+      return next;
+    });
+  };
   useEffect(() => {
     let live = true;
     setPatients({ status: "loading" });
@@ -131,7 +150,7 @@ export function CancerSignalApp() {
   const flagged = useCS && !!res && (res.status === "review" || res.status === "urgent");
   const unresolved = flagged && !sent && !dismissed;
   const locked = visit.saving || visit.sending || restoring || !!restoreError;
-  const noteText = patient ? notes[pid] ?? patient.draftNote : "";
+  const noteText = patient ? notes[pid] ?? (attempt?.patientId === pid ? attempt.text : undefined) ?? (source === "backend" ? (demoNotes as Record<string, string>)[pid] : undefined) ?? patient.draftNote : "";
   const queue = useMemo(() => source === "backend" ? backendQueue.status === "ready" ? backendQueue.data : [] : [...FALLBACK_QUEUE.map(q => ({ ...q, origin: "demo" as const })), ...Object.values(sentItems)], [source, backendQueue, sentItems]);
 
   const pickPatient = (id: string) => {
@@ -174,7 +193,7 @@ export function CancerSignalApp() {
       const runs = await listAnalyses(pid);
       const existing = runs.find(r => r.provenance.input_observation_id === attempt.noteId);
       acceptRun(existing ?? await analyseSavedNote(pid, attempt.noteId));
-      holdAttempt(null); setNotes(n => ({ ...n, [pid]: "" }));
+      holdAttempt(null); updateNote(pid, "");
     } catch (e) { setVisit(v => ({ ...v, saving: false, saveError: `Analysis could not be confirmed. Reconcile saved history before retrying. ${message(e)}` })); }
     finally { busy.current = false; }
   };
@@ -197,7 +216,7 @@ export function CancerSignalApp() {
       holdAttempt({ ...pending, noteId: note.id });
       if (useCS) acceptRun(await analyseSavedNote(pid, note.id));
       else setVisit({ ...FRESH_VISIT, saved: true });
-      holdAttempt(null); setNotes(n => ({ ...n, [pid]: "" }));
+      holdAttempt(null); updateNote(pid, "");
       setRecord({ status: "ready", data: toRecord(await listObservations(pid)) });
     } catch (e) {
       if (!noteConfirmed && e instanceof ApiError && [404, 409, 422].includes(e.status ?? 0)) {
@@ -263,7 +282,7 @@ export function CancerSignalApp() {
   const resetDemo = () => {
     if (busy.current) return;
     setBackendQueue({ status: "loading" }); setReviewed([]); setDecisionError("");
-    setVisit(FRESH_VISIT); setNotes({}); setSentItems({}); setDecisions({}); setDismissals({}); setSentAnalyses({}); setTab("notes"); setReloadKey(k => k + 1);
+    setVisit(FRESH_VISIT); setSentItems({}); setDecisions({}); setDismissals({}); setSentAnalyses({}); setTab("notes"); setReloadKey(k => k + 1);
   };
   const state: NurseState = {
     source, useCS, patients, patient, pid, record, tab, note: noteText,
@@ -284,7 +303,7 @@ export function CancerSignalApp() {
         {source === "backend" ? "Backend demo · canonical PostgreSQL patients only. Legacy datasets are excluded." : "Prototype only · canned patients and findings; actions are not saved to PostgreSQL."}
       </p>
       {view === "nurse" ? <NurseView s={state} on={{
-        pickPatient, tab: setTab, note: text => { if (!busy.current) setNotes(n => ({ ...n, [pid]: text })); }, save,
+        pickPatient, tab: setTab, note: text => { if (!busy.current) updateNote(pid, text); }, save,
         ack: () => setVisit(v => ({ ...v, acked: true, closed: false })), close: () => setVisit(v => ({ ...v, closed: true })),
         send: sendToPhysician, dismiss: () => { if (!locked) setVisit(v => ({ ...v, choosing: true })); },
         reason: reason => setVisit(v => ({ ...v, reason })), confirmDismiss,
